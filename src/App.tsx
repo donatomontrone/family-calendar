@@ -1,0 +1,19 @@
+import {useEffect,useMemo,useState} from "react";
+import type {Area,EntityRegistryEntry,Hass} from "./types";
+import {displayName,getAreas,getEntityRegistry,getFavorites,setFavorites,toggleEntity} from "./ha";
+import "./styles.css";
+import { t } from "./i18n";
+export default function App({hass}:{hass:Hass}){
+ const [areas,setAreas]=useState<Area[]>([]),[entities,setEntities]=useState<EntityRegistryEntry[]>([]),[favorites,setFav]=useState<string[]>([]),[room,setRoom]=useState("__favorites"),[mode,setMode]=useState<"todo"|"shopping">("todo");
+ useEffect(()=>{Promise.all([getAreas(hass),getEntityRegistry(hass),getFavorites(hass)]).then(([a,e,f])=>{setAreas(a.sort((x,y)=>x.name.localeCompare(y.name)));setEntities(e);setFav(f);});},[hass]);
+ const fav=useMemo(()=>favorites.filter(id=>hass.states[id]),[favorites,hass.states]);
+ const roomEntities=useMemo(()=>room==="__favorites"?fav:entities.filter(e=>e.area_id===room).map(e=>e.entity_id).filter(id=>hass.states[id]),[room,entities,fav,hass.states]);
+ async function favorite(id:string){const n=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];setFav(n);await setFavorites(hass,n);}
+ return <main className="app"><header><div><div className="clock">18:37<small>53</small></div><div className="date">Venerdì 28 Agosto</div></div><div className="online">{t("online")}</div></header><section className="layout">
+ <aside><section className="panel"><h2>{t("upcoming")}</h2><p><b>Oggi</b><br/><small>10:30 Call progetto · 17:00 Palestra</small></p><p><b>Domani</b><br/><small>Niente in agenda</small></p><p><b>Domenica</b><br/><small>20:30 Cena</small></p></section>
+ <section className="panel"><div className="row"><h2>{mode==="todo"?"DA FARE":"SPESA"}</h2><span>3</span></div>{(mode==="todo"?["Comprare il latte","Chiamare Marco","Ritirare il pacco"]:["Latte","Pane","Pomodori","Caffè"]).map(x=><label className="task" key={x}><input type="checkbox"/>{x}</label>)}<button className="add">{t("add")}</button><div className="tabs"><button className={mode==="todo"?"active":""} onClick={()=>setMode("todo")}>Da fare</button><button className={mode==="shopping"?"active":""} onClick={()=>setMode("shopping")}>Spesa</button></div></section></aside>
+ <section className="panel calendar"><div className="row"><h1>Agosto 2026</h1><div><button>‹</button><button>Oggi</button><button>›</button></div></div><Month/></section>
+ <aside><section className="panel"><div className="row"><h2>{t("home")}</h2><span className="online">{t("normal")}</span></div><div className="rooms"><button className={room==="__favorites"?"selected":""} onClick={()=>setRoom("__favorites")}>{t("favorites")}</button><select value={room} onChange={e=>setRoom(e.target.value)}><option value="__favorites">{t("room")}</option>{areas.map(a=><option value={a.area_id} key={a.area_id}>{a.name}</option>)}</select></div><h3>{room==="__favorites"?"Preferiti":areas.find(a=>a.area_id===room)?.name}</h3><div className="entities">{roomEntities.slice(0,12).map(id=><button className={"entity "+(hass.states[id].state==="on"?"on":"")} key={id} onClick={()=>void toggleEntity(hass,id)} onContextMenu={e=>{e.preventDefault();void favorite(id)}}><b>{hass.states[id].attributes.friendly_name as string}</b><small>{hass.states[id].state}</small>{favorites.includes(id)&&<i>★</i>}</button>)}</div><small className="hint">{t("hint")}</small></section></aside>
+ </section></main>;
+}
+function Month(){const days=[...Array.from({length:4},(_,i)=>({n:27+i,m:true})),...Array.from({length:31},(_,i)=>({n:i+1,m:false})),...Array.from({length:6},(_,i)=>({n:i+1,m:true}))];return <div className="month">{["LUN","MAR","MER","GIO","VEN","SAB","DOM"].map(x=><div className="weekday" key={x}>{x}</div>)}{days.map((d,i)=><div className={"day "+(d.m?"muted ":"")+(d.n===28&&!d.m?"today":"")} key={i}><b>{d.n}</b>{d.n===28&&!d.m&&<><span>10:30 Call progetto</span><span>17:00 Palestra</span></>}{d.n===30&&!d.m&&<span>20:30 Cena</span>}</div>)}</div>}

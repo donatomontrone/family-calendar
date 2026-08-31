@@ -1,0 +1,7 @@
+import React from "react";import{createRoot}from"react-dom/client";import App from "./App";import type{Hass,HassState}from"./types";
+const s=(id:string,state:string,name:string):HassState=>({entity_id:id,state,attributes:{friendly_name:name},last_changed:new Date().toISOString(),last_updated:new Date().toISOString()});
+const states={ "light.soggiorno":s("light.soggiorno","on","Luce soggiorno"),"light.cucina":s("light.cucina","off","Luce cucina"),"cover.salotto":s("cover.salotto","open","Tenda salotto"),"climate.soggiorno":s("climate.soggiorno","heat","Clima"),"switch.tv":s("switch.tv","off","TV"),"light.camera":s("light.camera","off","Luce camera")};
+const areas=[{area_id:"soggiorno",name:"Soggiorno"},{area_id:"cucina",name:"Cucina"},{area_id:"camera",name:"Camera"}];
+const reg=[{entity_id:"light.soggiorno",area_id:"soggiorno"},{entity_id:"light.cucina",area_id:"cucina"},{entity_id:"cover.salotto",area_id:"soggiorno"},{entity_id:"climate.soggiorno",area_id:"soggiorno"},{entity_id:"switch.tv",area_id:"soggiorno"},{entity_id:"light.camera",area_id:"camera"}];
+const hass:Hass={states,callService:async(...x)=>console.log("demo service",x),callWS:async<T>(m:Record<string,unknown>)=>{if(m.type==="config/area_registry/list")return areas as T;if(m.type==="config/entity_registry/list")return reg as T;if(m.type==="family_calendar/favorites/get")return {entity_ids:["light.soggiorno","cover.salotto","switch.tv"]} as T;return {entity_ids:m.entity_ids??[]} as T}};
+createRoot(document.getElementById("root")!).render(React.createElement(App,{hass}));
