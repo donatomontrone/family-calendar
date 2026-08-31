@@ -5,8 +5,8 @@
   "config_flow": true,
   "dependencies": ["frontend", "http"],
   "documentation": "https://github.com/donatomontrone/family-calendar",
-  "issue_tracker": "https://github.com/donatomontrone/family-calendar/issues",
   "iot_class": "local_push",
+  "issue_tracker": "https://github.com/donatomontrone/family-calendar/issues",
   "requirements": [],
   "version": "0.1.0"
 }
