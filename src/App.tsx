@@ -9,7 +9,6 @@ import {
   setFavorites,
 } from "./ha";
 import { getLanguage, t } from "./i18n";
-import "./styles.css";
 
 type Mode = "todo" | "shopping";
 type DemoEvent = { date: string; time?: string; title: string; tone?: "mint" | "blue" | "amber" };
@@ -85,7 +84,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
       .filter((entityId) => hass.states[entityId]);
   }, [room, entities, favoriteEntities, hass.states]);
 
-  const events = useMemo(() => buildDemoEvents(now), [now.getFullYear(), now.getMonth(), now.getDate()]);
+  const eventDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+  const events = useMemo(() => buildDemoEvents(now), [eventDate]);
   const currentTasks = mode === "todo" ? todo : shopping;
 
   async function toggleFavorite(entityId: string) {
