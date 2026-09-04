@@ -1,0 +1,139 @@
+/* Regression guard for the calendar dashboard.
+ * Keep the Apple Home card proportions introduced by apple-home.css,
+ * but preserve the compact dashboard density and the clear active-state
+ * feedback that existed before the Home-view redesign.
+ */
+
+.calendar-page-active .entity-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 0 10px;
+}
+
+.calendar-page-active .entity-tile {
+  min-height: 78px;
+  aspect-ratio: 1 / .96;
+  border-radius: 15px;
+  background: rgba(235,235,240,.76);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 4px 12px rgba(0,0,0,.025);
+}
+
+.calendar-page-active .entity-main {
+  min-height: 78px;
+  padding: 8px 7px 8px;
+  justify-content: flex-end;
+}
+
+.calendar-page-active .entity-icon {
+  top: 7px;
+  left: 7px;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: rgba(118,118,128,.58);
+}
+
+.calendar-page-active .entity-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.calendar-page-active .entity-main strong {
+  width: calc(100% - 2px);
+  font-size: 9.5px;
+  line-height: 1.08;
+}
+
+.calendar-page-active .entity-main small {
+  margin-top: 2px;
+  font-size: 8px;
+  line-height: 1.05;
+}
+
+.calendar-page-active .favorite-button,
+.calendar-page-active .control-button {
+  right: 5px;
+  width: 19px;
+  height: 19px;
+  border-radius: 7px;
+}
+
+.calendar-page-active .favorite-button { top: 5px; }
+.calendar-page-active .control-button { bottom: 5px; }
+.calendar-page-active .favorite-button svg,
+.calendar-page-active .control-button svg { width: 10px; height: 10px; }
+
+/* Restore immediate visual feedback when an accessory is active.
+ * This deliberately wins over the neutral white active style from
+ * apple-home.css; the dashboard must make an ON light obvious at a glance.
+ */
+.calendar-page-active .entity-tile.active {
+  background: linear-gradient(145deg, #ffe476 0%, #fff1ad 100%);
+  border-color: rgba(211,164,0,.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.60), 0 5px 15px rgba(199,141,0,.07);
+}
+
+.calendar-page-active .entity-tile.active .entity-icon {
+  background: #ffd60a;
+  color: #493800;
+}
+
+.calendar-page-active .entity-tile.active .entity-main strong {
+  color: #2d2507;
+}
+
+.calendar-page-active .entity-tile.active .entity-main small {
+  color: #705a08;
+}
+
+.calendar-page-active .entity-tile.selected {
+  box-shadow: 0 0 0 2px rgba(10,132,255,.20), 0 5px 15px rgba(0,0,0,.035);
+}
+
+/* Keep controls clickable and clearly separated from the main tile action. */
+.calendar-page-active .favorite-button,
+.calendar-page-active .control-button {
+  z-index: 4;
+}
+
+/* Night mode keeps the compact layout but uses a warm active state. */
+.night.calendar-page-active .entity-tile {
+  background: rgba(72,72,77,.78);
+  border-color: rgba(255,255,255,.065);
+}
+
+.night.calendar-page-active .entity-tile.active {
+  background: linear-gradient(145deg, rgba(255,214,10,.92), rgba(216,163,0,.90));
+  border-color: rgba(255,214,10,.20);
+}
+
+.night.calendar-page-active .entity-tile.active .entity-icon {
+  background: rgba(255,255,255,.88);
+  color: #493800;
+}
+
+.night.calendar-page-active .entity-tile.active .entity-main strong {
+  color: #2c2300;
+}
+
+.night.calendar-page-active .entity-tile.active .entity-main small {
+  color: #654f00;
+}
+
+@media (max-width: 1480px) and (min-width: 1081px) {
+  .calendar-page-active .entity-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1080px) and (min-width: 761px) {
+  .calendar-page-active .entity-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .calendar-page-active .entity-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
