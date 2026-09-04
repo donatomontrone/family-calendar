@@ -5,6 +5,7 @@ import type { Area, EntityRegistryEntry, Hass, HassState } from "./types";
 import "./styles.css";
 import "./theme.css";
 import "./home-view.css";
+import "./apple-home.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
