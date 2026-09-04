@@ -228,14 +228,26 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                 </button>
               </div>
 
-              <div className="room-switcher">
-                <button className={room === "__favorites" ? "active" : ""} onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}>
+              <div className="room-switcher room-chip-strip" role="tablist" aria-label={t("room", language)}>
+                <button
+                  role="tab"
+                  aria-selected={room === "__favorites"}
+                  className={room === "__favorites" ? "active" : ""}
+                  onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}
+                >
                   <StarIcon /> {t("favorites", language)}
                 </button>
-                <select value={room} onChange={(event) => { setRoom(event.target.value); setSelectedEntity(null); }} aria-label={t("room", language)}>
-                  <option value="__favorites">{t("room", language)}…</option>
-                  {areas.map((area) => <option value={area.area_id} key={area.area_id}>{area.name}</option>)}
-                </select>
+                {areas.map((area) => (
+                  <button
+                    role="tab"
+                    aria-selected={room === area.area_id}
+                    className={room === area.area_id ? "active" : ""}
+                    key={area.area_id}
+                    onClick={() => { setRoom(area.area_id); setSelectedEntity(null); }}
+                  >
+                    <span className="room-chip-dot" />{area.name}
+                  </button>
+                ))}
               </div>
 
               <div className="device-heading">
@@ -370,9 +382,9 @@ function CalendarPanel({ month, today, events, language, onPrevious, onNext, onT
           <h1>{month.toLocaleDateString(localeFor(language), { month: "long", year: "numeric" })}</h1>
         </div>
         <div className="calendar-actions">
-          <button onClick={onPrevious} aria-label={t("previousMonth", language)}>‹</button>
+          <button onClick={onPrevious} aria-label={t("previousMonth", language)}><ChevronLeftIcon /></button>
           <button className="today-button" onClick={onToday}>{t("todayButton", language)}</button>
-          <button onClick={onNext} aria-label={t("nextMonth", language)}>›</button>
+          <button onClick={onNext} aria-label={t("nextMonth", language)}><ChevronRightIcon /></button>
         </div>
       </div>
       <div className="month-grid">
@@ -414,7 +426,7 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
     <div className={`device-controls device-controls-${domain}`}>
       <div className="device-controls-heading">
         <div><span className="section-kicker">{t("controls", language)}</span><strong>{displayName(hass, entityId)}</strong></div>
-        <button onClick={onClose} aria-label={t("close", language)}>×</button>
+        <button onClick={onClose} aria-label={t("close", language)}><CloseIcon /></button>
       </div>
       {domain === "light" && (
         <>
@@ -498,12 +510,15 @@ function iconForEntity(entityId: string) {
   return <PowerIcon />;
 }
 
-function StarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.4 2.58 5.23 5.77.84-4.18 4.07.99 5.75L12 16.57l-5.16 2.72.99-5.75-4.18-4.07 5.77-.84L12 3.4Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/></svg>; }
-function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25v8.25M7.25 6.15a7.7 7.7 0 1 0 9.5 0" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function StarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.48 5.02 5.54.81-4.01 3.91.95 5.52L12 16.25l-4.96 2.61.95-5.52-4.01-3.91 5.54-.81L12 3.6Z" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6v7.9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/><path d="M7.65 6.55a7.35 7.35 0 1 0 8.7 0" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
 function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5 1 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.7" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M5 9h14M8 12h8M8 15h8" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>; }
 function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.4 14.8V5.6a2.4 2.4 0 0 0-4.8 0v9.2a4.4 4.4 0 1 0 4.8 0Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/><path d="M12 8v8" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/></svg>; }
 function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h8m4 0h2M5 17h3m4 0h7M13 4v6M8 14v6" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/></svg>; }
-function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M9 4h6l.8 3H8.2L9 4Zm-1.5 3 .8 13h7.4l.8-13M10 11v5m4-5v5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.7 8.2h8.6l-.65 9.35a1.8 1.8 0 0 1-1.8 1.68h-3.7a1.8 1.8 0 0 1-1.8-1.68L7.7 8.2Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M6 6.4h12M9.5 6.4V4.8h5v1.6M10.4 11v4.7M13.6 11v4.7" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
 function CalendarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="5.5" width="15" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M8 3.5v4m8-4v4M4.5 10h15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
 function HomeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 11.1 12 4.5l8.3 6.6v8.2c0 .7-.5 1.2-1.2 1.2h-4.6v-5.7h-5v5.7H4.9c-.7 0-1.2-.5-1.2-1.2v-8.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/></svg>; }
+function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 7.5 9 9M16.5 7.5l-9 9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function ChevronLeftIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function ChevronRightIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
