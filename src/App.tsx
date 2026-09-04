@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import HomeView from "./HomeView";
+import ClimateControl from "./ClimateControl";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -247,8 +248,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                 {roomEntities.map((entityId) => {
                   const state = hass.states[entityId];
                   const domain = entityId.split(".")[0];
-                  const active = ["on", "open", "heat", "cool", "playing", "unlocked"].includes(state.state);
-                  const configurable = ["light", "cover"].includes(domain);
+                  const active = ["on", "open", "heat", "cool", "heat_cool", "auto", "fan_only", "dry", "playing", "unlocked"].includes(state.state);
+                  const configurable = ["light", "cover", "climate"].includes(domain);
                   return (
                     <article
                       className={`entity-tile domain-${domain} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
@@ -410,7 +411,7 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
   const color = lightColor(hass, entityId);
 
   return (
-    <div className="device-controls">
+    <div className={`device-controls device-controls-${domain}`}>
       <div className="device-controls-heading">
         <div><span className="section-kicker">{t("controls", language)}</span><strong>{displayName(hass, entityId)}</strong></div>
         <button onClick={onClose} aria-label={t("close", language)}>×</button>
@@ -429,6 +430,9 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
         <ControlRow label={t("position", language)} value={`${position}%`}>
           <input type="range" min="0" max="100" defaultValue={position} onChange={(event) => void setCoverPosition(hass, entityId, Number(event.target.value))} />
         </ControlRow>
+      )}
+      {domain === "climate" && (
+        <ClimateControl hass={hass} entityId={entityId} language={language} variant="compact" showName={false} />
       )}
     </div>
   );
@@ -455,9 +459,15 @@ function entityStatus(hass: Hass, entityId: string, language: Language) {
   const domain = entityId.split(".")[0];
   if (domain === "light" && state.state === "on") return `${Math.round((Number(state.attributes.brightness ?? 255) / 255) * 100)}%`;
   if (domain === "cover") return `${Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0))}%`;
+  if (domain === "climate") {
+    const current = Number(state.attributes.current_temperature);
+    const target = Number(state.attributes.temperature);
+    if (Number.isFinite(current) && Number.isFinite(target)) return `${current.toFixed(1)}° → ${target.toFixed(target % 1 === 0 ? 0 : 1)}°`;
+    if (Number.isFinite(current)) return `${current.toFixed(1)}°`;
+  }
   const map: Record<string, string> = language === "it"
-    ? { on: "Acceso", off: "Spento", open: "Aperta", closed: "Chiusa", heat: "Riscaldamento", cool: "Raffrescamento", playing: "In riproduzione", unavailable: "Non risponde", unknown: "Non disponibile", unlocked: "Sbloccata", locked: "Bloccata" }
-    : { on: "On", off: "Off", open: "Open", closed: "Closed", heat: "Heating", cool: "Cooling", playing: "Playing", unavailable: "No response", unknown: "Unavailable", unlocked: "Unlocked", locked: "Locked" };
+    ? { on: "Acceso", off: "Spento", open: "Aperta", closed: "Chiusa", heat: "Riscaldamento", cool: "Raffrescamento", heat_cool: "Automatico", auto: "Automatico", fan_only: "Ventola", dry: "Deumidifica", playing: "In riproduzione", unavailable: "Non risponde", unknown: "Non disponibile", unlocked: "Sbloccata", locked: "Bloccata" }
+    : { on: "On", off: "Off", open: "Open", closed: "Closed", heat: "Heating", cool: "Cooling", heat_cool: "Auto", auto: "Auto", fan_only: "Fan", dry: "Dry", playing: "Playing", unavailable: "No response", unknown: "Unavailable", unlocked: "Unlocked", locked: "Locked" };
   return map[state.state] ?? state.state;
 }
 
@@ -488,12 +498,12 @@ function iconForEntity(entityId: string) {
   return <PowerIcon />;
 }
 
-function StarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.9 2.8 5.7 6.3.9-4.6 4.4 1.1 6.3-5.6-3-5.6 3 1.1-6.3L2.9 9.5l6.3-.9L12 2.9Z" fill="currentColor"/></svg>; }
-function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9M7.1 5.9a8 8 0 1 0 9.8 0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
-function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6m-5 3h4m-2-19a7 7 0 0 0-4 12.7c.7.5 1 1.2 1 2.3h6c0-1.1.3-1.8 1-2.3A7 7 0 0 0 12 2Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5V4Zm0 5h14M8 7h8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
-function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M8 6l4 3 4-3M8 18l4-3 4 3M4.2 7.5l15.6 9M4.2 16.5l15.6-9" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
-function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10m4 0h2M4 17h4m4 0h8M14 4v6M8 14v6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
-function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 3h6l1 4H8l1-4Zm-2 4 1 14h8l1-14M10 11v6m4-6v6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function CalendarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M8 3v4m8-4v4M4 10h16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
-function HomeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.2 12 4l9 7.2V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.8Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>; }
+function StarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.4 2.58 5.23 5.77.84-4.18 4.07.99 5.75L12 16.57l-5.16 2.72.99-5.75-4.18-4.07 5.77-.84L12 3.4Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/></svg>; }
+function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25v8.25M7.25 6.15a7.7 7.7 0 1 0 9.5 0" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5 1 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.7" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M5 9h14M8 12h8M8 15h8" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>; }
+function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.4 14.8V5.6a2.4 2.4 0 0 0-4.8 0v9.2a4.4 4.4 0 1 0 4.8 0Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/><path d="M12 8v8" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/></svg>; }
+function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h8m4 0h2M5 17h3m4 0h7M13 4v6M8 14v6" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/></svg>; }
+function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M9 4h6l.8 3H8.2L9 4Zm-1.5 3 .8 13h7.4l.8-13M10 11v5m4-5v5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function CalendarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="5.5" width="15" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M8 3.5v4m8-4v4M4.5 10h15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
+function HomeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 11.1 12 4.5l8.3 6.6v8.2c0 .7-.5 1.2-1.2 1.2h-4.6v-5.7h-5v5.7H4.9c-.7 0-1.2-.5-1.2-1.2v-8.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/></svg>; }
