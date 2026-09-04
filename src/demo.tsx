@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import type { Area, EntityRegistryEntry, Hass, HassState } from "./types";
+import "./styles.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (entityId: string, value: string, name: string): HassState => ({
