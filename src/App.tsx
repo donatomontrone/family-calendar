@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import HomeView from "./HomeView";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -15,6 +16,7 @@ import {
 import { getLanguage, t, type Language } from "./i18n";
 
 type Mode = "todo" | "shopping";
+type Page = "calendar" | "home";
 type Task = { id: number; label: string; done: boolean };
 type DemoEvent = {
   startDate: string;
@@ -45,6 +47,7 @@ function buildDemoEvents(today: Date): DemoEvent[] {
 
 export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean }) {
   const language = getLanguage(hass);
+  const [page, setPage] = useState<Page>("calendar");
   const [areas, setAreas] = useState<Area[]>([]);
   const [entities, setEntities] = useState<EntityRegistryEntry[]>([]);
   const [favorites, setFavoriteIds] = useState<string[]>([]);
@@ -129,121 +132,136 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   }
 
   return (
-    <main className={`app-shell ${isNight ? "night" : "day"}`}>
-      <section className="dashboard-grid">
-        <aside className="left-column">
-          <ClockPanel now={now} language={language} demo={demo} />
-          <AgendaPanel now={now} events={events} language={language} />
-          <section className="card tasks-card">
-            <div className="card-heading split">
-              <div>
-                <span className="section-kicker">Lists</span>
-                <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
-              </div>
-              <span className="count-pill">{currentTasks.filter((item) => !item.done).length}</span>
-            </div>
-            <div className="task-list">
-              {currentTasks.map((item) => (
-                <div className={`task-row ${item.done ? "done" : ""}`} key={item.id}>
-                  <label>
-                    <input type="checkbox" checked={item.done} onChange={() => updateTask(item.id)} />
-                    <span>{item.label}</span>
-                  </label>
-                  {item.done && (
-                    <button className="delete-task" onClick={() => deleteTask(item.id)} aria-label={t("delete", language)} title={t("delete", language)}>
-                      <TrashIcon />
-                    </button>
-                  )}
+    <main className={`app-shell ${isNight ? "night" : "day"} ${page === "home" ? "home-page-active" : "calendar-page-active"}`}>
+      {page === "calendar" ? (
+        <section className="dashboard-grid">
+          <aside className="left-column">
+            <ClockPanel now={now} language={language} demo={demo} />
+            <AgendaPanel now={now} events={events} language={language} />
+            <section className="card tasks-card">
+              <div className="card-heading split">
+                <div>
+                  <span className="section-kicker">Lists</span>
+                  <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
                 </div>
-              ))}
-            </div>
-            <button className="text-button" type="button">+ {t("add", language)}</button>
-            <div className="segmented-control">
-              <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
-              <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
-            </div>
-          </section>
-        </aside>
-
-        <CalendarPanel
-          month={visibleMonth}
-          today={now}
-          events={events}
-          language={language}
-          onPrevious={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}
-          onNext={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}
-          onToday={() => setVisibleMonth(new Date(now.getFullYear(), now.getMonth(), 1))}
-        />
-
-        <aside className="right-column">
-          <div className="status-row">
-            {demo && <span className="demo-badge">{t("demo", language)}</span>}
-            <span className="status-badge"><i />{t("online", language)}</span>
-          </div>
-          <section className="card home-card">
-            <div className="card-heading split home-heading">
-              <div>
-                <span className="section-kicker">Smart home</span>
-                <h2>{t("home", language)}</h2>
+                <span className="count-pill">{currentTasks.filter((item) => !item.done).length}</span>
               </div>
-              <button className="power-all" onClick={() => void turnOffScope()}>
-                <PowerIcon /> {t("turnOffAll", language)}
-              </button>
-            </div>
-
-            <div className="room-switcher">
-              <button className={room === "__favorites" ? "active" : ""} onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}>
-                <StarIcon /> {t("favorites", language)}
-              </button>
-              <select value={room} onChange={(event) => { setRoom(event.target.value); setSelectedEntity(null); }} aria-label={t("room", language)}>
-                <option value="__favorites">{t("room", language)}…</option>
-                {areas.map((area) => <option value={area.area_id} key={area.area_id}>{area.name}</option>)}
-              </select>
-            </div>
-
-            <div className="device-heading">
-              <h3>{room === "__favorites" ? t("favorites", language) : areas.find((area) => area.area_id === room)?.name}</h3>
-              <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
-            </div>
-
-            <div className="entity-grid">
-              {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
-              {roomEntities.map((entityId) => {
-                const state = hass.states[entityId];
-                const active = ["on", "open", "heat", "cool", "playing"].includes(state.state);
-                const configurable = ["light", "cover"].includes(entityId.split(".")[0]);
-                return (
-                  <article className={`entity-tile ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`} key={entityId}>
-                    <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>
-                      <span className="entity-icon">{iconForEntity(entityId)}</span>
-                      <strong>{displayName(hass, entityId)}</strong>
-                      <small>{entityStatus(hass, entityId, language)}</small>
-                    </button>
-                    <button
-                      className={`favorite-button ${favorites.includes(entityId) ? "selected" : ""}`}
-                      aria-label={t("favorites", language)}
-                      onClick={() => void toggleFavorite(entityId)}
-                    ><StarIcon /></button>
-                    {configurable && (
-                      <button
-                        className="control-button"
-                        aria-label={t("controls", language)}
-                        title={t("controls", language)}
-                        onClick={() => setSelectedEntity(selectedEntity === entityId ? null : entityId)}
-                      ><SlidersIcon /></button>
+              <div className="task-list">
+                {currentTasks.map((item) => (
+                  <div className={`task-row ${item.done ? "done" : ""}`} key={item.id}>
+                    <label>
+                      <input type="checkbox" checked={item.done} onChange={() => updateTask(item.id)} />
+                      <span>{item.label}</span>
+                    </label>
+                    {item.done && (
+                      <button className="delete-task" onClick={() => deleteTask(item.id)} aria-label={t("delete", language)} title={t("delete", language)}>
+                        <TrashIcon />
+                      </button>
                     )}
-                  </article>
-                );
-              })}
-            </div>
+                  </div>
+                ))}
+              </div>
+              <button className="text-button" type="button">+ {t("add", language)}</button>
+              <div className="segmented-control">
+                <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
+                <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
+              </div>
+            </section>
+          </aside>
 
-            {selectedEntity && hass.states[selectedEntity] && (
-              <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => setSelectedEntity(null)} />
-            )}
-          </section>
-        </aside>
-      </section>
+          <CalendarPanel
+            month={visibleMonth}
+            today={now}
+            events={events}
+            language={language}
+            onPrevious={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}
+            onNext={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}
+            onToday={() => setVisibleMonth(new Date(now.getFullYear(), now.getMonth(), 1))}
+          />
+
+          <aside className="right-column">
+            <div className="status-row">
+              {demo && <span className="demo-badge">{t("demo", language)}</span>}
+              <span className="status-badge"><i />{t("online", language)}</span>
+            </div>
+            <section className="card home-card">
+              <div className="card-heading split home-heading">
+                <div>
+                  <span className="section-kicker">Smart home</span>
+                  <h2>{t("home", language)}</h2>
+                </div>
+                <button className="power-all" onClick={() => void turnOffScope()}>
+                  <PowerIcon /> {t("turnOffAll", language)}
+                </button>
+              </div>
+
+              <div className="room-switcher">
+                <button className={room === "__favorites" ? "active" : ""} onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}>
+                  <StarIcon /> {t("favorites", language)}
+                </button>
+                <select value={room} onChange={(event) => { setRoom(event.target.value); setSelectedEntity(null); }} aria-label={t("room", language)}>
+                  <option value="__favorites">{t("room", language)}…</option>
+                  {areas.map((area) => <option value={area.area_id} key={area.area_id}>{area.name}</option>)}
+                </select>
+              </div>
+
+              <div className="device-heading">
+                <h3>{room === "__favorites" ? t("favorites", language) : areas.find((area) => area.area_id === room)?.name}</h3>
+                <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
+              </div>
+
+              <div className="entity-grid">
+                {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
+                {roomEntities.map((entityId) => {
+                  const state = hass.states[entityId];
+                  const active = ["on", "open", "heat", "cool", "playing"].includes(state.state);
+                  const configurable = ["light", "cover"].includes(entityId.split(".")[0]);
+                  return (
+                    <article className={`entity-tile ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`} key={entityId}>
+                      <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>
+                        <span className="entity-icon">{iconForEntity(entityId)}</span>
+                        <strong>{displayName(hass, entityId)}</strong>
+                        <small>{entityStatus(hass, entityId, language)}</small>
+                      </button>
+                      <button
+                        className={`favorite-button ${favorites.includes(entityId) ? "selected" : ""}`}
+                        aria-label={t("favorites", language)}
+                        onClick={() => void toggleFavorite(entityId)}
+                      ><StarIcon /></button>
+                      {configurable && (
+                        <button
+                          className="control-button"
+                          aria-label={t("controls", language)}
+                          title={t("controls", language)}
+                          onClick={() => setSelectedEntity(selectedEntity === entityId ? null : entityId)}
+                        ><SlidersIcon /></button>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+
+              {selectedEntity && hass.states[selectedEntity] && (
+                <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => setSelectedEntity(null)} />
+              )}
+            </section>
+          </aside>
+        </section>
+      ) : (
+        <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
+      )}
+
+      <PageDock page={page} language={language} onChange={setPage} />
     </main>
+  );
+}
+
+function PageDock({ page, language, onChange }: { page: Page; language: Language; onChange: (page: Page) => void }) {
+  return (
+    <nav className="page-dock" aria-label={language === "it" ? "Visualizzazioni" : "Views"}>
+      <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><CalendarIcon /><span>{language === "it" ? "Calendario" : "Calendar"}</span></button>
+      <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><HomeIcon /><span>{language === "it" ? "Casa" : "Home"}</span></button>
+    </nav>
   );
 }
 
@@ -379,7 +397,7 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
   );
 }
 
-function ControlRow({ label, value, children }: { label: string; value: string; children: React.ReactNode }) {
+function ControlRow({ label, value, children }: { label: string; value: string; children: ReactNode }) {
   return <div className="control-row"><div className="control-meta"><span>{label}</span><strong>{value}</strong></div>{children}</div>;
 }
 
@@ -398,9 +416,7 @@ function getMonthCells(month: Date) {
 function entityStatus(hass: Hass, entityId: string, language: Language) {
   const state = hass.states[entityId];
   const domain = entityId.split(".")[0];
-  if (domain === "light" && state.state === "on") {
-    return `${Math.round((Number(state.attributes.brightness ?? 255) / 255) * 100)}%`;
-  }
+  if (domain === "light" && state.state === "on") return `${Math.round((Number(state.attributes.brightness ?? 255) / 255) * 100)}%`;
   if (domain === "cover") return `${Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0))}%`;
   const map: Record<string, string> = language === "it"
     ? { on: "Acceso", off: "Spento", open: "Aperta", closed: "Chiusa", heat: "Riscaldamento" }
@@ -423,3 +439,5 @@ function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path 
 function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M8 6l4 3 4-3M8 18l4-3 4 3M4.2 7.5l15.6 9M4.2 16.5l15.6-9" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
 function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10m4 0h2M4 17h4m4 0h8M14 4v6M8 14v6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
 function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 3h6l1 4H8l1-4Zm-2 4 1 14h8l1-14M10 11v6m4-6v6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function CalendarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M8 3v4m8-4v4M4 10h16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function HomeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.2 12 4l9 7.2V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.8Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>; }
