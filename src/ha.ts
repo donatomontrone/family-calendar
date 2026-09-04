@@ -73,5 +73,33 @@ export async function setCoverPosition(hass: Hass, entityId: string, position: n
   });
 }
 
+export async function setClimateTemperature(hass: Hass, entityId: string, temperature: number): Promise<void> {
+  await hass.callService("climate", "set_temperature", {
+    entity_id: entityId,
+    temperature,
+  });
+}
+
+export async function setClimateHvacMode(hass: Hass, entityId: string, hvacMode: string): Promise<void> {
+  await hass.callService("climate", "set_hvac_mode", {
+    entity_id: entityId,
+    hvac_mode: hvacMode,
+  });
+}
+
+export async function setClimateFanMode(hass: Hass, entityId: string, fanMode: string): Promise<void> {
+  await hass.callService("climate", "set_fan_mode", {
+    entity_id: entityId,
+    fan_mode: fanMode,
+  });
+}
+
+export async function setClimatePresetMode(hass: Hass, entityId: string, presetMode: string): Promise<void> {
+  await hass.callService("climate", "set_preset_mode", {
+    entity_id: entityId,
+    preset_mode: presetMode,
+  });
+}
+
 export const displayName = (hass: Hass, entityId: string): string =>
   String(hass.states[entityId]?.attributes?.friendly_name ?? entityId);
