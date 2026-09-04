@@ -104,6 +104,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const eventDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
   const events = useMemo(() => buildDemoEvents(now), [eventDate]);
   const currentTasks = mode === "todo" ? todo : shopping;
+  const sunState = hass.states["sun.sun"]?.state;
+  const isNight = sunState ? sunState === "below_horizon" : now.getHours() >= 19 || now.getHours() < 7;
 
   async function toggleFavorite(entityId: string) {
     const next = favorites.includes(entityId) ? favorites.filter((id) => id !== entityId) : [...favorites, entityId];
@@ -127,7 +129,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   }
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell ${isNight ? "night" : "day"}`}>
       <section className="dashboard-grid">
         <aside className="left-column">
           <ClockPanel now={now} language={language} demo={demo} />
