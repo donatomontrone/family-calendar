@@ -1,143 +1,149 @@
 # Development
 
-> 🇮🇹 La documentazione italiana è riportata per prima. La versione inglese segue dopo la separazione.
+## Italiano
 
----
+### Requisiti
 
-# 🇮🇹 Italiano
-
-## Requisiti
-
-- Node.js 22+
+- Node.js 24
 - npm
-- Home Assistant per i test dell'integrazione
+- Home Assistant solo per i test della custom integration
 
-## Frontend demo
+### Demo frontend senza Home Assistant
 
 Dalla root:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Il frontend usa `src/dev.tsx` per simulare l'oggetto `hass` normalmente fornito da Home Assistant.
+Vite carica `src/demo.tsx`. Questo file crea un adapter `Hass` simulato con stanze, entità, WebSocket e service call fittizie. L'interfaccia usa quindi lo stesso `App.tsx` che verrà montato dentro Home Assistant.
 
-Questo permette di sviluppare la UI senza eseguire Home Assistant.
+I preferiti della demo vengono salvati nel `localStorage` del browser.
 
-## Build
+### Build
 
 ```bash
 npm run build
 ```
 
-Il processo verifica TypeScript, compila React e copia il bundle in:
+La build esegue:
 
 ```text
-custom_components/family_calendar/frontend/
+TypeScript type-check
+→ Vite library build da src/panel.tsx
+→ copia del bundle in custom_components/family_calendar/frontend/
 ```
 
-## Test HACS
-
-Aggiungere temporaneamente la repository in HACS come:
+Il file atteso è:
 
 ```text
-Custom repository
-Type: Integration
+custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-## Test Home Assistant
-
-Dopo l'installazione:
+### Separazione dei ruoli
 
 ```text
-Impostazioni
-→ Dispositivi e servizi
-→ Aggiungi integrazione
-→ Family Calendar
+App.tsx
+  UI e stato della pagina
+     │
+     ├── demo.tsx
+     │     adapter simulato per sviluppo standalone
+     │
+     └── panel.tsx
+           custom element caricato da Home Assistant
+                  │
+                  ▼
+               ha.ts
+          adapter API Home Assistant
 ```
 
-## Architettura
+`App.tsx` non deve contenere autenticazione Google/Microsoft o logica specifica dei provider. Le sorgenti esterne devono essere esposte attraverso Home Assistant o attraverso adapter backend dell'integrazione.
 
-```text
-React / TypeScript
-       │
-       ▼
-Home Assistant Frontend API
-       │
-       ├── States
-       ├── Services
-       ├── WebSocket
-       ├── Areas
-       └── Calendar / Todo
-```
+### CI
+
+Ogni push esegue:
+
+- frontend type-check e build;
+- verifica della presenza del bundle compilato;
+- HACS validation;
+- Hassfest.
+
+### HACS
+
+Il repository è strutturato come custom integration. Prima della prima release va completata la strategia di distribuzione del bundle frontend: bundle compilato versionato nel repository oppure pacchetto ZIP di release.
 
 ---
 
-# 🇬🇧 English
+## English
 
-## Requirements
+### Requirements
 
-- Node.js 22+
+- Node.js 24
 - npm
-- Home Assistant for integration testing
+- Home Assistant only for custom-integration testing
 
-## Frontend demo
+### Frontend demo without Home Assistant
 
 From the repository root:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-The frontend uses `src/dev.tsx` to mock the `hass` object normally provided by Home Assistant.
+Vite loads `src/demo.tsx`. It creates a simulated `Hass` adapter with rooms, entities, WebSocket calls and service calls. The UI therefore uses the same `App.tsx` that will later be mounted inside Home Assistant.
 
-This allows UI development without running Home Assistant.
+Demo favorites are persisted in browser `localStorage`.
 
-## Build
+### Build
 
 ```bash
 npm run build
 ```
 
-The process type-checks TypeScript, builds React, and copies the bundle to:
+The build performs:
 
 ```text
-custom_components/family_calendar/frontend/
+TypeScript type-check
+→ Vite library build from src/panel.tsx
+→ copy bundle to custom_components/family_calendar/frontend/
 ```
 
-## HACS testing
-
-Temporarily add the repository to HACS as:
+Expected output:
 
 ```text
-Custom repository
-Type: Integration
+custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-## Home Assistant testing
-
-After installation:
+### Separation of responsibilities
 
 ```text
-Settings
-→ Devices & services
-→ Add Integration
-→ Family Calendar
+App.tsx
+  page UI and state
+     │
+     ├── demo.tsx
+     │     simulated standalone-development adapter
+     │
+     └── panel.tsx
+           custom element loaded by Home Assistant
+                  │
+                  ▼
+               ha.ts
+          Home Assistant API adapter
 ```
 
-## Architecture
+`App.tsx` should not contain Google/Microsoft authentication or provider-specific logic. External sources should be exposed through Home Assistant or backend adapters in the integration.
 
-```text
-React / TypeScript
-       │
-       ▼
-Home Assistant Frontend API
-       │
-       ├── States
-       ├── Services
-       ├── WebSocket
-       ├── Areas
-       └── Calendar / Todo
-```
+### CI
+
+Every push runs:
+
+- frontend type-check and build;
+- compiled-bundle verification;
+- HACS validation;
+- Hassfest.
+
+### HACS
+
+The repository is structured as a custom integration. Before the first release, the frontend distribution strategy must be finalized: either keep the compiled bundle versioned in the repository or publish a release ZIP.
