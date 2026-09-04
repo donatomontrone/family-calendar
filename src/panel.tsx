@@ -13,6 +13,7 @@ import climateStyles from "./climate.css?inline";
 import homeFeatureStyles from "./home-features.css?inline";
 import readabilityStyles from "./readability.css?inline";
 import segmentedStyles from "./segmented.css?inline";
+import designSystemStyles from "./design-system.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -20,7 +21,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}`;
+  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}`;
   document.head.appendChild(style);
 }
 
