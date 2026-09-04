@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
   deactivateEntities,
   displayName,
+  getFavorites,
   setCoverPosition,
+  setFavorites,
   setLightBrightness,
 } from "./ha";
 import type { Language } from "./i18n";
@@ -33,7 +35,16 @@ const accentOrder: RoomModel["accent"][] = ["amber", "rose", "mint", "blue", "vi
 
 export default function HomeView({ hass, areas, entities, now, demo, language }: HomeViewProps) {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+  const [favorites, setFavoriteIds] = useState<string[]>([]);
   const copy = language === "it" ? itCopy : enCopy;
+
+  useEffect(() => {
+    let active = true;
+    void getFavorites(hass)
+      .then((ids) => { if (active) setFavoriteIds(ids); })
+      .catch((error) => console.error("Unable to load Family Calendar favorites", error));
+    return () => { active = false; };
+  }, [hass]);
 
   const roomModels = useMemo<RoomModel[]>(() => areas.map((area, index) => {
     const allInArea = entities.filter((entry) => entry.area_id === area.area_id).map((entry) => entry.entity_id);
@@ -47,17 +58,25 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
     };
   }), [areas, entities, hass]);
 
-  const allActionable = useMemo(
-    () => roomModels.flatMap((room) => room.entityIds),
-    [roomModels],
+  const allActionable = useMemo(() => roomModels.flatMap((room) => room.entityIds), [roomModels]);
+  const favoriteEntities = useMemo(
+    () => favorites.filter((entityId) => hass.states[entityId] && ACTIONABLE_DOMAINS.has(domainOf(entityId))),
+    [favorites, hass.states],
   );
 
   const temperatures = roomModels.map((room, index) => room.temperature ?? (demo ? 21.8 + index * 0.7 : undefined));
   const availableTemperatures = temperatures.filter((value): value is number => typeof value === "number");
   const selected = selectedRoom ? roomModels.find((room) => room.area.area_id === selectedRoom) ?? null : null;
-
   const alarm = Object.values(hass.states).find((state) => state.entity_id.startsWith("alarm_control_panel."));
   const greeting = greetingForHour(now.getHours(), copy);
+
+  async function toggleFavorite(entityId: string) {
+    const next = favorites.includes(entityId)
+      ? favorites.filter((id) => id !== entityId)
+      : [...favorites, entityId];
+    setFavoriteIds(next);
+    await setFavorites(hass, next);
+  }
 
   async function runScene(name: "relax" | "away" | "night") {
     const keywords = name === "night" ? ["buonanotte", "good_night", "night"] : name === "away" ? ["esco", "away", "leave"] : ["relax"];
@@ -78,6 +97,27 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
           <span className="home-mini-pill online"><i />{copy.online}</span>
         </div>
       </header>
+
+      {favoriteEntities.length > 0 && (
+        <section className="favorite-accessories-section" aria-label={copy.favoriteAccessories}>
+          <div className="favorite-accessories-heading">
+            <h2>{copy.favoriteAccessories}</h2>
+            <span>{favoriteEntities.length}</span>
+          </div>
+          <div className="favorite-accessories-rail">
+            {favoriteEntities.map((entityId) => (
+              <AccessoryTile
+                key={entityId}
+                hass={hass}
+                entityId={entityId}
+                language={language}
+                favorite
+                onToggleFavorite={() => void toggleFavorite(entityId)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="home-overview-layout">
         <div className="room-board">
@@ -122,7 +162,14 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
       </div>
 
       {selected && (
-        <RoomSheet hass={hass} room={selected} language={language} onClose={() => setSelectedRoom(null)} />
+        <RoomSheet
+          hass={hass}
+          room={selected}
+          language={language}
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+          onClose={() => setSelectedRoom(null)}
+        />
       )}
     </section>
   );
@@ -130,7 +177,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
 
 function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomModel; language: Language; onOpen: () => void }) {
   const quick = room.entityIds.slice(0, 3);
-  const accessories = room.entityIds.slice(0, 5);
+  const accessories = room.entityIds.slice(0, 4);
   const temp = room.temperature;
   const activity = room.entityIds.length ? Math.max(8, Math.round((room.activeCount / room.entityIds.length) * 100)) : 8;
 
@@ -143,12 +190,7 @@ function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomMode
 
       <div className="room-quick-row">
         {quick.map((entityId) => (
-          <button
-            key={entityId}
-            className={`room-round-control ${isActive(hass, entityId) ? "active" : ""}`}
-            onClick={() => void activateEntity(hass, entityId)}
-            title={displayName(hass, entityId)}
-          >
+          <button key={entityId} className={`room-round-control ${isActive(hass, entityId) ? "active" : ""}`} onClick={() => void activateEntity(hass, entityId)} title={displayName(hass, entityId)}>
             {iconForDomain(domainOf(entityId))}
           </button>
         ))}
@@ -164,12 +206,19 @@ function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomMode
         ))}
       </div>
 
-      <button className="room-more" onClick={onOpen}>{language === "it" ? "Dettagli" : "Details"}<ChevronIcon /></button>
+      <button className="room-more" onClick={onOpen}>{language === "it" ? "Accessori" : "Accessories"}<ChevronIcon /></button>
     </article>
   );
 }
 
-function RoomSheet({ hass, room, language, onClose }: { hass: Hass; room: RoomModel; language: Language; onClose: () => void }) {
+function RoomSheet({ hass, room, language, favorites, onToggleFavorite, onClose }: {
+  hass: Hass;
+  room: RoomModel;
+  language: Language;
+  favorites: string[];
+  onToggleFavorite: (entityId: string) => Promise<void>;
+  onClose: () => void;
+}) {
   const copy = language === "it" ? itCopy : enCopy;
   return (
     <div className="home-sheet-backdrop" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
@@ -187,7 +236,15 @@ function RoomSheet({ hass, room, language, onClose }: { hass: Hass; room: RoomMo
 
         <div className="home-sheet-grid">
           {room.entityIds.map((entityId) => (
-            <SheetAccessory hass={hass} entityId={entityId} language={language} key={entityId} />
+            <AccessoryTile
+              hass={hass}
+              entityId={entityId}
+              language={language}
+              favorite={favorites.includes(entityId)}
+              onToggleFavorite={() => void onToggleFavorite(entityId)}
+              key={entityId}
+              detailed
+            />
           ))}
           {room.entityIds.length === 0 && <div className="sheet-empty">{copy.noDevices}</div>}
         </div>
@@ -196,27 +253,47 @@ function RoomSheet({ hass, room, language, onClose }: { hass: Hass; room: RoomMo
   );
 }
 
-function SheetAccessory({ hass, entityId, language }: { hass: Hass; entityId: string; language: Language }) {
+function AccessoryTile({ hass, entityId, language, favorite, onToggleFavorite, detailed = false }: {
+  hass: Hass;
+  entityId: string;
+  language: Language;
+  favorite: boolean;
+  onToggleFavorite: () => void;
+  detailed?: boolean;
+}) {
   const state = hass.states[entityId];
   const domain = domainOf(entityId);
   const active = isActive(hass, entityId);
+  const unavailable = state.state === "unavailable" || state.state === "unknown";
   const brightness = Math.round((Number(state.attributes.brightness ?? 180) / 255) * 100);
   const position = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
+  const favoriteLabel = favorite
+    ? (language === "it" ? "Rimuovi dai preferiti" : "Remove from favorites")
+    : (language === "it" ? "Aggiungi ai preferiti" : "Add to favorites");
 
   return (
-    <article className={`sheet-accessory ${active ? "active" : ""}`}>
-      <button className="sheet-accessory-main" onClick={() => void activateEntity(hass, entityId)}>
-        <span>{iconForDomain(domain)}</span>
-        <strong>{displayName(hass, entityId)}</strong>
-        <small>{accessoryState(hass, entityId, language)}</small>
+    <article className={`apple-accessory-tile ${active ? "active" : ""} ${unavailable ? "unavailable" : ""} ${detailed ? "detailed" : ""}`}>
+      <button className="apple-accessory-main" onClick={() => !unavailable && void activateEntity(hass, entityId)} disabled={unavailable}>
+        <span className="apple-accessory-icon">{iconForDomain(domain)}</span>
+        <span className="apple-accessory-copy">
+          <strong>{displayName(hass, entityId)}</strong>
+          <small className={unavailable ? "danger" : ""}>{unavailable ? (language === "it" ? "Non risponde" : "No response") : accessoryState(hass, entityId, language)}</small>
+        </span>
       </button>
-      {domain === "light" && (
+
+      <button className={`apple-favorite-toggle ${favorite ? "selected" : ""}`} onClick={onToggleFavorite} aria-label={favoriteLabel} title={favoriteLabel}>
+        <StarIcon />
+      </button>
+
+      {unavailable && <span className="apple-accessory-warning" aria-hidden="true">!</span>}
+
+      {detailed && !unavailable && domain === "light" && (
         <label className="sheet-slider">
           <span>{language === "it" ? "Intensità" : "Brightness"}<strong>{brightness}%</strong></span>
           <input type="range" min="1" max="100" defaultValue={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
         </label>
       )}
-      {domain === "cover" && (
+      {detailed && !unavailable && domain === "cover" && (
         <label className="sheet-slider">
           <span>{language === "it" ? "Posizione" : "Position"}<strong>{position}%</strong></span>
           <input type="range" min="0" max="100" defaultValue={position} onChange={(event) => void setCoverPosition(hass, entityId, Number(event.target.value))} />
@@ -273,8 +350,8 @@ function accessoryState(hass: Hass, entityId: string, language: Language) {
 }
 
 function humanState(value: string, language: Language) {
-  const it: Record<string, string> = { on: "Acceso", off: "Spento", open: "Aperto", closed: "Chiuso", heat: "Riscaldamento", cool: "Raffrescamento", playing: "In riproduzione", disarmed: "Disattivato", armed_home: "Inserito", armed_away: "Inserito" };
-  const en: Record<string, string> = { on: "On", off: "Off", open: "Open", closed: "Closed", heat: "Heating", cool: "Cooling", playing: "Playing", disarmed: "Disarmed", armed_home: "Armed", armed_away: "Armed" };
+  const it: Record<string, string> = { on: "Acceso", off: "Spento", open: "Aperto", closed: "Chiuso", heat: "Riscaldamento", cool: "Raffrescamento", playing: "In riproduzione", unavailable: "Non risponde", unknown: "Non disponibile", unlocked: "Sbloccata", locked: "Bloccata", disarmed: "Disattivato", armed_home: "Inserito", armed_away: "Inserito" };
+  const en: Record<string, string> = { on: "On", off: "Off", open: "Open", closed: "Closed", heat: "Heating", cool: "Cooling", playing: "Playing", unavailable: "No response", unknown: "Unavailable", unlocked: "Unlocked", locked: "Locked", disarmed: "Disarmed", armed_home: "Armed", armed_away: "Armed" };
   return (language === "it" ? it : en)[value] ?? value;
 }
 
@@ -290,6 +367,7 @@ function average(values: number[]) { return values.reduce((sum, value) => sum + 
 const itCopy = {
   online: "Casa online",
   noRooms: "Nessuna stanza disponibile",
+  favoriteAccessories: "Accessori preferiti",
   houseSays: "La casa ti dice",
   allClear: "Tutto tranquillo",
   allClearDetail: "Nessuna anomalia rilevata. Le funzioni principali sono operative.",
@@ -301,7 +379,7 @@ const itCopy = {
   away: "Esco",
   goodNight: "Buonanotte",
   turnOffAll: "Spegni tutto",
-  roomControls: "Controlli stanza",
+  roomControls: "Accessori stanza",
   close: "Chiudi",
   noDevices: "Nessun dispositivo disponibile",
   goodMorning: "Buongiorno",
@@ -312,6 +390,7 @@ const itCopy = {
 const enCopy: typeof itCopy = {
   online: "Home online",
   noRooms: "No rooms available",
+  favoriteAccessories: "Favorite accessories",
   houseSays: "Home says",
   allClear: "All clear",
   allClearDetail: "No issues detected. Main home functions are operating normally.",
@@ -323,7 +402,7 @@ const enCopy: typeof itCopy = {
   away: "Away",
   goodNight: "Good night",
   turnOffAll: "Turn off all",
-  roomControls: "Room controls",
+  roomControls: "Room accessories",
   close: "Close",
   noDevices: "No devices available",
   goodMorning: "Good morning",
@@ -341,16 +420,17 @@ function iconForDomain(domain: string) {
   return <PowerIcon />;
 }
 
-function RoomIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.2 12 4l9 7.2V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.8Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>; }
-function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9M7.1 5.9a8 8 0 1 0 9.8 0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
-function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6m-5 3h4m-2-19a7 7 0 0 0-4 12.7c.7.5 1 1.2 1 2.3h6c0-1.1.3-1.8 1-2.3A7 7 0 0 0 12 2Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5V4Zm0 5h14M8 7h8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
-function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M8 6l4 3 4-3M8 18l4-3 4 3M4.2 7.5l15.6 9M4.2 16.5l15.6-9" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
-function LockIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3m-11 0h12v10H6V11Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
-function MediaIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/></svg>; }
-function FanIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 10c-2-5 2-7 4-5 1.5 1.7-.3 5-4 7M10.3 13c-5 2.1-7-1.8-4.8-3.8 1.7-1.5 5 .2 6.8 3.8M13.6 13.2c3 4.6-.5 7.3-3.1 5.7-1.9-1.2-1.2-4.9 1.8-7" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>; }
-function ShieldIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 5-2.8 8.2-7 10-4.2-1.8-7-5-7-10V6l7-3Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><path d="m9.2 12 1.8 1.8 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
-function SparklesIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3Zm6 11 .8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8L18 14Z" fill="currentColor"/></svg>; }
-function AwayIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h10m-3-4 4 4-4 4M5 5h14v14H5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function MoonIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 15.5A8 8 0 0 1 8.5 5 8 8 0 1 0 19 15.5Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>; }
-function ChevronIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function RoomIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.8 11.1 12 4.5l8.2 6.6v8.3c0 .6-.5 1.1-1.1 1.1h-4.7v-5.7H9.6v5.7H4.9c-.6 0-1.1-.5-1.1-1.1v-8.3Z" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinejoin="round"/></svg>; }
+function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2v8.5M7.2 5.9a8 8 0 1 0 9.6 0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
+function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 17.7h5.6M10 20.5h4M12 2.6a6.7 6.7 0 0 0-3.9 12.1c.7.5 1.1 1.4 1.1 2.4h5.6c0-1 .4-1.9 1.1-2.4A6.7 6.7 0 0 0 12 2.6Z" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M5 8h14M8 11h8M8 14h8M8 17h8" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>; }
+function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 14.9V5.5a2.5 2.5 0 0 0-5 0v9.4a4.5 4.5 0 1 0 5 0Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><path d="M12 8v8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function LockIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 10.5V8.2a4.8 4.8 0 0 1 9.6 0v2.3M6 10.5h12v10H6v-10Z" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="15.2" r="1" fill="currentColor"/></svg>; }
+function MediaIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="13" rx="2.4" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M9 9.3h6M9 12h6M9 14.7h4" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>; }
+function FanIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.7" fill="currentColor"/><path d="M12 10.3c-1.8-4.7 1.8-6.8 4-4.8 1.4 1.3-.1 4.5-4 6.5M10.5 12.8C5.8 14.7 4 11.1 6 9c1.4-1.4 4.5 0 6.2 3.6M13.4 13.2c2.8 4.2-.3 6.9-2.9 5.4-1.7-1-1.2-4.5 1.6-6.6" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round"/></svg>; }
+function ShieldIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 18.8 6v5c0 4.8-2.7 8-6.8 9.8C7.9 19 5.2 15.8 5.2 11V6L12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><path d="m9.3 12 1.7 1.7 3.8-3.8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function SparklesIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.45 4.45L18 9l-4.55 1.55L12 15l-1.55-4.45L6 9l4.45-1.55L12 3Zm6 11 .75 2.2L21 17l-2.25.8L18 20l-.8-2.2L15 17l2.2-.8L18 14Z" fill="currentColor"/></svg>; }
+function AwayIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h10m-3-4 4 4-4 4M5 5h14v14H5" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function MoonIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.8 15.5A8 8 0 0 1 8.5 5.2a8 8 0 1 0 10.3 10.3Z" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinejoin="round"/></svg>; }
+function ChevronIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function StarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.2 2.65 5.38 5.94.86-4.3 4.2 1.02 5.92L12 16.77l-5.31 2.79 1.02-5.92-4.3-4.2 5.94-.86L12 3.2Z" fill="currentColor"/></svg>; }
