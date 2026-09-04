@@ -1,0 +1,159 @@
+/* Shared iOS-style segmented controls.
+ * Both task mode (Da fare / Spesa) and the bottom page dock use the same
+ * capsule geometry and a spring-like sliding selection surface.
+ */
+
+.segmented-control,
+.page-dock {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  padding: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(60, 60, 67, .08);
+  border-radius: 999px;
+  background: rgba(118, 118, 128, .12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .62),
+    0 5px 18px rgba(0, 0, 0, .035);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+}
+
+.segmented-control::before,
+.page-dock::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc((100% - 10px) / 2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, .07),
+    0 4px 12px rgba(0, 0, 0, .055),
+    inset 0 1px 0 rgba(255, 255, 255, .95);
+  transform: translate3d(0, 0, 0);
+  transform-origin: center;
+  transition:
+    transform .38s cubic-bezier(.22, .9, .28, 1.08),
+    background-color .22s ease,
+    box-shadow .22s ease;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.segmented-control:has(> button:nth-of-type(2).active)::before,
+.page-dock:has(> button:nth-of-type(2).active)::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.segmented-control > button,
+.page-dock > button {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #77777d;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    color .22s ease,
+    opacity .18s ease,
+    transform .12s cubic-bezier(.2, .8, .2, 1);
+}
+
+.segmented-control > button.active,
+.page-dock > button.active {
+  background: transparent !important;
+  color: #1d1d1f;
+  box-shadow: none !important;
+}
+
+.segmented-control > button:active,
+.page-dock > button:active {
+  transform: scale(.955);
+  opacity: .78;
+}
+
+/* Keep the task selector visually identical to the bottom dock while fitting
+ * naturally inside the list card. */
+.calendar-page-active .segmented-control {
+  margin: 6px 15px 1px;
+  padding: 5px;
+  border-radius: 999px;
+}
+
+.calendar-page-active .segmented-control > button {
+  min-height: 38px;
+  padding: 0 13px;
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: -.012em;
+}
+
+/* The bottom navigator uses the same capsule, only with room for icon + text. */
+.page-dock {
+  padding: 5px;
+  border-radius: 999px;
+}
+
+.page-dock > button {
+  min-height: 46px;
+  padding-inline: 16px;
+}
+
+.page-dock > button svg {
+  transition: transform .22s cubic-bezier(.22, .9, .28, 1.08), opacity .18s ease;
+}
+
+.page-dock > button.active svg {
+  transform: translateY(-1px) scale(1.035);
+}
+
+/* Dark appearance keeps the same interaction model without a bright white pill. */
+.night .segmented-control,
+.night .page-dock {
+  border-color: rgba(255, 255, 255, .065);
+  background: rgba(255, 255, 255, .075);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .04),
+    0 7px 20px rgba(0, 0, 0, .16);
+}
+
+.night .segmented-control::before,
+.night .page-dock::before {
+  background: rgba(99, 99, 102, .88);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, .18),
+    0 4px 14px rgba(0, 0, 0, .18),
+    inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+.night .segmented-control > button,
+.night .page-dock > button {
+  color: #a7a7ad;
+}
+
+.night .segmented-control > button.active,
+.night .page-dock > button.active {
+  color: #f5f5f7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented-control::before,
+  .page-dock::before,
+  .segmented-control > button,
+  .page-dock > button,
+  .page-dock > button svg {
+    transition-duration: .01ms !important;
+  }
+}
