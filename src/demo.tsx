@@ -11,6 +11,7 @@ import "./reel-home.css";
 import "./climate.css";
 import "./home-features.css";
 import "./readability.css";
+import "./segmented.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
