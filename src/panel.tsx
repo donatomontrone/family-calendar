@@ -5,6 +5,7 @@ import type { Hass } from "./types";
 import baseStyles from "./styles.css?inline";
 import themeStyles from "./theme.css?inline";
 import homeStyles from "./home-view.css?inline";
+import appleHomeStyles from "./apple-home.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -12,7 +13,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}`;
+  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}`;
   document.head.appendChild(style);
 }
 
