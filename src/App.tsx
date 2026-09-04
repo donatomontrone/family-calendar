@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import HomeView from "./HomeView";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
@@ -34,15 +34,56 @@ const addDays = (date: Date, days: number) => {
   return copy;
 };
 const isDateInsideEvent = (key: string, event: DemoEvent) => key >= event.startDate && key <= (event.endDate ?? event.startDate);
+const localeFor = (language: Language) => language === "it" ? "it-IT" : "en-GB";
 
-function buildDemoEvents(today: Date): DemoEvent[] {
+function buildDemoEvents(today: Date, language: Language): DemoEvent[] {
+  if (language === "it") {
+    return [
+      { startDate: dateKey(today), time: "10:30", title: "Call progetto", tone: "mint" },
+      { startDate: dateKey(today), time: "17:00", title: "Palestra", tone: "blue" },
+      { startDate: dateKey(addDays(today, 2)), endDate: dateKey(addDays(today, 4)), title: "Weekend in Toscana", tone: "violet" },
+      { startDate: dateKey(addDays(today, 6)), time: "20:30", title: "Cena in famiglia", tone: "amber" },
+      { startDate: dateKey(addDays(today, 9)), endDate: dateKey(addDays(today, 11)), title: "Trasferta Milano", tone: "blue" },
+    ];
+  }
+
   return [
-    { startDate: dateKey(today), time: "10:30", title: "Call progetto", tone: "mint" },
-    { startDate: dateKey(today), time: "17:00", title: "Palestra", tone: "blue" },
-    { startDate: dateKey(addDays(today, 2)), endDate: dateKey(addDays(today, 4)), title: "Weekend in Toscana", tone: "violet" },
-    { startDate: dateKey(addDays(today, 6)), time: "20:30", title: "Cena in famiglia", tone: "amber" },
-    { startDate: dateKey(addDays(today, 9)), endDate: dateKey(addDays(today, 11)), title: "Trasferta Milano", tone: "blue" },
+    { startDate: dateKey(today), time: "10:30", title: "Project call", tone: "mint" },
+    { startDate: dateKey(today), time: "17:00", title: "Gym", tone: "blue" },
+    { startDate: dateKey(addDays(today, 2)), endDate: dateKey(addDays(today, 4)), title: "Weekend away", tone: "violet" },
+    { startDate: dateKey(addDays(today, 6)), time: "20:30", title: "Family dinner", tone: "amber" },
+    { startDate: dateKey(addDays(today, 9)), endDate: dateKey(addDays(today, 11)), title: "Business trip", tone: "blue" },
   ];
+}
+
+function buildDemoTodo(language: Language): Task[] {
+  return language === "it"
+    ? [
+        { id: 1, label: "Comprare il latte", done: false },
+        { id: 2, label: "Chiamare Marco", done: false },
+        { id: 3, label: "Ritirare il pacco", done: true },
+      ]
+    : [
+        { id: 1, label: "Buy milk", done: false },
+        { id: 2, label: "Call Mark", done: false },
+        { id: 3, label: "Pick up the parcel", done: true },
+      ];
+}
+
+function buildDemoShopping(language: Language): Task[] {
+  return language === "it"
+    ? [
+        { id: 1, label: "Latte", done: false },
+        { id: 2, label: "Pane", done: false },
+        { id: 3, label: "Pomodori", done: false },
+        { id: 4, label: "Caffè", done: true },
+      ]
+    : [
+        { id: 1, label: "Milk", done: false },
+        { id: 2, label: "Bread", done: false },
+        { id: 3, label: "Tomatoes", done: false },
+        { id: 4, label: "Coffee", done: true },
+      ];
 }
 
 export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean }) {
@@ -56,17 +97,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const [now, setNow] = useState(new Date());
   const [visibleMonth, setVisibleMonth] = useState(() => new Date(new Date().getFullYear(), new Date().getMonth(), 1));
   const [selectedEntity, setSelectedEntity] = useState<string | null>(null);
-  const [todo, setTodo] = useState<Task[]>([
-    { id: 1, label: "Comprare il latte", done: false },
-    { id: 2, label: "Chiamare Marco", done: false },
-    { id: 3, label: "Ritirare il pacco", done: true },
-  ]);
-  const [shopping, setShopping] = useState<Task[]>([
-    { id: 1, label: "Latte", done: false },
-    { id: 2, label: "Pane", done: false },
-    { id: 3, label: "Pomodori", done: false },
-    { id: 4, label: "Caffè", done: true },
-  ]);
+  const [todo, setTodo] = useState<Task[]>(() => buildDemoTodo(language));
+  const [shopping, setShopping] = useState<Task[]>(() => buildDemoShopping(language));
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
@@ -105,7 +137,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   );
 
   const eventDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
-  const events = useMemo(() => buildDemoEvents(now), [eventDate]);
+  const events = useMemo(() => buildDemoEvents(now, language), [eventDate, language]);
   const currentTasks = mode === "todo" ? todo : shopping;
   const sunState = hass.states["sun.sun"]?.state;
   const isNight = sunState ? sunState === "below_horizon" : now.getHours() >= 19 || now.getHours() < 7;
@@ -141,7 +173,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
             <section className="card tasks-card">
               <div className="card-heading split">
                 <div>
-                  <span className="section-kicker">Lists</span>
+                  <span className="section-kicker">{t("lists", language)}</span>
                   <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
                 </div>
                 <span className="count-pill">{currentTasks.filter((item) => !item.done).length}</span>
@@ -187,7 +219,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
             <section className="card home-card">
               <div className="card-heading split home-heading">
                 <div>
-                  <span className="section-kicker">Smart home</span>
+                  <span className="section-kicker">{t("smartHome", language)}</span>
                   <h2>{t("home", language)}</h2>
                 </div>
                 <button className="power-all" onClick={() => void turnOffScope()}>
@@ -214,10 +246,15 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                 {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
                 {roomEntities.map((entityId) => {
                   const state = hass.states[entityId];
-                  const active = ["on", "open", "heat", "cool", "playing"].includes(state.state);
-                  const configurable = ["light", "cover"].includes(entityId.split(".")[0]);
+                  const domain = entityId.split(".")[0];
+                  const active = ["on", "open", "heat", "cool", "playing", "unlocked"].includes(state.state);
+                  const configurable = ["light", "cover"].includes(domain);
                   return (
-                    <article className={`entity-tile ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`} key={entityId}>
+                    <article
+                      className={`entity-tile domain-${domain} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
+                      style={accessoryStyle(hass, entityId)}
+                      key={entityId}
+                    >
                       <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>
                         <span className="entity-icon">{iconForEntity(entityId)}</span>
                         <strong>{displayName(hass, entityId)}</strong>
@@ -258,9 +295,9 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
 
 function PageDock({ page, language, onChange }: { page: Page; language: Language; onChange: (page: Page) => void }) {
   return (
-    <nav className="page-dock" aria-label={language === "it" ? "Visualizzazioni" : "Views"}>
-      <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><CalendarIcon /><span>{language === "it" ? "Calendario" : "Calendar"}</span></button>
-      <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><HomeIcon /><span>{language === "it" ? "Casa" : "Home"}</span></button>
+    <nav className="page-dock" aria-label={t("views", language)}>
+      <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><CalendarIcon /><span>{t("calendar", language)}</span></button>
+      <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><HomeIcon /><span>{t("home", language)}</span></button>
     </nav>
   );
 }
@@ -269,11 +306,11 @@ function ClockPanel({ now, language, demo }: { now: Date; language: Language; de
   return (
     <div className="clock-panel">
       <div className="time-row">
-        <span className="clock">{now.toLocaleTimeString(language === "it" ? "it-IT" : "en-GB", { hour: "2-digit", minute: "2-digit" })}</span>
+        <span className="clock">{now.toLocaleTimeString(localeFor(language), { hour: "2-digit", minute: "2-digit" })}</span>
         <span className="seconds">{pad(now.getSeconds())}</span>
       </div>
       <div className="today-label">
-        {now.toLocaleDateString(language === "it" ? "it-IT" : "en-GB", { weekday: "long", day: "numeric", month: "long" })}
+        {now.toLocaleDateString(localeFor(language), { weekday: "long", day: "numeric", month: "long" })}
       </div>
       {demo && <small className="demo-copy">{t("demoHint", language)}</small>}
     </div>
@@ -289,15 +326,15 @@ function AgendaPanel({ now, events, language }: { now: Date; events: DemoEvent[]
   return (
     <section className="card agenda-card">
       <div className="card-heading">
-        <span className="section-kicker">Agenda</span>
+        <span className="section-kicker">{t("agenda", language)}</span>
         <h2>{t("upcoming", language)}</h2>
       </div>
       <div className="agenda-list">
         {groups.map(({ date, key, events: dayEvents }, index) => (
           <div className="agenda-day" key={key}>
             <div className="agenda-date">
-              <strong>{index === 0 ? t("today", language) : index === 1 ? t("tomorrow", language) : date.toLocaleDateString(language === "it" ? "it-IT" : "en-GB", { weekday: "long" })}</strong>
-              <span>{date.toLocaleDateString(language === "it" ? "it-IT" : "en-GB", { day: "2-digit", month: "short" })}</span>
+              <strong>{index === 0 ? t("today", language) : index === 1 ? t("tomorrow", language) : date.toLocaleDateString(localeFor(language), { weekday: "long" })}</strong>
+              <span>{date.toLocaleDateString(localeFor(language), { day: "2-digit", month: "short" })}</span>
             </div>
             <div className="agenda-events">
               {dayEvents.length === 0 ? <small>{t("noEvents", language)}</small> : dayEvents.map((event) => (
@@ -328,13 +365,13 @@ function CalendarPanel({ month, today, events, language, onPrevious, onNext, onT
     <section className="card calendar-card">
       <div className="calendar-toolbar">
         <div>
-          <span className="section-kicker">Calendar</span>
-          <h1>{month.toLocaleDateString(language === "it" ? "it-IT" : "en-GB", { month: "long", year: "numeric" })}</h1>
+          <span className="section-kicker">{t("calendar", language)}</span>
+          <h1>{month.toLocaleDateString(localeFor(language), { month: "long", year: "numeric" })}</h1>
         </div>
         <div className="calendar-actions">
-          <button onClick={onPrevious} aria-label="Previous month">‹</button>
+          <button onClick={onPrevious} aria-label={t("previousMonth", language)}>‹</button>
           <button className="today-button" onClick={onToday}>{t("todayButton", language)}</button>
-          <button onClick={onNext} aria-label="Next month">›</button>
+          <button onClick={onNext} aria-label={t("nextMonth", language)}>›</button>
         </div>
       </div>
       <div className="month-grid">
@@ -370,7 +407,7 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
   const domain = entityId.split(".")[0];
   const brightness = Math.round((Number(state.attributes.brightness ?? 200) / 255) * 100);
   const position = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
-  const color = String(state.attributes.demo_hex_color ?? "#f7c95c");
+  const color = lightColor(hass, entityId);
 
   return (
     <div className="device-controls">
@@ -419,9 +456,28 @@ function entityStatus(hass: Hass, entityId: string, language: Language) {
   if (domain === "light" && state.state === "on") return `${Math.round((Number(state.attributes.brightness ?? 255) / 255) * 100)}%`;
   if (domain === "cover") return `${Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0))}%`;
   const map: Record<string, string> = language === "it"
-    ? { on: "Acceso", off: "Spento", open: "Aperta", closed: "Chiusa", heat: "Riscaldamento" }
-    : { on: "On", off: "Off", open: "Open", closed: "Closed", heat: "Heating" };
+    ? { on: "Acceso", off: "Spento", open: "Aperta", closed: "Chiusa", heat: "Riscaldamento", cool: "Raffrescamento", playing: "In riproduzione", unavailable: "Non risponde", unknown: "Non disponibile", unlocked: "Sbloccata", locked: "Bloccata" }
+    : { on: "On", off: "Off", open: "Open", closed: "Closed", heat: "Heating", cool: "Cooling", playing: "Playing", unavailable: "No response", unknown: "Unavailable", unlocked: "Unlocked", locked: "Locked" };
   return map[state.state] ?? state.state;
+}
+
+function lightColor(hass: Hass, entityId: string): string {
+  const attributes = hass.states[entityId]?.attributes ?? {};
+  const demoHex = attributes.demo_hex_color;
+  if (typeof demoHex === "string" && /^#[0-9a-f]{6}$/i.test(demoHex)) return demoHex;
+
+  const rgb = attributes.rgb_color;
+  if (Array.isArray(rgb) && rgb.length >= 3) {
+    const parts = rgb.slice(0, 3).map((value) => Math.max(0, Math.min(255, Number(value) || 0)));
+    return `#${parts.map((value) => Math.round(value).toString(16).padStart(2, "0")).join("")}`;
+  }
+
+  return "#ffd60a";
+}
+
+function accessoryStyle(hass: Hass, entityId: string): CSSProperties | undefined {
+  if (!entityId.startsWith("light.")) return undefined;
+  return { "--accessory-active": lightColor(hass, entityId) } as CSSProperties;
 }
 
 function iconForEntity(entityId: string) {
