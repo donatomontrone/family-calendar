@@ -12,6 +12,7 @@ import "./climate.css";
 import "./home-features.css";
 import "./readability.css";
 import "./segmented.css";
+import "./design-system.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
