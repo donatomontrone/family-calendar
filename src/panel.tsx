@@ -2,7 +2,8 @@ import React from "react";
 import { createRoot, type Root } from "react-dom/client";
 import App from "./App";
 import type { Hass } from "./types";
-import styles from "./styles.css?inline";
+import baseStyles from "./styles.css?inline";
+import themeStyles from "./theme.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -10,7 +11,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = styles;
+  style.textContent = `${baseStyles}\n${themeStyles}`;
   document.head.appendChild(style);
 }
 
