@@ -4,6 +4,7 @@ import App from "./App";
 import type { Area, EntityRegistryEntry, Hass, HassState } from "./types";
 import "./styles.css";
 import "./theme.css";
+import "./home-view.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
@@ -23,6 +24,7 @@ const areas: Area[] = [
   { area_id: "soggiorno", name: "Soggiorno" },
   { area_id: "cucina", name: "Cucina" },
   { area_id: "camera", name: "Camera" },
+  { area_id: "studio", name: "Studio" },
 ];
 
 const registry: EntityRegistryEntry[] = [
@@ -30,21 +32,37 @@ const registry: EntityRegistryEntry[] = [
   { entity_id: "cover.salotto", area_id: "soggiorno" },
   { entity_id: "climate.soggiorno", area_id: "soggiorno" },
   { entity_id: "switch.tv", area_id: "soggiorno" },
+  { entity_id: "sensor.temperatura_soggiorno", area_id: "soggiorno" },
   { entity_id: "light.cucina", area_id: "cucina" },
   { entity_id: "switch.macchina_caffe", area_id: "cucina" },
+  { entity_id: "sensor.temperatura_cucina", area_id: "cucina" },
   { entity_id: "light.camera", area_id: "camera" },
   { entity_id: "cover.camera", area_id: "camera" },
+  { entity_id: "sensor.temperatura_camera", area_id: "camera" },
+  { entity_id: "light.studio", area_id: "studio" },
+  { entity_id: "switch.scrivania", area_id: "studio" },
+  { entity_id: "sensor.temperatura_studio", area_id: "studio" },
 ];
 
 const initialStates: Record<string, HassState> = {
   "light.soggiorno": state("light.soggiorno", "on", "Luce soggiorno", { brightness: 196, demo_hex_color: "#ffd45a" }),
   "cover.salotto": state("cover.salotto", "open", "Tenda salotto", { current_position: 72 }),
-  "climate.soggiorno": state("climate.soggiorno", "heat", "Clima soggiorno"),
+  "climate.soggiorno": state("climate.soggiorno", "heat", "Clima soggiorno", { current_temperature: 22.6 }),
   "switch.tv": state("switch.tv", "off", "TV"),
-  "light.cucina": state("light.cucina", "off", "Luce cucina", { brightness: 150, demo_hex_color: "#ffe8bd" }),
+  "sensor.temperatura_soggiorno": state("sensor.temperatura_soggiorno", "22.6", "Temperatura soggiorno", { device_class: "temperature", unit_of_measurement: "°C" }),
+  "light.cucina": state("light.cucina", "on", "Luce cucina", { brightness: 150, demo_hex_color: "#ffe8bd" }),
   "switch.macchina_caffe": state("switch.macchina_caffe", "off", "Macchina caffè"),
+  "sensor.temperatura_cucina": state("sensor.temperatura_cucina", "23.3", "Temperatura cucina", { device_class: "temperature", unit_of_measurement: "°C" }),
   "light.camera": state("light.camera", "off", "Luce camera", { brightness: 110, demo_hex_color: "#ffb4a2" }),
   "cover.camera": state("cover.camera", "closed", "Tapparella camera", { current_position: 0 }),
+  "sensor.temperatura_camera": state("sensor.temperatura_camera", "21.9", "Temperatura camera", { device_class: "temperature", unit_of_measurement: "°C" }),
+  "light.studio": state("light.studio", "on", "Luce studio", { brightness: 210, demo_hex_color: "#d9e9ff" }),
+  "switch.scrivania": state("switch.scrivania", "on", "Scrivania"),
+  "sensor.temperatura_studio": state("sensor.temperatura_studio", "22.4", "Temperatura studio", { device_class: "temperature", unit_of_measurement: "°C" }),
+  "alarm_control_panel.casa": state("alarm_control_panel.casa", "disarmed", "Allarme casa"),
+  "scene.relax": state("scene.relax", "scening", "Relax"),
+  "scene.esco": state("scene.esco", "scening", "Esco"),
+  "scene.buonanotte": state("scene.buonanotte", "scening", "Buonanotte"),
 };
 
 function DemoHarness() {
