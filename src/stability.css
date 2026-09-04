@@ -11,15 +11,15 @@
 }
 
 .calendar-page-active .entity-tile {
-  min-height: 78px;
-  aspect-ratio: 1 / .96;
+  min-height: 76px;
+  aspect-ratio: 1 / .94;
   border-radius: 15px;
   background: rgba(235,235,240,.76);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 4px 12px rgba(0,0,0,.025);
 }
 
 .calendar-page-active .entity-main {
-  min-height: 78px;
+  min-height: 76px;
   padding: 8px 7px 8px;
   justify-content: flex-end;
 }
@@ -52,6 +52,7 @@
 
 .calendar-page-active .favorite-button,
 .calendar-page-active .control-button {
+  z-index: 4;
   right: 5px;
   width: 19px;
   height: 19px;
@@ -63,61 +64,62 @@
 .calendar-page-active .favorite-button svg,
 .calendar-page-active .control-button svg { width: 10px; height: 10px; }
 
-/* Restore immediate visual feedback when an accessory is active.
- * This deliberately wins over the neutral white active style from
- * apple-home.css; the dashboard must make an ON light obvious at a glance.
+/* Active devices keep the warm Home accent; active lights use their actual
+ * HA/demo color through --accessory-active so the state is immediately visible.
  */
 .calendar-page-active .entity-tile.active {
-  background: linear-gradient(145deg, #ffe476 0%, #fff1ad 100%);
-  border-color: rgba(211,164,0,.22);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.60), 0 5px 15px rgba(199,141,0,.07);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accessory-active, #ffd60a) 46%, white),
+    color-mix(in srgb, var(--accessory-active, #ffd60a) 22%, white)
+  );
+  border-color: color-mix(in srgb, var(--accessory-active, #d3a400) 26%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.62), 0 5px 15px color-mix(in srgb, var(--accessory-active, #c78d00) 10%, transparent);
 }
 
 .calendar-page-active .entity-tile.active .entity-icon {
-  background: #ffd60a;
-  color: #493800;
+  background: var(--accessory-active, #ffd60a);
+  color: color-mix(in srgb, var(--accessory-active, #ffd60a) 18%, #111 82%);
 }
 
 .calendar-page-active .entity-tile.active .entity-main strong {
-  color: #2d2507;
+  color: #242116;
 }
 
 .calendar-page-active .entity-tile.active .entity-main small {
-  color: #705a08;
+  color: #69624a;
 }
 
 .calendar-page-active .entity-tile.selected {
   box-shadow: 0 0 0 2px rgba(10,132,255,.20), 0 5px 15px rgba(0,0,0,.035);
 }
 
-/* Keep controls clickable and clearly separated from the main tile action. */
-.calendar-page-active .favorite-button,
-.calendar-page-active .control-button {
-  z-index: 4;
-}
-
-/* Night mode keeps the compact layout but uses a warm active state. */
+/* Night mode keeps the same per-light identity without making the tile glare. */
 .night.calendar-page-active .entity-tile {
   background: rgba(72,72,77,.78);
   border-color: rgba(255,255,255,.065);
 }
 
 .night.calendar-page-active .entity-tile.active {
-  background: linear-gradient(145deg, rgba(255,214,10,.92), rgba(216,163,0,.90));
-  border-color: rgba(255,214,10,.20);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accessory-active, #ffd60a) 64%, #3a3a3f),
+    color-mix(in srgb, var(--accessory-active, #ffd60a) 38%, #2d2d31)
+  );
+  border-color: color-mix(in srgb, var(--accessory-active, #ffd60a) 28%, transparent);
 }
 
 .night.calendar-page-active .entity-tile.active .entity-icon {
-  background: rgba(255,255,255,.88);
-  color: #493800;
+  background: color-mix(in srgb, var(--accessory-active, #ffd60a) 84%, white 16%);
+  color: #241d08;
 }
 
 .night.calendar-page-active .entity-tile.active .entity-main strong {
-  color: #2c2300;
+  color: #fffdf5;
 }
 
 .night.calendar-page-active .entity-tile.active .entity-main small {
-  color: #654f00;
+  color: rgba(255,255,255,.72);
 }
 
 @media (max-width: 1480px) and (min-width: 1081px) {
