@@ -1,173 +1,169 @@
-## Family Calendar
+# Family Calendar
 
-**Family Calendar** è un pannello dedicato di Home Assistant per creare un calendario digitale separato dalle dashboard standard di Home Assistant.
+## Italiano
 
-L'interfaccia riunisce calendario, prossimi appuntamenti, Promemoria, lista della spesa, dispositivi domotici preferiti e selezione delle stanze in un'unica schermata pensata soprattutto per tablet e display touch.
+**Family Calendar** è un pannello dedicato per Home Assistant pensato come calendario digitale familiare da parete o tablet. Il frontend è separato dalle dashboard Lovelace standard e riunisce calendario, agenda, Todo, lista della spesa e accesso rapido ai dispositivi smart della casa.
 
-### Stato del progetto
+Il progetto è in fase **Alpha**. La parte visuale può già essere provata senza avere Home Assistant attivo tramite una demo standalone con dati simulati.
 
-Il progetto è attualmente in fase **Alpha / sviluppo iniziale**.
-
-Lo starter include:
-- pannello full-screen per Home Assistant;
-- frontend React + TypeScript;
-- calendario e agenda;
-- Todo / Shopping List;
-- selezione delle stanze;
-- entità preferite;
-- persistenza dei preferiti tramite WebSocket Home Assistant;
-- modalità demo eseguibile dal browser;
-- struttura compatibile con HACS;
-- workflow GitHub per HACS validation e Hassfest.
-
-Gli eventi del calendario sono ancora dimostrativi. Google Calendar e Microsoft 365 verranno integrati nelle fasi successive.
-
-## Installazione tramite HACS
-
-Durante lo sviluppo è possibile aggiungere la repository a HACS come **Custom Repository** di tipo **Integration**.
-
-Dopo l'installazione:
-1. riavvia Home Assistant se richiesto;
-2. vai in **Impostazioni → Dispositivi e servizi**;
-3. aggiungi **Family Calendar**;
-4. apri **Calendario** dalla barra laterale.
-
-## Sviluppo frontend
+### Prova subito la demo senza Home Assistant
 
 Requisiti:
-- Node.js 22+
+
+- Node.js 24
 - npm
 
-Dalla root della repository:
+Dalla root del repository:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-La modalità demo simula Home Assistant e permette di provare stanze, entità, preferiti e interazioni senza avere HA in esecuzione.
+Apri quindi l'indirizzo mostrato da Vite, normalmente `http://localhost:5173`.
 
-Per creare il bundle usato da Home Assistant:
+La demo include:
+
+- calendario mensile navigabile;
+- agenda dei prossimi giorni;
+- Todo e lista della spesa interattivi;
+- stanze simulate;
+- luci, switch, cover e climatizzazione simulati;
+- preferiti persistenti nel browser tramite `localStorage`;
+- layout responsive per desktop e tablet;
+- localizzazione italiana/inglese.
+
+### Architettura
+
+```text
+src/
+  App.tsx              UI principale
+  demo.tsx             adapter standalone / mock Home Assistant
+  panel.tsx            custom element caricato da Home Assistant
+  ha.ts                 adapter tra UI e API Home Assistant
+  i18n.ts              localizzazione frontend
+  types.ts             tipi condivisi
+  styles.css           design system e layout
+
+custom_components/family_calendar/
+  __init__.py          setup integrazione e pannello
+  config_flow.py       configurazione Home Assistant
+  storage.py           persistenza preferiti
+  websocket.py         API WebSocket custom
+  frontend/            bundle compilato destinato a Home Assistant
+```
+
+L'obiettivo architetturale è mantenere la UI indipendente dal backend: `App.tsx` riceve un oggetto `hass`, mentre la demo fornisce un adapter simulato e Home Assistant fornisce l'oggetto reale. In questo modo la stessa interfaccia può essere sviluppata e testata anche senza un'istanza Home Assistant.
+
+### Build frontend
 
 ```bash
 npm run build
 ```
 
-Il bundle viene copiato in:
+La build esegue il type-check TypeScript, genera il bundle Vite e lo copia in:
 
 ```text
 custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-## Struttura
+### Home Assistant / HACS
 
-```text
-custom_components/family_calendar/   Home Assistant integration
-src/                                 React / TypeScript frontend
-.github/workflows/                   GitHub Actions
-hacs.json                            HACS metadata
-```
+La custom integration è già presente nel repository, ma finché non viene definita e verificata la strategia definitiva di distribuzione del bundle frontend l'installazione HACS va considerata sperimentale.
 
-## Roadmap
+La roadmap completa è disponibile in [`ROADMAP.md`](ROADMAP.md).
 
-1. calendario reale tramite Home Assistant;
-2. Google Calendar;
-3. Microsoft 365 / Outlook;
-4. Todo di Home Assistant;
-5. lista della spesa;
-6. sincronizzazione e gestione eventi;
-7. configurazione delle sorgenti calendario;
-8. impostazioni UI;
-9. ottimizzazione touch;
-10. release stabile HACS.
+Le prossime priorità sono:
 
-_Sviluppato in VibeCoding con ChatGPT_
+1. completare e verificare la demo standalone;
+2. rendere affidabile il packaging del bundle frontend per HACS;
+3. collegare le entità `calendar.*` reali di Home Assistant;
+4. collegare le entità `todo.*`;
+5. aggiungere controlli smart-home specifici per dominio;
+6. supportare Google Calendar e Microsoft 365 attraverso Home Assistant;
+7. preparare la prima release stabile.
 
 ---
 
-## Family Calendar
+## English
 
-**Family Calendar** is a dedicated Home Assistant panel for a digital calendar, separate from the standard Home Assistant dashboards.
+**Family Calendar** is a dedicated Home Assistant panel designed as a family wall calendar for tablets and always-on displays. The frontend is separate from standard Lovelace dashboards and combines a calendar, agenda, Todo, shopping list, and quick access to smart-home devices.
 
-The interface brings together calendars, upcoming appointments, to do list, shopping lists, favorite smart-home devices, and room selection in one screen designed especially for tablets and touch displays.
+The project is currently **Alpha**. The visual application can already be tested without a running Home Assistant instance through a standalone demo backed by simulated data.
 
-### Project status
-
-The project is currently in the **Alpha / early development** stage.
-
-The starter includes:
-- full-screen Home Assistant panel;
-- React + TypeScript frontend;
-- calendar and agenda;
-- Todo / Shopping List;
-- room selection;
-- favorite entities;
-- persistent favorites through the Home Assistant WebSocket API;
-- browser-based demo mode;
-- HACS-compatible repository structure;
-- GitHub workflows for HACS validation and Hassfest.
-
-Calendar events are still demo data. Google Calendar and Microsoft 365 will be integrated in later stages.
-
-## HACS installation
-
-During development, add the repository to HACS as a **Custom Repository** of type **Integration**.
-
-After installation:
-1. restart Home Assistant if requested;
-2. go to **Settings → Devices & services**;
-3. add **Family Calendar**;
-4. open **Calendario** from the sidebar.
-
-## Frontend development
+### Run the demo without Home Assistant
 
 Requirements:
-- Node.js 22+
+
+- Node.js 24
 - npm
 
 From the repository root:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Demo mode mocks Home Assistant and lets you test rooms, entities, favorites, and interactions without running HA.
+Then open the address shown by Vite, normally `http://localhost:5173`.
 
-To build the bundle used by Home Assistant:
+The demo includes:
+
+- navigable monthly calendar;
+- upcoming agenda;
+- interactive Todo and shopping lists;
+- simulated rooms;
+- simulated lights, switches, covers and climate devices;
+- browser-persistent favorites through `localStorage`;
+- responsive desktop/tablet layout;
+- Italian and English localization.
+
+### Architecture
+
+```text
+src/
+  App.tsx              main UI
+  demo.tsx             standalone / mock Home Assistant adapter
+  panel.tsx            custom element loaded by Home Assistant
+  ha.ts                 UI to Home Assistant API adapter
+  i18n.ts              frontend localization
+  types.ts             shared types
+  styles.css           design system and layout
+
+custom_components/family_calendar/
+  __init__.py          integration and panel setup
+  config_flow.py       Home Assistant configuration
+  storage.py           favorites persistence
+  websocket.py         custom WebSocket API
+  frontend/            compiled bundle for Home Assistant
+```
+
+The architectural goal is to keep the UI independent from the backend: `App.tsx` receives a `hass` object, while the demo supplies a simulated adapter and Home Assistant supplies the real object. This keeps the same interface usable during development even without a Home Assistant instance.
+
+### Frontend build
 
 ```bash
 npm run build
 ```
 
-The bundle is copied to:
+The build runs TypeScript type-checking, creates the Vite bundle, and copies it to:
 
 ```text
 custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-## Structure
+### Home Assistant / HACS
 
-```text
-custom_components/family_calendar/   Home Assistant integration
-src/                                 React / TypeScript frontend
-.github/workflows/                   GitHub Actions
-hacs.json                            HACS metadata
-```
+The custom integration already lives in the repository, but HACS installation should still be considered experimental until the frontend bundle distribution strategy has been finalized and verified.
 
-## Roadmap
+See [`ROADMAP.md`](ROADMAP.md) for the complete roadmap.
 
-1. real calendar data through Home Assistant;
-2. Google Calendar;
-3. Microsoft 365 / Outlook;
-4. Home Assistant Todo;
-5. shopping list;
-6. event synchronization and management;
-7. calendar source configuration;
-8. UI settings;
-9. touch optimization;
-10. stable HACS release.
+Current priorities are:
 
-_Developed using VibeCoding with Claude/ChatGPT_
-
-
+1. finish and verify the standalone demo;
+2. make frontend bundle packaging reliable for HACS;
+3. connect real Home Assistant `calendar.*` entities;
+4. connect `todo.*` entities;
+5. add domain-aware smart-home controls;
+6. support Google Calendar and Microsoft 365 through Home Assistant;
+7. prepare the first stable release.
