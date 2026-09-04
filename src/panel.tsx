@@ -2,6 +2,17 @@ import React from "react";
 import { createRoot, type Root } from "react-dom/client";
 import App from "./App";
 import type { Hass } from "./types";
+import styles from "./styles.css?inline";
+
+const STYLE_ID = "family-calendar-panel-styles";
+
+function ensureStyles() {
+  if (document.getElementById(STYLE_ID)) return;
+  const style = document.createElement("style");
+  style.id = STYLE_ID;
+  style.textContent = styles;
+  document.head.appendChild(style);
+}
 
 class FamilyCalendarPanel extends HTMLElement {
   private root?: Root;
@@ -13,6 +24,7 @@ class FamilyCalendarPanel extends HTMLElement {
   }
 
   connectedCallback() {
+    ensureStyles();
     this.renderPanel();
   }
 
@@ -23,6 +35,7 @@ class FamilyCalendarPanel extends HTMLElement {
 
   private renderPanel() {
     if (!this.currentHass || !this.isConnected) return;
+    ensureStyles();
     if (!this.root) this.root = createRoot(this);
     this.root.render(<App hass={this.currentHass} />);
   }
