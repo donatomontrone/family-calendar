@@ -10,6 +10,7 @@ import "./stability.css";
 import "./reel-home.css";
 import "./climate.css";
 import "./home-features.css";
+import "./readability.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
@@ -58,6 +59,7 @@ const registry: EntityRegistryEntry[] = [
   { entity_id: "switch.tv", area_id: "soggiorno" },
   { entity_id: "media_player.soggiorno", area_id: "soggiorno" },
   { entity_id: "sensor.temperatura_soggiorno", area_id: "soggiorno" },
+  { entity_id: "sensor.umidita_soggiorno", area_id: "soggiorno" },
   { entity_id: "binary_sensor.porta_ingresso", area_id: "soggiorno" },
   { entity_id: "camera.soggiorno", area_id: "soggiorno" },
 
@@ -65,6 +67,7 @@ const registry: EntityRegistryEntry[] = [
   { entity_id: "switch.macchina_caffe", area_id: "cucina" },
   { entity_id: "climate.cucina", area_id: "cucina" },
   { entity_id: "sensor.temperatura_cucina", area_id: "cucina" },
+  { entity_id: "sensor.umidita_cucina", area_id: "cucina" },
   { entity_id: "binary_sensor.movimento_cucina", area_id: "cucina" },
   { entity_id: "camera.cucina", area_id: "cucina" },
 
@@ -73,12 +76,14 @@ const registry: EntityRegistryEntry[] = [
   { entity_id: "climate.camera", area_id: "camera" },
   { entity_id: "media_player.camera", area_id: "camera" },
   { entity_id: "sensor.temperatura_camera", area_id: "camera" },
+  { entity_id: "sensor.umidita_camera", area_id: "camera" },
   { entity_id: "binary_sensor.finestra_camera", area_id: "camera" },
 
   { entity_id: "light.studio", area_id: "studio" },
   { entity_id: "switch.scrivania", area_id: "studio" },
   { entity_id: "climate.studio", area_id: "studio" },
   { entity_id: "sensor.temperatura_studio", area_id: "studio" },
+  { entity_id: "sensor.umidita_studio", area_id: "studio" },
   { entity_id: "binary_sensor.presenza_studio", area_id: "studio" },
   { entity_id: "camera.studio", area_id: "studio" },
 ];
@@ -88,8 +93,9 @@ const initialStates: Record<string, HassState> = {
   "cover.salotto": state("cover.salotto", "open", "Tenda salotto", { current_position: 72 }),
   "climate.soggiorno": state("climate.soggiorno", "heat_cool", "Clima soggiorno", { ...climateAttributes(22.6, 23), hvac_action: "idle" }),
   "switch.tv": state("switch.tv", "off", "TV"),
-  "media_player.soggiorno": state("media_player.soggiorno", "playing", "Apple TV soggiorno", { volume_level: 0.34, media_title: "Living Room" }),
+  "media_player.soggiorno": state("media_player.soggiorno", "playing", "Apple TV soggiorno", { volume_level: 0.34, media_title: "Soggiorno" }),
   "sensor.temperatura_soggiorno": state("sensor.temperatura_soggiorno", "22.6", "Temperatura soggiorno", { device_class: "temperature", unit_of_measurement: "°C" }),
+  "sensor.umidita_soggiorno": state("sensor.umidita_soggiorno", "46", "Umidità soggiorno", { device_class: "humidity", unit_of_measurement: "%" }),
   "binary_sensor.porta_ingresso": state("binary_sensor.porta_ingresso", "off", "Porta ingresso", { device_class: "door" }),
   "camera.soggiorno": state("camera.soggiorno", "streaming", "Camera soggiorno"),
 
@@ -97,6 +103,7 @@ const initialStates: Record<string, HassState> = {
   "switch.macchina_caffe": state("switch.macchina_caffe", "off", "Macchina caffè"),
   "climate.cucina": state("climate.cucina", "cool", "Clima cucina", { ...climateAttributes(23.3, 22, "medium", "eco"), hvac_action: "cooling" }),
   "sensor.temperatura_cucina": state("sensor.temperatura_cucina", "23.3", "Temperatura cucina", { device_class: "temperature", unit_of_measurement: "°C" }),
+  "sensor.umidita_cucina": state("sensor.umidita_cucina", "52", "Umidità cucina", { device_class: "humidity", unit_of_measurement: "%" }),
   "binary_sensor.movimento_cucina": state("binary_sensor.movimento_cucina", "on", "Movimento cucina", { device_class: "motion" }),
   "camera.cucina": state("camera.cucina", "streaming", "Camera cucina"),
 
@@ -105,12 +112,14 @@ const initialStates: Record<string, HassState> = {
   "climate.camera": state("climate.camera", "heat", "Clima camera", { ...climateAttributes(21.9, 22.5, "low", "sleep"), hvac_action: "heating" }),
   "media_player.camera": state("media_player.camera", "paused", "HomePod camera", { volume_level: 0.22 }),
   "sensor.temperatura_camera": state("sensor.temperatura_camera", "21.9", "Temperatura camera", { device_class: "temperature", unit_of_measurement: "°C" }),
+  "sensor.umidita_camera": state("sensor.umidita_camera", "49", "Umidità camera", { device_class: "humidity", unit_of_measurement: "%" }),
   "binary_sensor.finestra_camera": state("binary_sensor.finestra_camera", "off", "Finestra camera", { device_class: "window" }),
 
   "light.studio": state("light.studio", "on", "Luce studio", { brightness: 210, demo_hex_color: "#d9e9ff" }),
   "switch.scrivania": state("switch.scrivania", "on", "Scrivania"),
   "climate.studio": state("climate.studio", "fan_only", "Clima studio", { ...climateAttributes(22.4, 22, "high", "none"), hvac_action: "fan" }),
   "sensor.temperatura_studio": state("sensor.temperatura_studio", "22.4", "Temperatura studio", { device_class: "temperature", unit_of_measurement: "°C" }),
+  "sensor.umidita_studio": state("sensor.umidita_studio", "44", "Umidità studio", { device_class: "humidity", unit_of_measurement: "%" }),
   "binary_sensor.presenza_studio": state("binary_sensor.presenza_studio", "on", "Presenza studio", { device_class: "presence" }),
   "camera.studio": state("camera.studio", "streaming", "Camera studio"),
 
@@ -136,7 +145,7 @@ function DemoHarness() {
 
   const hass = useMemo<Hass>(() => ({
     states,
-    locale: { language: navigator.language },
+    locale: { language: "it-IT" },
     callService: async (domain, service, data) => {
       const entityId = String(data?.entity_id ?? "");
       setStates((current) => {
