@@ -1,0 +1,317 @@
+/* Visual refinement layer: compact Apple Home-style controls and automatic night theme. */
+
+.app-shell {
+  color: #1d1d1f;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.78), transparent 28%),
+    radial-gradient(circle at 92% 8%, rgba(215,225,239,.38), transparent 30%),
+    linear-gradient(180deg, #f7f7f9 0%, #f1f1f4 100%);
+  transition: color .35s ease, background .45s ease;
+}
+
+/* Buttons: slightly more tactile, still understated. */
+.app-shell button,
+.app-shell select {
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform .14s ease,
+    background-color .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    color .18s ease,
+    opacity .18s ease;
+}
+
+.app-shell button:hover {
+  transform: translateY(-1px);
+}
+
+.app-shell button:active {
+  transform: scale(.965);
+}
+
+.app-shell button:focus-visible,
+.app-shell select:focus-visible,
+.app-shell input:focus-visible {
+  outline: 3px solid rgba(10,132,255,.24);
+  outline-offset: 2px;
+}
+
+.calendar-actions button {
+  border: 1px solid rgba(60,60,67,.06);
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(244,244,246,.92));
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 5px 14px rgba(0,0,0,.035);
+}
+.calendar-actions button:hover {
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,.05), 0 7px 18px rgba(0,0,0,.05);
+}
+
+.segmented-control {
+  box-shadow: inset 0 0 0 1px rgba(60,60,67,.025);
+}
+.segmented-control button.active {
+  box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 3px 9px rgba(0,0,0,.04);
+}
+
+.text-button {
+  margin: 5px 13px 7px;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: rgba(10,132,255,.075);
+}
+.text-button:hover { background: rgba(10,132,255,.12); }
+
+.power-all {
+  box-shadow: inset 0 0 0 1px rgba(255,59,48,.035), 0 3px 10px rgba(255,59,48,.05);
+}
+.power-all:hover {
+  background: rgba(255,59,48,.15);
+  box-shadow: inset 0 0 0 1px rgba(255,59,48,.06), 0 5px 14px rgba(255,59,48,.08);
+}
+
+.room-switcher button,
+.room-switcher select {
+  border-radius: 11px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.24), 0 2px 7px rgba(0,0,0,.025);
+}
+.room-switcher button:hover,
+.room-switcher select:hover {
+  border-color: rgba(60,60,67,.15);
+  background: rgba(118,118,128,.10);
+}
+.room-switcher button.active {
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 3px 11px rgba(199,141,0,.08);
+}
+
+.delete-task {
+  box-shadow: 0 2px 8px rgba(255,59,48,.06);
+}
+
+.device-controls-heading button {
+  box-shadow: inset 0 0 0 1px rgba(60,60,67,.035);
+}
+.device-controls-heading button:hover { background: rgba(118,118,128,.16); }
+
+/* Smart Home: substantially more compact, closer to Apple Home accessory tiles. */
+.entity-grid {
+  gap: 6px;
+  padding: 0 12px;
+}
+
+.entity-tile {
+  min-height: 64px;
+  border-radius: 15px;
+  background: rgba(118,118,128,.052);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.40);
+}
+.entity-tile:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 5px 14px rgba(0,0,0,.035);
+}
+.entity-tile.active {
+  background: linear-gradient(145deg, #ffe87b 0%, #fff1ac 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.52), 0 5px 16px rgba(199,141,0,.07);
+}
+
+.entity-main {
+  min-height: 64px;
+  padding: 7px 8px;
+  justify-content: center;
+}
+
+.entity-icon {
+  width: 23px;
+  height: 23px;
+  margin-bottom: 5px;
+  border-radius: 7px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.055);
+}
+.entity-icon svg { width: 13px; height: 13px; }
+.entity-main strong {
+  width: calc(100% - 21px);
+  font-size: 10px;
+  line-height: 1.15;
+}
+.entity-main small {
+  margin-top: 1px;
+  font-size: 8px;
+  line-height: 1.15;
+}
+.favorite-button,
+.control-button {
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 7px;
+}
+.favorite-button { top: 3px; }
+.control-button { bottom: 3px; }
+.favorite-button svg,
+.control-button svg { width: 11px; height: 11px; }
+.favorite-button:hover,
+.control-button:hover { background: rgba(118,118,128,.10); }
+
+/* Night mode. In Home Assistant it follows sun.sun (below_horizon); demo falls back to 19:00–07:00. */
+.app-shell.night {
+  --surface: rgba(37,37,40,.80);
+  --surface-strong: rgba(45,45,48,.94);
+  --line: rgba(255,255,255,.085);
+  --muted: #98989f;
+  --shadow: 0 20px 60px rgba(0,0,0,.26);
+  color: #f5f5f7;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(64,78,103,.28), transparent 31%),
+    radial-gradient(circle at 88% 3%, rgba(47,54,70,.26), transparent 28%),
+    linear-gradient(180deg, #151519 0%, #1b1b20 50%, #17171b 100%);
+}
+
+.night .clock,
+.night h1,
+.night h2,
+.night h3,
+.night .agenda-date strong,
+.night .agenda-event strong,
+.night .task-row label,
+.night .entity-main strong,
+.night .device-controls-heading strong {
+  color: #f5f5f7;
+}
+
+.night .seconds,
+.night .today-label,
+.night .demo-copy,
+.night .section-kicker,
+.night .agenda-date span,
+.night .agenda-events > small,
+.night .agenda-event span,
+.night .device-heading span,
+.night .entity-main small,
+.night .empty-state,
+.night .control-meta {
+  color: #98989f;
+}
+
+.night .card {
+  background: rgba(38,38,42,.78);
+  border-color: rgba(255,255,255,.075);
+  box-shadow: 0 20px 56px rgba(0,0,0,.22);
+}
+
+.night .status-badge {
+  background: rgba(48,209,88,.14);
+  color: #45d56b;
+}
+.night .demo-badge,
+.night .count-pill {
+  background: rgba(255,255,255,.075);
+  color: #c7c7cc;
+}
+
+.night .segmented-control {
+  background: rgba(118,118,128,.22);
+}
+.night .segmented-control button { color: #b6b6bc; }
+.night .segmented-control button.active {
+  background: rgba(86,86,92,.95);
+  color: #fff;
+}
+
+.night .text-button {
+  color: #64a8ff;
+  background: rgba(10,132,255,.13);
+}
+.night .text-button:hover { background: rgba(10,132,255,.20); }
+
+.night .calendar-actions button {
+  color: #ededf0;
+  border-color: rgba(255,255,255,.06);
+  background: linear-gradient(180deg, rgba(77,77,82,.88), rgba(55,55,59,.88));
+  box-shadow: 0 4px 12px rgba(0,0,0,.14);
+}
+.night .calendar-actions button:hover { background: rgba(88,88,94,.92); }
+
+.night .calendar-day {
+  background: rgba(42,42,46,.58);
+}
+.night .calendar-day.outside {
+  color: #66666d;
+  background: rgba(29,29,33,.68);
+}
+.night .calendar-day.today {
+  background: linear-gradient(180deg, rgba(112,88,15,.45), rgba(48,46,37,.56));
+}
+.night .weekday { color: #77777e; }
+
+.night .calendar-event.mint { background: rgba(48,209,88,.17); color: #77e297; }
+.night .calendar-event.blue { background: rgba(10,132,255,.20); color: #83bdff; }
+.night .calendar-event.amber { background: rgba(255,159,10,.18); color: #ffc15c; }
+.night .calendar-event.violet { background: rgba(191,90,242,.18); color: #d49af4; }
+
+.night .room-switcher button,
+.night .room-switcher select {
+  color: #c7c7cc;
+  border-color: rgba(255,255,255,.075);
+  background: rgba(118,118,128,.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.night .room-switcher button:hover,
+.night .room-switcher select:hover { background: rgba(118,118,128,.24); }
+.night .room-switcher button.active {
+  color: #ffe36e;
+  background: rgba(255,214,10,.15);
+  border-color: rgba(255,214,10,.18);
+}
+
+.night .entity-tile {
+  background: rgba(118,118,128,.13);
+  border-color: rgba(255,255,255,.065);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.night .entity-tile:hover {
+  border-color: rgba(255,255,255,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 7px 18px rgba(0,0,0,.16);
+}
+.night .entity-tile.active {
+  background: linear-gradient(145deg, rgba(255,214,10,.90), rgba(225,171,5,.86));
+  border-color: rgba(255,214,10,.22);
+}
+.night .entity-icon {
+  background: rgba(255,255,255,.10);
+  color: #e8e8ed;
+  box-shadow: none;
+}
+.night .entity-tile.active .entity-icon {
+  background: rgba(255,255,255,.85);
+  color: #4a3900;
+}
+.night .favorite-button,
+.night .control-button { color: #8e8e93; }
+.night .favorite-button.selected { color: #ffd60a; }
+.night .favorite-button:hover,
+.night .control-button:hover { background: rgba(255,255,255,.08); color: #e5e5ea; }
+
+.night .device-controls {
+  background: rgba(49,49,53,.90);
+  border-color: rgba(255,255,255,.075);
+  box-shadow: 0 12px 28px rgba(0,0,0,.20);
+}
+.night .device-controls-heading button {
+  color: #d1d1d6;
+  background: rgba(118,118,128,.24);
+}
+.night .control-meta strong { color: #e5e5ea; }
+
+.night .task-row.done label span { color: #6f6f76; }
+
+@media (min-width: 1481px) {
+  .entity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1480px) and (min-width: 1081px) {
+  .entity-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1080px) and (min-width: 761px) {
+  .entity-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
