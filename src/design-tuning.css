@@ -1,0 +1,147 @@
+/* Fine tuning after the shared design-system pass.
+ * Increase legibility slightly without changing the approved card footprints.
+ */
+
+:root {
+  --fc-type-caption: 11px;
+  --fc-type-small: 12px;
+  --fc-type-body: 14px;
+  --fc-type-control: 12.5px;
+}
+
+/* General labels: small enough to remain secondary, large enough for a wall tablet. */
+.section-kicker,
+.reel-kicker {
+  font-size: 11px !important;
+  line-height: 1.1;
+}
+
+.calendar-page-active .agenda-date span,
+.calendar-page-active .agenda-events > small,
+.calendar-page-active .device-heading span,
+.calendar-page-active .count-pill,
+.calendar-page-active .status-badge,
+.calendar-page-active .demo-badge {
+  font-size: 11.5px;
+}
+
+.calendar-page-active .weekday { font-size: 11px; }
+.calendar-page-active .calendar-event { font-size: 11.5px; }
+.calendar-page-active .room-switcher.room-chip-strip button { font-size: 12.5px; }
+.calendar-page-active .text-button { font-size: 13px; }
+
+/* Calendar smart-home cards stay physically compact; only typography/icons grow. */
+.calendar-page-active .entity-main strong {
+  font-size: 10.6px;
+  line-height: 1.08;
+}
+.calendar-page-active .entity-main small {
+  font-size: 9.2px;
+  line-height: 1.08;
+}
+.calendar-page-active .entity-icon {
+  width: 24px;
+  height: 24px;
+}
+.calendar-page-active .entity-icon svg {
+  width: 14px;
+  height: 14px;
+}
+.calendar-page-active .favorite-button,
+.calendar-page-active .control-button {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+}
+.calendar-page-active .favorite-button svg,
+.calendar-page-active .control-button svg {
+  width: 11px;
+  height: 11px;
+}
+.calendar-page-active .power-all { font-size: 11.5px; }
+.calendar-page-active .power-all svg { width: 16px; height: 16px; }
+.calendar-page-active .delete-task svg { width: 16px; height: 16px; }
+
+/* Segmented controls retain their current physical size, with clearer labels/icons. */
+.calendar-page-active .segmented-control > button {
+  font-size: 12.8px;
+}
+.page-dock > button {
+  font-size: 10.5px;
+}
+.page-dock > button svg {
+  width: 15.5px;
+  height: 15.5px;
+}
+
+/* Home: slightly stronger type scale throughout the large cards. */
+.home-page-active .reel-greeting span { font-size: 12.5px; }
+.home-page-active .weather-pill,
+.home-page-active .security-pill { font-size: 12px; }
+.home-page-active .weather-pill small { font-size: 10.5px; }
+
+.home-page-active .reel-room-head strong { font-size: 17px; }
+.home-page-active .room-scene-row small {
+  font-size: 11px;
+  line-height: 1.1;
+}
+.home-page-active .room-insights > span { font-size: 10.8px; }
+.home-page-active .room-accessory-row span {
+  font-size: 10.4px;
+  line-height: 1.1;
+}
+.home-page-active .room-open-detail { font-size: 11px; }
+
+.home-page-active .house-message strong { font-size: 14.5px; }
+.home-page-active .house-message span { font-size: 11px; }
+.home-page-active .alarm-row strong { font-size: 13px; }
+.home-page-active .alarm-row small,
+.home-page-active .alarm-row b,
+.home-page-active .thermo-meta,
+.home-page-active .waste-value small { font-size: 10.3px; }
+.home-page-active .side-heading { font-size: 10.8px; }
+.home-page-active .waste-value strong { font-size: 13px; }
+.home-page-active .reel-tools-grid span {
+  font-size: 10.5px;
+  line-height: 1.1;
+}
+
+/* Home icons: modest increase, keeping the existing button/card dimensions. */
+.home-page-active .room-scene-row svg { width: 21px; height: 21px; }
+.home-page-active .room-accessory-row svg { width: 16.5px; height: 16.5px; }
+.home-page-active .reel-tools-grid svg { width: 18px; height: 18px; }
+.home-page-active .side-icon svg { width: 20px; height: 20px; }
+.home-page-active .side-heading svg { width: 15.5px; height: 15.5px; }
+.home-page-active .weather-pill svg { width: 17px; height: 17px; }
+.home-page-active .round-top svg,
+.home-page-active .security-pill svg { width: 17px; height: 17px; }
+
+/* Room detail remains the same size requested previously; only labels/icons get a small lift. */
+.room-modal-grid .apple-accessory-copy strong { font-size: 12px; }
+.room-modal-grid .apple-accessory-copy small { font-size: 10px; }
+.room-modal-grid .sheet-slider,
+.room-modal-grid .sheet-color { font-size: 9.8px; }
+.room-modal-grid .apple-accessory-icon svg { width: 19px; height: 19px; }
+.room-modal-grid .apple-favorite-toggle svg { width: 13px; height: 13px; }
+
+/* Climate labels were still among the smallest elements on screen. */
+.climate-control-title strong { font-size: 13.5px; }
+.climate-control-title small,
+.climate-current span,
+.climate-target-value span { font-size: 9.8px; }
+.climate-section-label { font-size: 9px !important; }
+.climate-mode-button span { font-size: 9.2px; }
+.climate-chip-row button { font-size: 9.8px; }
+.climate-control svg { width: 16px; height: 16px; }
+
+.climate-compact .climate-control-title strong { font-size: 12px; }
+.climate-compact .climate-control-title small,
+.climate-compact .climate-current span,
+.climate-compact .climate-target-value span { font-size: 8.8px; }
+.climate-compact .climate-section-label { font-size: 8.2px !important; }
+.climate-compact .climate-mode-button span { font-size: 8.5px; }
+
+@media (max-width: 1180px) {
+  .page-dock > button { font-size: 10px; }
+}
