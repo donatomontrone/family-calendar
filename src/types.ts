@@ -6,18 +6,20 @@ export interface HassState {
   last_updated: string;
 }
 
+export interface HassLocale {
+  language?: string;
+  time_format?: "12" | "24" | "language";
+}
+
 export interface Hass {
   states: Record<string, HassState>;
-
+  locale?: HassLocale;
   callService: (
     domain: string,
     service: string,
     data?: Record<string, unknown>,
   ) => Promise<void>;
-
-  callWS: <T = unknown>(
-    message: Record<string, unknown>,
-  ) => Promise<T>;
+  callWS: <T = unknown>(message: Record<string, unknown>) => Promise<T>;
 }
 
 export interface Area {
