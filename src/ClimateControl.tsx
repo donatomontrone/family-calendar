@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 import {
@@ -260,7 +261,7 @@ function sanitizeClass(value: string): string {
   return value.replace(/[^a-z0-9_-]/gi, "-").toLowerCase();
 }
 
-function Icon({ children }: { children: React.ReactNode }) {
+function Icon({ children }: { children: ReactNode }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{children}</svg>;
 }
 
