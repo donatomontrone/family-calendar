@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -8,6 +8,7 @@ import {
   setCoverPosition,
   setFavorites,
   setLightBrightness,
+  setLightColor,
 } from "./ha";
 import type { Language } from "./i18n";
 
@@ -267,12 +268,16 @@ function AccessoryTile({ hass, entityId, language, favorite, onToggleFavorite, d
   const unavailable = state.state === "unavailable" || state.state === "unknown";
   const brightness = Math.round((Number(state.attributes.brightness ?? 180) / 255) * 100);
   const position = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
+  const color = lightColor(hass, entityId);
   const favoriteLabel = favorite
     ? (language === "it" ? "Rimuovi dai preferiti" : "Remove from favorites")
     : (language === "it" ? "Aggiungi ai preferiti" : "Add to favorites");
 
   return (
-    <article className={`apple-accessory-tile ${active ? "active" : ""} ${unavailable ? "unavailable" : ""} ${detailed ? "detailed" : ""}`}>
+    <article
+      className={`apple-accessory-tile domain-${domain} ${active ? "active" : ""} ${unavailable ? "unavailable" : ""} ${detailed ? "detailed" : ""}`}
+      style={accessoryStyle(hass, entityId)}
+    >
       <button className="apple-accessory-main" onClick={() => !unavailable && void activateEntity(hass, entityId)} disabled={unavailable}>
         <span className="apple-accessory-icon">{iconForDomain(domain)}</span>
         <span className="apple-accessory-copy">
@@ -288,10 +293,16 @@ function AccessoryTile({ hass, entityId, language, favorite, onToggleFavorite, d
       {unavailable && <span className="apple-accessory-warning" aria-hidden="true">!</span>}
 
       {detailed && !unavailable && domain === "light" && (
-        <label className="sheet-slider">
-          <span>{language === "it" ? "Intensità" : "Brightness"}<strong>{brightness}%</strong></span>
-          <input type="range" min="1" max="100" defaultValue={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
-        </label>
+        <div className="sheet-light-controls">
+          <label className="sheet-slider">
+            <span>{language === "it" ? "Intensità" : "Brightness"}<strong>{brightness}%</strong></span>
+            <input type="range" min="1" max="100" defaultValue={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
+          </label>
+          <label className="sheet-color-row">
+            <span>{language === "it" ? "Colore" : "Color"}</span>
+            <input className="sheet-color-control" type="color" defaultValue={color} onChange={(event) => void setLightColor(hass, entityId, event.target.value)} />
+          </label>
+        </div>
       )}
       {detailed && !unavailable && domain === "cover" && (
         <label className="sheet-slider">
@@ -353,6 +364,23 @@ function humanState(value: string, language: Language) {
   const it: Record<string, string> = { on: "Acceso", off: "Spento", open: "Aperto", closed: "Chiuso", heat: "Riscaldamento", cool: "Raffrescamento", playing: "In riproduzione", unavailable: "Non risponde", unknown: "Non disponibile", unlocked: "Sbloccata", locked: "Bloccata", disarmed: "Disattivato", armed_home: "Inserito", armed_away: "Inserito" };
   const en: Record<string, string> = { on: "On", off: "Off", open: "Open", closed: "Closed", heat: "Heating", cool: "Cooling", playing: "Playing", unavailable: "No response", unknown: "Unavailable", unlocked: "Unlocked", locked: "Locked", disarmed: "Disarmed", armed_home: "Armed", armed_away: "Armed" };
   return (language === "it" ? it : en)[value] ?? value;
+}
+
+function lightColor(hass: Hass, entityId: string): string {
+  const attributes = hass.states[entityId]?.attributes ?? {};
+  const demoHex = attributes.demo_hex_color;
+  if (typeof demoHex === "string" && /^#[0-9a-f]{6}$/i.test(demoHex)) return demoHex;
+  const rgb = attributes.rgb_color;
+  if (Array.isArray(rgb) && rgb.length >= 3) {
+    const parts = rgb.slice(0, 3).map((value) => Math.max(0, Math.min(255, Number(value) || 0)));
+    return `#${parts.map((value) => Math.round(value).toString(16).padStart(2, "0")).join("")}`;
+  }
+  return "#ffd60a";
+}
+
+function accessoryStyle(hass: Hass, entityId: string): CSSProperties | undefined {
+  if (!entityId.startsWith("light.")) return undefined;
+  return { "--accessory-active": lightColor(hass, entityId) } as CSSProperties;
 }
 
 function shortName(name: string, roomName: string) {
