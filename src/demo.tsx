@@ -5,10 +5,15 @@ import type { Area, EntityRegistryEntry, Hass, HassState } from "./types";
 import "./styles.css";
 
 const isoNow = () => new Date().toISOString();
-const state = (entityId: string, value: string, name: string): HassState => ({
+const state = (
+  entityId: string,
+  value: string,
+  name: string,
+  attributes: Record<string, unknown> = {},
+): HassState => ({
   entity_id: entityId,
   state: value,
-  attributes: { friendly_name: name },
+  attributes: { friendly_name: name, ...attributes },
   last_changed: isoNow(),
   last_updated: isoNow(),
 });
@@ -31,14 +36,14 @@ const registry: EntityRegistryEntry[] = [
 ];
 
 const initialStates: Record<string, HassState> = {
-  "light.soggiorno": state("light.soggiorno", "on", "Luce soggiorno"),
-  "cover.salotto": state("cover.salotto", "open", "Tenda salotto"),
+  "light.soggiorno": state("light.soggiorno", "on", "Luce soggiorno", { brightness: 196, demo_hex_color: "#ffd45a" }),
+  "cover.salotto": state("cover.salotto", "open", "Tenda salotto", { current_position: 72 }),
   "climate.soggiorno": state("climate.soggiorno", "heat", "Clima soggiorno"),
   "switch.tv": state("switch.tv", "off", "TV"),
-  "light.cucina": state("light.cucina", "off", "Luce cucina"),
+  "light.cucina": state("light.cucina", "off", "Luce cucina", { brightness: 150, demo_hex_color: "#ffe8bd" }),
   "switch.macchina_caffe": state("switch.macchina_caffe", "off", "Macchina caffè"),
-  "light.camera": state("light.camera", "off", "Luce camera"),
-  "cover.camera": state("cover.camera", "closed", "Tapparella camera"),
+  "light.camera": state("light.camera", "off", "Luce camera", { brightness: 110, demo_hex_color: "#ffb4a2" }),
+  "cover.camera": state("cover.camera", "closed", "Tapparella camera", { current_position: 0 }),
 };
 
 function DemoHarness() {
@@ -60,15 +65,45 @@ function DemoHarness() {
       setStates((current) => {
         const existing = current[entityId];
         if (!existing) return current;
+
         let nextState = existing.state;
+        const nextAttributes = { ...existing.attributes };
+
         if (service === "toggle") nextState = existing.state === "on" ? "off" : "on";
-        if (service === "open_cover") nextState = "open";
-        if (service === "close_cover") nextState = "closed";
-        if (service === "turn_on") nextState = domain === "climate" ? "heat" : "on";
+        if (service === "open_cover") {
+          nextState = "open";
+          nextAttributes.current_position = 100;
+        }
+        if (service === "close_cover") {
+          nextState = "closed";
+          nextAttributes.current_position = 0;
+        }
+        if (service === "set_cover_position") {
+          const position = Number(data?.position ?? 0);
+          nextState = position > 0 ? "open" : "closed";
+          nextAttributes.current_position = position;
+        }
+        if (service === "turn_on") {
+          nextState = domain === "climate" ? "heat" : "on";
+          if (domain === "light" && data?.brightness_pct !== undefined) {
+            nextAttributes.brightness = Math.round((Number(data.brightness_pct) / 100) * 255);
+          }
+          if (domain === "light" && Array.isArray(data?.rgb_color)) {
+            const [r, g, b] = data.rgb_color.map(Number);
+            nextAttributes.demo_hex_color = `#${[r, g, b].map((value) => Math.max(0, Math.min(255, value)).toString(16).padStart(2, "0")).join("")}`;
+          }
+        }
         if (service === "turn_off") nextState = "off";
+
         return {
           ...current,
-          [entityId]: { ...existing, state: nextState, last_changed: isoNow(), last_updated: isoNow() },
+          [entityId]: {
+            ...existing,
+            state: nextState,
+            attributes: nextAttributes,
+            last_changed: isoNow(),
+            last_updated: isoNow(),
+          },
         };
       });
     },
