@@ -1,0 +1,452 @@
+/* Apple Home-inspired refinement layer for accessory tiles and controls. */
+
+:root {
+  --home-control-bg: rgba(118,118,128,.085);
+  --home-control-bg-hover: rgba(118,118,128,.14);
+  --home-control-border: rgba(60,60,67,.075);
+  --home-control-shadow: 0 1px 2px rgba(0,0,0,.035), 0 5px 14px rgba(0,0,0,.035);
+  --home-yellow: #ffd60a;
+  --home-red: #ff453a;
+}
+
+/* General controls: less "web button", more native iOS/Home feel. */
+.app-shell button:not(.entity-main):not(.apple-accessory-main):not(.room-card-open),
+.app-shell select {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .14s ease, background-color .16s ease, color .16s ease, border-color .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+
+.app-shell button:not(.entity-main):not(.apple-accessory-main):not(.room-card-open):hover {
+  transform: translateY(-1px);
+}
+
+.app-shell button:not(.entity-main):not(.apple-accessory-main):not(.room-card-open):active {
+  transform: scale(.965);
+}
+
+.calendar-actions button,
+.room-switcher button,
+.room-switcher select,
+.page-dock button,
+.scene-grid button,
+.sheet-off,
+.sheet-close,
+.device-controls-heading button {
+  border-color: var(--home-control-border);
+  background: rgba(255,255,255,.72);
+  box-shadow: var(--home-control-shadow), inset 0 1px 0 rgba(255,255,255,.72);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.calendar-actions button:hover,
+.room-switcher button:hover,
+.room-switcher select:hover,
+.scene-grid button:hover,
+.page-dock button:hover {
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 8px 18px rgba(0,0,0,.055);
+}
+
+.segmented-control {
+  border: 1px solid rgba(60,60,67,.035);
+  border-radius: 12px;
+  background: rgba(118,118,128,.12);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.035);
+}
+
+.segmented-control button {
+  border-radius: 9px;
+  font-weight: 620;
+}
+
+.segmented-control button.active {
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 10px rgba(0,0,0,.055);
+}
+
+.text-button {
+  border: 1px solid rgba(10,132,255,.07);
+  background: rgba(10,132,255,.075);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.45);
+}
+
+.power-all,
+.sheet-off {
+  border: 1px solid rgba(255,69,58,.09) !important;
+  background: rgba(255,69,58,.09) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.36), 0 4px 12px rgba(255,69,58,.045);
+}
+
+/* Calendar Smart Home tiles: proportion and hierarchy inspired by Apple Home accessory cards. */
+.entity-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.entity-tile {
+  min-height: 112px;
+  aspect-ratio: 1.06 / 1;
+  border-radius: 19px;
+  border: 1px solid rgba(60,60,67,.075);
+  background: rgba(235,235,240,.78);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 5px 14px rgba(0,0,0,.028);
+  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, border-color .16s ease;
+}
+
+.entity-tile:hover {
+  transform: translateY(-1px);
+  border-color: rgba(60,60,67,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 8px 20px rgba(0,0,0,.045);
+}
+
+.entity-tile.active {
+  background: rgba(255,255,255,.98);
+  border-color: rgba(60,60,67,.075);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 7px 18px rgba(0,0,0,.045);
+}
+
+.entity-main {
+  min-height: 112px;
+  padding: 11px 11px 12px;
+  justify-content: flex-end;
+}
+
+.entity-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border-radius: 8px;
+  background: rgba(118,118,128,.58);
+  color: #fff;
+  box-shadow: none;
+}
+
+.entity-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.entity-tile.active .entity-icon {
+  background: #8e8e93;
+  color: #fff;
+}
+
+.entity-main strong {
+  width: calc(100% - 4px);
+  color: #1d1d1f;
+  font-size: 12px;
+  font-weight: 690;
+  line-height: 1.12;
+  letter-spacing: -.015em;
+}
+
+.entity-main small {
+  margin-top: 3px;
+  color: #6e6e73;
+  font-size: 10px;
+  font-weight: 520;
+  line-height: 1.12;
+}
+
+.favorite-button,
+.control-button {
+  width: 24px;
+  height: 24px;
+  right: 8px;
+  border-radius: 50%;
+  background: rgba(118,118,128,.08);
+  color: #8e8e93;
+}
+
+.favorite-button { top: 8px; }
+.control-button { bottom: 8px; }
+.favorite-button svg,
+.control-button svg { width: 12px; height: 12px; }
+.favorite-button.selected {
+  background: rgba(255,214,10,.18);
+  color: #a16f00;
+}
+.favorite-button:hover,
+.control-button:hover {
+  background: rgba(118,118,128,.14);
+}
+
+/* Favorite accessories strip in the Home view. */
+.favorite-accessories-section {
+  margin: 2px 0 14px;
+}
+
+.favorite-accessories-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 4px 8px;
+}
+.favorite-accessories-heading h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 720;
+  letter-spacing: -.025em;
+}
+.favorite-accessories-heading span {
+  color: #8e8e93;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.favorite-accessories-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(138px, 158px);
+  gap: 9px;
+  overflow-x: auto;
+  padding: 1px 4px 7px;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.favorite-accessories-rail::-webkit-scrollbar { display: none; }
+.favorite-accessories-rail .apple-accessory-tile { scroll-snap-align: start; }
+
+/* Shared Apple Home accessory card, used in favorites and room sheets. */
+.apple-accessory-tile {
+  position: relative;
+  min-height: 138px;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(60,60,67,.07);
+  border-radius: 19px;
+  background: rgba(238,238,242,.88);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.74), 0 6px 18px rgba(0,0,0,.035);
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease;
+}
+
+.apple-accessory-tile:hover {
+  transform: translateY(-1px);
+  border-color: rgba(60,60,67,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.80), 0 9px 24px rgba(0,0,0,.05);
+}
+
+.apple-accessory-tile.active {
+  background: rgba(255,255,255,.98);
+}
+
+.apple-accessory-tile.unavailable {
+  background: linear-gradient(145deg, rgba(255,221,190,.95), rgba(255,210,168,.92));
+  border-color: rgba(185,98,18,.12);
+}
+
+.apple-accessory-main {
+  width: 100%;
+  min-height: 138px;
+  padding: 11px 11px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.apple-accessory-main:disabled { cursor: default; }
+
+.apple-accessory-icon {
+  width: 33px;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #8e8e93;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.07);
+}
+.apple-accessory-icon svg { width: 18px; height: 18px; }
+
+.apple-accessory-tile.unavailable .apple-accessory-icon {
+  background: rgba(164,89,22,.62);
+}
+
+.apple-accessory-copy {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.apple-accessory-copy strong {
+  width: calc(100% - 2px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #1d1d1f;
+  font-size: 13px;
+  font-weight: 720;
+  line-height: 1.14;
+  letter-spacing: -.015em;
+}
+.apple-accessory-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #6e6e73;
+  font-size: 11px;
+  font-weight: 520;
+  line-height: 1.18;
+}
+.apple-accessory-copy small.danger {
+  color: #d70015;
+  font-weight: 650;
+}
+
+.apple-favorite-toggle {
+  position: absolute;
+  z-index: 3;
+  top: 9px;
+  right: 9px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(118,118,128,.09);
+  color: #8e8e93;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+.apple-favorite-toggle svg { width: 12px; height: 12px; }
+.apple-favorite-toggle.selected {
+  background: rgba(255,214,10,.22);
+  color: #a16f00;
+}
+
+.apple-accessory-warning {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 40px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(155,80,17,.92);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Room sheet: accessory cards remain compact but preserve controls below. */
+.home-sheet-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.home-sheet-grid .apple-accessory-tile {
+  min-height: 156px;
+  padding-bottom: 10px;
+}
+.home-sheet-grid .apple-accessory-main {
+  min-height: 112px;
+}
+.home-sheet-grid .sheet-slider {
+  margin: 0 11px 8px;
+}
+
+/* Less decorative room cards: cleaner Home app hierarchy. */
+.room-card {
+  border-radius: 23px;
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 12px 32px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,.72);
+}
+.room-card::before { height: 2px; }
+.room-card::after { opacity: .55; }
+.room-round-control {
+  border-radius: 11px;
+  background: rgba(118,118,128,.07);
+}
+.room-round-control.active {
+  background: color-mix(in srgb, var(--room-accent) 78%, white);
+}
+.room-accessories button {
+  border-radius: 11px;
+  background: rgba(118,118,128,.055);
+}
+
+/* Night equivalents. */
+.night .calendar-actions button,
+.night .room-switcher button,
+.night .room-switcher select,
+.night .page-dock button,
+.night .scene-grid button,
+.night .device-controls-heading button {
+  border-color: rgba(255,255,255,.07);
+  background: rgba(72,72,77,.82);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 5px 14px rgba(0,0,0,.12);
+}
+
+.night .entity-tile,
+.night .apple-accessory-tile {
+  border-color: rgba(255,255,255,.065);
+  background: rgba(72,72,77,.86);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 7px 18px rgba(0,0,0,.16);
+}
+.night .entity-tile.active,
+.night .apple-accessory-tile.active {
+  background: rgba(245,245,247,.94);
+}
+.night .entity-tile.active .entity-main strong,
+.night .entity-tile.active .entity-main small,
+.night .apple-accessory-tile.active .apple-accessory-copy strong,
+.night .apple-accessory-tile.active .apple-accessory-copy small {
+  color: #1d1d1f;
+}
+.night .entity-main strong,
+.night .apple-accessory-copy strong { color: #f5f5f7; }
+.night .entity-main small,
+.night .apple-accessory-copy small { color: #b0b0b5; }
+.night .entity-icon,
+.night .apple-accessory-icon {
+  background: rgba(255,255,255,.16);
+  color: #fff;
+}
+.night .entity-tile.active .entity-icon,
+.night .apple-accessory-tile.active .apple-accessory-icon {
+  background: #8e8e93;
+  color: #fff;
+}
+.night .favorite-accessories-heading h2 { color: #f5f5f7; }
+.night .apple-accessory-tile.unavailable {
+  background: linear-gradient(145deg, rgba(132,78,33,.86), rgba(104,60,28,.90));
+}
+.night .apple-accessory-tile.unavailable .apple-accessory-copy strong { color: #ffd9b8; }
+.night .apple-accessory-tile.unavailable .apple-accessory-copy small.danger { color: #ff9f91; }
+.night .apple-favorite-toggle,
+.night .favorite-button,
+.night .control-button {
+  background: rgba(255,255,255,.075);
+  color: #a9a9af;
+}
+.night .apple-favorite-toggle.selected,
+.night .favorite-button.selected {
+  background: rgba(255,214,10,.17);
+  color: #ffd60a;
+}
+
+@media (max-width: 820px) {
+  .favorite-accessories-rail { grid-auto-columns: minmax(128px, 145px); }
+  .home-sheet-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .entity-tile { min-height: 104px; }
+  .entity-main { min-height: 104px; }
+  .home-sheet-grid { grid-template-columns: 1fr; }
+  .favorite-accessories-rail { grid-auto-columns: 136px; }
+}
