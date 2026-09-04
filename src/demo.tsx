@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import type { Area, EntityRegistryEntry, Hass, HassState } from "./types";
 import "./styles.css";
+import "./theme.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
