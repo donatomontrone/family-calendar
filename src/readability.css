@@ -1,0 +1,462 @@
+/* Final full-screen readability pass.
+ * This file intentionally loads last and only overrides presentation.
+ * The compact room-detail accessory panel stays the same physical size.
+ */
+
+.app-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: clamp(18px, 1.45vw, 32px);
+}
+
+/* Calendar dashboard: use the viewport instead of leaving unused margins. */
+.calendar-page-active .dashboard-grid {
+  width: 100%;
+  grid-template-columns: minmax(285px, .78fr) minmax(760px, 2.18fr) minmax(355px, .98fr);
+  gap: clamp(14px, 1.05vw, 22px);
+}
+
+.calendar-page-active .left-column,
+.calendar-page-active .right-column {
+  gap: clamp(14px, 1.05vw, 22px);
+}
+
+.calendar-page-active .clock-panel,
+.calendar-page-active .status-row {
+  min-height: 126px;
+}
+
+.calendar-page-active .clock {
+  font-size: clamp(50px, 3.9vw, 70px);
+  font-weight: 610;
+}
+.calendar-page-active .seconds { margin-top: 7px; font-size: 17px; }
+.calendar-page-active .today-label { margin-top: 9px; font-size: 15px; }
+.calendar-page-active .demo-copy { font-size: 11px; }
+
+.calendar-page-active .card {
+  border-radius: 28px;
+}
+.calendar-page-active .card-heading { padding: 21px 21px 15px; }
+.calendar-page-active .section-kicker { font-size: 10px; }
+.calendar-page-active h1 { font-size: clamp(30px, 2.3vw, 39px); }
+.calendar-page-active h2 { font-size: 21px; }
+.calendar-page-active h3 { font-size: 15px; }
+
+.calendar-page-active .agenda-day {
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  padding: 15px 7px;
+}
+.calendar-page-active .agenda-date strong { font-size: 13px; }
+.calendar-page-active .agenda-date span { font-size: 11px; }
+.calendar-page-active .agenda-event { grid-template-columns: 44px 1fr; gap: 7px; font-size: 13px; }
+.calendar-page-active .agenda-events > small { font-size: 11px; }
+
+.calendar-page-active .task-row { min-height: 50px; padding: 10px 7px; }
+.calendar-page-active .task-row label { gap: 11px; font-size: 14px; }
+.calendar-page-active .task-row input { width: 19px; height: 19px; }
+.calendar-page-active .text-button { padding: 14px 21px; font-size: 13px; }
+.calendar-page-active .count-pill,
+.calendar-page-active .status-badge,
+.calendar-page-active .demo-badge { font-size: 11px; padding: 8px 12px; }
+
+/* Apple-like controls: more capsule/circular geometry, less web-button appearance. */
+.calendar-page-active .segmented-control {
+  margin: 4px 15px 0;
+  padding: 4px;
+  border-radius: 17px;
+}
+.calendar-page-active .segmented-control button {
+  min-height: 34px;
+  border-radius: 13px;
+  font-size: 12px;
+  font-weight: 620;
+}
+
+.calendar-page-active .calendar-card {
+  min-height: calc(100vh - clamp(36px, 2.9vw, 64px));
+  border-radius: 32px;
+}
+.calendar-page-active .calendar-toolbar {
+  min-height: 126px;
+  padding: 26px 29px;
+}
+.calendar-page-active .calendar-actions { gap: 7px; }
+.calendar-page-active .calendar-actions button {
+  min-width: 38px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(118,118,128,.09);
+}
+.calendar-page-active .calendar-actions button svg { width: 17px; height: 17px; }
+.calendar-page-active .calendar-actions .today-button {
+  width: auto;
+  min-width: 70px;
+  padding: 0 16px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+.calendar-page-active .weekday { padding: 11px 7px; font-size: 10px; }
+.calendar-page-active .calendar-day {
+  min-height: max(116px, calc((100vh - 218px) / 6));
+  padding: 10px 9px 11px;
+}
+.calendar-page-active .day-number { margin-bottom: 9px; font-size: 13px; }
+.calendar-page-active .calendar-event {
+  min-height: 24px;
+  padding: 5px 7px;
+  border-radius: 8px;
+  font-size: 10.5px;
+}
+
+/* Smart-home selector: no browser select; room pills scroll naturally on touch. */
+.calendar-page-active .room-switcher.room-chip-strip {
+  display: flex;
+  grid-template-columns: none;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 0 16px 15px;
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.calendar-page-active .room-switcher.room-chip-strip::-webkit-scrollbar { display: none; }
+.calendar-page-active .room-switcher.room-chip-strip button {
+  width: auto;
+  min-width: max-content;
+  height: 38px;
+  flex: 0 0 auto;
+  padding: 0 14px;
+  border-radius: 19px;
+  border: 1px solid rgba(60,60,67,.075);
+  background: rgba(118,118,128,.065);
+  color: #616166;
+  font-size: 12px;
+  font-weight: 620;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+}
+.calendar-page-active .room-switcher.room-chip-strip button.active {
+  background: rgba(255,214,10,.20);
+  color: #6a5100;
+  border-color: rgba(214,168,0,.19);
+}
+.calendar-page-active .room-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .42;
+}
+.calendar-page-active .room-switcher button.active .room-chip-dot { opacity: .78; }
+.calendar-page-active .device-heading { padding: 3px 18px 11px; }
+.calendar-page-active .device-heading span { font-size: 10px; }
+
+/* Keep the accessory cards compact, but make their text easier to read. */
+.calendar-page-active .entity-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  padding: 0 11px;
+}
+.calendar-page-active .entity-tile {
+  min-height: 64px;
+  border-radius: 14px;
+}
+.calendar-page-active .entity-main {
+  min-height: 64px;
+  padding: 6px;
+}
+.calendar-page-active .entity-main strong { font-size: 9.5px; line-height: 1.06; }
+.calendar-page-active .entity-main small { font-size: 7.8px; line-height: 1.08; }
+.calendar-page-active .entity-icon { width: 22px; height: 22px; border-radius: 7px; }
+.calendar-page-active .entity-icon svg { width: 12.5px; height: 12.5px; }
+.calendar-page-active .favorite-button,
+.calendar-page-active .control-button {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.calendar-page-active .power-all {
+  min-height: 36px;
+  padding: 0 13px;
+  border-radius: 18px;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 680;
+  background: rgba(255,69,58,.085);
+}
+.calendar-page-active .power-all svg { width: 15px; height: 15px; }
+
+.calendar-page-active .delete-task {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,59,48,.08);
+}
+.calendar-page-active .delete-task svg { width: 16px; height: 16px; }
+
+.calendar-page-active .device-controls {
+  margin: 14px 12px 0;
+  border-radius: 20px;
+}
+.calendar-page-active .device-controls-heading button {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.calendar-page-active .device-controls-heading button svg { width: 14px; height: 14px; }
+
+/* Home screen: make the information dashboard breathe and use the available canvas. */
+.home-page-active .reel-home {
+  width: 100%;
+  min-height: calc(100vh - 36px);
+  padding-bottom: 92px;
+}
+.home-page-active .reel-topbar {
+  min-height: 94px;
+  gap: 24px;
+  padding: 4px 5px 16px;
+}
+.home-page-active .reel-greeting strong { font-size: 20px; }
+.home-page-active .reel-greeting span { margin-top: 3px; font-size: 11px; }
+.home-page-active .reel-clock { font-size: clamp(46px, 4vw, 68px); }
+.home-page-active .reel-top-actions { gap: 9px; }
+.home-page-active .weather-pill,
+.home-page-active .security-pill,
+.home-page-active .round-top {
+  height: 38px;
+  border-radius: 19px;
+}
+.home-page-active .weather-pill { padding: 0 13px; font-size: 11px; }
+.home-page-active .weather-pill svg { width: 16px; height: 16px; }
+.home-page-active .security-pill { padding: 0 14px; font-size: 11px; }
+.home-page-active .round-top { width: 38px; }
+.home-page-active .avatar-stack i { width: 34px; height: 34px; font-size: 11px; }
+
+.home-page-active .reel-dashboard {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 390px);
+  gap: clamp(14px, 1.1vw, 24px);
+}
+.home-page-active .reel-room-grid { gap: clamp(12px, 1vw, 20px); }
+.home-page-active .reel-room {
+  min-height: clamp(255px, 29vh, 355px);
+  padding: clamp(14px, 1.15vw, 20px);
+  border-radius: 26px;
+  box-shadow: 0 14px 38px rgba(0,0,0,.045), inset 0 1px 0 rgba(255,255,255,.78);
+}
+.home-page-active .reel-room::after { height: 3px; }
+.home-page-active .reel-room-head svg { width: 17px; height: 17px; }
+.home-page-active .reel-room-head strong { font-size: 15px; }
+.home-page-active .reel-room-head b { font-size: 28px; }
+.home-page-active .room-scene-row { gap: 11px; margin-top: 15px; }
+.home-page-active .room-scene-row button {
+  width: 62px;
+  min-height: 62px;
+  gap: 6px;
+}
+.home-page-active .room-scene-row button > span {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+.home-page-active .room-scene-row svg { width: 19px; height: 19px; }
+.home-page-active .room-scene-row small { max-width: 61px; font-size: 9px; }
+.home-page-active .room-level { height: 5px; margin: 13px 0 10px; }
+
+.home-page-active .room-insights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 31px;
+  margin: 0 0 12px;
+}
+.home-page-active .room-insights > span {
+  min-height: 27px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  border-radius: 14px;
+  background: rgba(118,118,128,.065);
+  color: #6e6e73;
+  font-size: 9px;
+  font-weight: 610;
+  white-space: nowrap;
+}
+.home-page-active .room-insights svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.home-page-active .room-insights > span.active { background: rgba(255,214,10,.16); color: #8a6800; }
+.home-page-active .room-insights > span.warning { background: rgba(255,69,58,.10); color: #c53a32; }
+.home-page-active .room-insights > span.presence { background: rgba(48,209,88,.10); color: #248a3d; }
+
+.home-page-active .room-accessory-row {
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap: 7px;
+}
+.home-page-active .room-accessory-row button {
+  min-height: 53px;
+  border-radius: 16px;
+  gap: 5px;
+}
+.home-page-active .room-accessory-row svg { width: 15px; height: 15px; }
+.home-page-active .room-accessory-row span { font-size: 8.5px; }
+.home-page-active .room-open-detail {
+  right: 15px;
+  bottom: 10px;
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 14px;
+  background: rgba(118,118,128,.055);
+  font-size: 9px;
+}
+.home-page-active .room-open-detail svg { width: 11px; height: 11px; }
+
+.home-page-active .reel-side { gap: 10px; }
+.home-page-active .reel-side-card { border-radius: 22px; }
+.home-page-active .home-message-card { padding: 16px 17px; }
+.home-page-active .reel-kicker { font-size: 8px; }
+.home-page-active .house-message { gap: 11px; margin-top: 10px; }
+.home-page-active .house-message > svg { width: 25px; height: 25px; }
+.home-page-active .house-message strong { font-size: 13px; }
+.home-page-active .house-message span { font-size: 10px; }
+.home-page-active .alarm-row { min-height: 68px; padding: 11px 14px; gap: 11px; }
+.home-page-active .side-icon { width: 36px; height: 36px; border-radius: 12px; }
+.home-page-active .side-icon svg { width: 18px; height: 18px; }
+.home-page-active .alarm-row strong { font-size: 12px; }
+.home-page-active .alarm-row small { font-size: 9px; }
+.home-page-active .alarm-row b { font-size: 9px; }
+.home-page-active .thermostat-card,
+.home-page-active .waste-card { padding: 13px 14px; }
+.home-page-active .side-heading { font-size: 9px; }
+.home-page-active .side-heading svg { width: 14px; height: 14px; }
+.home-page-active .reel-sparkline { height: 56px; }
+.home-page-active .thermo-meta { font-size: 9px; }
+.home-page-active .waste-value strong { font-size: 12px; }
+.home-page-active .waste-value small { font-size: 9px; }
+.home-page-active .reel-tools-grid { gap: 8px; }
+.home-page-active .reel-tools-grid button {
+  min-height: 63px;
+  border-radius: 18px;
+  gap: 6px;
+}
+.home-page-active .reel-tools-grid svg { width: 18px; height: 18px; }
+.home-page-active .reel-tools-grid span { font-size: 8px; }
+
+/* More Apple-like modal/control geometry. */
+.reel-home .modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+.reel-home .modal-close svg { width: 15px; height: 15px; }
+.reel-home .modal-danger,
+.reel-home .primary-action,
+.reel-home .routine-all-off,
+.reel-home .mode-segment button,
+.reel-home .vacuum-rooms button,
+.reel-home .vacuum-footer button,
+.reel-home .media-play,
+.reel-home .cover-panel button {
+  border-radius: 999px;
+}
+.reel-home .modal-danger { height: 36px; padding: 0 13px; font-size: 9px; }
+.reel-home .modal-danger svg { width: 14px; height: 14px; }
+
+/* Explicitly preserve the physical size of the room detail card shown in the reference screenshot. */
+.room-modal {
+  width: min(840px, 92vw);
+  padding: 17px;
+  border-radius: 24px;
+}
+.room-modal-grid {
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 8px;
+}
+.room-modal-grid .apple-accessory-tile { min-height: 142px; }
+.room-modal-grid .apple-accessory-main { min-height: 108px; }
+/* Only its typography becomes slightly more legible. */
+.room-modal .modal-head h2 { font-size: 23px; }
+.room-modal-grid .apple-accessory-copy strong { font-size: 10.8px; }
+.room-modal-grid .apple-accessory-copy small { font-size: 8.8px; }
+.room-modal-grid .sheet-slider,
+.room-modal-grid .sheet-color { font-size: 8.7px; }
+
+/* Navigation dock gets a softer iOS capsule silhouette. */
+.page-dock {
+  border-radius: 28px;
+  padding: 5px;
+}
+.page-dock button { border-radius: 23px; }
+
+.night .room-insights > span { background: rgba(255,255,255,.065); color: #c7c7cc; }
+.night .room-insights > span.active { background: rgba(255,214,10,.16); color: #ffd60a; }
+.night .room-insights > span.warning { background: rgba(255,69,58,.13); color: #ff6961; }
+.night .room-insights > span.presence { background: rgba(48,209,88,.12); color: #45d76d; }
+
+@media (min-width: 1900px) {
+  .calendar-page-active .dashboard-grid {
+    grid-template-columns: minmax(315px, .82fr) minmax(900px, 2.3fr) minmax(390px, 1fr);
+  }
+  .calendar-page-active .entity-main strong { font-size: 10px; }
+  .calendar-page-active .entity-main small { font-size: 8.2px; }
+  .home-page-active .reel-dashboard { grid-template-columns: minmax(0,1fr) minmax(360px,420px); }
+  .home-page-active .reel-room { min-height: clamp(285px, 30vh, 390px); }
+}
+
+@media (max-width: 1480px) {
+  .calendar-page-active .dashboard-grid {
+    grid-template-columns: minmax(280px, .82fr) minmax(690px, 2fr);
+  }
+  .calendar-page-active .right-column {
+    grid-column: 1 / -1;
+    grid-template-columns: 250px minmax(0,1fr);
+    align-items: start;
+  }
+  .calendar-page-active .entity-grid { grid-template-columns: repeat(6, minmax(0,1fr)); }
+  .home-page-active .reel-dashboard { grid-template-columns: minmax(0,1fr) minmax(300px,350px); }
+  .home-page-active .reel-room { min-height: 245px; }
+}
+
+@media (max-width: 1080px) {
+  .app-shell { padding: 16px; }
+  .calendar-page-active .dashboard-grid { grid-template-columns: 1fr; }
+  .calendar-page-active .calendar-card { order: -1; }
+  .calendar-page-active .left-column { grid-template-columns: minmax(220px,.75fr) 1fr 1fr; }
+  .calendar-page-active .right-column { grid-column: auto; grid-template-columns: 1fr; }
+  .calendar-page-active .entity-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .home-page-active .reel-dashboard { grid-template-columns: 1fr; }
+  .home-page-active .reel-room { min-height: 230px; }
+  .home-page-active .reel-side { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .home-page-active .reel-tools-grid { grid-column: 1 / -1; grid-template-columns: repeat(5, minmax(0,1fr)); }
+}
+
+@media (max-width: 760px) {
+  .calendar-page-active .left-column { grid-template-columns: 1fr; }
+  .calendar-page-active .calendar-card { overflow-x: auto; }
+  .calendar-page-active .month-grid,
+  .calendar-page-active .calendar-toolbar { min-width: 760px; }
+  .calendar-page-active .entity-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .home-page-active .reel-topbar { grid-template-columns: 1fr auto; }
+  .home-page-active .reel-clock { order: 2; }
+  .home-page-active .reel-top-actions { grid-column: 1 / -1; justify-content: flex-start; overflow-x: auto; }
+  .home-page-active .reel-room-grid { grid-template-columns: 1fr; }
+  .home-page-active .reel-side { grid-template-columns: 1fr; }
+  .home-page-active .reel-tools-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .room-modal-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
