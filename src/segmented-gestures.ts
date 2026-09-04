@@ -1,6 +1,7 @@
 type GestureState = {
   control: HTMLElement;
   buttons: HTMLButtonElement[];
+  pressedButton: HTMLButtonElement | null;
   pointerId: number;
   startX: number;
   startOffset: number;
@@ -30,6 +31,12 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     return target.closest<HTMLElement>(".page-dock, .segmented-control");
   };
 
+  const buttonFromTarget = (target: EventTarget | null, control: HTMLElement) => {
+    if (!(target instanceof Element)) return null;
+    const button = target.closest<HTMLButtonElement>("button");
+    return button && button.parentElement === control ? button : null;
+  };
+
   const onPointerDown = (event: PointerEvent) => {
     if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
 
@@ -48,6 +55,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     gesture = {
       control,
       buttons,
+      pressedButton: buttonFromTarget(event.target, control),
       pointerId: event.pointerId,
       startX: event.clientX,
       startOffset,
@@ -70,7 +78,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     if (!gesture || event.pointerId !== gesture.pointerId) return;
 
     const delta = event.clientX - gesture.startX;
-    if (Math.abs(delta) > 4) {
+    if (Math.abs(delta) > 6) {
       gesture.moved = true;
       gesture.control.classList.add("segment-dragging");
       event.preventDefault();
@@ -81,6 +89,14 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     const nextOffset = Math.max(0, Math.min(gesture.maxOffset, gesture.startOffset + delta));
     gesture.currentOffset = nextOffset;
     gesture.control.style.setProperty("--segment-drag-offset", `${nextOffset}px`);
+  };
+
+  const invokeButton = (control: HTMLElement, button: HTMLButtonElement | undefined | null) => {
+    if (!button || button.disabled) return;
+    // Trigger React's normal onClick handler explicitly. The browser's trusted click
+    // generated after pointerup is suppressed for a very short window to avoid doubles.
+    suppressClick = { control, until: performance.now() + 300 };
+    button.click();
   };
 
   const finishGesture = (event: PointerEvent, cancelled = false) => {
@@ -95,10 +111,10 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
       // Ignore browsers that already released pointer capture.
     }
 
-    if (current.moved) {
-      event.preventDefault();
+    if (!cancelled) {
+      if (current.moved) {
+        event.preventDefault();
 
-      if (!cancelled) {
         const firstLeft = current.buttons[0].offsetLeft;
         const offsets = current.buttons.map((button) => button.offsetLeft - firstLeft);
         let targetIndex = 0;
@@ -112,8 +128,12 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
           }
         });
 
-        suppressClick = { control: current.control, until: performance.now() + 350 };
-        if (targetIndex !== current.activeIndex) current.buttons[targetIndex]?.click();
+        invokeButton(current.control, current.buttons[targetIndex]);
+      } else if (current.pressedButton) {
+        // A normal tap/click is a first-class interaction, not merely a fallback
+        // to dragging. This also makes taps reliable on touch panels using capture.
+        event.preventDefault();
+        invokeButton(current.control, current.pressedButton);
       }
     }
 
