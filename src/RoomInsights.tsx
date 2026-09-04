@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
@@ -66,7 +67,7 @@ export default function RoomInsights({ hass, entityIds, language }: Props) {
   );
 }
 
-function Icon({ children }: { children: React.ReactNode }) {
+function Icon({ children }: { children: ReactNode }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{children}</svg>;
 }
 
