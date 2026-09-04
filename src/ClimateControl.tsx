@@ -125,7 +125,7 @@ export default function ClimateControl({
                 onClick={() => void setClimateFanMode(hass, entityId, mode)}
               >
                 <FanIcon />
-                <span>{humanize(mode)}</span>
+                <span>{optionLabel(mode, language)}</span>
               </button>
             ))}
           </div>
@@ -143,7 +143,7 @@ export default function ClimateControl({
                 className={currentPreset === preset ? "active" : ""}
                 onClick={() => void setClimatePresetMode(hass, entityId, preset)}
               >
-                <span>{humanize(preset)}</span>
+                <span>{optionLabel(preset, language)}</span>
               </button>
             ))}
           </div>
@@ -163,7 +163,7 @@ const itCopy = {
   off: "Spento",
   heat: "Caldo",
   cool: "Freddo",
-  auto: "Auto",
+  auto: "Automatico",
   fanOnly: "Ventola",
   dry: "Deumidifica",
   idle: "In attesa",
@@ -221,6 +221,31 @@ function actionLabel(action: string, copy: typeof itCopy): string {
   return labels[action] ?? humanize(action);
 }
 
+function optionLabel(value: string, language: Language): string {
+  if (language !== "it") return humanize(value);
+  const labels: Record<string, string> = {
+    auto: "Automatico",
+    automatic: "Automatico",
+    low: "Bassa",
+    medium: "Media",
+    middle: "Media",
+    high: "Alta",
+    quiet: "Silenziosa",
+    silent: "Silenziosa",
+    boost: "Turbo",
+    turbo: "Turbo",
+    eco: "Eco",
+    comfort: "Comfort",
+    sleep: "Notte",
+    night: "Notte",
+    away: "Assenza",
+    home: "Casa",
+    none: "Nessuno",
+    normal: "Normale",
+  };
+  return labels[value.toLowerCase()] ?? humanize(value);
+}
+
 function modeIcon(mode: string) {
   if (mode === "heat") return <FlameIcon />;
   if (mode === "cool") return <SnowflakeIcon />;
@@ -266,7 +291,7 @@ function Icon({ children }: { children: ReactNode }) {
 }
 
 function PowerIcon() {
-  return <Icon><path d="M12 3.25v8.25M7.25 6.15a7.7 7.7 0 1 0 9.5 0" /></Icon>;
+  return <Icon><path d="M12 3.5v8M7.55 6.45a7.45 7.45 0 1 0 8.9 0" /></Icon>;
 }
 
 function FlameIcon() {
