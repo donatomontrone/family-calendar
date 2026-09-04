@@ -1,0 +1,205 @@
+/* Compact Home feature panels and shared Apple-like icon/button treatment. */
+
+.modal-close {
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.modal-close svg { width: 13px; height: 13px; }
+
+.weather-pill svg { width: 12px; height: 12px; }
+.pin-grid button svg { width: 14px; height: 14px; }
+.vacuum-actions button svg { width: 15px; height: 15px; }
+.cover-panel > div:last-child button svg { width: 15px; height: 15px; }
+
+.climate-empty-card {
+  min-height: 94px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(60,60,67,.06);
+  border-radius: 16px;
+  background: rgba(255,255,255,.68);
+}
+.climate-empty-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(118,118,128,.07);
+  color: #8e8e93;
+}
+.climate-empty-icon svg { width: 15px; height: 15px; }
+.climate-empty-card > div { display: flex; flex-direction: column; gap: 2px; }
+.climate-empty-card strong { font-size: 10px; }
+.climate-empty-card small { color: #8e8e93; font-size: 7px; }
+.climate-empty-card b { font-size: 18px; font-weight: 430; letter-spacing: -.04em; }
+
+.room-modal-grid .apple-accessory-tile.domain-climate {
+  grid-column: span 2;
+  min-height: auto;
+  padding-bottom: 9px;
+}
+.room-modal-grid .apple-accessory-tile.domain-climate .apple-accessory-main { min-height: 86px; }
+.room-modal-grid .apple-accessory-tile.domain-climate .climate-control { margin: 0 9px; }
+
+.feature-empty {
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  color: #8e8e93;
+  font-size: 9px;
+}
+
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 7px;
+}
+.sensor-grid article {
+  min-height: 54px;
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(60,60,67,.055);
+  border-radius: 13px;
+  background: rgba(118,118,128,.04);
+}
+.sensor-grid article > span {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(118,118,128,.08);
+  color: #6e6e73;
+}
+.sensor-grid article.active > span {
+  background: rgba(255,149,0,.14);
+  color: #d87800;
+}
+.sensor-grid svg { width: 14px; height: 14px; }
+.sensor-grid article > div { display: flex; flex-direction: column; gap: 2px; }
+.sensor-grid strong { font-size: 9px; }
+.sensor-grid small { font-size: 7px; color: #8e8e93; }
+.sensor-grid article.active small { color: #c56a00; }
+
+.camera-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 8px;
+}
+.camera-grid article {
+  overflow: hidden;
+  border: 1px solid rgba(60,60,67,.055);
+  border-radius: 15px;
+  background: rgba(118,118,128,.04);
+}
+.camera-preview {
+  height: 105px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(225,228,233,.92), rgba(206,211,219,.9));
+  color: #8e8e93;
+}
+.camera-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.camera-preview svg { width: 24px; height: 24px; }
+.camera-grid article > div:last-child {
+  padding: 8px 10px 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.camera-grid strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9px; }
+.camera-grid small { flex: 0 0 auto; color: #30a46c; font-size: 7px; }
+
+.media-list { display: grid; gap: 7px; }
+.media-list article {
+  display: grid;
+  grid-template-columns: auto 1fr auto minmax(90px,140px);
+  align-items: center;
+  gap: 9px;
+  min-height: 55px;
+  padding: 8px 10px;
+  border: 1px solid rgba(60,60,67,.055);
+  border-radius: 13px;
+  background: rgba(118,118,128,.04);
+}
+.media-device-icon,
+.media-play {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(118,118,128,.08);
+  color: #6e6e73;
+}
+.media-device-icon.active { background: rgba(10,132,255,.11); color: #0a84ff; }
+.media-play { cursor: pointer; }
+.media-device-icon svg,
+.media-play svg { width: 14px; height: 14px; }
+.media-copy { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.media-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9px; }
+.media-copy small { color: #8e8e93; font-size: 7px; }
+.media-list input[type="range"] { width: 100%; accent-color: #0a84ff; }
+
+/* The Home action tiles are intentionally flatter and smaller than traditional web buttons. */
+.reel-tools-grid button {
+  border-color: rgba(60,60,67,.045);
+  background: rgba(118,118,128,.045);
+  color: #5f5f64;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.62);
+}
+.reel-tools-grid button:hover { background: rgba(118,118,128,.075); }
+.reel-tools-grid svg { width: 12px; height: 12px; }
+
+.room-scene-row button > span,
+.room-accessory-row button,
+.side-icon,
+.climate-control-icon,
+.apple-accessory-icon {
+  box-shadow: none;
+}
+
+/* Preserve the light's actual color, while keeping readable text and icon contrast. */
+.apple-accessory-tile.active[style] {
+  background: color-mix(in srgb,var(--accessory-accent) 15%,white);
+}
+.apple-accessory-tile.active[style] .apple-accessory-icon {
+  background: var(--accessory-accent);
+  color: color-mix(in srgb, #1d1d1f 84%, var(--accessory-accent));
+}
+
+.night .sensor-grid article,
+.night .camera-grid article,
+.night .media-list article,
+.night .climate-empty-card {
+  border-color: rgba(255,255,255,.055);
+  background: rgba(255,255,255,.045);
+}
+.night .sensor-grid strong,
+.night .camera-grid strong,
+.night .media-copy strong,
+.night .climate-empty-card strong,
+.night .climate-empty-card b { color: #f5f5f7; }
+.night .camera-preview { background: linear-gradient(145deg, rgba(54,54,58,.95), rgba(37,37,40,.95)); }
+.night .media-device-icon,
+.night .media-play,
+.night .sensor-grid article > span { background: rgba(255,255,255,.07); color: #d1d1d6; }
+
+@media (max-width: 700px) {
+  .sensor-grid,
+  .camera-grid { grid-template-columns: 1fr; }
+  .media-list article { grid-template-columns: auto 1fr auto; }
+  .media-list article input[type="range"] { grid-column: 1 / -1; }
+  .room-modal-grid .apple-accessory-tile.domain-climate { grid-column: 1 / -1; }
+}
