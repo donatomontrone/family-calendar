@@ -9,6 +9,7 @@ import "./apple-home.css";
 import "./stability.css";
 import "./reel-home.css";
 import "./climate.css";
+import "./home-features.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
