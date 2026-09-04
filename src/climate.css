@@ -1,0 +1,393 @@
+/* Climate controls and final compact Apple-style polish. */
+
+.climate-control {
+  --climate-accent: #8e8e93;
+  --climate-accent-soft: rgba(142,142,147,.12);
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+  border: 1px solid rgba(60,60,67,.07);
+  border-radius: 18px;
+  background: rgba(255,255,255,.72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 8px 24px rgba(0,0,0,.035);
+  backdrop-filter: blur(22px) saturate(135%);
+}
+
+.climate-control.mode-heat { --climate-accent: #ff9f0a; --climate-accent-soft: rgba(255,159,10,.13); }
+.climate-control.mode-cool { --climate-accent: #0a84ff; --climate-accent-soft: rgba(10,132,255,.12); }
+.climate-control.mode-heat_cool,
+.climate-control.mode-auto { --climate-accent: #30b779; --climate-accent-soft: rgba(48,183,121,.12); }
+.climate-control.mode-fan_only { --climate-accent: #5e5ce6; --climate-accent-soft: rgba(94,92,230,.11); }
+.climate-control.mode-dry { --climate-accent: #64d2ff; --climate-accent-soft: rgba(100,210,255,.13); }
+
+.climate-control svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.climate-control-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.climate-control-title {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.climate-control-icon {
+  width: 29px;
+  height: 29px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--climate-accent-soft);
+  color: var(--climate-accent);
+}
+
+.climate-control-title > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.climate-control-title strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 690;
+  letter-spacing: -.018em;
+}
+
+.climate-control-title small,
+.climate-current span,
+.climate-target-value span {
+  color: #8e8e93;
+  font-size: 7.5px;
+  font-weight: 570;
+}
+
+.climate-current {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.climate-current strong {
+  font-size: 19px;
+  line-height: 1;
+  font-weight: 430;
+  letter-spacing: -.045em;
+}
+
+.climate-target-row {
+  display: grid;
+  grid-template-columns: 31px 1fr 31px;
+  align-items: center;
+  gap: 8px;
+}
+
+.climate-step-button {
+  width: 31px;
+  height: 31px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(118,118,128,.09);
+  color: #3a3a3c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+  cursor: pointer;
+}
+
+.climate-step-button:hover { background: rgba(118,118,128,.14); }
+.climate-step-button:active { transform: scale(.94); }
+
+.climate-target-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 13px;
+  background: var(--climate-accent-soft);
+}
+
+.climate-target-value strong {
+  margin-top: 1px;
+  color: #1d1d1f;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 450;
+  letter-spacing: -.055em;
+}
+
+.climate-temperature-slider {
+  width: 100%;
+  height: 4px;
+  accent-color: var(--climate-accent);
+  cursor: pointer;
+}
+
+.climate-section-label {
+  margin-top: 1px;
+  color: #8e8e93;
+  font-size: 6.5px;
+  font-weight: 730;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.climate-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+  gap: 5px;
+}
+
+.climate-mode-button,
+.climate-chip-row button {
+  min-width: 0;
+  border: 1px solid rgba(60,60,67,.045);
+  background: rgba(118,118,128,.055);
+  color: #6e6e73;
+  cursor: pointer;
+  transition: transform .13s ease, background .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.climate-mode-button {
+  min-height: 45px;
+  padding: 6px 3px;
+  border-radius: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.climate-mode-button span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 6.5px;
+  font-weight: 650;
+}
+
+.climate-mode-button:hover,
+.climate-chip-row button:hover { background: rgba(118,118,128,.09); }
+.climate-mode-button:active,
+.climate-chip-row button:active { transform: scale(.96); }
+
+.climate-mode-button.active {
+  border-color: transparent;
+  background: var(--climate-accent-soft);
+  color: var(--climate-accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--climate-accent) 16%, transparent);
+}
+
+.climate-mode-button.mode-off.active { color: #6e6e73; background: rgba(118,118,128,.12); }
+.climate-mode-button.mode-heat.active { color: #ff9500; background: rgba(255,149,0,.13); }
+.climate-mode-button.mode-cool.active { color: #007aff; background: rgba(0,122,255,.12); }
+.climate-mode-button.mode-heat_cool.active,
+.climate-mode-button.mode-auto.active { color: #1f9d68; background: rgba(31,157,104,.12); }
+.climate-mode-button.mode-fan_only.active { color: #5856d6; background: rgba(88,86,214,.11); }
+.climate-mode-button.mode-dry.active { color: #1798c1; background: rgba(23,152,193,.11); }
+
+.climate-secondary-section { display: grid; gap: 5px; }
+.climate-chip-row { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.climate-chip-row button {
+  min-height: 27px;
+  padding: 0 9px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 7px;
+  font-weight: 640;
+}
+
+.climate-chip-row button svg { width: 11px; height: 11px; }
+.climate-chip-row button.active { background: var(--climate-accent); color: #fff; border-color: transparent; }
+
+.climate-compact {
+  gap: 7px;
+  padding: 9px;
+  border-radius: 14px;
+  box-shadow: none;
+  background: rgba(118,118,128,.035);
+}
+
+.climate-compact .climate-control-icon { width: 25px; height: 25px; border-radius: 8px; }
+.climate-compact .climate-current strong { font-size: 16px; }
+.climate-compact .climate-target-row { grid-template-columns: 27px 1fr 27px; gap: 6px; }
+.climate-compact .climate-step-button { width: 27px; height: 27px; }
+.climate-compact .climate-target-value { min-height: 38px; }
+.climate-compact .climate-target-value strong { font-size: 18px; }
+.climate-compact .climate-mode-button { min-height: 38px; border-radius: 9px; }
+
+/* Calendar: accessory cards stay deliberately much smaller than Home cards. */
+.calendar-page-active .entity-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  padding: 0 9px;
+}
+
+.calendar-page-active .entity-tile {
+  min-height: 64px;
+  aspect-ratio: auto;
+  border-radius: 13px;
+}
+
+.calendar-page-active .entity-main {
+  min-height: 64px;
+  padding: 6px 5px 6px;
+}
+
+.calendar-page-active .entity-icon {
+  top: 5px;
+  left: 5px;
+  width: 21px;
+  height: 21px;
+  border-radius: 6px;
+}
+
+.calendar-page-active .entity-icon svg { width: 12px; height: 12px; }
+.calendar-page-active .entity-main strong { font-size: 8.6px; line-height: 1.03; }
+.calendar-page-active .entity-main small { margin-top: 1px; font-size: 7px; }
+.calendar-page-active .favorite-button,
+.calendar-page-active .control-button { width: 17px; height: 17px; right: 4px; border-radius: 6px; }
+.calendar-page-active .favorite-button { top: 4px; }
+.calendar-page-active .control-button { bottom: 4px; }
+.calendar-page-active .favorite-button svg,
+.calendar-page-active .control-button svg { width: 9px; height: 9px; }
+
+/* Home: tighter room cards, closer to an iPad Home dashboard density. */
+.home-page-active .reel-dashboard { grid-template-columns: minmax(0,1fr) minmax(245px,292px); gap: 8px; }
+.home-page-active .reel-room-grid { gap: 7px; }
+.home-page-active .reel-room {
+  min-height: 176px;
+  padding: 9px;
+  border-radius: 16px;
+}
+.home-page-active .reel-room-head strong { font-size: 10px; }
+.home-page-active .reel-room-head b { font-size: 18px; }
+.home-page-active .room-scene-row { gap: 5px; margin-top: 7px; }
+.home-page-active .room-scene-row button { width: 42px; min-height: 39px; gap: 3px; }
+.home-page-active .room-scene-row button > span { width: 27px; height: 27px; }
+.home-page-active .room-scene-row svg { width: 13px; height: 13px; }
+.home-page-active .room-level { height: 3px; margin: 6px 0; }
+.home-page-active .room-accessory-row { gap: 4px; }
+.home-page-active .room-accessory-row button { min-height: 35px; border-radius: 9px; gap: 3px; }
+.home-page-active .room-accessory-row svg { width: 11px; height: 11px; }
+.home-page-active .room-open-detail { bottom: 4px; }
+
+.home-page-active .reel-side { gap: 6px; }
+.home-page-active .reel-side-card { border-radius: 13px; }
+.home-page-active .reel-tools-grid button { min-height: 42px; border-radius: 10px; }
+
+/* Consistent native-feeling buttons and iconography. */
+.app-shell button {
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-shell button:focus-visible,
+.app-shell select:focus-visible,
+.app-shell input:focus-visible {
+  outline: 2px solid rgba(0,122,255,.34);
+  outline-offset: 2px;
+}
+
+.reel-home button,
+.calendar-page-active button {
+  transition: transform .13s ease, background-color .16s ease, color .16s ease, box-shadow .16s ease, border-color .16s ease, opacity .16s ease;
+}
+
+.reel-home button:active,
+.calendar-page-active button:active { transform: scale(.965); }
+
+.reel-tools-grid button,
+.room-accessory-row button,
+.room-scene-row button > span,
+.modal-close,
+.calendar-actions button,
+.page-dock button,
+.room-switcher button,
+.power-all,
+.control-button,
+.favorite-button {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+
+.reel-tools-grid button:hover,
+.room-accessory-row button:hover,
+.calendar-actions button:hover,
+.page-dock button:hover,
+.room-switcher button:hover {
+  background-color: rgba(255,255,255,.86);
+}
+
+.reel-home svg,
+.calendar-page-active svg {
+  shape-rendering: geometricPrecision;
+}
+
+/* Home climate overlay now gives each thermostat room to breathe without oversized cards. */
+.climate-modal.feature-modal { width: min(760px, 92vw); }
+.climate-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 8px;
+}
+.climate-grid > .climate-control { min-width: 0; }
+
+.room-modal-grid .climate-control {
+  grid-column: 1 / -1;
+}
+
+.night .climate-control {
+  border-color: rgba(255,255,255,.07);
+  background: rgba(44,44,46,.82);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 10px 28px rgba(0,0,0,.18);
+}
+.night .climate-control-title strong,
+.night .climate-current strong,
+.night .climate-target-value strong { color: #f5f5f7; }
+.night .climate-target-value,
+.night .climate-mode-button,
+.night .climate-chip-row button,
+.night .climate-step-button { background-color: rgba(255,255,255,.07); }
+.night .climate-target-value { background: var(--climate-accent-soft); }
+.night .climate-step-button { color: #f5f5f7; }
+
+@media (max-width: 1380px) and (min-width: 1081px) {
+  .calendar-page-active .entity-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .home-page-active .reel-room { min-height: 168px; }
+}
+
+@media (max-width: 1080px) {
+  .calendar-page-active .entity-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .climate-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .calendar-page-active .entity-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .climate-mode-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
