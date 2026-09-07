@@ -16,6 +16,7 @@ import segmentedStyles from "./segmented.css?inline";
 import designSystemStyles from "./design-system.css?inline";
 import designTuningStyles from "./design-tuning.css?inline";
 import calendarSmartHomePolishStyles from "./calendar-smart-home-polish.css?inline";
+import smartHomeDeviceCardStyles from "./smart-home-device-cards.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -23,7 +24,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}`;
+  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}`;
   document.head.appendChild(style);
 }
 
