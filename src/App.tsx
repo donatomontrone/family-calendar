@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import HomeView from "./HomeView";
 import ClimateControl from "./ClimateControl";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
@@ -100,6 +100,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const [selectedEntity, setSelectedEntity] = useState<string | null>(null);
   const [todo, setTodo] = useState<Task[]>(() => buildDemoTodo(language));
   const [shopping, setShopping] = useState<Task[]>(() => buildDemoShopping(language));
+  const [addingTask, setAddingTask] = useState(false);
+  const [taskDraft, setTaskDraft] = useState("");
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
@@ -159,6 +161,19 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
     mode === "todo" ? setTodo(remove) : setShopping(remove);
   }
 
+  function addTask(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const label = taskDraft.trim();
+    if (!label) return;
+
+    const nextTask: Task = { id: Date.now(), label, done: false };
+    if (mode === "todo") setTodo((items) => [nextTask, ...items]);
+    else setShopping((items) => [nextTask, ...items]);
+
+    setTaskDraft("");
+    setAddingTask(false);
+  }
+
   async function turnOffScope() {
     const targetIds = room === "__favorites" ? allHomeEntities : roomEntities;
     await deactivateEntities(hass, targetIds);
@@ -172,13 +187,46 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
             <ClockPanel now={now} language={language} demo={demo} />
             <AgendaPanel now={now} events={events} language={language} />
             <section className="card tasks-card">
-              <div className="card-heading split">
+              <div className="card-heading split tasks-heading">
                 <div>
                   <span className="section-kicker">{t("lists", language)}</span>
                   <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
                 </div>
-                <span className="count-pill">{currentTasks.filter((item) => !item.done).length}</span>
+                <button
+                  className={`task-add-button ${addingTask ? "active" : ""}`}
+                  type="button"
+                  aria-label={addingTask ? t("close", language) : t("add", language)}
+                  title={addingTask ? t("close", language) : t("add", language)}
+                  onClick={() => {
+                    setAddingTask((value) => !value);
+                    if (addingTask) setTaskDraft("");
+                  }}
+                >
+                  {addingTask ? <CloseIcon /> : <PlusIcon />}
+                </button>
               </div>
+
+              {addingTask && (
+                <form className="task-composer" onSubmit={addTask}>
+                  <input
+                    autoFocus
+                    value={taskDraft}
+                    onChange={(event) => setTaskDraft(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        setTaskDraft("");
+                        setAddingTask(false);
+                      }
+                    }}
+                    placeholder={language === "it" ? "Nuovo elemento" : "New item"}
+                    aria-label={t("add", language)}
+                  />
+                  <button className="task-save-button" type="submit" aria-label={t("add", language)} title={t("add", language)} disabled={!taskDraft.trim()}>
+                    <CheckIcon />
+                  </button>
+                </form>
+              )}
+
               <div className="task-list">
                 {currentTasks.map((item) => (
                   <div className={`task-row ${item.done ? "done" : ""}`} key={item.id}>
@@ -194,7 +242,6 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   </div>
                 ))}
               </div>
-              <button className="text-button" type="button">+ {t("add", language)}</button>
               <div className="segmented-control">
                 <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
                 <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
@@ -223,8 +270,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   <span className="section-kicker">{t("smartHome", language)}</span>
                   <h2>{t("home", language)}</h2>
                 </div>
-                <button className="power-all" onClick={() => void turnOffScope()}>
-                  <PowerIcon /> {t("turnOffAll", language)}
+                <button className="power-all" onClick={() => void turnOffScope()} aria-label={t("turnOffAll", language)} title={t("turnOffAll", language)}>
+                  <PowerIcon />
                 </button>
               </div>
 
@@ -510,15 +557,17 @@ function iconForEntity(entityId: string) {
   return <PowerIcon />;
 }
 
-function StarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.48 5.02 5.54.81-4.01 3.91.95 5.52L12 16.25l-4.96 2.61.95-5.52-4.01-3.91 5.54-.81L12 3.6Z" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6v7.9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/><path d="M7.65 6.55a7.35 7.35 0 1 0 8.7 0" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
-function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5 1 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.7" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M5 9h14M8 12h8M8 15h8" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>; }
-function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.4 14.8V5.6a2.4 2.4 0 0 0-4.8 0v9.2a4.4 4.4 0 1 0 4.8 0Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/><path d="M12 8v8" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/></svg>; }
-function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h8m4 0h2M5 17h3m4 0h7M13 4v6M8 14v6" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/></svg>; }
-function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.7 8.2h8.6l-.65 9.35a1.8 1.8 0 0 1-1.8 1.68h-3.7a1.8 1.8 0 0 1-1.8-1.68L7.7 8.2Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M6 6.4h12M9.5 6.4V4.8h5v1.6M10.4 11v4.7M13.6 11v4.7" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
-function CalendarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="5.5" width="15" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M8 3.5v4m8-4v4M4.5 10h15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
-function HomeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 11.1 12 4.5l8.3 6.6v8.2c0 .7-.5 1.2-1.2 1.2h-4.6v-5.7h-5v5.7H4.9c-.7 0-1.2-.5-1.2-1.2v-8.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/></svg>; }
-function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 7.5 9 9M16.5 7.5l-9 9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
-function ChevronLeftIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function ChevronRightIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function StarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.48 5.02 5.54.81-4.01 3.91.95 5.52L12 16.25l-4.96 2.61.95-5.52-4.01-3.91 5.54-.81L12 3.6Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6v7.9" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/><path d="M7.65 6.55a7.35 7.35 0 1 0 8.7 0" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/></svg>; }
+function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5 1 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.7" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M5 9h14M8 12h8M8 15h8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
+function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.4 14.8V5.6a2.4 2.4 0 0 0-4.8 0v9.2a4.4 4.4 0 1 0 4.8 0Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><path d="M12 8v8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h8m4 0h2M5 17h3m4 0h7M13 4v6M8 14v6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.1 8.25h7.8l-.55 9.1a1.9 1.9 0 0 1-1.9 1.78h-2.9a1.9 1.9 0 0 1-1.9-1.78l-.55-9.1Z" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round"/><path d="M6.2 6.4h11.6M9.35 6.4V4.85h5.3V6.4M10.25 11v4.9M13.75 11v4.9" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/></svg>; }
+function PlusIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
+function CheckIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6.2 12.4 3.65 3.65L17.9 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function CalendarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="5.5" width="15" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M8 3.5v4m8-4v4M4.5 10h15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function HomeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 11.1 12 4.5l8.3 6.6v8.2c0 .7-.5 1.2-1.2 1.2h-4.6v-5.7h-5v5.7H4.9c-.7 0-1.2-.5-1.2-1.2v-8.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>; }
+function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 7.5 9 9M16.5 7.5l-9 9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
+function ChevronLeftIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function ChevronRightIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
