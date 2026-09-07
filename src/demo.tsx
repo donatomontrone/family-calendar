@@ -15,6 +15,7 @@ import "./segmented.css";
 import "./design-system.css";
 import "./design-tuning.css";
 import "./calendar-smart-home-polish.css";
+import "./smart-home-device-cards.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
