@@ -31,6 +31,8 @@ type DemoEvent = {
   tone?: "mint" | "blue" | "amber" | "violet";
 };
 
+const ACTIVE_ENTITY_STATES = new Set(["on", "open", "heat", "cool", "heat_cool", "auto", "fan_only", "dry", "playing", "unlocked"]);
+const PASSIVE_DASHBOARD_DOMAINS = new Set(["sensor", "binary_sensor", "camera", "weather", "person", "device_tracker"]);
 const pad = (value: number) => String(value).padStart(2, "0");
 const dateKey = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 const addDays = (date: Date, days: number) => {
@@ -191,7 +193,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   }
 
   async function turnOffScope() {
-    const targetIds = room === "__favorites" ? allHomeEntities : roomEntities;
+    const scopeIds = room === "__favorites" ? allHomeEntities : roomEntities;
+    const targetIds = scopeIds.filter((entityId) => !isPassiveDashboardEntity(hass, entityId));
     await deactivateEntities(hass, targetIds);
   }
 
@@ -341,19 +344,28 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   {roomEntities.map((entityId) => {
                     const state = hass.states[entityId];
                     const domain = entityId.split(".")[0];
-                    const active = ["on", "open", "heat", "cool", "heat_cool", "auto", "fan_only", "dry", "playing", "unlocked"].includes(state.state);
-                    const configurable = ["light", "cover", "climate"].includes(domain);
+                    const passive = isPassiveDashboardEntity(hass, entityId);
+                    const active = !passive && ACTIVE_ENTITY_STATES.has(state.state);
+                    const configurable = !passive && ["light", "cover", "climate"].includes(domain);
+                    const status = entityStatus(hass, entityId, language);
+                    const content = (
+                      <>
+                        <span className="entity-icon">{iconForEntity(hass, entityId)}</span>
+                        <strong>{displayName(hass, entityId)}</strong>
+                        <small>{status}</small>
+                      </>
+                    );
                     return (
                       <article
-                        className={`entity-tile domain-${domain} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
+                        className={`entity-tile domain-${domain} ${passive ? "passive" : ""} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
                         style={accessoryStyle(hass, entityId)}
                         key={entityId}
                       >
-                        <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>
-                          <span className="entity-icon">{iconForEntity(entityId)}</span>
-                          <strong>{displayName(hass, entityId)}</strong>
-                          <small>{entityStatus(hass, entityId, language)}</small>
-                        </button>
+                        {passive ? (
+                          <div className="entity-main entity-main-passive" aria-label={`${displayName(hass, entityId)}: ${status}`}>{content}</div>
+                        ) : (
+                          <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>{content}</button>
+                        )}
                         <button
                           className={`favorite-button ${favorites.includes(entityId) ? "selected" : ""}`}
                           aria-label={t("favorites", language)}
@@ -553,6 +565,17 @@ function getMonthCells(month: Date) {
   });
 }
 
+function isPassiveDashboardEntity(hass: Hass, entityId: string) {
+  const domain = entityId.split(".")[0];
+  if (PASSIVE_DASHBOARD_DOMAINS.has(domain)) return true;
+  if (domain !== "media_player") return false;
+
+  const state = hass.states[entityId];
+  const deviceClass = String(state?.attributes.device_class ?? "").toLowerCase();
+  const name = String(state?.attributes.friendly_name ?? entityId).toLowerCase();
+  return deviceClass === "speaker" || name.includes("homepod");
+}
+
 function entityStatus(hass: Hass, entityId: string, language: Language) {
   const state = hass.states[entityId];
   const domain = entityId.split(".")[0];
@@ -563,6 +586,40 @@ function entityStatus(hass: Hass, entityId: string, language: Language) {
     const target = Number(state.attributes.temperature);
     if (Number.isFinite(current) && Number.isFinite(target)) return `${current.toFixed(1)}° → ${target.toFixed(target % 1 === 0 ? 0 : 1)}°`;
     if (Number.isFinite(current)) return `${current.toFixed(1)}°`;
+  }
+  if (domain === "sensor") {
+    const unit = String(state.attributes.unit_of_measurement ?? "");
+    if (!unit) return state.state;
+    const separator = unit === "%" || unit.startsWith("°") ? "" : " ";
+    return `${state.state}${separator}${unit}`;
+  }
+  if (domain === "binary_sensor") {
+    const deviceClass = String(state.attributes.device_class ?? "").toLowerCase();
+    const detected = state.state === "on";
+    if (["motion", "occupancy", "presence"].includes(deviceClass)) {
+      return language === "it" ? (detected ? "Presenza rilevata" : "Nessuna presenza") : (detected ? "Presence detected" : "No presence");
+    }
+    if (["door", "window", "opening", "garage_door"].includes(deviceClass)) {
+      return language === "it" ? (detected ? "Aperta" : "Chiusa") : (detected ? "Open" : "Closed");
+    }
+    if (deviceClass === "moisture") {
+      return language === "it" ? (detected ? "Umidità rilevata" : "Asciutto") : (detected ? "Moisture detected" : "Dry");
+    }
+    return language === "it" ? (detected ? "Rilevato" : "Normale") : (detected ? "Detected" : "Clear");
+  }
+  if (domain === "media_player") {
+    const title = String(state.attributes.media_title ?? "").trim();
+    const volume = Number(state.attributes.volume_level);
+    const volumeText = Number.isFinite(volume) ? `${Math.round(volume * 100)}%` : "";
+    if (title) return volumeText ? `${title} · ${volumeText}` : title;
+    if (state.state === "playing") return language === "it" ? "In riproduzione" : "Playing";
+    if (state.state === "paused") return language === "it" ? "In pausa" : "Paused";
+    return language === "it" ? "Disponibile" : "Available";
+  }
+  if (domain === "camera") {
+    return ["unavailable", "unknown"].includes(state.state)
+      ? (language === "it" ? "Non disponibile" : "Unavailable")
+      : (language === "it" ? "Disponibile" : "Available");
   }
   const map: Record<string, string> = language === "it"
     ? { on: "Acceso", off: "Spento", open: "Aperta", closed: "Chiusa", heat: "Riscaldamento", cool: "Raffrescamento", heat_cool: "Automatico", auto: "Automatico", fan_only: "Ventola", dry: "Deumidifica", playing: "In riproduzione", unavailable: "Non risponde", unknown: "Non disponibile", unlocked: "Sbloccata", locked: "Bloccata" }
@@ -579,11 +636,20 @@ function accessoryStyle(hass: Hass, entityId: string): CSSProperties | undefined
   return { "--accessory-active": lightColor(hass, entityId) } as CSSProperties;
 }
 
-function iconForEntity(entityId: string) {
+function iconForEntity(hass: Hass, entityId: string) {
   const domain = entityId.split(".")[0];
   if (domain === "light") return <BulbIcon />;
   if (domain === "cover") return <CoverIcon />;
   if (domain === "climate") return <ClimateIcon />;
+  if (domain === "sensor") {
+    const deviceClass = String(hass.states[entityId]?.attributes.device_class ?? "");
+    if (deviceClass === "temperature") return <ClimateIcon />;
+    if (deviceClass === "humidity") return <DropletIcon />;
+    return <SensorIcon />;
+  }
+  if (domain === "binary_sensor") return <PresenceIcon />;
+  if (domain === "media_player") return <SpeakerIcon />;
+  if (domain === "camera") return <CameraIcon />;
   return <PowerIcon />;
 }
 
@@ -592,6 +658,11 @@ function PowerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path 
 function BulbIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5 1 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function CoverIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.7" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M5 9h14M8 12h8M8 15h8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>; }
 function ClimateIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.4 14.8V5.6a2.4 2.4 0 0 0-4.8 0v9.2a4.4 4.4 0 1 0 4.8 0Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><path d="M12 8v8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
+function DropletIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.7c3.1 4.1 5.2 6.8 5.2 9.8a5.2 5.2 0 0 1-10.4 0c0-3 2.1-5.7 5.2-9.8Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/><path d="M9.5 14.2a2.8 2.8 0 0 0 2.7 2.1" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>; }
+function SensorIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M7.7 7.7a6.1 6.1 0 0 0 0 8.6M16.3 7.7a6.1 6.1 0 0 1 0 8.6M5 5a9.9 9.9 0 0 0 0 14M19 5a9.9 9.9 0 0 1 0 14" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>; }
+function PresenceIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M7.7 19c.45-3.4 1.9-5.6 4.3-5.6s3.85 2.2 4.3 5.6M5 9.4a8.1 8.1 0 0 0 0 5.2M19 9.4a8.1 8.1 0 0 1 0 5.2" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>; }
+function SpeakerIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 10h3.2l4.5-3.7v11.4L8.4 14H5.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/><path d="M16 9.1a4.3 4.3 0 0 1 0 5.8M18.4 6.8a7.5 7.5 0 0 1 0 10.4" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>; }
+function CameraIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6.5" width="11.5" height="11" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="m16 10 4-2.1v8.2L16 14Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>; }
 function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h8m4 0h2M5 17h3m4 0h7M13 4v6M8 14v6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
 function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.1 8.25h7.8l-.55 9.1a1.9 1.9 0 0 1-1.9 1.78h-2.9a1.9 1.9 0 0 1-1.9-1.78l-.55-9.1Z" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round"/><path d="M6.2 6.4h11.6M9.35 6.4V4.85h5.3V6.4M10.25 11v4.9M13.75 11v4.9" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/></svg>; }
 function PlusIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
