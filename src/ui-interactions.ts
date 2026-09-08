@@ -25,7 +25,35 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     return target.closest<HTMLElement>(".room-chip-strip");
   };
 
+  const syncSegmentWidth = () => {
+    const taskSegment = document.querySelector<HTMLElement>(".tasks-card .task-segmented-control, .tasks-card .segmented-control");
+    if (!taskSegment) return;
+
+    if (taskSegment !== observedTaskSegment) {
+      resizeObserver?.disconnect();
+      observedTaskSegment = taskSegment;
+      resizeObserver = new ResizeObserver(() => syncSegmentWidth());
+      resizeObserver.observe(taskSegment);
+    }
+
+    const width = taskSegment.getBoundingClientRect().width;
+    if (width > 0) {
+      document.documentElement.style.setProperty("--family-calendar-segment-width", `${Math.round(width * 100) / 100}px`);
+    }
+  };
+
   const onPointerDown = (event: PointerEvent) => {
+    const openDeviceModal = document.querySelector<HTMLElement>(".calendar-page-active .device-controls");
+    if (openDeviceModal && event.target instanceof Node && !openDeviceModal.contains(event.target)) {
+      const closeButton = openDeviceModal.querySelector<HTMLButtonElement>(".device-controls-heading button");
+      if (closeButton) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeButton.click();
+        return;
+      }
+    }
+
     if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
     const strip = roomStripFromTarget(event.target);
     if (!strip || strip.scrollWidth <= strip.clientWidth + 1) return;
@@ -49,7 +77,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     if (!drag || event.pointerId !== drag.pointerId) return;
     const delta = event.clientX - drag.startX;
 
-    if (!drag.moved && Math.abs(delta) > 5) {
+    if (!drag.moved && Math.abs(delta) > 4) {
       drag.moved = true;
       drag.strip.classList.add("is-horizontal-dragging");
     }
@@ -72,7 +100,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
 
     if (current.moved) {
       event.preventDefault();
-      suppressRoomClickUntil = performance.now() + 250;
+      suppressRoomClickUntil = performance.now() + 280;
     }
 
     requestAnimationFrame(() => current.strip.classList.remove("is-horizontal-dragging"));
@@ -81,41 +109,38 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   const onWheel = (event: WheelEvent) => {
     const strip = roomStripFromTarget(event.target);
     if (!strip || strip.scrollWidth <= strip.clientWidth + 1) return;
-    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!delta) return;
 
     const max = strip.scrollWidth - strip.clientWidth;
-    const next = Math.max(0, Math.min(max, strip.scrollLeft + event.deltaY));
+    const next = Math.max(0, Math.min(max, strip.scrollLeft + delta));
     if (next === strip.scrollLeft) return;
 
     event.preventDefault();
     strip.scrollLeft = next;
   };
 
-  const syncSegmentWidth = () => {
-    const taskSegment = document.querySelector<HTMLElement>(".tasks-card .segmented-control");
-    if (!taskSegment) return;
+  const onHeaderActionClick = (event: MouseEvent) => {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest<HTMLButtonElement>(".security-pill, .round-top");
+    if (!button || !button.closest(".app-shell")) return;
 
-    if (taskSegment !== observedTaskSegment) {
-      resizeObserver?.disconnect();
-      observedTaskSegment = taskSegment;
-      resizeObserver = new ResizeObserver(() => syncSegmentWidth());
-      resizeObserver.observe(taskSegment);
-    }
-
-    const width = taskSegment.getBoundingClientRect().width;
-    if (width > 0) {
-      document.documentElement.style.setProperty("--family-calendar-segment-width", `${Math.round(width * 100) / 100}px`);
-    }
+    const action = button.classList.contains("security-pill") ? "alarm" : "notifications";
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    document.dispatchEvent(new CustomEvent("family-calendar-header-action", { detail: action }));
   };
 
   const mutationObserver = new MutationObserver(() => requestAnimationFrame(syncSegmentWidth));
   mutationObserver.observe(document.documentElement, { childList: true, subtree: true });
 
-  document.addEventListener("pointerdown", onPointerDown, { capture: true, passive: true });
+  document.addEventListener("pointerdown", onPointerDown, { capture: true, passive: false });
   document.addEventListener("pointermove", onPointerMove, { capture: true, passive: false });
   document.addEventListener("pointerup", finishPointer, { capture: true, passive: false });
   document.addEventListener("pointercancel", finishPointer, { capture: true, passive: false });
   document.addEventListener("wheel", onWheel, { capture: true, passive: false });
+  document.addEventListener("click", onHeaderActionClick, true);
   document.addEventListener("click", (event) => {
     if (!event.isTrusted || performance.now() > suppressRoomClickUntil) return;
     if (!roomStripFromTarget(event.target)) return;
