@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import HomeView from "./HomeView";
 import ClimateControl from "./ClimateControl";
+import SharedHeader from "./SharedHeader";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -182,168 +183,166 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   return (
     <main className={`app-shell ${isNight ? "night" : "day"} ${page === "home" ? "home-page-active" : "calendar-page-active"}`}>
       {page === "calendar" ? (
-        <section className="dashboard-grid">
-          <aside className="left-column">
-            <ClockPanel now={now} language={language} demo={demo} />
-            <AgendaPanel now={now} events={events} language={language} />
-            <section className="card tasks-card">
-              <div className="card-heading split tasks-heading">
-                <div>
-                  <span className="section-kicker">{t("lists", language)}</span>
-                  <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
-                </div>
-                <button
-                  className={`task-add-button ${addingTask ? "active" : ""}`}
-                  type="button"
-                  aria-label={addingTask ? t("close", language) : t("add", language)}
-                  title={addingTask ? t("close", language) : t("add", language)}
-                  onClick={() => {
-                    setAddingTask((value) => !value);
-                    if (addingTask) setTaskDraft("");
-                  }}
-                >
-                  {addingTask ? <CloseIcon /> : <PlusIcon />}
-                </button>
-              </div>
-
-              {addingTask && (
-                <form className="task-composer" onSubmit={addTask}>
-                  <input
-                    autoFocus
-                    value={taskDraft}
-                    onChange={(event) => setTaskDraft(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Escape") {
-                        setTaskDraft("");
-                        setAddingTask(false);
-                      }
-                    }}
-                    placeholder={language === "it" ? "Nuovo elemento" : "New item"}
-                    aria-label={t("add", language)}
-                  />
-                  <button className="task-save-button" type="submit" aria-label={t("add", language)} title={t("add", language)} disabled={!taskDraft.trim()}>
-                    <CheckIcon />
-                  </button>
-                </form>
-              )}
-
-              <div className="task-list">
-                {currentTasks.map((item) => (
-                  <div className={`task-row ${item.done ? "done" : ""}`} key={item.id}>
-                    <label>
-                      <input type="checkbox" checked={item.done} onChange={() => updateTask(item.id)} />
-                      <span>{item.label}</span>
-                    </label>
-                    {item.done && (
-                      <button className="delete-task" onClick={() => deleteTask(item.id)} aria-label={t("delete", language)} title={t("delete", language)}>
-                        <TrashIcon />
-                      </button>
-                    )}
+        <>
+          <SharedHeader hass={hass} now={now} language={language} />
+          <section className="dashboard-grid">
+            <aside className="left-column">
+              <AgendaPanel now={now} events={events} language={language} />
+              <section className="card tasks-card">
+                <div className="card-heading split tasks-heading">
+                  <div>
+                    <span className="section-kicker">{t("lists", language)}</span>
+                    <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
                   </div>
-                ))}
-              </div>
-              <div className="segmented-control">
-                <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
-                <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
-              </div>
-            </section>
-          </aside>
-
-          <CalendarPanel
-            month={visibleMonth}
-            today={now}
-            events={events}
-            language={language}
-            onPrevious={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}
-            onNext={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}
-            onToday={() => setVisibleMonth(new Date(now.getFullYear(), now.getMonth(), 1))}
-          />
-
-          <aside className="right-column">
-            <div className="status-row">
-              {demo && <span className="demo-badge">{t("demo", language)}</span>}
-              <span className="status-badge"><i />{t("online", language)}</span>
-            </div>
-            <section className="card home-card">
-              <div className="card-heading split home-heading">
-                <div>
-                  <span className="section-kicker">{t("smartHome", language)}</span>
-                  <h2>{t("home", language)}</h2>
+                  <button
+                    className={`task-add-button ${addingTask ? "active" : ""}`}
+                    type="button"
+                    aria-label={addingTask ? t("close", language) : t("add", language)}
+                    title={addingTask ? t("close", language) : t("add", language)}
+                    onClick={() => {
+                      setAddingTask((value) => !value);
+                      if (addingTask) setTaskDraft("");
+                    }}
+                  >
+                    {addingTask ? <CloseIcon /> : <PlusIcon />}
+                  </button>
                 </div>
-                <button className="power-all" onClick={() => void turnOffScope()} aria-label={t("turnOffAll", language)} title={t("turnOffAll", language)}>
-                  <PowerIcon />
-                </button>
-              </div>
 
-              <div className="room-switcher room-chip-strip" role="tablist" aria-label={t("room", language)}>
-                <button
-                  role="tab"
-                  aria-selected={room === "__favorites"}
-                  className={room === "__favorites" ? "active" : ""}
-                  onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}
-                >
-                  <StarIcon /> {t("favorites", language)}
-                </button>
-                {areas.map((area) => (
+                {addingTask && (
+                  <form className="task-composer" onSubmit={addTask}>
+                    <input
+                      autoFocus
+                      value={taskDraft}
+                      onChange={(event) => setTaskDraft(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                          setTaskDraft("");
+                          setAddingTask(false);
+                        }
+                      }}
+                      placeholder={language === "it" ? "Nuovo elemento" : "New item"}
+                      aria-label={t("add", language)}
+                    />
+                    <button className="task-save-button" type="submit" aria-label={t("add", language)} title={t("add", language)} disabled={!taskDraft.trim()}>
+                      <CheckIcon />
+                    </button>
+                  </form>
+                )}
+
+                <div className="task-list">
+                  {currentTasks.map((item) => (
+                    <div className={`task-row ${item.done ? "done" : ""}`} key={item.id}>
+                      <label>
+                        <input type="checkbox" checked={item.done} onChange={() => updateTask(item.id)} />
+                        <span>{item.label}</span>
+                      </label>
+                      {item.done && (
+                        <button className="delete-task" onClick={() => deleteTask(item.id)} aria-label={t("delete", language)} title={t("delete", language)}>
+                          <TrashIcon />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="segmented-control">
+                  <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
+                  <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
+                </div>
+              </section>
+            </aside>
+
+            <CalendarPanel
+              month={visibleMonth}
+              today={now}
+              events={events}
+              language={language}
+              onPrevious={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}
+              onNext={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}
+              onToday={() => setVisibleMonth(new Date(now.getFullYear(), now.getMonth(), 1))}
+            />
+
+            <aside className="right-column">
+              <section className="card home-card">
+                <div className="card-heading split home-heading">
+                  <div>
+                    <span className="section-kicker">{t("smartHome", language)}</span>
+                    <h2>{t("home", language)}</h2>
+                  </div>
+                  <button className="power-all" onClick={() => void turnOffScope()} aria-label={t("turnOffAll", language)} title={t("turnOffAll", language)}>
+                    <PowerIcon />
+                  </button>
+                </div>
+
+                <div className="room-switcher room-chip-strip" role="tablist" aria-label={t("room", language)}>
                   <button
                     role="tab"
-                    aria-selected={room === area.area_id}
-                    className={room === area.area_id ? "active" : ""}
-                    key={area.area_id}
-                    onClick={() => { setRoom(area.area_id); setSelectedEntity(null); }}
+                    aria-selected={room === "__favorites"}
+                    className={room === "__favorites" ? "active" : ""}
+                    onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}
                   >
-                    <span className="room-chip-dot" />{area.name}
+                    <StarIcon /> {t("favorites", language)}
                   </button>
-                ))}
-              </div>
-
-              <div className="device-heading">
-                <h3>{room === "__favorites" ? t("favorites", language) : areas.find((area) => area.area_id === room)?.name}</h3>
-                <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
-              </div>
-
-              <div className="entity-grid">
-                {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
-                {roomEntities.map((entityId) => {
-                  const state = hass.states[entityId];
-                  const domain = entityId.split(".")[0];
-                  const active = ["on", "open", "heat", "cool", "heat_cool", "auto", "fan_only", "dry", "playing", "unlocked"].includes(state.state);
-                  const configurable = ["light", "cover", "climate"].includes(domain);
-                  return (
-                    <article
-                      className={`entity-tile domain-${domain} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
-                      style={accessoryStyle(hass, entityId)}
-                      key={entityId}
+                  {areas.map((area) => (
+                    <button
+                      role="tab"
+                      aria-selected={room === area.area_id}
+                      className={room === area.area_id ? "active" : ""}
+                      key={area.area_id}
+                      onClick={() => { setRoom(area.area_id); setSelectedEntity(null); }}
                     >
-                      <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>
-                        <span className="entity-icon">{iconForEntity(entityId)}</span>
-                        <strong>{displayName(hass, entityId)}</strong>
-                        <small>{entityStatus(hass, entityId, language)}</small>
-                      </button>
-                      <button
-                        className={`favorite-button ${favorites.includes(entityId) ? "selected" : ""}`}
-                        aria-label={t("favorites", language)}
-                        onClick={() => void toggleFavorite(entityId)}
-                      ><StarIcon /></button>
-                      {configurable && (
-                        <button
-                          className="control-button"
-                          aria-label={t("controls", language)}
-                          title={t("controls", language)}
-                          onClick={() => setSelectedEntity(selectedEntity === entityId ? null : entityId)}
-                        ><SlidersIcon /></button>
-                      )}
-                    </article>
-                  );
-                })}
-              </div>
+                      <span className="room-chip-dot" />{area.name}
+                    </button>
+                  ))}
+                </div>
 
-              {selectedEntity && hass.states[selectedEntity] && (
-                <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => setSelectedEntity(null)} />
-              )}
-            </section>
-          </aside>
-        </section>
+                <div className="device-heading">
+                  <h3>{room === "__favorites" ? t("favorites", language) : areas.find((area) => area.area_id === room)?.name}</h3>
+                  <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
+                </div>
+
+                <div className="entity-grid">
+                  {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
+                  {roomEntities.map((entityId) => {
+                    const state = hass.states[entityId];
+                    const domain = entityId.split(".")[0];
+                    const active = ["on", "open", "heat", "cool", "heat_cool", "auto", "fan_only", "dry", "playing", "unlocked"].includes(state.state);
+                    const configurable = ["light", "cover", "climate"].includes(domain);
+                    return (
+                      <article
+                        className={`entity-tile domain-${domain} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
+                        style={accessoryStyle(hass, entityId)}
+                        key={entityId}
+                      >
+                        <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>
+                          <span className="entity-icon">{iconForEntity(entityId)}</span>
+                          <strong>{displayName(hass, entityId)}</strong>
+                          <small>{entityStatus(hass, entityId, language)}</small>
+                        </button>
+                        <button
+                          className={`favorite-button ${favorites.includes(entityId) ? "selected" : ""}`}
+                          aria-label={t("favorites", language)}
+                          onClick={() => void toggleFavorite(entityId)}
+                        ><StarIcon /></button>
+                        {configurable && (
+                          <button
+                            className="control-button"
+                            aria-label={t("controls", language)}
+                            title={t("controls", language)}
+                            onClick={() => setSelectedEntity(selectedEntity === entityId ? null : entityId)}
+                          ><SlidersIcon /></button>
+                        )}
+                      </article>
+                    );
+                  })}
+                </div>
+
+                {selectedEntity && hass.states[selectedEntity] && (
+                  <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => setSelectedEntity(null)} />
+                )}
+              </section>
+            </aside>
+          </section>
+        </>
       ) : (
         <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
       )}
@@ -356,8 +355,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
 function PageDock({ page, language, onChange }: { page: Page; language: Language; onChange: (page: Page) => void }) {
   return (
     <nav className="page-dock" aria-label={t("views", language)}>
-      <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><CalendarIcon /><span>{t("calendar", language)}</span></button>
-      <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><HomeIcon /><span>{t("home", language)}</span></button>
+      <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><span>{t("calendar", language)}</span></button>
+      <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><span>{t("home", language)}</span></button>
     </nav>
   );
 }
