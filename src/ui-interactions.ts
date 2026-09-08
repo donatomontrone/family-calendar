@@ -1,5 +1,6 @@
 import calendarV4Styles from "./calendar-v4.css?inline";
 import calendarV5Styles from "./calendar-v5.css?inline";
+import calendarV6Styles from "./calendar-v6.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -11,11 +12,12 @@ type RoomDragState = {
 
 type UiWindow = Window & {
   __familyCalendarUiInteractions?: boolean;
+  __familyCalendarHeaderActionHandler?: EventListener;
 };
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}`;
 
 function ensureFinalStyles() {
   let style = document.getElementById(FINAL_STYLE_ID) as HTMLStyleElement | null;
@@ -31,6 +33,29 @@ function ensureFinalStyles() {
     document.head.appendChild(style);
   }
 }
+
+/*
+ * Header actions are deliberately installed outside the one-time interaction
+ * guard. Vite HMR keeps window state alive, so an older guarded listener could
+ * otherwise survive a code update and leave Alarm/Notifications unresponsive.
+ */
+if (uiWindow.__familyCalendarHeaderActionHandler) {
+  document.removeEventListener("click", uiWindow.__familyCalendarHeaderActionHandler, true);
+}
+
+const headerActionHandler: EventListener = (event) => {
+  if (!(event.target instanceof Element)) return;
+  const button = event.target.closest<HTMLButtonElement>(".security-pill, .round-top");
+  if (!button || !button.closest(".app-shell")) return;
+
+  const action = button.classList.contains("security-pill") ? "alarm" : "notifications";
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  document.dispatchEvent(new CustomEvent("family-calendar-header-action", { detail: action }));
+};
+
+uiWindow.__familyCalendarHeaderActionHandler = headerActionHandler;
+document.addEventListener("click", headerActionHandler, true);
 
 if (!uiWindow.__familyCalendarUiInteractions) {
   uiWindow.__familyCalendarUiInteractions = true;
@@ -154,4 +179,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   }, true);
 
   scheduleUiSync();
+} else {
+  // Even on HMR/module re-evaluation, refresh the final style layer immediately.
+  ensureFinalStyles();
 }
