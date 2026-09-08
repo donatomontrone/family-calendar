@@ -55,6 +55,14 @@ const climateAttributes = (
   preset_mode: presetMode,
 });
 
+const whiteAmbianceAttributes = (kelvin: number): Record<string, unknown> => ({
+  min_color_temp_kelvin: 2200,
+  max_color_temp_kelvin: 6500,
+  color_temp_kelvin: kelvin,
+  supported_color_modes: ["color_temp"],
+  color_mode: "color_temp",
+});
+
 const areas: Area[] = [
   { area_id: "soggiorno", name: "Soggiorno" },
   { area_id: "cucina", name: "Cucina" },
@@ -99,7 +107,7 @@ const registry: EntityRegistryEntry[] = [
 ];
 
 const initialStates: Record<string, HassState> = {
-  "light.soggiorno": state("light.soggiorno", "on", "Luce soggiorno", { brightness: 196, demo_hex_color: "#ffd45a" }),
+  "light.soggiorno": state("light.soggiorno", "on", "Luce soggiorno", { brightness: 196, ...whiteAmbianceAttributes(2850) }),
   "cover.salotto": state("cover.salotto", "open", "Tenda salotto", { current_position: 72 }),
   "climate.soggiorno": state("climate.soggiorno", "heat_cool", "Clima soggiorno", { ...climateAttributes(22.6, 23), hvac_action: "idle" }),
   "switch.tv": state("switch.tv", "off", "TV"),
@@ -109,7 +117,7 @@ const initialStates: Record<string, HassState> = {
   "binary_sensor.porta_ingresso": state("binary_sensor.porta_ingresso", "off", "Porta ingresso", { device_class: "door" }),
   "camera.soggiorno": state("camera.soggiorno", "streaming", "Camera soggiorno"),
 
-  "light.cucina": state("light.cucina", "on", "Luce cucina", { brightness: 150, demo_hex_color: "#ffe8bd" }),
+  "light.cucina": state("light.cucina", "on", "Luce cucina", { brightness: 150, ...whiteAmbianceAttributes(3400) }),
   "switch.macchina_caffe": state("switch.macchina_caffe", "off", "Macchina caffè"),
   "climate.cucina": state("climate.cucina", "cool", "Clima cucina", { ...climateAttributes(23.3, 22, "medium", "eco"), hvac_action: "cooling" }),
   "sensor.temperatura_cucina": state("sensor.temperatura_cucina", "23.3", "Temperatura cucina", { device_class: "temperature", unit_of_measurement: "°C" }),
@@ -117,7 +125,7 @@ const initialStates: Record<string, HassState> = {
   "binary_sensor.movimento_cucina": state("binary_sensor.movimento_cucina", "on", "Movimento cucina", { device_class: "motion" }),
   "camera.cucina": state("camera.cucina", "streaming", "Camera cucina"),
 
-  "light.camera": state("light.camera", "off", "Luce camera", { brightness: 110, demo_hex_color: "#ffb4a2" }),
+  "light.camera": state("light.camera", "off", "Luce camera", { brightness: 110, ...whiteAmbianceAttributes(2500) }),
   "cover.camera": state("cover.camera", "closed", "Tapparella camera", { current_position: 0 }),
   "climate.camera": state("climate.camera", "heat", "Clima camera", { ...climateAttributes(21.9, 22.5, "low", "sleep"), hvac_action: "heating" }),
   "media_player.camera": state("media_player.camera", "paused", "HomePod camera", { volume_level: 0.22 }),
@@ -125,7 +133,7 @@ const initialStates: Record<string, HassState> = {
   "sensor.umidita_camera": state("sensor.umidita_camera", "49", "Umidità camera", { device_class: "humidity", unit_of_measurement: "%" }),
   "binary_sensor.finestra_camera": state("binary_sensor.finestra_camera", "off", "Finestra camera", { device_class: "window" }),
 
-  "light.studio": state("light.studio", "on", "Luce studio", { brightness: 210, demo_hex_color: "#d9e9ff" }),
+  "light.studio": state("light.studio", "on", "Luce studio", { brightness: 210, ...whiteAmbianceAttributes(5200) }),
   "switch.scrivania": state("switch.scrivania", "on", "Scrivania"),
   "climate.studio": state("climate.studio", "fan_only", "Clima studio", { ...climateAttributes(22.4, 22, "high", "none"), hvac_action: "fan" }),
   "sensor.temperatura_studio": state("sensor.temperatura_studio", "22.4", "Temperatura studio", { device_class: "temperature", unit_of_measurement: "°C" }),
@@ -202,9 +210,12 @@ function DemoHarness() {
           if (domain === "light" && data?.brightness_pct !== undefined) {
             nextAttributes.brightness = Math.round((Number(data.brightness_pct) / 100) * 255);
           }
+          if (domain === "light" && data?.color_temp_kelvin !== undefined) {
+            nextAttributes.color_temp_kelvin = Number(data.color_temp_kelvin);
+            nextAttributes.color_mode = "color_temp";
+          }
           if (domain === "light" && Array.isArray(data?.rgb_color)) {
             const [r, g, b] = data.rgb_color.map(Number);
-            nextAttributes.demo_hex_color = `#${[r, g, b].map((value) => Math.max(0, Math.min(255, value)).toString(16).padStart(2, "0")).join("")}`;
             nextAttributes.rgb_color = [r, g, b];
           }
         }
