@@ -9,9 +9,21 @@ type SharedHeaderProps = {
   language: Language;
   onAlarm?: () => void;
   onNotifications?: () => void;
+  onThemeToggle?: () => void;
+  isNight?: boolean;
+  themeLabel?: string;
 };
 
-export default function SharedHeader({ hass, now, language, onAlarm, onNotifications }: SharedHeaderProps) {
+export default function SharedHeader({
+  hass,
+  now,
+  language,
+  onAlarm,
+  onNotifications,
+  onThemeToggle,
+  isNight = false,
+  themeLabel,
+}: SharedHeaderProps) {
   const weather = Object.values(hass.states).find((state) => state.entity_id.startsWith("weather."));
   const alarm = Object.values(hass.states).find((state) => state.entity_id.startsWith("alarm_control_panel."));
   const outside = Number(weather?.attributes.temperature ?? 24.5);
@@ -50,6 +62,17 @@ export default function SharedHeader({ hass, now, language, onAlarm, onNotificat
         <button type="button" className="round-top" onClick={onNotifications} aria-label={copy.notifications} title={copy.notifications}>
           <BellIcon />
         </button>
+        {onThemeToggle && (
+          <button
+            type="button"
+            className="header-theme-switch"
+            onClick={onThemeToggle}
+            aria-label={themeLabel ?? copy.appearance}
+            title={themeLabel ?? copy.appearance}
+          >
+            {isNight ? <SunIcon /> : <MoonIcon />}
+          </button>
+        )}
       </div>
     </header>
   );
@@ -58,6 +81,7 @@ export default function SharedHeader({ hass, now, language, onAlarm, onNotificat
 const itCopy = {
   sunny: "Soleggiato",
   notifications: "Notifiche",
+  appearance: "Aspetto",
   armed: "Inserito",
   disarmed: "Disattivo",
   family: "Famiglia",
@@ -70,6 +94,7 @@ const itCopy = {
 const enCopy: typeof itCopy = {
   sunny: "Sunny",
   notifications: "Notifications",
+  appearance: "Appearance",
   armed: "Armed",
   disarmed: "Disarmed",
   family: "Family",
@@ -104,4 +129,8 @@ function BellIcon() {
 
 function SunIcon() {
   return <Svg><><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.45"/><path d="M12 3.3v2M12 18.7v2M3.3 12h2M18.7 12h2M5.9 5.9l1.4 1.4M16.7 16.7l1.4 1.4M18.1 5.9l-1.4 1.4M7.3 16.7l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></></Svg>;
+}
+
+function MoonIcon() {
+  return <Svg><path d="M18.7 15.4A7.8 7.8 0 0 1 8.6 5.3a7.8 7.8 0 1 0 10.1 10.1Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></Svg>;
 }
