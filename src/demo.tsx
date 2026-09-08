@@ -17,6 +17,7 @@ import "./design-tuning.css";
 import "./calendar-smart-home-polish.css";
 import "./smart-home-device-cards.css";
 import "./control-language.css";
+import "./apple-guidelines.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
