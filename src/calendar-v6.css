@@ -1,0 +1,161 @@
+/*
+ * Calendar V6 — near-final surface/state pass.
+ * Loaded after V4/V5 by ui-interactions.ts. Calendar-only unless explicitly
+ * shared with the Home header interaction bridge.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. Main-card elevation. Keep the lower edge quiet: a thin border and a very
+ * small ambient shadow replace the older deep bottom-heavy drop shadows.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .calendar-card,
+.app-shell.calendar-page-active .tasks-card,
+.app-shell.calendar-page-active .home-card {
+  border: 1px solid rgba(60, 60, 67, .075) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, .022),
+    0 4px 12px rgba(0, 0, 0, .026),
+    inset 0 1px 0 rgba(255, 255, 255, .72) !important;
+}
+
+.app-shell.night.calendar-page-active .calendar-card,
+.app-shell.night.calendar-page-active .tasks-card,
+.app-shell.night.calendar-page-active .home-card {
+  border-color: rgba(255, 255, 255, .065) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, .16),
+    0 3px 10px rgba(0, 0, 0, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Destructive/system actions. Whole-home off is red again. The + remains
+ * neutral at rest, but its hover is exactly the same red treatment; when the
+ * + becomes the cancel X it stays red to communicate dismissal/destruction.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .home-card .power-all,
+.app-shell.calendar-page-active .tasks-card .task-add-button.active {
+  border-color: rgba(255, 59, 48, .16) !important;
+  background: rgba(255, 59, 48, .105) !important;
+  color: #cf463d !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.72),
+    0 1px 2px rgba(0,0,0,.025),
+    0 4px 12px rgba(255,59,48,.045) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.calendar-page-active .home-card .power-all:hover,
+  .app-shell.calendar-page-active .tasks-card .task-add-button:hover,
+  .app-shell.calendar-page-active .tasks-card .task-add-button.active:hover {
+    border-color: rgba(255, 59, 48, .22) !important;
+    background: rgba(255, 59, 48, .145) !important;
+    color: #c9362d !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.78),
+      0 2px 5px rgba(0,0,0,.035),
+      0 7px 18px rgba(255,59,48,.075) !important;
+    transform: translateY(-1px) !important;
+  }
+}
+
+.app-shell.calendar-page-active .home-card .power-all:active,
+.app-shell.calendar-page-active .tasks-card .task-add-button:active,
+.app-shell.calendar-page-active .tasks-card .task-add-button.active:active {
+  background: rgba(255, 59, 48, .17) !important;
+  color: #c9362d !important;
+  transform: scale(.96) !important;
+  box-shadow: inset 0 1px 2px rgba(160, 28, 20, .10) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .power-all,
+.app-shell.night.calendar-page-active .tasks-card .task-add-button.active {
+  border-color: rgba(255, 105, 97, .18) !important;
+  background: rgba(255, 69, 58, .13) !important;
+  color: #ff6961 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 5px 14px rgba(0,0,0,.14) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.night.calendar-page-active .home-card .power-all:hover,
+  .app-shell.night.calendar-page-active .tasks-card .task-add-button:hover,
+  .app-shell.night.calendar-page-active .tasks-card .task-add-button.active:hover {
+    border-color: rgba(255, 105, 97, .26) !important;
+    background: rgba(255, 69, 58, .19) !important;
+    color: #ff817a !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 7px 18px rgba(0,0,0,.18) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Light appearance accessory state. Lights preserve their actual colour and
+ * climate preserves its thermal orange. Every other active accessory uses the
+ * requested Home-blue surface #c9e3ff with a stronger system-blue glyph/state.
+ * -------------------------------------------------------------------------- */
+.app-shell.day.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) {
+  --device-accent: #007aff !important;
+  border-color: #abd1f8 !important;
+  background: #c9e3ff !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.68),
+    0 4px 12px rgba(0,122,255,.055) !important;
+}
+
+.app-shell.day.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-icon {
+  border-color: rgba(0, 122, 255, .18) !important;
+  background: #007aff !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 3px 9px rgba(0,122,255,.13) !important;
+}
+
+.app-shell.day.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-main small {
+  color: #356b9e !important;
+  font-weight: 670 !important;
+}
+
+/* Lights remain tied to the actual lamp colour, climate to system orange. */
+.app-shell.day.calendar-page-active .home-card .entity-tile.domain-light.active {
+  background: color-mix(in srgb, var(--accessory-active, #ffd60a) 18%, #fff) !important;
+}
+
+.app-shell.day.calendar-page-active .home-card .entity-tile.domain-climate.active {
+  --device-accent: #ff9500 !important;
+  background: color-mix(in srgb, #ff9500 17%, #fff) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. Data-only vertical overflow. With normal counts these surfaces do not
+ * scroll. They become vertically scrollable only when their content exceeds the
+ * space available in the fixed dashboard. Scrollbars remain invisible.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card .task-list,
+.app-shell.calendar-page-active .home-card .entity-grid {
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-list::-webkit-scrollbar,
+.app-shell.calendar-page-active .home-card .entity-grid::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-grid {
+  align-content: start !important;
+}
+
+/* Keep header actions above the fixed dashboard and explicitly interactive. */
+.app-shell .reel-top-actions,
+.app-shell .reel-top-actions .security-pill,
+.app-shell .reel-top-actions .round-top {
+  position: relative !important;
+  z-index: 40 !important;
+  pointer-events: auto !important;
+}
