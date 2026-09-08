@@ -53,7 +53,7 @@
  * 2. Theme control is a real member of the shared header action row on the
  * Calendar page. No fixed/floating geometry is applied to this button.
  * -------------------------------------------------------------------------- */
-.app-shell .reel-top-actions {
+.app-shell.calendar-page-active .reel-top-actions {
   padding-right: 0 !important;
 }
 
@@ -196,8 +196,39 @@
   background: linear-gradient(90deg, #ffd6a6 0%, #fff3dd 47%, #c9e3ff 100%) !important;
 }
 
-/* The old globally positioned theme button is only a compatibility fallback on
- * the Home page. Calendar uses .header-theme-switch inside SharedHeader. */
+/* Calendar owns a real inline header theme button. */
 .app-shell.calendar-page-active > .global-theme-switch {
   display: none !important;
+}
+
+/* Home still uses the compatibility button from App until the Home page gets
+ * its dedicated refactor. Reserve one exact 40px slot in the header and place
+ * the button on the same measured baseline as the other shared header actions. */
+.app-shell.home-page-active .reel-home > .reel-topbar .reel-top-actions {
+  padding-right: 49px !important;
+}
+
+.app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+  position: absolute !important;
+  z-index: 60 !important;
+  top: calc(clamp(18px, 1.45vw, 32px) + 21px) !important;
+  right: calc(clamp(18px, 1.45vw, 32px) + 5px) !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 20px !important;
+  pointer-events: auto !important;
+}
+
+.app-shell.home-page-active > .global-theme-switch.home-header-theme-switch svg {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
 }
