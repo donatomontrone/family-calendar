@@ -1,0 +1,314 @@
+/*
+ * Calendar V5 — final viewport/interactions pass.
+ * Injected last by ui-interactions.ts. Calendar-only rules are intentionally
+ * high-specificity so historical layers cannot reintroduce scrolling, weak
+ * accessory states, or mismatched action-button feedback.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. Fixed Calendar viewport: the dashboard fills the available screen and the
+ * page itself never acquires a vertical scrollbar. Dense panels may scroll
+ * internally only where data can genuinely exceed the available surface, with
+ * the scrollbar visually hidden.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active {
+  position: relative !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  padding: clamp(12px, 1.25vw, 24px) !important;
+  padding-bottom: max(68px, calc(54px + env(safe-area-inset-bottom, 0px))) !important;
+  display: grid !important;
+  grid-template-rows: 94px minmax(0, 1fr) !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+.app-shell.calendar-page-active > .shared-home-header {
+  min-height: 0 !important;
+  height: 94px !important;
+  align-self: stretch !important;
+}
+
+.app-shell.calendar-page-active .dashboard-grid {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
+}
+
+.app-shell.calendar-page-active .left-column,
+.app-shell.calendar-page-active .right-column {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.app-shell.calendar-page-active .left-column {
+  grid-template-rows: minmax(0, .86fr) minmax(0, 1.14fr) !important;
+}
+
+.app-shell.calendar-page-active .agenda-card,
+.app-shell.calendar-page-active .tasks-card,
+.app-shell.calendar-page-active .home-card,
+.app-shell.calendar-page-active .calendar-card {
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.app-shell.calendar-page-active .agenda-card {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.app-shell.calendar-page-active .agenda-list {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.app-shell.calendar-page-active .agenda-list::-webkit-scrollbar { display: none !important; }
+
+.app-shell.calendar-page-active .tasks-card {
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+}
+
+.app-shell.calendar-page-active .task-list {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.app-shell.calendar-page-active .task-list::-webkit-scrollbar { display: none !important; }
+
+.app-shell.calendar-page-active .calendar-card {
+  height: 100% !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.app-shell.calendar-page-active .calendar-toolbar {
+  min-height: 0 !important;
+  height: auto !important;
+  padding-block: clamp(14px, 1.25vh, 22px) !important;
+}
+
+.app-shell.calendar-page-active .month-grid {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  grid-template-rows: 34px repeat(6, minmax(0, 1fr)) !important;
+  overflow: hidden !important;
+}
+
+.app-shell.calendar-page-active .calendar-day {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.app-shell.calendar-page-active .home-card {
+  height: 100% !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-grid {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.app-shell.calendar-page-active .home-card .entity-grid::-webkit-scrollbar { display: none !important; }
+
+/* --------------------------------------------------------------------------
+ * 2. Room strip + whole-home action: always stay above decorative card layers
+ * and remain directly interactive. Room dragging is handled in JS only after
+ * an actual horizontal movement, so a normal tap/click reaches React.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .home-card .home-heading,
+.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip {
+  position: relative !important;
+  z-index: 8 !important;
+  pointer-events: auto !important;
+}
+
+.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button,
+.app-shell.calendar-page-active .home-card .power-all {
+  pointer-events: auto !important;
+}
+
+.app-shell.calendar-page-active .home-card .power-all {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Theme switch belongs visually to the header instead of floating relative
+ * to the viewport. It is absolutely anchored to the app/header canvas and uses
+ * the same reserved slot already present at the end of reel-top-actions.
+ * -------------------------------------------------------------------------- */
+.app-shell .global-theme-switch {
+  position: absolute !important;
+  z-index: 30 !important;
+  top: calc(clamp(12px, 1.25vw, 24px) + 23px) !important;
+  right: calc(clamp(12px, 1.25vw, 24px) + 5px) !important;
+  bottom: auto !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. + in LISTE and power-all are the exact same system action treatment,
+ * including hover/pressed feedback in both appearances.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card .task-add-button,
+.app-shell.calendar-page-active .home-card .power-all {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(60,60,67,.085) !important;
+  border-radius: 14px !important;
+  background: rgba(246,246,248,.92) !important;
+  color: #4b4b50 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.90), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04) !important;
+  backdrop-filter: blur(20px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(145%) !important;
+  filter: none !important;
+  transform: none !important;
+  transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease, transform .12s ease !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-add-button svg,
+.app-shell.calendar-page-active .home-card .power-all svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.calendar-page-active .tasks-card .task-add-button:hover,
+  .app-shell.calendar-page-active .home-card .power-all:hover {
+    border-color: rgba(60,60,67,.13) !important;
+    background: #fff !important;
+    color: #1d1d1f !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 2px 5px rgba(0,0,0,.045), 0 9px 22px rgba(0,0,0,.07) !important;
+    transform: translateY(-1px) !important;
+    filter: none !important;
+  }
+}
+
+.app-shell.calendar-page-active .tasks-card .task-add-button:active,
+.app-shell.calendar-page-active .home-card .power-all:active {
+  transform: scale(.96) !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.055), 0 2px 7px rgba(0,0,0,.035) !important;
+}
+
+.app-shell.night.calendar-page-active .tasks-card .task-add-button,
+.app-shell.night.calendar-page-active .home-card .power-all {
+  border-color: rgba(255,255,255,.075) !important;
+  background: #3a3a3c !important;
+  color: #e5e5ea !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 6px 18px rgba(0,0,0,.18) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.night.calendar-page-active .tasks-card .task-add-button:hover,
+  .app-shell.night.calendar-page-active .home-card .power-all:hover {
+    border-color: rgba(255,255,255,.12) !important;
+    background: #48484a !important;
+    color: #fff !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.075), 0 9px 24px rgba(0,0,0,.25) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 5. Accessory state contrast. Off stays quiet and neutral; active accessories
+ * gain a clearly tinted surface plus a filled semantic icon, matching the way
+ * Apple Home uses color primarily to communicate state rather than decoration.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .home-card .entity-tile {
+  background: #eef0f4 !important;
+  border-color: rgba(60,60,67,.09) !important;
+  transition: background-color .20s ease, border-color .20s ease, box-shadow .20s ease, transform .15s ease !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--device-accent) 38%, rgba(60,60,67,.08)) !important;
+  background: color-mix(in srgb, var(--device-accent) 21%, #fff) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 8px 22px color-mix(in srgb, var(--device-accent) 10%, rgba(0,0,0,.05)) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  border-color: color-mix(in srgb, var(--device-accent) 70%, transparent) !important;
+  background: color-mix(in srgb, var(--device-accent) 84%, #1d1d1f) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 4px 12px color-mix(in srgb, var(--device-accent) 22%, transparent) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.active .entity-main strong {
+  color: #1d1d1f !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.active .entity-main small {
+  color: color-mix(in srgb, var(--device-accent) 74%, #2c2c2e) !important;
+  font-weight: 650 !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile {
+  background: #29292c !important;
+  border-color: rgba(255,255,255,.07) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--device-accent) 44%, rgba(255,255,255,.07)) !important;
+  background: color-mix(in srgb, var(--device-accent) 25%, #242426) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 9px 24px rgba(0,0,0,.20) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  border-color: color-mix(in srgb, var(--device-accent) 70%, rgba(255,255,255,.08)) !important;
+  background: color-mix(in srgb, var(--device-accent) 78%, #1c1c1e) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 5px 14px color-mix(in srgb, var(--device-accent) 18%, rgba(0,0,0,.22)) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active .entity-main small {
+  color: color-mix(in srgb, var(--device-accent) 58%, #fff) !important;
+  font-weight: 650 !important;
+}
+
+/* Keep the fixed layout stable on common shorter wall displays. */
+@media (max-height: 760px) {
+  .app-shell.calendar-page-active {
+    grid-template-rows: 82px minmax(0,1fr) !important;
+    padding-top: 10px !important;
+    padding-inline: 12px !important;
+    padding-bottom: 62px !important;
+  }
+  .app-shell.calendar-page-active > .shared-home-header { height: 82px !important; }
+  .app-shell.calendar-page-active .calendar-toolbar { padding-block: 10px !important; }
+  .app-shell.calendar-page-active .calendar-day { padding-block: 4px !important; }
+  .app-shell .global-theme-switch { top: 31px !important; right: 17px !important; }
+}
+
+@media (max-width: 780px) {
+  .app-shell.calendar-page-active {
+    /* At phone widths the existing responsive composition may stack panels, but
+     * the viewport remains fixed and therefore never creates a page scrollbar. */
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+}
