@@ -78,7 +78,7 @@
 }
 
 /* LISTE and bottom navigation intentionally use the same shell, inset selector,
- * spacing and corner radii. The 4px centre gutter is always visible. */
+ * spacing and corner radii. */
 .segmented-control,
 .page-dock {
   position: relative;
@@ -130,11 +130,17 @@
   z-index: 1;
   width: 100% !important;
   min-width: 0 !important;
+  min-height: 38px !important;
+  padding: 0 12px !important;
   border: 0 !important;
   border-radius: var(--fc-control-radius-inner) !important;
   background: transparent !important;
   box-shadow: none !important;
   color: #77777d;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  letter-spacing: -.012em;
+  line-height: 1 !important;
   -webkit-tap-highlight-color: transparent;
   touch-action: pan-y;
   user-select: none;
@@ -147,42 +153,30 @@
 .page-dock > button:active { transform: scale(.965); opacity: .82; }
 
 .calendar-page-active .segmented-control { margin: 6px 15px 1px; }
-.calendar-page-active .segmented-control > button {
-  min-height: 38px;
-  padding: 0 12px;
-  font-size: 13px;
-  font-weight: 650;
-  letter-spacing: -.012em;
-}
 
-.calendar-page-active .page-dock {
+/* Bottom switch: same visual component as Da fare / Spesa.
+ * Navigation icons are hidden so the two controls have the same optical weight,
+ * typography and selector proportions. */
+.app-shell .page-dock {
   position: fixed !important;
   z-index: 1000;
   left: 50% !important;
   right: auto !important;
   bottom: max(14px, env(safe-area-inset-bottom, 0px)) !important;
-  width: 204px !important;
-  max-width: calc(100vw - 20px) !important;
+  width: clamp(190px, calc(17.5vw - 30px), 270px) !important;
+  max-width: calc(100vw - 24px) !important;
   min-width: 0 !important;
   transform: translateX(-50%) !important;
 }
-.calendar-page-active .page-dock > button {
-  height: 38px !important;
-  min-height: 38px !important;
-  padding: 0 8px !important;
+.app-shell .page-dock > button {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 6px !important;
-  font-size: 10.5px !important;
-  font-weight: 680;
+  gap: 0 !important;
   white-space: nowrap;
 }
-.calendar-page-active .page-dock > button svg {
-  width: 16px !important;
-  height: 16px !important;
-  min-width: 16px !important;
-  min-height: 16px !important;
+.app-shell .page-dock > button svg {
+  display: none !important;
 }
 
 /* LISTE */
@@ -257,6 +251,42 @@
 .calendar-page-active .room-switcher.room-chip-strip { cursor: grab; }
 .calendar-page-active .room-switcher.room-chip-strip:active { cursor: grabbing; }
 
+/* Calendar status badges: remove the old fixed-height placeholder. They stay
+ * attached to the right column, wrap cleanly and keep a stable readable size. */
+.calendar-page-active .status-row {
+  width: 100%;
+  min-width: 0;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 2px 2px 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-wrap: wrap;
+  gap: 7px !important;
+}
+.calendar-page-active .status-row .demo-badge,
+.calendar-page-active .status-row .status-badge {
+  min-width: 0;
+  min-height: 32px;
+  padding: 0 11px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 16px !important;
+  font-size: 11px !important;
+  line-height: 1;
+  font-weight: 680 !important;
+  white-space: nowrap;
+}
+.calendar-page-active .status-row .status-badge i {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+}
+
 .home-page-active .reel-tools-grid button,
 .home-page-active .scene-grid button,
 .home-page-active .room-accessory-row button,
@@ -279,11 +309,34 @@
 .night .segmented-control > button.active,
 .night .page-dock > button.active { color: #fff; }
 
+@media (max-width: 1080px) {
+  .calendar-page-active .status-row {
+    padding-top: 0 !important;
+  }
+}
+
 @media (max-width: 520px) {
   :root { --fc-control-icon: 17px; }
   .calendar-page-active .task-composer { margin-inline: 11px; }
-  .calendar-page-active .page-dock { width: 190px !important; }
-  .calendar-page-active .page-dock > button { font-size: 10px !important; gap: 5px !important; }
+  .app-shell .page-dock {
+    width: min(270px, calc(100vw - 24px)) !important;
+  }
+  .calendar-page-active .status-row .demo-badge,
+  .calendar-page-active .status-row .status-badge {
+    min-height: 30px;
+    padding-inline: 10px !important;
+    font-size: 10.5px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .calendar-page-active .status-row {
+    justify-content: stretch !important;
+  }
+  .calendar-page-active .status-row .demo-badge,
+  .calendar-page-active .status-row .status-badge {
+    flex: 1 1 calc(50% - 4px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
