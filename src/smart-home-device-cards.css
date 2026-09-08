@@ -1,277 +1,85 @@
-/* Calendar Smart Home accessory-card refactor.
- * Loaded last on purpose: the component keeps a compact footprint, but its
- * hierarchy, typography and touch targets now match the rest of the interface.
+/* Calendar page final layout layer.
+ * This file owns the responsive Calendar composition and the Smart Home panel.
+ * Everything is scoped to .calendar-page-active so the Home page is untouched.
  */
 
-.calendar-page-active .home-card .entity-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-  gap: 8px;
-  padding: 0 14px 14px;
-  align-items: stretch;
-}
-
-.calendar-page-active .home-card .entity-tile {
-  --device-accent: #8e8e93;
-  position: relative;
-  min-width: 0;
-  min-height: 84px;
-  aspect-ratio: auto;
-  overflow: hidden;
-  border: 1px solid rgba(60, 60, 67, .07);
-  border-radius: 17px;
-  background: rgba(245, 245, 248, .86);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .82),
-    0 5px 16px rgba(0, 0, 0, .032);
-  transition:
-    transform .14s cubic-bezier(.2, .8, .2, 1),
-    background-color .18s ease,
-    border-color .18s ease,
-    box-shadow .18s ease;
-}
-
-.calendar-page-active .home-card .entity-tile.domain-light.active {
-  --device-accent: var(--accessory-active, #ffd60a);
-}
-.calendar-page-active .home-card .entity-tile.domain-cover.active { --device-accent: #64b5f6; }
-.calendar-page-active .home-card .entity-tile.domain-climate.active { --device-accent: #ff9f0a; }
-.calendar-page-active .home-card .entity-tile.domain-switch.active { --device-accent: #34c759; }
-.calendar-page-active .home-card .entity-tile.domain-media_player.active { --device-accent: #0a84ff; }
-.calendar-page-active .home-card .entity-tile.domain-fan.active { --device-accent: #5e5ce6; }
-.calendar-page-active .home-card .entity-tile.domain-lock.active { --device-accent: #34c759; }
-
-.calendar-page-active .home-card .entity-tile.active {
-  border-color: color-mix(in srgb, var(--device-accent) 18%, rgba(60, 60, 67, .07));
-  background: color-mix(in srgb, var(--device-accent) 11%, rgba(255, 255, 255, .97));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .88),
-    0 6px 17px rgba(0, 0, 0, .038);
-}
-
-.calendar-page-active .home-card .entity-tile.selected {
-  border-color: color-mix(in srgb, #0a84ff 30%, rgba(60, 60, 67, .07));
-  box-shadow:
-    inset 0 0 0 1px rgba(10, 132, 255, .12),
-    inset 0 1px 0 rgba(255, 255, 255, .86),
-    0 6px 18px rgba(0, 0, 0, .04);
-}
-
-.calendar-page-active .home-card .entity-tile:hover {
-  transform: translateY(-1px);
-  border-color: rgba(60, 60, 67, .115);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .9),
-    0 8px 20px rgba(0, 0, 0, .045);
-}
-
-.calendar-page-active .home-card .entity-main {
-  width: 100%;
-  min-width: 0;
-  min-height: 84px;
-  padding: 9px 34px 9px 9px;
+/* ---------- Smart Home panel hierarchy ---------- */
+.calendar-page-active .home-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 2px;
-  border: 0;
-  border-radius: inherit;
-  background: transparent;
-  color: inherit;
-  text-align: left;
-}
-
-.calendar-page-active .home-card .entity-main:active {
-  transform: scale(.985);
-}
-
-.calendar-page-active .home-card .entity-icon {
-  position: absolute !important;
-  top: 9px !important;
-  left: 9px !important;
-  width: 29px !important;
-  height: 29px !important;
-  display: grid;
-  place-items: center;
-  margin: 0 !important;
-  border-radius: 9px !important;
-  background: rgba(118, 118, 128, .62);
-  color: #fff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
-}
-
-.calendar-page-active .home-card .entity-tile.active .entity-icon {
-  background: color-mix(in srgb, var(--device-accent) 88%, #000 12%);
-  color: #fff;
-}
-
-.calendar-page-active .home-card .entity-icon svg {
-  width: 16px !important;
-  height: 16px !important;
-  display: block;
-  margin: 0;
-}
-
-.calendar-page-active .home-card .entity-main strong {
-  width: 100%;
   min-width: 0;
+  padding-bottom: 16px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #1d1d1f;
-  font-size: 12.4px !important;
-  line-height: 1.12 !important;
-  font-weight: 700 !important;
-  letter-spacing: -.017em;
 }
 
-.calendar-page-active .home-card .entity-main small {
-  width: 100%;
+.calendar-page-active .home-card .home-heading {
+  min-height: 86px;
+  padding: 20px 18px 14px !important;
+  align-items: center !important;
+  gap: 12px;
+}
+
+.calendar-page-active .home-card .home-heading > div:first-child {
   min-width: 0;
-  margin: 1px 0 0 !important;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #77777d;
-  font-size: 10.6px !important;
-  line-height: 1.12 !important;
-  font-weight: 560 !important;
-  letter-spacing: -.008em;
 }
 
-.calendar-page-active .home-card .entity-main small::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  flex: 0 0 5px;
-  border-radius: 50%;
-  background: #aeaeb2;
+.calendar-page-active .home-card .section-kicker {
+  font-size: 11.5px !important;
+  line-height: 1.05;
+  letter-spacing: .065em !important;
 }
 
-.calendar-page-active .home-card .entity-tile.active .entity-main small::before {
-  background: var(--device-accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--device-accent) 14%, transparent);
+.calendar-page-active .home-card .home-heading h2 {
+  margin-top: 5px;
+  font-size: 23px !important;
+  line-height: 1.04;
+  letter-spacing: -.028em;
 }
 
-/* Secondary actions are deliberately quiet: the accessory itself remains the
- * primary target, while favorite/settings are easy to hit and optically aligned. */
-.calendar-page-active .home-card .favorite-button,
-.calendar-page-active .home-card .control-button {
-  right: 7px !important;
-  width: 23px !important;
-  height: 23px !important;
-  min-width: 23px !important;
-  min-height: 23px !important;
+.calendar-page-active .home-card .power-all {
+  flex: 0 0 40px;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
   padding: 0 !important;
   display: grid !important;
   place-items: center !important;
-  border: 0 !important;
-  border-radius: 50% !important;
-  background: rgba(118, 118, 128, .085) !important;
-  color: #77777d;
+  border-radius: 14px !important;
+  background: rgba(255, 59, 48, .09) !important;
+  color: #d70015;
+  border: 1px solid rgba(255, 59, 48, .07) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 3px 10px rgba(255,59,48,.045) !important;
+  font-size: 0 !important;
   line-height: 0 !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55) !important;
 }
 
-.calendar-page-active .home-card .favorite-button { top: 7px !important; }
-.calendar-page-active .home-card .control-button { bottom: 7px !important; }
-
-.calendar-page-active .home-card .favorite-button:hover,
-.calendar-page-active .home-card .control-button:hover {
-  background: rgba(118, 118, 128, .14) !important;
+.calendar-page-active .home-card .power-all svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
 }
 
-.calendar-page-active .home-card .favorite-button.selected {
-  background: rgba(255, 214, 10, .2) !important;
-  color: #9a7000;
-}
-
-.calendar-page-active .home-card .entity-tile.selected .control-button {
-  background: rgba(10, 132, 255, .14) !important;
-  color: #007aff;
-}
-
-.calendar-page-active .home-card .favorite-button svg,
-.calendar-page-active .home-card .control-button svg {
-  width: 12px !important;
-  height: 12px !important;
-  display: block;
-  margin: 0 !important;
-  transform: none !important;
-}
-
-/* Heading spacing is brought onto the same rhythm as the new accessory cards. */
-.calendar-page-active .home-card .device-heading {
-  padding: 4px 16px 10px;
-  align-items: baseline;
-}
-
-.calendar-page-active .home-card .device-heading h3 {
-  font-size: 16.5px !important;
-  line-height: 1.08;
-  letter-spacing: -.018em;
-}
-
-.calendar-page-active .home-card .device-heading span {
-  font-size: 12px !important;
-  line-height: 1.1;
-}
-
-/* Night mode mirrors the same hierarchy instead of switching to another card language. */
-.night.calendar-page-active .home-card .entity-tile {
-  border-color: rgba(255, 255, 255, .065);
-  background: rgba(58, 58, 60, .88);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .035),
-    0 6px 18px rgba(0, 0, 0, .16);
-}
-
-.night.calendar-page-active .home-card .entity-tile.active {
-  border-color: color-mix(in srgb, var(--device-accent) 26%, rgba(255, 255, 255, .07));
-  background: color-mix(in srgb, var(--device-accent) 14%, #2c2c2e);
-}
-
-.night.calendar-page-active .home-card .entity-main strong { color: #f5f5f7; }
-.night.calendar-page-active .home-card .entity-main small { color: #b8b8bd; }
-.night.calendar-page-active .home-card .entity-icon {
-  background: rgba(255, 255, 255, .14);
-  color: #fff;
-}
-.night.calendar-page-active .home-card .entity-tile.active .entity-icon {
-  background: color-mix(in srgb, var(--device-accent) 82%, #000 18%);
-}
-.night.calendar-page-active .home-card .favorite-button,
-.night.calendar-page-active .home-card .control-button {
-  background: rgba(255, 255, 255, .085) !important;
-  color: #c7c7cc;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
-}
-
-/* ---------- Calendar-only interaction fixes ---------- */
-/* The room selector is a true horizontal scroller. The thin scrollbar is
- * intentional on desktop so it remains discoverable with a mouse, while touch
- * and trackpad users can pan it natively. */
+/* Rooms are a real horizontal strip: mouse wheel/trackpad/touch can scroll it. */
 .calendar-page-active .home-card .room-switcher.room-chip-strip {
   width: 100% !important;
-  max-width: 100% !important;
   min-width: 0 !important;
+  max-width: 100% !important;
   display: flex !important;
   flex-wrap: nowrap !important;
   gap: 8px !important;
-  overflow-x: scroll !important;
+  margin: 0;
+  padding: 0 16px 12px !important;
+  overflow-x: auto !important;
   overflow-y: hidden !important;
-  overscroll-behavior-x: contain;
+  overscroll-behavior-inline: contain;
   scroll-snap-type: x proximity;
   scroll-padding-inline: 16px;
   touch-action: pan-x pinch-zoom;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: rgba(118, 118, 128, .28) transparent;
-  padding: 0 16px 11px !important;
+  scrollbar-color: rgba(118,118,128,.24) transparent;
 }
 
 .calendar-page-active .home-card .room-switcher.room-chip-strip::-webkit-scrollbar {
@@ -282,254 +90,497 @@
 }
 .calendar-page-active .home-card .room-switcher.room-chip-strip::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(118, 118, 128, .25);
+  background: rgba(118,118,128,.23);
 }
+
 .calendar-page-active .home-card .room-switcher.room-chip-strip > button {
   flex: 0 0 auto !important;
   width: auto !important;
   min-width: max-content !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
   scroll-snap-align: start;
+  border-radius: 16px !important;
+  border: 1px solid rgba(60,60,67,.07) !important;
+  background: rgba(118,118,128,.065) !important;
+  color: #66666b;
+  font-size: 12.5px !important;
+  line-height: 1 !important;
+  font-weight: 640 !important;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.58) !important;
 }
 
-/* Icon-only global power action: keep the accessible text in the DOM but remove
- * it visually. */
-.calendar-page-active .home-card .power-all {
-  width: 40px !important;
-  min-width: 40px !important;
-  height: 40px !important;
-  min-height: 40px !important;
-  padding: 0 !important;
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button.active {
+  background: rgba(255,214,10,.18) !important;
+  color: #6d5400;
+  border-color: rgba(199,141,0,.15) !important;
+}
+
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button svg {
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px !important;
+  min-height: 15px !important;
+}
+
+.calendar-page-active .home-card .room-chip-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .38;
+}
+.calendar-page-active .home-card .room-switcher button.active .room-chip-dot { opacity: .72; }
+
+.calendar-page-active .home-card .device-heading {
+  min-width: 0;
+  padding: 6px 17px 11px !important;
+  display: flex;
+  align-items: baseline !important;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.calendar-page-active .home-card .device-heading h3 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 17px !important;
+  line-height: 1.08;
+  font-weight: 710;
+  letter-spacing: -.02em;
+}
+
+.calendar-page-active .home-card .device-heading span {
+  flex: 0 0 auto;
+  color: #8e8e93;
+  font-size: 11.5px !important;
+  line-height: 1.1;
+  font-weight: 580;
+}
+
+/* ---------- Accessory cards: larger type, less visual noise ---------- */
+.calendar-page-active .home-card .entity-grid {
+  width: 100%;
+  min-width: 0;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)) !important;
+  gap: 10px !important;
+  padding: 0 14px 2px !important;
+  align-items: stretch;
+}
+
+.calendar-page-active .home-card .entity-tile {
+  --device-accent: #8e8e93;
+  position: relative;
+  min-width: 0;
+  min-height: 102px !important;
+  aspect-ratio: auto !important;
+  overflow: hidden;
+  border: 1px solid rgba(60,60,67,.07) !important;
+  border-radius: 20px !important;
+  background: rgba(244,244,247,.88) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 6px 18px rgba(0,0,0,.032) !important;
+  transition: transform .15s cubic-bezier(.2,.8,.2,1), border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.calendar-page-active .home-card .entity-tile.domain-light.active { --device-accent: var(--accessory-active, #ffd60a); }
+.calendar-page-active .home-card .entity-tile.domain-cover.active { --device-accent: #64b5f6; }
+.calendar-page-active .home-card .entity-tile.domain-climate.active { --device-accent: #ff9f0a; }
+.calendar-page-active .home-card .entity-tile.domain-switch.active { --device-accent: #34c759; }
+.calendar-page-active .home-card .entity-tile.domain-media_player.active { --device-accent: #0a84ff; }
+.calendar-page-active .home-card .entity-tile.domain-fan.active { --device-accent: #5e5ce6; }
+.calendar-page-active .home-card .entity-tile.domain-lock.active { --device-accent: #34c759; }
+
+.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--device-accent) 20%, rgba(60,60,67,.07)) !important;
+  background: color-mix(in srgb, var(--device-accent) 10%, rgba(255,255,255,.97)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 7px 19px rgba(0,0,0,.038) !important;
+}
+
+.calendar-page-active .home-card .entity-tile.selected {
+  border-color: rgba(10,132,255,.28) !important;
+  box-shadow: inset 0 0 0 1px rgba(10,132,255,.11), inset 0 1px 0 rgba(255,255,255,.88), 0 7px 19px rgba(0,0,0,.04) !important;
+}
+
+.calendar-page-active .home-card .entity-tile:hover {
+  transform: translateY(-1px);
+  border-color: rgba(60,60,67,.12) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 9px 22px rgba(0,0,0,.047) !important;
+}
+
+.calendar-page-active .home-card .entity-main {
+  width: 100%;
+  min-width: 0;
+  min-height: 102px !important;
+  padding: 51px 44px 11px 12px !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start !important;
+  justify-content: flex-end !important;
+  gap: 3px !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  background: transparent !important;
+  color: inherit;
+  text-align: left;
+}
+
+.calendar-page-active .home-card .entity-main:active { transform: scale(.985); }
+
+.calendar-page-active .home-card .entity-icon {
+  position: absolute !important;
+  top: 11px !important;
+  left: 11px !important;
+  width: 33px !important;
+  height: 33px !important;
+  margin: 0 !important;
   display: grid !important;
   place-items: center !important;
-  border-radius: 50% !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  gap: 0 !important;
-  flex: 0 0 40px;
+  border-radius: 11px !important;
+  background: rgba(118,118,128,.58) !important;
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12) !important;
 }
-.calendar-page-active .home-card .power-all svg {
-  width: 19px !important;
-  height: 19px !important;
+
+.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  background: color-mix(in srgb, var(--device-accent) 86%, #000 14%) !important;
+}
+
+.calendar-page-active .home-card .entity-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
   margin: 0 !important;
 }
 
-/* LISTE delete target: larger icon and touch target without inflating the row. */
-.calendar-page-active .tasks-card .delete-task {
-  width: 40px !important;
-  min-width: 40px !important;
-  height: 40px !important;
-  min-height: 40px !important;
+.calendar-page-active .home-card .entity-main strong {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: normal !important;
+  text-overflow: ellipsis;
+  color: #1d1d1f;
+  font-size: 13.4px !important;
+  line-height: 1.12 !important;
+  font-weight: 710 !important;
+  letter-spacing: -.018em;
+}
+
+.calendar-page-active .home-card .entity-main small {
+  width: 100%;
+  min-width: 0;
+  margin: 1px 0 0 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #737378;
+  font-size: 11.3px !important;
+  line-height: 1.12 !important;
+  font-weight: 560 !important;
+  letter-spacing: -.006em;
+}
+
+/* Remove the old status dot: the active card/icon already communicates state. */
+.calendar-page-active .home-card .entity-main small::before { display: none !important; content: none !important; }
+
+.calendar-page-active .home-card .favorite-button,
+.calendar-page-active .home-card .control-button {
+  right: 9px !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
   padding: 0 !important;
   display: grid !important;
   place-items: center !important;
-  border-radius: 50% !important;
-  background: rgba(255, 59, 48, .105) !important;
-  color: #d70015;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: rgba(118,118,128,.085) !important;
+  color: #77777d;
+  line-height: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.50) !important;
 }
-.calendar-page-active .tasks-card .delete-task svg {
-  width: 22px !important;
-  height: 22px !important;
-  display: block;
-  margin: 0;
-}
-.calendar-page-active .tasks-card .delete-task svg * {
-  stroke-width: 1.75;
+.calendar-page-active .home-card .favorite-button { top: 9px !important; }
+.calendar-page-active .home-card .control-button { bottom: 9px !important; }
+
+.calendar-page-active .home-card .favorite-button svg,
+.calendar-page-active .home-card .control-button svg {
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px !important;
+  min-height: 15px !important;
+  margin: 0 !important;
+  transform: none !important;
 }
 
-/* ---------- Calendar-only responsive layout ---------- */
+.calendar-page-active .home-card .favorite-button.selected {
+  background: rgba(255,214,10,.19) !important;
+  color: #8d6900;
+}
+.calendar-page-active .home-card .entity-tile.selected .control-button {
+  background: rgba(10,132,255,.13) !important;
+  color: #007aff;
+}
+
+.calendar-page-active .home-card .empty-state {
+  grid-column: 1 / -1;
+  padding: 28px 12px;
+  font-size: 13px !important;
+  line-height: 1.25;
+}
+
+/* Controls opened below a device are visually separated from the grid. */
+.calendar-page-active .home-card .device-controls {
+  margin: 14px 14px 0 !important;
+  padding: 14px !important;
+  border-radius: 20px !important;
+}
+
+/* ---------- Night mode ---------- */
+.night.calendar-page-active .home-card .entity-tile {
+  border-color: rgba(255,255,255,.065) !important;
+  background: rgba(58,58,60,.90) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 7px 20px rgba(0,0,0,.16) !important;
+}
+.night.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--device-accent) 25%, rgba(255,255,255,.07)) !important;
+  background: color-mix(in srgb, var(--device-accent) 13%, #2c2c2e) !important;
+}
+.night.calendar-page-active .home-card .entity-main strong { color: #f5f5f7; }
+.night.calendar-page-active .home-card .entity-main small { color: #b5b5bb; }
+.night.calendar-page-active .home-card .entity-icon { background: rgba(255,255,255,.14) !important; }
+.night.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  background: color-mix(in srgb, var(--device-accent) 80%, #000 20%) !important;
+}
+.night.calendar-page-active .home-card .favorite-button,
+.night.calendar-page-active .home-card .control-button {
+  background: rgba(255,255,255,.08) !important;
+  color: #c7c7cc;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+/* ---------- Calendar page responsive composition ---------- */
 .calendar-page-active {
-  overflow-x: clip;
+  width: 100%;
+  max-width: none !important;
+  overflow-x: hidden !important;
   padding: clamp(12px, 1.25vw, 24px) !important;
+  padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 .calendar-page-active .dashboard-grid {
   width: 100%;
   min-width: 0;
+  display: grid;
   grid-template-areas: "left calendar right";
-  grid-template-columns: minmax(240px, .76fr) minmax(0, 2.35fr) minmax(310px, .92fr) !important;
+  grid-template-columns: minmax(255px, .78fr) minmax(0, 2.35fr) minmax(330px, .98fr) !important;
   gap: clamp(12px, 1vw, 20px) !important;
   align-items: start;
 }
-.calendar-page-active .left-column {
-  grid-area: left;
-  min-width: 0;
-}
-.calendar-page-active .calendar-card {
-  grid-area: calendar;
-  min-width: 0;
+.calendar-page-active .left-column { grid-area: left; min-width: 0; }
+.calendar-page-active .calendar-card { grid-area: calendar; min-width: 0; width: 100%; overflow: hidden !important; }
+.calendar-page-active .right-column { grid-area: right; min-width: 0; }
+
+/* Undo the old fixed 760px mobile calendar: the month now genuinely contracts. */
+.calendar-page-active .calendar-toolbar,
+.calendar-page-active .month-grid {
+  min-width: 0 !important;
   width: 100%;
-}
-.calendar-page-active .right-column {
-  grid-area: right;
-  min-width: 0;
 }
 
 .calendar-page-active .calendar-toolbar,
 .calendar-page-active .card-heading,
-.calendar-page-active .device-heading,
+.calendar-page-active .agenda-day,
 .calendar-page-active .task-row,
-.calendar-page-active .agenda-day {
+.calendar-page-active .device-heading {
   min-width: 0;
 }
-
 .calendar-page-active .calendar-toolbar > div:first-child,
 .calendar-page-active .home-heading > div:first-child,
 .calendar-page-active .task-row label,
-.calendar-page-active .agenda-events {
-  min-width: 0;
-}
+.calendar-page-active .agenda-events { min-width: 0; }
 
-.calendar-page-active .task-row label span,
-.calendar-page-active .agenda-event strong {
-  overflow-wrap: anywhere;
-}
-
-@media (max-width: 1500px) {
-  .calendar-page-active .dashboard-grid {
-    grid-template-columns: minmax(220px, .72fr) minmax(0, 2.2fr) minmax(290px, .9fr) !important;
-  }
-
-  .calendar-page-active .calendar-toolbar {
-    padding-inline: clamp(18px, 2vw, 26px) !important;
-  }
-
-  .calendar-page-active .home-card .entity-grid {
-    grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
-  }
-}
-
-@media (max-width: 1180px) {
+@media (max-width: 1420px) {
   .calendar-page-active .dashboard-grid {
     grid-template-areas:
       "calendar calendar"
       "left right";
-    grid-template-columns: minmax(0, 1fr) minmax(300px, .78fr) !important;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, .82fr) !important;
     gap: 14px !important;
   }
 
-  .calendar-page-active .calendar-card {
-    min-height: auto !important;
-  }
-
-  .calendar-page-active .left-column,
-  .calendar-page-active .right-column {
-    gap: 14px !important;
-  }
-
+  .calendar-page-active .calendar-card { min-height: auto !important; }
   .calendar-page-active .clock-panel,
-  .calendar-page-active .status-row {
-    min-height: auto !important;
-  }
-
-  .calendar-page-active .status-row {
-    padding-block: 8px;
-  }
+  .calendar-page-active .status-row { min-height: auto !important; }
 
   .calendar-page-active .home-card .entity-grid {
-    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
-  }
-
-  .calendar-page-active .calendar-day {
-    min-height: 104px !important;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)) !important;
   }
 }
 
-@media (max-width: 820px) {
-  .calendar-page-active {
-    padding: 12px !important;
-  }
-
+@media (max-width: 980px) {
   .calendar-page-active .dashboard-grid {
     grid-template-areas:
-      "left"
       "calendar"
+      "left"
       "right";
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 12px !important;
   }
 
-  .calendar-page-active .clock-panel {
-    text-align: center;
+  .calendar-page-active .left-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
   }
+  .calendar-page-active .clock-panel { grid-column: 1 / -1; }
 
-  .calendar-page-active .time-row {
-    justify-content: center;
+  .calendar-page-active .right-column {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
   }
-
-  .calendar-page-active .calendar-toolbar {
-    min-height: auto !important;
-    padding: 18px !important;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-
-  .calendar-page-active .calendar-actions {
-    margin-left: auto;
-  }
-
-  .calendar-page-active .calendar-day {
-    min-height: 94px !important;
-    padding: 7px 6px 8px !important;
-  }
-
-  .calendar-page-active .weekday {
-    padding-inline: 4px !important;
-  }
-
-  .calendar-page-active .calendar-event {
-    padding-inline: 5px !important;
-    font-size: 10.5px !important;
+  .calendar-page-active .status-row {
+    min-height: 0 !important;
+    padding: 0 2px !important;
   }
 
   .calendar-page-active .home-card .entity-grid {
-    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 720px) {
+  .calendar-page-active { padding: 10px 10px calc(74px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  .calendar-page-active .left-column { grid-template-columns: 1fr !important; }
+  .calendar-page-active .clock-panel { grid-column: auto; text-align: center; }
+  .calendar-page-active .time-row { justify-content: center; }
+
+  .calendar-page-active .calendar-toolbar {
+    min-height: auto !important;
+    padding: 17px 16px !important;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .calendar-page-active .calendar-toolbar h1 { font-size: clamp(26px, 7vw, 32px) !important; }
+  .calendar-page-active .calendar-actions { margin-left: auto; }
+
+  .calendar-page-active .weekday {
+    padding: 8px 2px !important;
+    font-size: 9.5px !important;
+    letter-spacing: .025em !important;
+  }
+  .calendar-page-active .calendar-day {
+    min-height: 91px !important;
+    padding: 7px 5px 8px !important;
+  }
+  .calendar-page-active .day-number {
+    margin-bottom: 5px !important;
+    font-size: 12px !important;
+  }
+  .calendar-page-active .calendar-event {
+    min-height: 20px !important;
+    padding: 4px 5px !important;
+    font-size: 9.6px !important;
+  }
+
+  .calendar-page-active .home-card .entity-grid {
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .calendar-page-active .card { border-radius: 22px !important; }
+  .calendar-page-active .calendar-card { border-radius: 24px !important; }
+
   .calendar-page-active .calendar-toolbar {
     align-items: flex-start;
+    padding: 15px 14px !important;
   }
-
-  .calendar-page-active .calendar-toolbar h1 {
-    font-size: 27px !important;
-  }
-
   .calendar-page-active .calendar-actions {
     width: 100%;
     justify-content: flex-end;
   }
-
   .calendar-page-active .calendar-day {
-    min-height: 82px !important;
-    padding: 6px 4px !important;
+    min-height: 76px !important;
+    padding: 5px 3px 6px !important;
   }
-
-  .calendar-page-active .day-number {
-    margin-bottom: 5px !important;
-  }
-
+  .calendar-page-active .weekday { font-size: 8.5px !important; }
+  .calendar-page-active .day-number { font-size: 11px !important; }
   .calendar-page-active .calendar-event {
-    min-height: 20px !important;
-    padding: 4px !important;
-    font-size: 9.5px !important;
+    min-height: 18px !important;
+    padding: 3px !important;
+    font-size: 8.6px !important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .calendar-page-active .calendar-event > span:first-child { display: none; }
 
   .calendar-page-active .agenda-day {
-    grid-template-columns: 74px minmax(0, 1fr) !important;
+    grid-template-columns: 72px minmax(0,1fr) !important;
+  }
+  .calendar-page-active .agenda-event {
+    grid-template-columns: 34px minmax(0,1fr) !important;
   }
 
-  .calendar-page-active .tasks-card .delete-task {
-    width: 38px !important;
-    min-width: 38px !important;
-    height: 38px !important;
-    min-height: 38px !important;
+  .calendar-page-active .home-card .home-heading {
+    min-height: 78px;
+    padding: 17px 14px 12px !important;
   }
-
+  .calendar-page-active .home-card .room-switcher.room-chip-strip {
+    padding-inline: 13px !important;
+  }
+  .calendar-page-active .home-card .device-heading {
+    padding-inline: 14px !important;
+  }
   .calendar-page-active .home-card .entity-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 8px !important;
+    padding-inline: 10px !important;
   }
+  .calendar-page-active .home-card .entity-tile,
+  .calendar-page-active .home-card .entity-main {
+    min-height: 98px !important;
+  }
+  .calendar-page-active .home-card .entity-main {
+    padding: 49px 40px 10px 10px !important;
+  }
+  .calendar-page-active .home-card .entity-main strong { font-size: 12.6px !important; }
+  .calendar-page-active .home-card .entity-main small { font-size: 10.7px !important; }
+  .calendar-page-active .home-card .entity-icon {
+    top: 10px !important;
+    left: 10px !important;
+    width: 31px !important;
+    height: 31px !important;
+  }
+  .calendar-page-active .home-card .favorite-button,
+  .calendar-page-active .home-card .control-button {
+    right: 8px !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+  }
+  .calendar-page-active .home-card .favorite-button { top: 8px !important; }
+  .calendar-page-active .home-card .control-button { bottom: 8px !important; }
+}
+
+@media (max-width: 380px) {
+  .calendar-page-active { padding-inline: 7px !important; }
+  .calendar-page-active .home-card .entity-grid { grid-template-columns: 1fr !important; }
+  .calendar-page-active .calendar-day { min-height: 70px !important; }
+  .calendar-page-active .calendar-event { font-size: 8px !important; }
 }
