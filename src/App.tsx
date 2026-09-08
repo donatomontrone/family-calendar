@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type CSSProperties, type FormEvent, type 
 import HomeView from "./HomeView";
 import ClimateControl from "./ClimateControl";
 import SharedHeader from "./SharedHeader";
+import HeaderActionModal, { type HeaderAction } from "./HeaderActionModal";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -19,6 +20,7 @@ import { getLanguage, t, type Language } from "./i18n";
 
 type Mode = "todo" | "shopping";
 type Page = "calendar" | "home";
+type ThemeOverride = "auto" | "day" | "night";
 type Task = { id: number; label: string; done: boolean };
 type DemoEvent = {
   startDate: string;
@@ -103,6 +105,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const [shopping, setShopping] = useState<Task[]>(() => buildDemoShopping(language));
   const [addingTask, setAddingTask] = useState(false);
   const [taskDraft, setTaskDraft] = useState("");
+  const [headerAction, setHeaderAction] = useState<HeaderAction | null>(null);
+  const [themeOverride, setThemeOverride] = useState<ThemeOverride>("auto");
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
@@ -121,6 +125,15 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
       .catch((error) => console.error("Family Calendar bootstrap failed", error));
     return () => { active = false; };
   }, [hass]);
+
+  useEffect(() => {
+    const handleHeaderAction = (event: Event) => {
+      const detail = (event as CustomEvent<HeaderAction>).detail;
+      if (detail === "alarm" || detail === "notifications") setHeaderAction(detail);
+    };
+    document.addEventListener("family-calendar-header-action", handleHeaderAction);
+    return () => document.removeEventListener("family-calendar-header-action", handleHeaderAction);
+  }, []);
 
   const favoriteEntities = useMemo(
     () => favorites.filter((entityId) => hass.states[entityId]),
@@ -144,7 +157,8 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const events = useMemo(() => buildDemoEvents(now, language), [eventDate, language]);
   const currentTasks = mode === "todo" ? todo : shopping;
   const sunState = hass.states["sun.sun"]?.state;
-  const isNight = sunState ? sunState === "below_horizon" : now.getHours() >= 19 || now.getHours() < 7;
+  const autoNight = sunState ? sunState === "below_horizon" : now.getHours() >= 19 || now.getHours() < 7;
+  const isNight = themeOverride === "auto" ? autoNight : themeOverride === "night";
 
   async function toggleFavorite(entityId: string) {
     const next = favorites.includes(entityId) ? favorites.filter((id) => id !== entityId) : [...favorites, entityId];
@@ -179,6 +193,14 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
     const targetIds = room === "__favorites" ? allHomeEntities : roomEntities;
     await deactivateEntities(hass, targetIds);
   }
+
+  function toggleTheme() {
+    setThemeOverride(isNight ? "day" : "night");
+  }
+
+  const themeLabel = language === "it"
+    ? `${themeOverride === "auto" ? "Tema automatico" : "Tema manuale"}: passa alla modalità ${isNight ? "chiara" : "scura"}`
+    : `${themeOverride === "auto" ? "Automatic theme" : "Manual theme"}: switch to ${isNight ? "light" : "dark"} mode`;
 
   return (
     <main className={`app-shell ${isNight ? "night" : "day"} ${page === "home" ? "home-page-active" : "calendar-page-active"}`}>
@@ -233,8 +255,9 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   {currentTasks.map((item) => (
                     <div className={`task-row ${item.done ? "done" : ""}`} key={item.id}>
                       <label>
-                        <input type="checkbox" checked={item.done} onChange={() => updateTask(item.id)} />
-                        <span>{item.label}</span>
+                        <input className="task-checkbox-input" type="checkbox" checked={item.done} onChange={() => updateTask(item.id)} />
+                        <span className="task-check-indicator" aria-hidden="true"><CheckIcon /></span>
+                        <span className="task-label">{item.label}</span>
                       </label>
                       {item.done && (
                         <button className="delete-task" onClick={() => deleteTask(item.id)} aria-label={t("delete", language)} title={t("delete", language)}>
@@ -244,7 +267,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                     </div>
                   ))}
                 </div>
-                <div className="segmented-control">
+                <div className="segmented-control task-segmented-control">
                   <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
                   <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
                 </div>
@@ -347,6 +370,14 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
         <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
       )}
 
+      <button type="button" className="global-theme-switch" aria-label={themeLabel} title={themeLabel} onClick={toggleTheme}>
+        {isNight ? <SunIcon /> : <MoonIcon />}
+      </button>
+
+      {headerAction && (
+        <HeaderActionModal hass={hass} language={language} kind={headerAction} onClose={() => setHeaderAction(null)} />
+      )}
+
       <PageDock page={page} language={language} onChange={setPage} />
     </main>
   );
@@ -354,25 +385,12 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
 
 function PageDock({ page, language, onChange }: { page: Page; language: Language; onChange: (page: Page) => void }) {
   return (
-    <nav className="page-dock" aria-label={t("views", language)}>
-      <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><span>{t("calendar", language)}</span></button>
-      <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><span>{t("home", language)}</span></button>
+    <nav className="page-dock-shell" aria-label={t("views", language)}>
+      <div className="segmented-control page-switch-control">
+        <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><span>{t("calendar", language)}</span></button>
+        <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><span>{t("home", language)}</span></button>
+      </div>
     </nav>
-  );
-}
-
-function ClockPanel({ now, language, demo }: { now: Date; language: Language; demo: boolean }) {
-  return (
-    <div className="clock-panel">
-      <div className="time-row">
-        <span className="clock">{now.toLocaleTimeString(localeFor(language), { hour: "2-digit", minute: "2-digit" })}</span>
-        <span className="seconds">{pad(now.getSeconds())}</span>
-      </div>
-      <div className="today-label">
-        {now.toLocaleDateString(localeFor(language), { weekday: "long", day: "numeric", month: "long" })}
-      </div>
-      {demo && <small className="demo-copy">{t("demoHint", language)}</small>}
-    </div>
   );
 }
 
@@ -469,7 +487,7 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
   const color = lightColor(hass, entityId);
 
   return (
-    <div className={`device-controls device-controls-${domain}`}>
+    <div className={`device-controls device-controls-${domain}`} role="dialog" aria-modal="true" aria-label={`${t("controls", language)} ${displayName(hass, entityId)}`}>
       <div className="device-controls-heading">
         <div><span className="section-kicker">{t("controls", language)}</span><strong>{displayName(hass, entityId)}</strong></div>
         <button onClick={onClose} aria-label={t("close", language)}><CloseIcon /></button>
@@ -565,8 +583,8 @@ function SlidersIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><pat
 function TrashIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.1 8.25h7.8l-.55 9.1a1.9 1.9 0 0 1-1.9 1.78h-2.9a1.9 1.9 0 0 1-1.9-1.78l-.55-9.1Z" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round"/><path d="M6.2 6.4h11.6M9.35 6.4V4.85h5.3V6.4M10.25 11v4.9M13.75 11v4.9" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/></svg>; }
 function PlusIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
 function CheckIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6.2 12.4 3.65 3.65L17.9 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function CalendarIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="5.5" width="15" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M8 3.5v4m8-4v4M4.5 10h15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>; }
-function HomeIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.7 11.1 12 4.5l8.3 6.6v8.2c0 .7-.5 1.2-1.2 1.2h-4.6v-5.7h-5v5.7H4.9c-.7 0-1.2-.5-1.2-1.2v-8.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>; }
 function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 7.5 9 9M16.5 7.5l-9 9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
 function ChevronLeftIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function ChevronRightIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function SunIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><><circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></></svg>; }
+function MoonIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.7 15.4A7.8 7.8 0 0 1 8.6 5.3a7.8 7.8 0 1 0 10.1 10.1Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>; }
