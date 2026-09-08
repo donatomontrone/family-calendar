@@ -1,0 +1,203 @@
+/*
+ * Calendar V7 — interaction/state consistency pass.
+ * Runtime-injected after V4/V5/V6. Calendar rules intentionally outrank the
+ * historical stack so a Calendar -> Home -> Calendar round-trip cannot change
+ * the visual state of accessories.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. LISTE add/cancel semantics. + is a normal system control even on hover;
+ * only the active X is destructive red.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card .task-add-button:not(.active) {
+  border-color: rgba(60,60,67,.085) !important;
+  background: rgba(246,246,248,.92) !important;
+  color: #4b4b50 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.90), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.calendar-page-active .tasks-card .task-add-button:not(.active):hover {
+    border-color: rgba(60,60,67,.13) !important;
+    background: #fff !important;
+    color: #1d1d1f !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 2px 5px rgba(0,0,0,.045), 0 9px 22px rgba(0,0,0,.07) !important;
+    transform: translateY(-1px) !important;
+  }
+}
+
+.app-shell.calendar-page-active .tasks-card .task-add-button.active,
+.app-shell.calendar-page-active .tasks-card .task-add-button.active:hover {
+  border-color: rgba(255,59,48,.20) !important;
+  background: rgba(255,59,48,.12) !important;
+  color: #cf463d !important;
+}
+
+.app-shell.night.calendar-page-active .tasks-card .task-add-button:not(.active) {
+  border-color: rgba(255,255,255,.075) !important;
+  background: #3a3a3c !important;
+  color: #e5e5ea !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 6px 18px rgba(0,0,0,.18) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.night.calendar-page-active .tasks-card .task-add-button:not(.active):hover {
+    border-color: rgba(255,255,255,.12) !important;
+    background: #48484a !important;
+    color: #fff !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.075), 0 9px 24px rgba(0,0,0,.25) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Theme control is a real member of the shared header action row on the
+ * Calendar page. No fixed/floating geometry is applied to this button.
+ * -------------------------------------------------------------------------- */
+.app-shell .reel-top-actions {
+  padding-right: 0 !important;
+}
+
+.app-shell .reel-top-actions .header-theme-switch {
+  position: relative !important;
+  inset: auto !important;
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(60,60,67,.085) !important;
+  border-radius: 14px !important;
+  background: rgba(246,246,248,.92) !important;
+  color: #4b4b50 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88), 0 5px 15px rgba(0,0,0,.045) !important;
+  backdrop-filter: blur(20px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(145%) !important;
+  cursor: pointer !important;
+}
+
+.app-shell .reel-top-actions .header-theme-switch svg {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell .reel-top-actions .header-theme-switch:hover {
+    border-color: rgba(60,60,67,.13) !important;
+    background: #fff !important;
+    color: #1d1d1f !important;
+    transform: translateY(-1px) !important;
+  }
+}
+
+.app-shell.night .reel-top-actions .header-theme-switch {
+  border-color: rgba(255,255,255,.075) !important;
+  background: #3a3a3c !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 6px 18px rgba(0,0,0,.18) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.night .reel-top-actions .header-theme-switch:hover {
+    border-color: rgba(255,255,255,.12) !important;
+    background: #48484a !important;
+    color: #fff !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Favorite action is state-independent. It never inherits the accessory
+ * accent or active-card tint; selected is always the same restrained yellow.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .home-card .entity-tile .favorite-button,
+.app-shell.calendar-page-active .home-card .entity-tile.active .favorite-button {
+  border: 1px solid rgba(60,60,67,.055) !important;
+  background: rgba(255,255,255,.72) !important;
+  color: #6e6e73 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 2px 6px rgba(0,0,0,.035) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile .favorite-button.selected,
+.app-shell.calendar-page-active .home-card .entity-tile.active .favorite-button.selected {
+  border-color: rgba(198,148,0,.16) !important;
+  background: #fff4c7 !important;
+  color: #8f6b00 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88), 0 2px 7px rgba(166,117,0,.055) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile .favorite-button,
+.app-shell.night.calendar-page-active .home-card .entity-tile.active .favorite-button {
+  border-color: rgba(255,255,255,.06) !important;
+  background: #3a3a3c !important;
+  color: #aeaeb2 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 3px 8px rgba(0,0,0,.16) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile .favorite-button.selected,
+.app-shell.night.calendar-page-active .home-card .entity-tile.active .favorite-button.selected {
+  border-color: rgba(255,214,10,.18) !important;
+  background: rgba(255,214,10,.14) !important;
+  color: #ffd60a !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. Deterministic active state after navigation. Every non-light/non-climate
+ * accessory uses exactly #c9e3ff in light appearance, regardless of domain or
+ * stale --device-accent values from Home-page styles.
+ * -------------------------------------------------------------------------- */
+.app-shell.day.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) {
+  --device-accent: #007aff !important;
+  border-color: #abd1f8 !important;
+  background-color: #c9e3ff !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.68), 0 4px 12px rgba(0,122,255,.055) !important;
+}
+
+.app-shell.day.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-icon {
+  border-color: rgba(0,122,255,.18) !important;
+  background: #007aff !important;
+  color: #fff !important;
+}
+
+.app-shell.day.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-main strong {
+  color: #1d1d1f !important;
+}
+
+.app-shell.day.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-main small {
+  color: #356b9e !important;
+  font-weight: 670 !important;
+}
+
+/* Hue White Ambiance: the active light accent represents warm <-> cool white,
+ * never an RGB colour picker hue. */
+.app-shell.day.calendar-page-active .home-card .entity-tile.domain-light.active {
+  --device-accent: var(--accessory-active, #e8eef7) !important;
+  border-color: color-mix(in srgb, var(--accessory-active, #e8eef7) 48%, #b8c1cc) !important;
+  background: color-mix(in srgb, var(--accessory-active, #e8eef7) 38%, #fff) !important;
+}
+
+.app-shell.day.calendar-page-active .home-card .entity-tile.domain-light.active .entity-icon {
+  background: color-mix(in srgb, var(--accessory-active, #e8eef7) 72%, #7b838d) !important;
+  color: #fff !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 5. Tunable-white slider: subtle warm-to-ice track for White Ambiance lamps.
+ * -------------------------------------------------------------------------- */
+.app-shell .white-temperature-control {
+  accent-color: #8aaed4 !important;
+}
+
+.app-shell .white-temperature-control::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, #ffd6a6 0%, #fff3dd 47%, #c9e3ff 100%) !important;
+}
+
+/* The old globally positioned theme button is only a compatibility fallback on
+ * the Home page. Calendar uses .header-theme-switch inside SharedHeader. */
+.app-shell.calendar-page-active > .global-theme-switch {
+  display: none !important;
+}
