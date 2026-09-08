@@ -20,6 +20,7 @@ import calendarSmartHomePolishStyles from "./calendar-smart-home-polish.css?inli
 import smartHomeDeviceCardStyles from "./smart-home-device-cards.css?inline";
 import controlLanguageStyles from "./control-language.css?inline";
 import appleGuidelinesStyles from "./apple-guidelines.css?inline";
+import calendarV3Styles from "./calendar-v3.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -27,7 +28,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}`;
+  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}\n${calendarV3Styles}`;
   document.head.appendChild(style);
 }
 
