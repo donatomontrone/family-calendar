@@ -380,19 +380,13 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
           </section>
         </>
       ) : (
-        <HomeView
-          hass={hass}
-          areas={areas}
-          entities={entities}
-          now={now}
-          demo={demo}
-          language={language}
-          onHeaderAlarm={openAlarm}
-          onHeaderNotifications={openNotifications}
-          onThemeToggle={toggleTheme}
-          isNight={isNight}
-          themeLabel={themeLabel}
-        />
+        <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
+      )}
+
+      {page === "home" && (
+        <button type="button" className="global-theme-switch home-header-theme-switch" aria-label={themeLabel} title={themeLabel} onClick={toggleTheme}>
+          {isNight ? <SunIcon /> : <MoonIcon />}
+        </button>
       )}
 
       {headerAction && (
@@ -605,3 +599,5 @@ function CheckIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path 
 function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 7.5 9 9M16.5 7.5l-9 9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
 function ChevronLeftIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function ChevronRightIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function SunIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><><circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></></svg>; }
+function MoonIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.7 15.4A7.8 7.8 0 0 1 8.6 5.3a7.8 7.8 0 1 0 10.1 10.1Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>; }
