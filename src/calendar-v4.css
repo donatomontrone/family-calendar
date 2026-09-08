@@ -1,0 +1,416 @@
+/*
+ * Calendar V4 corrective layer.
+ * Runtime-injected last by ui-interactions.ts so it wins over the historical
+ * style stack without changing the Home-page layout.
+ */
+
+/* --------------------------------------------------------------------------
+ * Segmented controls: one visual component, two placements.
+ * High specificity is deliberate because older finishing layers used !important.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control {
+  position: relative !important;
+  isolation: isolate !important;
+  contain: paint !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 5px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(60,60,67,.10) !important;
+  border-radius: 20px !important;
+  background-color: #ececef !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control {
+  width: auto !important;
+  margin: 6px 15px 1px !important;
+}
+
+.app-shell .page-dock-shell {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.app-shell .page-dock-shell > .segmented-control.page-switch-control {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control::before,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  top: 5px !important;
+  bottom: 5px !important;
+  left: 5px !important;
+  width: calc((100% - 14px) / 2) !important;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.075), inset 0 1px 0 rgba(255,255,255,.92) !important;
+  transform: translate3d(0,0,0) !important;
+  transition: transform .30s cubic-bezier(.22,.88,.26,1) !important;
+  pointer-events: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control:has(> button:nth-of-type(2).active)::before,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control:has(> button:nth-of-type(2).active)::before {
+  transform: translate3d(calc(100% + 4px),0,0) !important;
+}
+
+/* Repeating the drag class is intentional: this selector must outrank the
+ * :has(.active) selector while dragging from right to left. */
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control.segment-dragging.segment-dragging.segment-dragging::before,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control.segment-dragging.segment-dragging.segment-dragging::before {
+  transform: translate3d(var(--segment-drag-offset, 0px),0,0) !important;
+  transition: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control > button {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: transparent !important;
+  color: #77777d !important;
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.012em !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  touch-action: pan-y !important;
+  transition: color .18s ease, opacity .12s ease !important;
+}
+
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button.active,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control > button.active {
+  color: #1d1d1f !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button:hover,
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button:focus,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control > button:hover,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control > button:focus {
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button:active,
+.app-shell .page-dock-shell > .segmented-control.page-switch-control > button:active {
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  opacity: .78 !important;
+}
+
+/* Exact same dark palette for both segmented controls. Opaque surfaces avoid
+ * compositor/backdrop changes on Spesa when the floating control is hovered. */
+.app-shell.night.calendar-page-active .tasks-card > .segmented-control.task-segmented-control,
+.app-shell.night .page-dock-shell > .segmented-control.page-switch-control {
+  border-color: rgba(255,255,255,.085) !important;
+  background-color: #2c2c2e !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.app-shell.night.calendar-page-active .tasks-card > .segmented-control.task-segmented-control::before,
+.app-shell.night .page-dock-shell > .segmented-control.page-switch-control::before {
+  background: #48484a !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+.app-shell.night.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button,
+.app-shell.night .page-dock-shell > .segmented-control.page-switch-control > button {
+  color: #98989f !important;
+}
+
+.app-shell.night.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button.active,
+.app-shell.night .page-dock-shell > .segmented-control.page-switch-control > button.active {
+  color: #f5f5f7 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * List delete action: icon only, smaller and softer red.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card .delete-task {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  flex: 0 0 34px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #d65d57 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .delete-task::before {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .delete-task:hover,
+.app-shell.calendar-page-active .tasks-card .delete-task:focus,
+.app-shell.calendar-page-active .tasks-card .delete-task:active {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .delete-task:hover { color: #c94f49 !important; }
+.app-shell.night.calendar-page-active .tasks-card .delete-task { color: #ff6961 !important; }
+.app-shell.night.calendar-page-active .tasks-card .delete-task:hover { color: #ff817a !important; }
+
+/* --------------------------------------------------------------------------
+ * Device popup: break the old card containing block so fixed means viewport.
+ * The card remains visually unchanged behind the modal because the backdrop
+ * masks the temporary removal of backdrop-filter.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .dashboard-grid:has(.device-controls),
+.app-shell.calendar-page-active .right-column:has(.device-controls),
+.app-shell.calendar-page-active .home-card:has(.device-controls) {
+  overflow: visible !important;
+  transform: none !important;
+  filter: none !important;
+  perspective: none !important;
+  contain: none !important;
+}
+
+.app-shell.calendar-page-active .home-card:has(.device-controls) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.app-shell.calendar-page-active .device-controls {
+  position: fixed !important;
+  z-index: 4200 !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(590px, calc(100vw - 36px)) !important;
+  max-width: 590px !important;
+  max-height: calc(100vh - 36px) !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  transform: translate3d(-50%,-50%,0) !important;
+  border: 1px solid rgba(255,255,255,.64) !important;
+  border-radius: 30px !important;
+  background: rgba(248,248,250,.92) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 0 0 100vmax rgba(16,16,20,.34), 0 30px 90px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  backdrop-filter: blur(38px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(38px) saturate(165%) !important;
+}
+
+.app-shell.night.calendar-page-active .device-controls {
+  border-color: rgba(255,255,255,.10) !important;
+  background: rgba(28,28,30,.94) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,.58), 0 30px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+.app-shell.night.calendar-page-active .device-controls-heading strong,
+.app-shell.night.calendar-page-active .device-controls .climate-current strong,
+.app-shell.night.calendar-page-active .device-controls .climate-target-value strong {
+  color: #f5f5f7 !important;
+}
+
+.app-shell.night.calendar-page-active .device-controls .control-row,
+.app-shell.night.calendar-page-active .device-controls-heading button,
+.app-shell.night.calendar-page-active .device-controls .climate-step-button,
+.app-shell.night.calendar-page-active .device-controls .climate-mode-button,
+.app-shell.night.calendar-page-active .device-controls .climate-chip-row button,
+.app-shell.night.calendar-page-active .device-controls .color-control {
+  border-color: rgba(255,255,255,.085) !important;
+  background: rgba(255,255,255,.075) !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 7px 20px rgba(0,0,0,.16) !important;
+}
+
+.app-shell.night.calendar-page-active .device-controls .climate-target-value {
+  border-color: color-mix(in srgb, var(--climate-accent) 22%, rgba(255,255,255,.06)) !important;
+  background: color-mix(in srgb, var(--climate-accent) 12%, #2c2c2e) !important;
+}
+
+.app-shell.night.calendar-page-active .device-controls .climate-mode-button.active,
+.app-shell.night.calendar-page-active .device-controls .climate-chip-row button.active {
+  border-color: color-mix(in srgb, var(--climate-accent) 42%, rgba(255,255,255,.08)) !important;
+  background: color-mix(in srgb, var(--climate-accent) 26%, #3a3a3c) !important;
+  color: color-mix(in srgb, var(--climate-accent) 62%, #fff) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 7px 22px color-mix(in srgb, var(--climate-accent) 12%, transparent) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * Calendar Smart Home accessory colors. Apple-like system hues are reserved
+ * for state/status; large surfaces stay neutral and readable.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .home-card .entity-tile {
+  --device-accent: #8e8e93;
+  border-color: rgba(60,60,67,.075) !important;
+  background: #f2f2f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88), 0 5px 16px rgba(0,0,0,.028) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.domain-cover.active { --device-accent: #007aff !important; }
+.app-shell.calendar-page-active .home-card .entity-tile.domain-climate.active { --device-accent: #ff9500 !important; }
+.app-shell.calendar-page-active .home-card .entity-tile.domain-switch.active { --device-accent: #34c759 !important; }
+.app-shell.calendar-page-active .home-card .entity-tile.domain-media_player.active { --device-accent: #007aff !important; }
+.app-shell.calendar-page-active .home-card .entity-tile.domain-fan.active { --device-accent: #5856d6 !important; }
+.app-shell.calendar-page-active .home-card .entity-tile.domain-lock.active { --device-accent: #34c759 !important; }
+
+.app-shell.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--device-accent) 20%, rgba(60,60,67,.07)) !important;
+  background: color-mix(in srgb, var(--device-accent) 9%, #fff) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 6px 18px color-mix(in srgb, var(--device-accent) 5%, rgba(0,0,0,.035)) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-icon {
+  border: 1px solid rgba(60,60,67,.055) !important;
+  background: #e5e5ea !important;
+  color: #636366 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  border-color: color-mix(in srgb, var(--device-accent) 22%, transparent) !important;
+  background: color-mix(in srgb, var(--device-accent) 20%, #fff) !important;
+  color: color-mix(in srgb, var(--device-accent) 72%, #1d1d1f) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-main strong { color: #1d1d1f !important; }
+.app-shell.calendar-page-active .home-card .entity-main small { color: #6e6e73 !important; }
+.app-shell.calendar-page-active .home-card .entity-tile.active .entity-main small {
+  color: color-mix(in srgb, var(--device-accent) 62%, #3a3a3c) !important;
+}
+
+.app-shell.calendar-page-active .home-card .favorite-button,
+.app-shell.calendar-page-active .home-card .control-button {
+  border: 1px solid rgba(60,60,67,.05) !important;
+  background: rgba(118,118,128,.08) !important;
+  color: #6e6e73 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65) !important;
+}
+
+.app-shell.calendar-page-active .home-card .favorite-button.selected {
+  border-color: rgba(255,204,0,.12) !important;
+  background: rgba(255,204,0,.15) !important;
+  color: #9a7300 !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.selected .control-button {
+  border-color: rgba(0,122,255,.11) !important;
+  background: rgba(0,122,255,.11) !important;
+  color: #007aff !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile {
+  border-color: rgba(255,255,255,.065) !important;
+  background: #2c2c2e !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 7px 20px rgba(0,0,0,.15) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.domain-cover.active { --device-accent: #0a84ff !important; }
+.app-shell.night.calendar-page-active .home-card .entity-tile.domain-climate.active { --device-accent: #ff9f0a !important; }
+.app-shell.night.calendar-page-active .home-card .entity-tile.domain-switch.active { --device-accent: #30d158 !important; }
+.app-shell.night.calendar-page-active .home-card .entity-tile.domain-media_player.active { --device-accent: #0a84ff !important; }
+.app-shell.night.calendar-page-active .home-card .entity-tile.domain-fan.active { --device-accent: #5e5ce6 !important; }
+.app-shell.night.calendar-page-active .home-card .entity-tile.domain-lock.active { --device-accent: #30d158 !important; }
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--device-accent) 28%, rgba(255,255,255,.065)) !important;
+  background: color-mix(in srgb, var(--device-accent) 13%, #2c2c2e) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 8px 22px rgba(0,0,0,.16) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-icon {
+  border-color: rgba(255,255,255,.045) !important;
+  background: #3a3a3c !important;
+  color: #d1d1d6 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  border-color: color-mix(in srgb, var(--device-accent) 32%, rgba(255,255,255,.06)) !important;
+  background: color-mix(in srgb, var(--device-accent) 27%, #3a3a3c) !important;
+  color: color-mix(in srgb, var(--device-accent) 58%, #fff) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-main strong { color: #f5f5f7 !important; }
+.app-shell.night.calendar-page-active .home-card .entity-main small { color: #aeaeb2 !important; }
+.app-shell.night.calendar-page-active .home-card .entity-tile.active .entity-main small {
+  color: color-mix(in srgb, var(--device-accent) 54%, #e5e5ea) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .favorite-button,
+.app-shell.night.calendar-page-active .home-card .control-button {
+  border-color: rgba(255,255,255,.045) !important;
+  background: rgba(255,255,255,.075) !important;
+  color: #aeaeb2 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .favorite-button.selected {
+  border-color: rgba(255,214,10,.16) !important;
+  background: rgba(255,214,10,.14) !important;
+  color: #ffd60a !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.selected .control-button {
+  border-color: rgba(10,132,255,.15) !important;
+  background: rgba(10,132,255,.14) !important;
+  color: #0a84ff !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control::before,
+  .app-shell .page-dock-shell > .segmented-control.page-switch-control::before {
+    transition-duration: .01ms !important;
+  }
+}
