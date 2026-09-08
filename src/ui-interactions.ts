@@ -1,3 +1,5 @@
+import calendarV4Styles from "./calendar-v4.css?inline";
+
 type RoomDragState = {
   strip: HTMLElement;
   pointerId: number;
@@ -11,6 +13,21 @@ type UiWindow = Window & {
 };
 
 const uiWindow = window as UiWindow;
+const FINAL_STYLE_ID = "family-calendar-v4-styles";
+
+function ensureCalendarV4Styles() {
+  let style = document.getElementById(FINAL_STYLE_ID) as HTMLStyleElement | null;
+  if (!style) {
+    style = document.createElement("style");
+    style.id = FINAL_STYLE_ID;
+  }
+  if (style.textContent !== calendarV4Styles) style.textContent = calendarV4Styles;
+  // Keep this layer physically last. The HA panel injects its bundled stylesheet
+  // when the custom element connects, which can happen after this module loads.
+  if (style.parentElement !== document.head || style !== document.head.lastElementChild) {
+    document.head.appendChild(style);
+  }
+}
 
 if (!uiWindow.__familyCalendarUiInteractions) {
   uiWindow.__familyCalendarUiInteractions = true;
@@ -132,7 +149,14 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     document.dispatchEvent(new CustomEvent("family-calendar-header-action", { detail: action }));
   };
 
-  const mutationObserver = new MutationObserver(() => requestAnimationFrame(syncSegmentWidth));
+  const scheduleUiSync = () => {
+    requestAnimationFrame(() => {
+      ensureCalendarV4Styles();
+      syncSegmentWidth();
+    });
+  };
+
+  const mutationObserver = new MutationObserver(scheduleUiSync);
   mutationObserver.observe(document.documentElement, { childList: true, subtree: true });
 
   document.addEventListener("pointerdown", onPointerDown, { capture: true, passive: false });
@@ -148,5 +172,5 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     event.stopImmediatePropagation();
   }, true);
 
-  requestAnimationFrame(syncSegmentWidth);
+  scheduleUiSync();
 }
