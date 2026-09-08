@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import type { Area, EntityRegistryEntry, Hass, HassState } from "./types";
+import "./segmented-gestures";
+import "./ui-interactions";
 import "./styles.css";
 import "./theme.css";
 import "./home-view.css";
@@ -18,6 +20,7 @@ import "./calendar-smart-home-polish.css";
 import "./smart-home-device-cards.css";
 import "./control-language.css";
 import "./apple-guidelines.css";
+import "./calendar-v3.css";
 
 const isoNow = () => new Date().toISOString();
 const state = (
@@ -139,6 +142,23 @@ const initialStates: Record<string, HassState> = {
   "scene.film": state("scene.film", "scening", "Serata film"),
 };
 
+const demoNotifications = [
+  {
+    notification_id: "demo-door",
+    title: "Porta ingresso",
+    message: "La porta d'ingresso è stata aperta alle 15:32.",
+    status: "unread",
+    created_at: isoNow(),
+  },
+  {
+    notification_id: "demo-vacuum",
+    title: "Aspirapolvere",
+    message: "Pulizia completata. Il robot è tornato alla base.",
+    status: "read",
+    created_at: isoNow(),
+  },
+];
+
 function DemoHarness() {
   const [states, setStates] = useState(initialStates);
   const [favorites, setFavorites] = useState<string[]>(() => {
@@ -204,6 +224,8 @@ function DemoHarness() {
         if (domain === "climate" && service === "set_preset_mode") nextAttributes.preset_mode = String(data?.preset_mode ?? "none");
         if (domain === "media_player" && service === "media_play_pause") nextState = existing.state === "playing" ? "paused" : "playing";
         if (domain === "media_player" && service === "volume_set") nextAttributes.volume_level = Number(data?.volume_level ?? 0.35);
+        if (domain === "alarm_control_panel" && service === "alarm_arm_away") nextState = "armed_away";
+        if (domain === "alarm_control_panel" && service === "alarm_disarm") nextState = "disarmed";
 
         return {
           ...current,
@@ -227,6 +249,7 @@ function DemoHarness() {
         localStorage.setItem("family-calendar-demo-favorites", JSON.stringify(next));
         return { entity_ids: next } as T;
       }
+      if (message.type === "persistent_notification/get") return demoNotifications as T;
       throw new Error(`Unsupported demo WebSocket command: ${String(message.type)}`);
     },
   }), [states, favorites]);
