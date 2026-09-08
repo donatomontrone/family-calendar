@@ -1,6 +1,5 @@
-/* Unified control language.
- * Soft iOS-style pills, stable segmented controls and optically centred icons.
- */
+/* Unified control language: Apple-like rounded controls, consistent icon boxes,
+ * and one segmented-control geometry shared by LISTE and the bottom dock. */
 
 :root {
   --fc-control-radius: 16px;
@@ -41,7 +40,6 @@
   display: block !important;
   place-self: center;
   margin: 0 !important;
-  vertical-align: middle;
   transform: none;
   transform-origin: 50% 50%;
 }
@@ -79,7 +77,8 @@
   border-radius: 14px !important;
 }
 
-/* Da fare / Spesa and Calendario / Casa use the exact same segmented geometry. */
+/* LISTE and bottom navigation intentionally use the same shell, inset selector,
+ * spacing and corner radii. The 4px centre gutter is always visible. */
 .segmented-control,
 .page-dock {
   position: relative;
@@ -102,10 +101,10 @@
   content: "";
   position: absolute;
   z-index: 0;
-  top: var(--fc-segment-padding) !important;
-  bottom: var(--fc-segment-padding) !important;
-  left: var(--fc-segment-padding) !important;
-  width: calc((100% - (2 * var(--fc-segment-padding)) - var(--fc-segment-gap)) / 2) !important;
+  top: 5px !important;
+  bottom: 5px !important;
+  left: 5px !important;
+  width: calc((100% - 14px) / 2) !important;
   border-radius: var(--fc-control-radius-inner) !important;
   background: rgba(255,255,255,.96) !important;
   box-shadow: 0 2px 8px rgba(0,0,0,.065), inset 0 1px 0 rgba(255,255,255,.82) !important;
@@ -117,9 +116,8 @@
 
 .segmented-control:has(> button:nth-of-type(2).active)::before,
 .page-dock:has(> button:nth-of-type(2).active)::before {
-  transform: translate3d(calc(100% + var(--fc-segment-gap)),0,0) !important;
+  transform: translate3d(calc(100% + 4px),0,0) !important;
 }
-
 .segmented-control.segment-dragging::before,
 .page-dock.segment-dragging::before {
   transform: translate3d(var(--segment-drag-offset,0px),0,0) !important;
@@ -143,20 +141,12 @@
   cursor: pointer;
   transition: color .2s ease, opacity .16s ease, transform .12s cubic-bezier(.2,.8,.2,1);
 }
-
 .segmented-control > button.active,
-.page-dock > button.active {
-  color: #1d1d1f;
-}
+.page-dock > button.active { color: #1d1d1f; }
 .segmented-control > button:active,
-.page-dock > button:active {
-  transform: scale(.965);
-  opacity: .82;
-}
+.page-dock > button:active { transform: scale(.965); opacity: .82; }
 
-.calendar-page-active .segmented-control {
-  margin: 6px 15px 1px;
-}
+.calendar-page-active .segmented-control { margin: 6px 15px 1px; }
 .calendar-page-active .segmented-control > button {
   min-height: 38px;
   padding: 0 12px;
@@ -176,7 +166,6 @@
   min-width: 0 !important;
   transform: translateX(-50%) !important;
 }
-
 .calendar-page-active .page-dock > button {
   height: 38px !important;
   min-height: 38px !important;
@@ -206,10 +195,7 @@
   box-shadow: var(--fc-control-shadow) !important;
 }
 .calendar-page-active .task-add-button:hover { background: var(--fc-control-bg-hover) !important; }
-.calendar-page-active .task-add-button.active {
-  background: rgba(255,59,48,.09) !important;
-  color: #d70015;
-}
+.calendar-page-active .task-add-button.active { background: rgba(255,59,48,.09) !important; color: #d70015; }
 
 .calendar-page-active .task-composer {
   display: grid;
@@ -239,15 +225,8 @@
   box-shadow: 0 1px 4px rgba(0,0,0,.045);
 }
 .calendar-page-active .task-composer input::placeholder { color: #98989d; }
-.calendar-page-active .task-composer input:focus {
-  box-shadow: 0 0 0 2px rgba(10,132,255,.16), 0 1px 4px rgba(0,0,0,.045);
-}
-.calendar-page-active .task-save-button {
-  border: 0 !important;
-  background: #1d1d1f !important;
-  color: #fff;
-  box-shadow: none !important;
-}
+.calendar-page-active .task-composer input:focus { box-shadow: 0 0 0 2px rgba(10,132,255,.16), 0 1px 4px rgba(0,0,0,.045); }
+.calendar-page-active .task-save-button { border: 0 !important; background: #1d1d1f !important; color: #fff; box-shadow: none !important; }
 .calendar-page-active .task-save-button:disabled { opacity: .28; cursor: default; }
 .calendar-page-active .tasks-card > .text-button,
 .calendar-page-active .tasks-card .count-pill { display: none !important; }
@@ -274,11 +253,7 @@
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.7 3h6.6l.9 2.2H20v2.1H4V5.2h3.8L8.7 3Zm-2 6h10.6l-.62 10.2A1.95 1.95 0 0 1 14.73 21H9.27a1.95 1.95 0 0 1-1.95-1.8L6.7 9Zm2.45 2.1.42 7.1h1.65l-.2-7.1H9.15Zm3.63 0-.2 7.1h1.65l.42-7.1h-1.87Z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-.calendar-page-active .power-all {
-  background: rgba(255,59,48,.085) !important;
-  color: #d70015;
-  border: 1px solid rgba(255,59,48,.07) !important;
-}
+.calendar-page-active .power-all { background: rgba(255,59,48,.085) !important; color: #d70015; border: 1px solid rgba(255,59,48,.07) !important; }
 .calendar-page-active .room-switcher.room-chip-strip { cursor: grab; }
 .calendar-page-active .room-switcher.room-chip-strip:active { cursor: grabbing; }
 
@@ -290,34 +265,15 @@
 .home-page-active .climate-mode-button,
 .home-page-active .climate-chip-row button,
 .home-page-active .vacuum-action,
-.home-page-active .cover-action {
-  border-radius: var(--fc-control-radius) !important;
-}
+.home-page-active .cover-action { border-radius: var(--fc-control-radius) !important; }
 
-.night .task-composer {
-  border-color: rgba(255,255,255,.07);
-  background: rgba(255,255,255,.07);
-}
-.night .task-composer input {
-  background: rgba(72,72,77,.96);
-  color: #f5f5f7;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
-}
-.night .task-add-button {
-  background: rgba(255,255,255,.08) !important;
-  color: #f5f5f7;
-  border-color: rgba(255,255,255,.06) !important;
-}
+.night .task-composer { border-color: rgba(255,255,255,.07); background: rgba(255,255,255,.07); }
+.night .task-composer input { background: rgba(72,72,77,.96); color: #f5f5f7; box-shadow: inset 0 1px 0 rgba(255,255,255,.035); }
+.night .task-add-button { background: rgba(255,255,255,.08) !important; color: #f5f5f7; border-color: rgba(255,255,255,.06) !important; }
 .night .segmented-control,
-.night .page-dock {
-  background: rgba(255,255,255,.075) !important;
-  border-color: rgba(255,255,255,.07) !important;
-}
+.night .page-dock { background: rgba(255,255,255,.075) !important; border-color: rgba(255,255,255,.07) !important; }
 .night .segmented-control::before,
-.night .page-dock::before {
-  background: rgba(84,84,89,.95) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.045) !important;
-}
+.night .page-dock::before { background: rgba(84,84,89,.95) !important; box-shadow: 0 2px 8px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.045) !important; }
 .night .segmented-control > button,
 .night .page-dock > button { color: #98989f; }
 .night .segmented-control > button.active,
@@ -334,7 +290,5 @@
   .segmented-control::before,
   .page-dock::before,
   .segmented-control > button,
-  .page-dock > button {
-    transition-duration: .01ms !important;
-  }
+  .page-dock > button { transition-duration: .01ms !important; }
 }
