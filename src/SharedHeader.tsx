@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
@@ -88,7 +89,7 @@ function locale(language: Language) {
   return language === "it" ? "it-IT" : "en-GB";
 }
 
-function Svg({ children }: { children: React.ReactNode }) {
+function Svg({ children }: { children: ReactNode }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{children}</svg>;
 }
 
