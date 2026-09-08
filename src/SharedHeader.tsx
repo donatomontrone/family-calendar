@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import "./ui-interactions";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
