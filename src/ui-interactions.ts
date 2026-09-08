@@ -1,4 +1,5 @@
 import calendarV4Styles from "./calendar-v4.css?inline";
+import calendarV5Styles from "./calendar-v5.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -14,16 +15,18 @@ type UiWindow = Window & {
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}`;
 
-function ensureCalendarV4Styles() {
+function ensureFinalStyles() {
   let style = document.getElementById(FINAL_STYLE_ID) as HTMLStyleElement | null;
   if (!style) {
     style = document.createElement("style");
     style.id = FINAL_STYLE_ID;
   }
-  if (style.textContent !== calendarV4Styles) style.textContent = calendarV4Styles;
-  // Keep this layer physically last. The HA panel injects its bundled stylesheet
-  // when the custom element connects, which can happen after this module loads.
+  if (style.textContent !== finalStyles) style.textContent = finalStyles;
+
+  // Keep the final calendar contract physically last. The HA panel can inject
+  // its bundled stylesheet after this module has initially executed.
   if (style.parentElement !== document.head || style !== document.head.lastElementChild) {
     document.head.appendChild(style);
   }
@@ -60,21 +63,13 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   };
 
   const onPointerDown = (event: PointerEvent) => {
-    const openDeviceModal = document.querySelector<HTMLElement>(".calendar-page-active .device-controls");
-    if (openDeviceModal && event.target instanceof Node && !openDeviceModal.contains(event.target)) {
-      const closeButton = openDeviceModal.querySelector<HTMLButtonElement>(".device-controls-heading button");
-      if (closeButton) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        closeButton.click();
-        return;
-      }
-    }
-
     if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
     const strip = roomStripFromTarget(event.target);
     if (!strip || strip.scrollWidth <= strip.clientWidth + 1) return;
 
+    // Do not capture on pointer-down. Capturing immediately retargets pointer-up
+    // to the strip and prevents the room button from receiving its normal click.
+    // Capture begins only after we know the user is actually dragging.
     drag = {
       strip,
       pointerId: event.pointerId,
@@ -82,12 +77,6 @@ if (!uiWindow.__familyCalendarUiInteractions) {
       startScrollLeft: strip.scrollLeft,
       moved: false,
     };
-
-    try {
-      strip.setPointerCapture(event.pointerId);
-    } catch {
-      // Pointer capture is an enhancement; document listeners still handle the drag.
-    }
   };
 
   const onPointerMove = (event: PointerEvent) => {
@@ -97,6 +86,11 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     if (!drag.moved && Math.abs(delta) > 4) {
       drag.moved = true;
       drag.strip.classList.add("is-horizontal-dragging");
+      try {
+        drag.strip.setPointerCapture(event.pointerId);
+      } catch {
+        // Pointer capture is an enhancement; document listeners still work.
+      }
     }
 
     if (!drag.moved) return;
@@ -109,13 +103,12 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     const current = drag;
     drag = null;
 
-    try {
-      current.strip.releasePointerCapture(event.pointerId);
-    } catch {
-      // Ignore browsers that release capture automatically.
-    }
-
     if (current.moved) {
+      try {
+        current.strip.releasePointerCapture(event.pointerId);
+      } catch {
+        // Ignore browsers that release capture automatically.
+      }
       event.preventDefault();
       suppressRoomClickUntil = performance.now() + 280;
     }
@@ -138,20 +131,9 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     strip.scrollLeft = next;
   };
 
-  const onHeaderActionClick = (event: MouseEvent) => {
-    if (!(event.target instanceof Element)) return;
-    const button = event.target.closest<HTMLButtonElement>(".security-pill, .round-top");
-    if (!button || !button.closest(".app-shell")) return;
-
-    const action = button.classList.contains("security-pill") ? "alarm" : "notifications";
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    document.dispatchEvent(new CustomEvent("family-calendar-header-action", { detail: action }));
-  };
-
   const scheduleUiSync = () => {
     requestAnimationFrame(() => {
-      ensureCalendarV4Styles();
+      ensureFinalStyles();
       syncSegmentWidth();
     });
   };
@@ -164,7 +146,6 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   document.addEventListener("pointerup", finishPointer, { capture: true, passive: false });
   document.addEventListener("pointercancel", finishPointer, { capture: true, passive: false });
   document.addEventListener("wheel", onWheel, { capture: true, passive: false });
-  document.addEventListener("click", onHeaderActionClick, true);
   document.addEventListener("click", (event) => {
     if (!event.isTrusted || performance.now() > suppressRoomClickUntil) return;
     if (!roomStripFromTarget(event.target)) return;
