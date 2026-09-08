@@ -7,7 +7,6 @@ type GestureState = {
   startOffset: number;
   currentOffset: number;
   maxOffset: number;
-  activeIndex: number;
   moved: boolean;
 };
 
@@ -28,13 +27,18 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
   const controlFromTarget = (target: EventTarget | null) => {
     if (!(target instanceof Element)) return null;
-    return target.closest<HTMLElement>(".page-dock, .segmented-control");
+    return target.closest<HTMLElement>(".segmented-control, .page-dock");
   };
 
   const buttonFromTarget = (target: EventTarget | null, control: HTMLElement) => {
     if (!(target instanceof Element)) return null;
     const button = target.closest<HTMLButtonElement>("button");
     return button && button.parentElement === control ? button : null;
+  };
+
+  const offsetsFor = (buttons: HTMLButtonElement[]) => {
+    const firstLeft = buttons[0]?.offsetLeft ?? 0;
+    return buttons.map((button) => button.offsetLeft - firstLeft);
   };
 
   const onPointerDown = (event: PointerEvent) => {
@@ -47,8 +51,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     if (buttons.length < 2) return;
 
     const activeIndex = Math.max(0, buttons.findIndex((button) => button.classList.contains("active")));
-    const firstLeft = buttons[0].offsetLeft;
-    const offsets = buttons.map((button) => button.offsetLeft - firstLeft);
+    const offsets = offsetsFor(buttons);
     const startOffset = offsets[activeIndex] ?? 0;
     const maxOffset = offsets[offsets.length - 1] ?? 0;
 
@@ -61,7 +64,6 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
       startOffset,
       currentOffset: startOffset,
       maxOffset,
-      activeIndex,
       moved: false,
     };
 
@@ -70,7 +72,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     try {
       control.setPointerCapture(event.pointerId);
     } catch {
-      // Pointer capture is only an enhancement; document listeners still work.
+      // Pointer capture is an enhancement; document listeners still work.
     }
   };
 
@@ -78,14 +80,14 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     if (!gesture || event.pointerId !== gesture.pointerId) return;
 
     const delta = event.clientX - gesture.startX;
-    if (Math.abs(delta) > 6) {
+    if (!gesture.moved && Math.abs(delta) > 5) {
       gesture.moved = true;
       gesture.control.classList.add("segment-dragging");
-      event.preventDefault();
     }
 
     if (!gesture.moved) return;
 
+    event.preventDefault();
     const nextOffset = Math.max(0, Math.min(gesture.maxOffset, gesture.startOffset + delta));
     gesture.currentOffset = nextOffset;
     gesture.control.style.setProperty("--segment-drag-offset", `${nextOffset}px`);
@@ -93,9 +95,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
   const invokeButton = (control: HTMLElement, button: HTMLButtonElement | undefined | null) => {
     if (!button || button.disabled) return;
-    // Trigger React's normal onClick handler explicitly. The browser's trusted click
-    // generated after pointerup is suppressed for a very short window to avoid doubles.
-    suppressClick = { control, until: performance.now() + 300 };
+    suppressClick = { control, until: performance.now() + 320 };
     button.click();
   };
 
@@ -111,12 +111,11 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
       // Ignore browsers that already released pointer capture.
     }
 
+    let targetOffset = current.startOffset;
     if (!cancelled) {
       if (current.moved) {
         event.preventDefault();
-
-        const firstLeft = current.buttons[0].offsetLeft;
-        const offsets = current.buttons.map((button) => button.offsetLeft - firstLeft);
+        const offsets = offsetsFor(current.buttons);
         let targetIndex = 0;
         let smallestDistance = Number.POSITIVE_INFINITY;
 
@@ -128,18 +127,26 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
           }
         });
 
+        targetOffset = offsets[targetIndex] ?? 0;
+        current.control.style.setProperty("--segment-drag-offset", `${targetOffset}px`);
         invokeButton(current.control, current.buttons[targetIndex]);
       } else if (current.pressedButton) {
-        // A normal tap/click is a first-class interaction, not merely a fallback
-        // to dragging. This also makes taps reliable on touch panels using capture.
         event.preventDefault();
+        const pressedIndex = current.buttons.indexOf(current.pressedButton);
+        const offsets = offsetsFor(current.buttons);
+        targetOffset = offsets[Math.max(0, pressedIndex)] ?? current.startOffset;
+        current.control.style.setProperty("--segment-drag-offset", `${targetOffset}px`);
         invokeButton(current.control, current.pressedButton);
       }
     }
 
+    // Keep the temporary offset for two frames so React has time to update the
+    // active class before CSS resumes control. This fixes right-to-left snaps.
     requestAnimationFrame(() => {
-      current.control.classList.remove("segment-dragging");
-      current.control.style.removeProperty("--segment-drag-offset");
+      requestAnimationFrame(() => {
+        current.control.classList.remove("segment-dragging");
+        current.control.style.removeProperty("--segment-drag-offset");
+      });
     });
   };
 
