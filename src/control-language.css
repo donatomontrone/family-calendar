@@ -12,9 +12,10 @@
   --fc-control-bg-hover: rgba(118,118,128,.15);
   --fc-control-border: rgba(60,60,67,.075);
   --fc-control-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 2px 7px rgba(0,0,0,.035);
+  --fc-segment-padding: 5px;
+  --fc-segment-gap: 4px;
 }
 
-/* ---------- Shared geometry ---------- */
 .app-shell button:not(.entity-main):not(.apple-accessory-main):not(.room-card-open) {
   border-radius: var(--fc-control-radius) !important;
   -webkit-tap-highlight-color: transparent;
@@ -31,7 +32,6 @@
   border-radius: var(--fc-control-radius) !important;
 }
 
-/* Buttons own the alignment; SVG paths must not compensate with transforms. */
 .app-shell button svg {
   width: var(--fc-control-icon) !important;
   height: var(--fc-control-icon) !important;
@@ -79,25 +79,22 @@
   border-radius: 14px !important;
 }
 
-/* ---------- Segmented controls ---------- */
+/* Da fare / Spesa and Calendario / Casa use the exact same segmented geometry. */
 .segmented-control,
 .page-dock {
   position: relative;
   isolation: isolate;
-  gap: 0 !important;
-  padding: 5px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: var(--fc-segment-gap) !important;
+  padding: var(--fc-segment-padding) !important;
   overflow: hidden;
+  border: 1px solid rgba(60,60,67,.075) !important;
   border-radius: var(--fc-control-radius-outer) !important;
   background: rgba(118,118,128,.115) !important;
-  border: 1px solid rgba(60,60,67,.075) !important;
   box-shadow: inset 0 1px 2px rgba(0,0,0,.035) !important;
   backdrop-filter: blur(22px) saturate(145%);
   -webkit-backdrop-filter: blur(22px) saturate(145%);
-}
-
-.segmented-control {
-  display: grid !important;
-  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
 }
 
 .segmented-control::before,
@@ -105,10 +102,10 @@
   content: "";
   position: absolute;
   z-index: 0;
-  top: 5px !important;
-  bottom: 5px !important;
-  left: 5px !important;
-  width: calc((100% - 10px) / 2) !important;
+  top: var(--fc-segment-padding) !important;
+  bottom: var(--fc-segment-padding) !important;
+  left: var(--fc-segment-padding) !important;
+  width: calc((100% - (2 * var(--fc-segment-padding)) - var(--fc-segment-gap)) / 2) !important;
   border-radius: var(--fc-control-radius-inner) !important;
   background: rgba(255,255,255,.96) !important;
   box-shadow: 0 2px 8px rgba(0,0,0,.065), inset 0 1px 0 rgba(255,255,255,.82) !important;
@@ -120,7 +117,7 @@
 
 .segmented-control:has(> button:nth-of-type(2).active)::before,
 .page-dock:has(> button:nth-of-type(2).active)::before {
-  transform: translate3d(100%,0,0) !important;
+  transform: translate3d(calc(100% + var(--fc-segment-gap)),0,0) !important;
 }
 
 .segmented-control.segment-dragging::before,
@@ -133,6 +130,7 @@
 .page-dock > button {
   position: relative;
   z-index: 1;
+  width: 100% !important;
   min-width: 0 !important;
   border: 0 !important;
   border-radius: var(--fc-control-radius-inner) !important;
@@ -148,51 +146,12 @@
 
 .segmented-control > button.active,
 .page-dock > button.active {
-  background: transparent !important;
   color: #1d1d1f;
-  box-shadow: none !important;
 }
 .segmented-control > button:active,
 .page-dock > button:active {
   transform: scale(.965);
   opacity: .82;
-}
-
-/* Calendar dock: explicit grid prevents the two buttons from ever overlapping. */
-.calendar-page-active .page-dock {
-  position: fixed !important;
-  z-index: 1000;
-  left: 50% !important;
-  right: auto !important;
-  bottom: max(14px, env(safe-area-inset-bottom, 0px)) !important;
-  width: 204px !important;
-  max-width: calc(100vw - 20px) !important;
-  min-width: 0 !important;
-  display: grid !important;
-  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
-  transform: translateX(-50%) !important;
-}
-
-.calendar-page-active .page-dock > button {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  padding: 0 8px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  font-size: 10.5px !important;
-  font-weight: 680;
-  white-space: nowrap;
-}
-
-.calendar-page-active .page-dock > button svg {
-  width: 16px !important;
-  height: 16px !important;
-  min-width: 16px !important;
-  min-height: 16px !important;
 }
 
 .calendar-page-active .segmented-control {
@@ -206,9 +165,39 @@
   letter-spacing: -.012em;
 }
 
-/* ---------- Lists ---------- */
-.calendar-page-active .tasks-heading { align-items: center; }
+.calendar-page-active .page-dock {
+  position: fixed !important;
+  z-index: 1000;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(14px, env(safe-area-inset-bottom, 0px)) !important;
+  width: 204px !important;
+  max-width: calc(100vw - 20px) !important;
+  min-width: 0 !important;
+  transform: translateX(-50%) !important;
+}
 
+.calendar-page-active .page-dock > button {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  font-size: 10.5px !important;
+  font-weight: 680;
+  white-space: nowrap;
+}
+.calendar-page-active .page-dock > button svg {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+}
+
+/* LISTE */
+.calendar-page-active .tasks-heading { align-items: center; }
 .calendar-page-active .task-add-button {
   flex: 0 0 40px;
   border: 1px solid var(--fc-control-border) !important;
@@ -234,7 +223,6 @@
   background: rgba(118,118,128,.09);
   box-shadow: inset 0 1px 2px rgba(0,0,0,.03);
 }
-
 .calendar-page-active .task-composer input {
   width: 100%;
   height: 40px;
@@ -254,7 +242,6 @@
 .calendar-page-active .task-composer input:focus {
   box-shadow: 0 0 0 2px rgba(10,132,255,.16), 0 1px 4px rgba(0,0,0,.045);
 }
-
 .calendar-page-active .task-save-button {
   border: 0 !important;
   background: #1d1d1f !important;
@@ -262,11 +249,9 @@
   box-shadow: none !important;
 }
 .calendar-page-active .task-save-button:disabled { opacity: .28; cursor: default; }
-
 .calendar-page-active .tasks-card > .text-button,
 .calendar-page-active .tasks-card .count-pill { display: none !important; }
 
-/* A clearer filled bin silhouette replaces the previous ambiguous line icon. */
 .calendar-page-active .delete-task {
   width: 40px !important;
   height: 40px !important;
@@ -281,25 +266,22 @@
 .calendar-page-active .delete-task svg { display: none !important; }
 .calendar-page-active .delete-task::before {
   content: "";
-  width: 21px;
-  height: 21px;
+  width: 22px;
+  height: 22px;
   display: block;
   background: currentColor;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 3.5h6l1 2h3v2H5v-2h3l1-2Zm-1.75 6h9.5l-.62 10.25a1.5 1.5 0 0 1-1.5 1.41H9.37a1.5 1.5 0 0 1-1.5-1.41L7.25 9.5Zm2.25 2v6.5h1.75v-6.5H9.5Zm3.25 0v6.5h1.75v-6.5h-1.75Z'/%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 3.5h6l1 2h3v2H5v-2h3l1-2Zm-1.75 6h9.5l-.62 10.25a1.5 1.5 0 0 1-1.5 1.41H9.37a1.5 1.5 0 0 1-1.5-1.41L7.25 9.5Zm2.25 2v6.5h1.75v-6.5H9.5Zm3.25 0v6.5h1.75v-6.5h-1.75Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.7 3h6.6l.9 2.2H20v2.1H4V5.2h3.8L8.7 3Zm-2 6h10.6l-.62 10.2A1.95 1.95 0 0 1 14.73 21H9.27a1.95 1.95 0 0 1-1.95-1.8L6.7 9Zm2.45 2.1.42 7.1h1.65l-.2-7.1H9.15Zm3.63 0-.2 7.1h1.65l.42-7.1h-1.87Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.7 3h6.6l.9 2.2H20v2.1H4V5.2h3.8L8.7 3Zm-2 6h10.6l-.62 10.2A1.95 1.95 0 0 1 14.73 21H9.27a1.95 1.95 0 0 1-1.95-1.8L6.7 9Zm2.45 2.1.42 7.1h1.65l-.2-7.1H9.15Zm3.63 0-.2 7.1h1.65l.42-7.1h-1.87Z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-/* ---------- Smart Home quick controls ---------- */
 .calendar-page-active .power-all {
   background: rgba(255,59,48,.085) !important;
   color: #d70015;
   border: 1px solid rgba(255,59,48,.07) !important;
 }
-
 .calendar-page-active .room-switcher.room-chip-strip { cursor: grab; }
 .calendar-page-active .room-switcher.room-chip-strip:active { cursor: grabbing; }
 
-/* ---------- Home page: preserve the common rounded language only ---------- */
 .home-page-active .reel-tools-grid button,
 .home-page-active .scene-grid button,
 .home-page-active .room-accessory-row button,
@@ -312,7 +294,6 @@
   border-radius: var(--fc-control-radius) !important;
 }
 
-/* ---------- Night mode ---------- */
 .night .task-composer {
   border-color: rgba(255,255,255,.07);
   background: rgba(255,255,255,.07);
