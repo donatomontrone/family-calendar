@@ -1,0 +1,410 @@
+/* Apple HIG-inspired presentation layer.
+ * Uses platform system fonts and web-native materials; no Apple font or SF Symbols
+ * assets are redistributed. Loaded last to keep the visual language consistent.
+ */
+
+:root {
+  --apple-label: #1d1d1f;
+  --apple-secondary-label: #6e6e73;
+  --apple-tertiary-label: #8e8e93;
+  --apple-separator: rgba(60, 60, 67, .12);
+  --apple-fill: rgba(120, 120, 128, .10);
+  --apple-fill-hover: rgba(120, 120, 128, .15);
+  --apple-glass: rgba(246, 246, 248, .72);
+  --apple-glass-strong: rgba(250, 250, 252, .86);
+  --apple-blue: #007aff;
+  --apple-green: #34c759;
+  --apple-red: #ff3b30;
+  --apple-yellow: #ffd60a;
+  --apple-control-radius: 14px;
+  --apple-card-radius: 24px;
+  --apple-control-height: 40px;
+  --apple-icon-size: 18px;
+  --apple-shadow-control: 0 1px 2px rgba(0,0,0,.04), 0 5px 18px rgba(0,0,0,.045);
+  --apple-shadow-card: 0 12px 36px rgba(0,0,0,.045);
+}
+
+.app-shell {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif !important;
+  color: var(--apple-label);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.app-shell button,
+.app-shell input,
+.app-shell select {
+  font-family: inherit;
+}
+
+.app-shell button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.app-shell button:focus-visible,
+.app-shell input:focus-visible,
+.app-shell select:focus-visible {
+  outline: 3px solid rgba(0,122,255,.28) !important;
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+ * One header geometry for both Calendar and Home.
+ * Calendar uses SharedHeader; Home keeps the same DOM language, and both are
+ * forced through this exact geometry so there can be no size drift.
+ * -------------------------------------------------------------------------- */
+.calendar-page-active > .shared-home-header,
+.home-page-active .reel-home > .reel-topbar {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 94px !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 4px 5px 16px !important;
+  display: grid !important;
+  grid-template-columns: minmax(190px, 1fr) auto minmax(330px, 1.35fr) !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+
+.calendar-page-active > .shared-home-header .reel-greeting,
+.home-page-active .reel-home > .reel-topbar .reel-greeting {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px !important;
+}
+
+.calendar-page-active > .shared-home-header .reel-greeting strong,
+.home-page-active .reel-home > .reel-topbar .reel-greeting strong {
+  font-size: 20px !important;
+  line-height: 1.08 !important;
+  font-weight: 660 !important;
+  letter-spacing: -.025em !important;
+}
+
+.calendar-page-active > .shared-home-header .reel-greeting span,
+.home-page-active .reel-home > .reel-topbar .reel-greeting span {
+  margin: 0 !important;
+  color: var(--apple-secondary-label) !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  font-weight: 500 !important;
+  text-transform: capitalize;
+}
+
+.calendar-page-active > .shared-home-header .reel-clock,
+.home-page-active .reel-home > .reel-topbar .reel-clock {
+  min-width: 0;
+  font-size: clamp(46px, 4vw, 68px) !important;
+  line-height: .96 !important;
+  font-weight: 440 !important;
+  letter-spacing: -.055em !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.calendar-page-active > .shared-home-header .reel-top-actions,
+.home-page-active .reel-home > .reel-topbar .reel-top-actions {
+  min-width: 0;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 9px !important;
+}
+
+.calendar-page-active > .shared-home-header .weather-pill,
+.calendar-page-active > .shared-home-header .security-pill,
+.calendar-page-active > .shared-home-header .round-top,
+.home-page-active .reel-home > .reel-topbar .weather-pill,
+.home-page-active .reel-home > .reel-topbar .security-pill,
+.home-page-active .reel-home > .reel-topbar .round-top {
+  height: 40px !important;
+  min-height: 40px !important;
+  border: 1px solid rgba(255,255,255,.46) !important;
+  border-radius: 20px !important;
+  background: var(--apple-glass) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72), var(--apple-shadow-control) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+}
+
+.calendar-page-active > .shared-home-header .weather-pill,
+.home-page-active .reel-home > .reel-topbar .weather-pill {
+  padding: 0 13px !important;
+  gap: 6px !important;
+  font-size: 11.5px !important;
+}
+.calendar-page-active > .shared-home-header .weather-pill small,
+.home-page-active .reel-home > .reel-topbar .weather-pill small {
+  font-size: 10.5px !important;
+  color: var(--apple-secondary-label) !important;
+}
+
+.calendar-page-active > .shared-home-header .security-pill,
+.home-page-active .reel-home > .reel-topbar .security-pill {
+  padding: 0 14px !important;
+  gap: 7px !important;
+  font-size: 11.5px !important;
+  font-weight: 620 !important;
+}
+
+.calendar-page-active > .shared-home-header .round-top,
+.home-page-active .reel-home > .reel-topbar .round-top {
+  width: 40px !important;
+  min-width: 40px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.calendar-page-active > .shared-home-header .weather-pill svg,
+.calendar-page-active > .shared-home-header .security-pill svg,
+.calendar-page-active > .shared-home-header .round-top svg,
+.home-page-active .reel-home > .reel-topbar .weather-pill svg,
+.home-page-active .reel-home > .reel-topbar .security-pill svg,
+.home-page-active .reel-home > .reel-topbar .round-top svg {
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  min-height: 17px !important;
+}
+
+.calendar-page-active > .shared-home-header .avatar-stack,
+.home-page-active .reel-home > .reel-topbar .avatar-stack {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.calendar-page-active > .shared-home-header .avatar-stack i,
+.home-page-active .reel-home > .reel-topbar .avatar-stack i {
+  width: 34px !important;
+  height: 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 2px solid rgba(255,255,255,.82) !important;
+  border-radius: 50% !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+/* --------------------------------------------------------------------------
+ * Typography: keep compact UI readable. Apple's system type defaults are used
+ * as the reference, with small labels kept at or above roughly 10.5–11px.
+ * -------------------------------------------------------------------------- */
+.app-shell .section-kicker,
+.app-shell .reel-kicker {
+  font-size: 10.5px !important;
+  line-height: 1.15 !important;
+  font-weight: 730 !important;
+  letter-spacing: .075em !important;
+}
+
+.home-page-active .house-message strong,
+.home-page-active .alarm-row strong,
+.home-page-active .waste-value strong,
+.home-page-active .side-heading,
+.home-page-active .room-scene-row small,
+.home-page-active .room-accessory-row span,
+.home-page-active .reel-tools-grid span {
+  font-size: max(10.5px, 0.68rem) !important;
+  line-height: 1.18 !important;
+}
+
+.home-page-active .house-message span,
+.home-page-active .alarm-row small,
+.home-page-active .thermo-meta,
+.home-page-active .waste-value small {
+  font-size: 10.5px !important;
+  line-height: 1.22 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * Controls: predictable placement, equal icon boxes, concentric corners and
+ * restrained glass/tint treatment. Color is reserved for status and emphasis.
+ * -------------------------------------------------------------------------- */
+.app-shell button > svg,
+.app-shell button > span > svg {
+  vertical-align: middle;
+}
+
+.calendar-actions button,
+.task-add-button,
+.task-save-button,
+.power-all,
+.device-controls-heading button,
+.modal-close,
+.round-top {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.60), var(--apple-shadow-control) !important;
+}
+
+.calendar-actions button:not(.today-button),
+.task-add-button,
+.task-save-button,
+.power-all,
+.device-controls-heading button,
+.modal-close {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: var(--apple-control-radius) !important;
+}
+
+.calendar-actions button svg,
+.task-add-button svg,
+.task-save-button svg,
+.power-all svg,
+.device-controls-heading button svg,
+.modal-close svg {
+  width: var(--apple-icon-size) !important;
+  height: var(--apple-icon-size) !important;
+  min-width: var(--apple-icon-size) !important;
+  min-height: var(--apple-icon-size) !important;
+}
+
+.segmented-control,
+.page-dock {
+  background: rgba(118,118,128,.11) !important;
+  border-color: rgba(60,60,67,.07) !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.035), 0 5px 18px rgba(0,0,0,.035) !important;
+  backdrop-filter: blur(24px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
+}
+
+.segmented-control > button,
+.page-dock > button {
+  min-height: 40px !important;
+  font-size: 13px !important;
+  font-weight: 620 !important;
+}
+
+/* Content surfaces stay calmer than navigation/control glass. */
+.app-shell .card,
+.home-page-active .reel-room,
+.home-page-active .reel-side-card {
+  border-color: rgba(60,60,67,.085) !important;
+  box-shadow: var(--apple-shadow-card) !important;
+}
+
+/* Standard symbol behavior: monochrome by default, tint only when state matters. */
+.app-shell button svg,
+.app-shell .entity-icon svg,
+.app-shell .apple-accessory-icon svg,
+.app-shell .side-icon svg {
+  shape-rendering: geometricPrecision;
+}
+
+/* Avoid desktop hover effects on touch-only displays. */
+@media (hover: hover) and (pointer: fine) {
+  .app-shell button:not(:disabled):hover {
+    filter: brightness(.985);
+  }
+  .app-shell .entity-tile:hover,
+  .home-page-active .reel-room:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Responsive header: exactly the same breakpoints and behavior on both pages.
+ * -------------------------------------------------------------------------- */
+@media (max-width: 980px) {
+  .calendar-page-active > .shared-home-header,
+  .home-page-active .reel-home > .reel-topbar {
+    grid-template-columns: minmax(180px, 1fr) auto !important;
+    gap: 16px !important;
+    padding-bottom: 14px !important;
+  }
+
+  .calendar-page-active > .shared-home-header .reel-top-actions,
+  .home-page-active .reel-home > .reel-topbar .reel-top-actions {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: flex-end !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .calendar-page-active > .shared-home-header,
+  .home-page-active .reel-home > .reel-topbar {
+    min-height: 0 !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 10px 12px !important;
+    padding: 2px 2px 12px !important;
+  }
+
+  .calendar-page-active > .shared-home-header .reel-greeting strong,
+  .home-page-active .reel-home > .reel-topbar .reel-greeting strong {
+    font-size: 17px !important;
+  }
+
+  .calendar-page-active > .shared-home-header .reel-greeting span,
+  .home-page-active .reel-home > .reel-topbar .reel-greeting span {
+    font-size: 10.5px !important;
+  }
+
+  .calendar-page-active > .shared-home-header .reel-clock,
+  .home-page-active .reel-home > .reel-topbar .reel-clock {
+    font-size: clamp(34px, 10vw, 46px) !important;
+  }
+
+  .calendar-page-active > .shared-home-header .reel-top-actions,
+  .home-page-active .reel-home > .reel-topbar .reel-top-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start !important;
+    overflow-x: auto;
+    padding: 2px 1px 5px;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .calendar-page-active > .shared-home-header .reel-top-actions::-webkit-scrollbar,
+  .home-page-active .reel-home > .reel-topbar .reel-top-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .calendar-page-active > .shared-home-header .weather-pill,
+  .calendar-page-active > .shared-home-header .security-pill,
+  .calendar-page-active > .shared-home-header .round-top,
+  .home-page-active .reel-home > .reel-topbar .weather-pill,
+  .home-page-active .reel-home > .reel-topbar .security-pill,
+  .home-page-active .reel-home > .reel-topbar .round-top {
+    flex: 0 0 auto;
+  }
+}
+
+.night {
+  --apple-label: #f5f5f7;
+  --apple-secondary-label: #b8b8bd;
+  --apple-tertiary-label: #98989f;
+  --apple-separator: rgba(255,255,255,.10);
+  --apple-fill: rgba(255,255,255,.08);
+  --apple-fill-hover: rgba(255,255,255,.12);
+  --apple-glass: rgba(58,58,60,.72);
+  --apple-glass-strong: rgba(58,58,60,.88);
+}
+
+.night .calendar-page-active > .shared-home-header .weather-pill,
+.night .calendar-page-active > .shared-home-header .security-pill,
+.night .calendar-page-active > .shared-home-header .round-top,
+.night.home-page-active .reel-home > .reel-topbar .weather-pill,
+.night.home-page-active .reel-home > .reel-topbar .security-pill,
+.night.home-page-active .reel-home > .reel-topbar .round-top {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(58,58,60,.76) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 7px 20px rgba(0,0,0,.18) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell *,
+  .app-shell *::before,
+  .app-shell *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
