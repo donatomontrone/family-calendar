@@ -3,6 +3,7 @@ import { createRoot, type Root } from "react-dom/client";
 import App from "./App";
 import type { Hass } from "./types";
 import "./segmented-gestures";
+import "./ui-interactions";
 import baseStyles from "./styles.css?inline";
 import themeStyles from "./theme.css?inline";
 import homeStyles from "./home-view.css?inline";
