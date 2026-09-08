@@ -1,0 +1,118 @@
+/*
+ * Calendar V8 — release-candidate state semantics and dark-header polish.
+ * Loaded after V4–V7 by ui-interactions.ts.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. Dark appearance: every ACTIVE controllable accessory except lights and
+ * climate uses one neutral Apple-like surface. No per-domain hue leaks in.
+ * -------------------------------------------------------------------------- */
+.app-shell.night.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) {
+  --device-accent: #8e8e93 !important;
+  border-color: rgba(255,255,255,.055) !important;
+  background: #3f3f41 !important;
+  background-color: #3f3f41 !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 5px 14px rgba(0,0,0,.13) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-icon {
+  border-color: rgba(255,255,255,.055) !important;
+  background: #545456 !important;
+  color: #f2f2f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-main strong {
+  color: #f5f5f7 !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active:not(.domain-light):not(.domain-climate) .entity-main small {
+  color: #c7c7cc !important;
+  font-weight: 620 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Passive/informational devices never look switched on/off. Their surface,
+ * icon and copy stay neutral while the value remains easy to scan. The
+ * favourite control remains independent and keeps its own selected state.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .home-card .entity-tile.passive {
+  border-color: rgba(60,60,67,.075) !important;
+  background: #f2f2f7 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 4px 12px rgba(0,0,0,.025) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.passive .entity-main {
+  cursor: default !important;
+  user-select: text !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.passive .entity-icon {
+  border-color: rgba(60,60,67,.055) !important;
+  background: #e5e5ea !important;
+  color: #5f6368 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.passive .entity-main strong {
+  color: #1d1d1f !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-tile.passive .entity-main small {
+  color: #636366 !important;
+  font-weight: 630 !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.passive {
+  border-color: rgba(255,255,255,.045) !important;
+  background: #2c2c2e !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025), 0 5px 14px rgba(0,0,0,.12) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.passive .entity-icon {
+  border-color: rgba(255,255,255,.04) !important;
+  background: #3a3a3c !important;
+  color: #c7c7cc !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.passive .entity-main strong {
+  color: #f2f2f7 !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.passive .entity-main small {
+  color: #aeaeb2 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Dark header controls: reduce the high-contrast outline. Geometry remains
+ * untouched; only border/highlight contrast is softened on both pages.
+ * -------------------------------------------------------------------------- */
+.app-shell.night .reel-topbar .weather-pill,
+.app-shell.night .reel-topbar .security-pill,
+.app-shell.night .reel-topbar .round-top,
+.app-shell.night .reel-topbar .header-theme-switch,
+.app-shell.night .home-header-theme-switch {
+  border-color: rgba(255,255,255,.05) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 4px 14px rgba(0,0,0,.16) !important;
+}
+
+.app-shell.night .reel-topbar .avatar-stack i {
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.night .reel-topbar .security-pill:hover,
+  .app-shell.night .reel-topbar .round-top:hover,
+  .app-shell.night .reel-topbar .header-theme-switch:hover,
+  .app-shell.night .home-header-theme-switch:hover {
+    border-color: rgba(255,255,255,.075) !important;
+  }
+}
