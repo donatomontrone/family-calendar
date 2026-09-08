@@ -60,6 +60,13 @@ export async function setLightBrightness(hass: Hass, entityId: string, brightnes
   });
 }
 
+export async function setLightColorTemperature(hass: Hass, entityId: string, kelvin: number): Promise<void> {
+  await hass.callService("light", "turn_on", {
+    entity_id: entityId,
+    color_temp_kelvin: Math.max(1000, Math.min(10000, Math.round(kelvin))),
+  });
+}
+
 export async function setLightColor(hass: Hass, entityId: string, hex: string): Promise<void> {
   const clean = hex.replace("#", "");
   const rgb = [0, 2, 4].map((index) => Number.parseInt(clean.slice(index, index + 2), 16));
