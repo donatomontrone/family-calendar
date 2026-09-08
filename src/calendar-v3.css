@@ -1,0 +1,636 @@
+/*
+ * Calendar V3 finishing layer.
+ * Loaded after every previous stylesheet. This file intentionally owns the
+ * controls changed in the September visual pass so older CSS cannot drift them.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. EXACT SAME segmented control anatomy for Lists and Calendar/Home.
+ * The floating nav shell is positioning only; the visible control is the same
+ * .segmented-control component used by Da fare / Spesa.
+ * -------------------------------------------------------------------------- */
+.calendar-page-active .task-segmented-control,
+.app-shell .page-switch-control {
+  position: relative !important;
+  isolation: isolate !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+  padding: 5px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(60,60,67,.085) !important;
+  border-radius: 20px !important;
+  background: #ececef !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.035) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+.calendar-page-active .task-segmented-control {
+  width: auto !important;
+  margin: 6px 15px 1px !important;
+}
+
+.app-shell .page-dock-shell {
+  position: fixed !important;
+  z-index: 1000 !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(14px, env(safe-area-inset-bottom, 0px)) !important;
+  width: var(--family-calendar-segment-width, 255px) !important;
+  max-width: calc(100vw - 30px) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translateX(-50%) !important;
+  pointer-events: auto !important;
+}
+
+.app-shell .page-switch-control {
+  margin: 0 !important;
+}
+
+.calendar-page-active .task-segmented-control::before,
+.app-shell .page-switch-control::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  top: 5px !important;
+  bottom: 5px !important;
+  left: 5px !important;
+  width: calc((100% - 14px) / 2) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.075), inset 0 1px 0 rgba(255,255,255,.88) !important;
+  transform: translate3d(0,0,0) !important;
+  transition: transform .32s cubic-bezier(.22,.9,.28,1.04) !important;
+  pointer-events: none !important;
+}
+
+.calendar-page-active .task-segmented-control:has(> button:nth-of-type(2).active)::before,
+.app-shell .page-switch-control:has(> button:nth-of-type(2).active)::before {
+  transform: translate3d(calc(100% + 4px),0,0) !important;
+}
+
+.calendar-page-active .task-segmented-control.segment-dragging::before,
+.app-shell .page-switch-control.segment-dragging::before {
+  transform: translate3d(var(--segment-drag-offset,0px),0,0) !important;
+  transition: none !important;
+}
+
+.calendar-page-active .task-segmented-control > button,
+.app-shell .page-switch-control > button {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: transparent !important;
+  color: #77777d !important;
+  box-shadow: none !important;
+  filter: none !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.012em !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  touch-action: pan-y !important;
+  transition: color .18s ease, opacity .14s ease, transform .12s ease !important;
+}
+
+.calendar-page-active .task-segmented-control > button.active,
+.app-shell .page-switch-control > button.active {
+  color: #1d1d1f !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.calendar-page-active .task-segmented-control > button:hover,
+.calendar-page-active .task-segmented-control > button:focus,
+.app-shell .page-switch-control > button:hover,
+.app-shell .page-switch-control > button:focus {
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.calendar-page-active .task-segmented-control > button:active,
+.app-shell .page-switch-control > button:active {
+  transform: scale(.97) !important;
+  opacity: .84 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Lists — inset grouped list + round reminder-style check controls.
+ * -------------------------------------------------------------------------- */
+.calendar-page-active .tasks-card {
+  padding-bottom: 14px !important;
+}
+
+.calendar-page-active .task-list {
+  margin: 0 14px 12px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(60,60,67,.065) !important;
+  border-radius: 18px !important;
+  background: rgba(118,118,128,.055) !important;
+}
+
+.calendar-page-active .task-row {
+  min-height: 52px !important;
+  padding: 7px 8px 7px 11px !important;
+  border: 0 !important;
+  background: rgba(255,255,255,.58) !important;
+}
+
+.calendar-page-active .task-row + .task-row {
+  border-top: 1px solid rgba(60,60,67,.075) !important;
+}
+
+.calendar-page-active .task-row label {
+  position: relative !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: 24px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  color: #2c2c2e !important;
+  font-size: 13.5px !important;
+  line-height: 1.2 !important;
+  font-weight: 560 !important;
+}
+
+.calendar-page-active .task-checkbox-input {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.calendar-page-active .task-check-indicator {
+  width: 23px !important;
+  height: 23px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1.7px solid rgba(60,60,67,.28) !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,.76) !important;
+  color: transparent !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82) !important;
+  transition: background .16s ease, border-color .16s ease, transform .12s ease, color .16s ease !important;
+}
+
+.calendar-page-active .task-check-indicator svg {
+  width: 13px !important;
+  height: 13px !important;
+  stroke-width: 2.15 !important;
+}
+
+.calendar-page-active .task-checkbox-input:checked + .task-check-indicator {
+  border-color: #34c759 !important;
+  background: #34c759 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 7px rgba(52,199,89,.18), inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.calendar-page-active .task-checkbox-input:focus-visible + .task-check-indicator {
+  outline: 3px solid rgba(0,122,255,.24) !important;
+  outline-offset: 2px !important;
+}
+
+.calendar-page-active .task-row.done .task-label {
+  color: #98989f !important;
+  text-decoration: none !important;
+}
+
+.calendar-page-active .delete-task::before {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.calendar-page-active .task-composer {
+  margin: 0 14px 12px !important;
+  padding: 5px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 38px !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: 1px solid rgba(60,60,67,.07) !important;
+  border-radius: 17px !important;
+  background: rgba(118,118,128,.07) !important;
+}
+
+.calendar-page-active .task-composer input {
+  min-width: 0 !important;
+  height: 38px !important;
+  padding: 0 11px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  outline: 0 !important;
+  background: rgba(255,255,255,.76) !important;
+  color: #1d1d1f !important;
+  font-size: 13px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Smart Home room rail — invisible scrollbar, mouse/touch drag, more inset.
+ * -------------------------------------------------------------------------- */
+.calendar-page-active .home-card .room-switcher.room-chip-strip {
+  width: calc(100% - 36px) !important;
+  margin: 2px 18px 15px !important;
+  padding: 3px 2px 5px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  overscroll-behavior-inline: contain !important;
+  scroll-snap-type: none !important;
+  scroll-behavior: smooth !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  cursor: grab !important;
+}
+
+.calendar-page-active .home-card .room-switcher.room-chip-strip::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+.calendar-page-active .home-card .room-switcher.room-chip-strip.is-horizontal-dragging {
+  cursor: grabbing !important;
+  scroll-behavior: auto !important;
+  user-select: none !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. Device controls become a modal instead of lengthening the dashboard.
+ * There is no internal vertical scrollbar; compact high-density layouts keep
+ * light, cover and climate controls in one viewport on the intended tablet UI.
+ * -------------------------------------------------------------------------- */
+.calendar-page-active .device-controls {
+  position: fixed !important;
+  z-index: 2200 !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(620px, calc(100vw - 36px)) !important;
+  max-width: 620px !important;
+  max-height: calc(100vh - 36px) !important;
+  margin: 0 !important;
+  padding: 18px !important;
+  gap: 13px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.56) !important;
+  border-radius: 28px !important;
+  background: rgba(246,246,248,.86) !important;
+  box-shadow: 0 0 0 100vmax rgba(20,20,24,.30), 0 24px 80px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.88) !important;
+  backdrop-filter: blur(34px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(34px) saturate(160%) !important;
+  transform: translate(-50%,-50%) !important;
+}
+
+.calendar-page-active .device-controls .control-row,
+.calendar-page-active .device-controls .climate-step-button,
+.calendar-page-active .device-controls .climate-mode-button,
+.calendar-page-active .device-controls .climate-chip-row button,
+.calendar-page-active .device-controls .color-control,
+.calendar-page-active .device-controls-heading button {
+  background: rgba(255,255,255,.58) !important;
+  border-color: rgba(255,255,255,.60) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 1px 2px rgba(0,0,0,.035), 0 7px 20px rgba(0,0,0,.045) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+}
+
+.calendar-page-active .device-controls .climate-mode-button.active,
+.calendar-page-active .device-controls .climate-chip-row button.active {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.36), 0 6px 18px color-mix(in srgb, var(--climate-accent) 18%, transparent) !important;
+}
+
+.calendar-page-active:has(.device-controls) {
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 5. Shared manual appearance switch. Automatic sun.sun logic remains in App;
+ * this button only overrides the current session when the user asks it to.
+ * -------------------------------------------------------------------------- */
+.app-shell .global-theme-switch {
+  position: fixed !important;
+  z-index: 1200 !important;
+  top: calc(clamp(18px, 1.45vw, 32px) + 21px) !important;
+  right: calc(clamp(18px, 1.45vw, 32px) + 5px) !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(255,255,255,.48) !important;
+  border-radius: 14px !important;
+  background: rgba(248,248,250,.78) !important;
+  color: #343438 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+}
+
+.app-shell .global-theme-switch svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.calendar-page-active > .shared-home-header .reel-top-actions,
+.home-page-active .reel-home > .reel-topbar .reel-top-actions {
+  padding-right: 49px !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 6. Shared header dialogs: same popup language used across Calendar and Home.
+ * -------------------------------------------------------------------------- */
+.fc-modal-backdrop {
+  position: fixed !important;
+  z-index: 3000 !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 20px !important;
+  background: rgba(20,20,24,.30) !important;
+  backdrop-filter: blur(10px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
+}
+
+.fc-modal {
+  width: min(460px, calc(100vw - 32px)) !important;
+  max-height: calc(100vh - 40px) !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.56) !important;
+  border-radius: 30px !important;
+  background: rgba(248,248,250,.90) !important;
+  box-shadow: 0 28px 90px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.88) !important;
+  backdrop-filter: blur(38px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(38px) saturate(165%) !important;
+  color: #1d1d1f !important;
+}
+
+.fc-modal-head {
+  min-height: 70px !important;
+  padding: 15px 16px 12px 20px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 40px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  border-bottom: 1px solid rgba(60,60,67,.075) !important;
+}
+
+.fc-modal-head > div { min-width: 0 !important; display: grid !important; gap: 3px !important; }
+.fc-modal-head > div > span {
+  color: #8e8e93 !important;
+  font-size: 10px !important;
+  font-weight: 730 !important;
+  letter-spacing: .075em !important;
+  text-transform: uppercase !important;
+}
+.fc-modal-head h2 { margin: 0 !important; font-size: 20px !important; font-weight: 700 !important; letter-spacing: -.025em !important; }
+.fc-modal-close {
+  width: 40px !important;
+  height: 40px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255,255,255,.55) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.60) !important;
+  color: #4b4b50 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 5px 15px rgba(0,0,0,.04) !important;
+}
+.fc-modal-close svg { width: 17px !important; height: 17px !important; }
+
+.fc-alarm-panel {
+  padding: 18px 22px 22px !important;
+  display: grid !important;
+  justify-items: center !important;
+  gap: 13px !important;
+}
+.fc-alarm-symbol {
+  width: 56px !important;
+  height: 56px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 19px !important;
+  background: rgba(52,199,89,.11) !important;
+  color: #248a3d !important;
+}
+.fc-alarm-symbol svg { width: 27px !important; height: 27px !important; }
+.fc-alarm-copy { display: grid !important; justify-items: center !important; gap: 4px !important; text-align: center !important; }
+.fc-alarm-copy strong { font-size: 16px !important; font-weight: 690 !important; }
+.fc-alarm-copy span { max-width: 340px !important; color: #6e6e73 !important; font-size: 11.5px !important; line-height: 1.35 !important; }
+.fc-pin-dots { min-height: 16px !important; display: flex !important; gap: 9px !important; align-items: center !important; }
+.fc-pin-dots i { width: 9px !important; height: 9px !important; border-radius: 50% !important; background: rgba(118,118,128,.18) !important; }
+.fc-pin-dots i.filled { background: #1d1d1f !important; }
+.fc-pin-grid {
+  width: min(286px, 100%) !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px !important;
+}
+.fc-pin-grid button {
+  height: 48px !important;
+  border: 1px solid rgba(255,255,255,.54) !important;
+  border-radius: 16px !important;
+  background: rgba(255,255,255,.58) !important;
+  color: #1d1d1f !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 5px 16px rgba(0,0,0,.04) !important;
+  backdrop-filter: blur(22px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
+  font-size: 17px !important;
+  font-weight: 590 !important;
+}
+.fc-pin-grid button:disabled { visibility: hidden !important; }
+.fc-pin-grid button svg { width: 18px !important; height: 18px !important; margin: auto !important; }
+.fc-primary-action {
+  width: min(286px, 100%) !important;
+  min-height: 44px !important;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: #007aff !important;
+  color: #fff !important;
+  font-size: 13px !important;
+  font-weight: 680 !important;
+  box-shadow: 0 8px 20px rgba(0,122,255,.18), inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+.fc-primary-action:disabled { opacity: .36 !important; }
+
+.fc-notification-panel {
+  max-height: min(500px, calc(100vh - 130px)) !important;
+  overflow-y: auto !important;
+  padding: 8px 10px 12px !important;
+  scrollbar-width: none !important;
+}
+.fc-notification-panel::-webkit-scrollbar { display: none !important; }
+.fc-notification-row {
+  min-height: 72px !important;
+  padding: 11px 10px !important;
+  display: grid !important;
+  grid-template-columns: 38px minmax(0,1fr) !important;
+  align-items: start !important;
+  gap: 10px !important;
+}
+.fc-notification-row + .fc-notification-row { border-top: 1px solid rgba(60,60,67,.075) !important; }
+.fc-notification-symbol {
+  width: 38px !important;
+  height: 38px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 13px !important;
+  background: rgba(118,118,128,.09) !important;
+  color: #6e6e73 !important;
+}
+.fc-notification-symbol.unread { background: rgba(0,122,255,.11) !important; color: #007aff !important; }
+.fc-notification-symbol svg { width: 17px !important; height: 17px !important; }
+.fc-notification-row > div { min-width: 0 !important; display: grid !important; gap: 3px !important; }
+.fc-notification-row strong { font-size: 13px !important; font-weight: 680 !important; }
+.fc-notification-row p { margin: 0 !important; color: #6e6e73 !important; font-size: 11px !important; line-height: 1.32 !important; }
+.fc-notification-row small { color: #98989f !important; font-size: 9.5px !important; }
+.fc-modal-empty { min-height: 140px !important; display: grid !important; place-items: center !important; padding: 24px !important; color: #8e8e93 !important; font-size: 12px !important; text-align: center !important; }
+
+/* --------------------------------------------------------------------------
+ * Dark appearance. Geometry stays exactly unchanged.
+ * -------------------------------------------------------------------------- */
+.night .task-segmented-control,
+.night .page-switch-control {
+  border-color: rgba(255,255,255,.075) !important;
+  background: #2c2c2e !important;
+}
+.night .task-segmented-control::before,
+.night .page-switch-control::before {
+  background: #48484a !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+.night .task-segmented-control > button,
+.night .page-switch-control > button { color: #a1a1a6 !important; }
+.night .task-segmented-control > button.active,
+.night .page-switch-control > button.active { color: #fff !important; }
+
+.night .task-list { border-color: rgba(255,255,255,.065) !important; background: rgba(255,255,255,.045) !important; }
+.night .task-row { background: rgba(44,44,46,.74) !important; }
+.night .task-row + .task-row { border-color: rgba(255,255,255,.07) !important; }
+.night .task-row label { color: #f5f5f7 !important; }
+.night .task-check-indicator { border-color: rgba(255,255,255,.25) !important; background: rgba(255,255,255,.075) !important; }
+.night .task-checkbox-input:checked + .task-check-indicator { border-color: #30d158 !important; background: #30d158 !important; }
+.night .task-composer { border-color: rgba(255,255,255,.065) !important; background: rgba(255,255,255,.05) !important; }
+.night .task-composer input { background: rgba(255,255,255,.075) !important; color: #fff !important; }
+
+.night .global-theme-switch {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(58,58,60,.80) !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 8px 20px rgba(0,0,0,.20) !important;
+}
+
+.night .device-controls {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(38,38,40,.90) !important;
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,.50), 0 26px 90px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.night .fc-modal {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(38,38,40,.92) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 28px 90px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+.night .fc-modal-head { border-color: rgba(255,255,255,.075) !important; }
+.night .fc-modal-head > div > span,
+.night .fc-alarm-copy span,
+.night .fc-notification-row p { color: #b8b8bd !important; }
+.night .fc-modal-close,
+.night .fc-pin-grid button {
+  border-color: rgba(255,255,255,.07) !important;
+  background: rgba(255,255,255,.075) !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 8px 20px rgba(0,0,0,.18) !important;
+}
+.night .fc-pin-dots i.filled { background: #fff !important; }
+.night .fc-notification-row + .fc-notification-row { border-color: rgba(255,255,255,.075) !important; }
+
+@media (hover: hover) and (pointer: fine) {
+  .global-theme-switch:hover,
+  .fc-modal-close:hover,
+  .fc-pin-grid button:not(:disabled):hover,
+  .device-controls-heading button:hover,
+  .device-controls .climate-step-button:hover,
+  .device-controls .climate-mode-button:hover,
+  .device-controls .climate-chip-row button:hover {
+    transform: translateY(-1px) !important;
+    filter: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .calendar-page-active .home-card .room-switcher.room-chip-strip {
+    width: calc(100% - 28px) !important;
+    margin-inline: 14px !important;
+  }
+  .calendar-page-active .device-controls {
+    width: calc(100vw - 24px) !important;
+    padding: 14px !important;
+    border-radius: 24px !important;
+    gap: 9px !important;
+  }
+  .calendar-page-active .device-controls .climate-mode-grid {
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
+  .calendar-page-active .device-controls .climate-mode-button {
+    min-height: 51px !important;
+  }
+  .app-shell .global-theme-switch {
+    top: 16px !important;
+    right: 14px !important;
+  }
+}
+
+@media (max-height: 700px) {
+  .calendar-page-active .device-controls {
+    padding: 13px !important;
+    gap: 8px !important;
+  }
+  .calendar-page-active .device-controls .climate-control { gap: 8px !important; }
+  .calendar-page-active .device-controls .climate-mode-button { min-height: 49px !important; }
+  .calendar-page-active .device-controls .climate-target-row { grid-template-columns: 40px minmax(0,1fr) 40px !important; }
+  .calendar-page-active .device-controls .climate-step-button { width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-segmented-control::before,
+  .page-switch-control::before,
+  .task-segmented-control > button,
+  .page-switch-control > button,
+  .task-check-indicator {
+    transition-duration: .01ms !important;
+  }
+}
