@@ -14,9 +14,10 @@ import {
   setCoverPosition,
   setFavorites,
   setLightBrightness,
-  setLightColor,
+  setLightColorTemperature,
 } from "./ha";
 import { getLanguage, t, type Language } from "./i18n";
+import { getWhiteTemperature, whiteTemperatureAccent } from "./light-temperature";
 
 type Mode = "todo" | "shopping";
 type Page = "calendar" | "home";
@@ -202,11 +203,23 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
     ? `${themeOverride === "auto" ? "Tema automatico" : "Tema manuale"}: passa alla modalità ${isNight ? "chiara" : "scura"}`
     : `${themeOverride === "auto" ? "Automatic theme" : "Manual theme"}: switch to ${isNight ? "light" : "dark"} mode`;
 
+  const openAlarm = () => setHeaderAction("alarm");
+  const openNotifications = () => setHeaderAction("notifications");
+
   return (
     <main className={`app-shell ${isNight ? "night" : "day"} ${page === "home" ? "home-page-active" : "calendar-page-active"}`}>
       {page === "calendar" ? (
         <>
-          <SharedHeader hass={hass} now={now} language={language} />
+          <SharedHeader
+            hass={hass}
+            now={now}
+            language={language}
+            onAlarm={openAlarm}
+            onNotifications={openNotifications}
+            onThemeToggle={toggleTheme}
+            isNight={isNight}
+            themeLabel={themeLabel}
+          />
           <section className="dashboard-grid">
             <aside className="left-column">
               <AgendaPanel now={now} events={events} language={language} />
@@ -367,12 +380,20 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
           </section>
         </>
       ) : (
-        <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
+        <HomeView
+          hass={hass}
+          areas={areas}
+          entities={entities}
+          now={now}
+          demo={demo}
+          language={language}
+          onHeaderAlarm={openAlarm}
+          onHeaderNotifications={openNotifications}
+          onThemeToggle={toggleTheme}
+          isNight={isNight}
+          themeLabel={themeLabel}
+        />
       )}
-
-      <button type="button" className="global-theme-switch" aria-label={themeLabel} title={themeLabel} onClick={toggleTheme}>
-        {isNight ? <SunIcon /> : <MoonIcon />}
-      </button>
 
       {headerAction && (
         <HeaderActionModal hass={hass} language={language} kind={headerAction} onClose={() => setHeaderAction(null)} />
@@ -484,7 +505,7 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
   const domain = entityId.split(".")[0];
   const brightness = Math.round((Number(state.attributes.brightness ?? 200) / 255) * 100);
   const position = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
-  const color = lightColor(hass, entityId);
+  const whiteTemperature = getWhiteTemperature(state.attributes);
 
   return (
     <div className={`device-controls device-controls-${domain}`} role="dialog" aria-modal="true" aria-label={`${t("controls", language)} ${displayName(hass, entityId)}`}>
@@ -497,8 +518,16 @@ function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; ent
           <ControlRow label={t("brightness", language)} value={`${brightness}%`}>
             <input type="range" min="1" max="100" defaultValue={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
           </ControlRow>
-          <ControlRow label={t("color", language)} value="">
-            <input className="color-control" type="color" defaultValue={color} onChange={(event) => void setLightColor(hass, entityId, event.target.value)} />
+          <ControlRow label={language === "it" ? "Temperatura bianco" : "White temperature"} value={`${whiteTemperature.currentKelvin} K`}>
+            <input
+              className="white-temperature-control"
+              type="range"
+              min={whiteTemperature.minKelvin}
+              max={whiteTemperature.maxKelvin}
+              step="50"
+              defaultValue={whiteTemperature.currentKelvin}
+              onChange={(event) => void setLightColorTemperature(hass, entityId, Number(event.target.value))}
+            />
           </ControlRow>
         </>
       )}
@@ -548,17 +577,7 @@ function entityStatus(hass: Hass, entityId: string, language: Language) {
 }
 
 function lightColor(hass: Hass, entityId: string): string {
-  const attributes = hass.states[entityId]?.attributes ?? {};
-  const demoHex = attributes.demo_hex_color;
-  if (typeof demoHex === "string" && /^#[0-9a-f]{6}$/i.test(demoHex)) return demoHex;
-
-  const rgb = attributes.rgb_color;
-  if (Array.isArray(rgb) && rgb.length >= 3) {
-    const parts = rgb.slice(0, 3).map((value) => Math.max(0, Math.min(255, Number(value) || 0)));
-    return `#${parts.map((value) => Math.round(value).toString(16).padStart(2, "0")).join("")}`;
-  }
-
-  return "#ffd60a";
+  return whiteTemperatureAccent(getWhiteTemperature(hass.states[entityId]?.attributes ?? {}));
 }
 
 function accessoryStyle(hass: Hass, entityId: string): CSSProperties | undefined {
@@ -586,5 +605,3 @@ function CheckIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path 
 function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 7.5 9 9M16.5 7.5l-9 9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
 function ChevronLeftIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function ChevronRightIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function SunIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><><circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></></svg>; }
-function MoonIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.7 15.4A7.8 7.8 0 0 1 8.6 5.3a7.8 7.8 0 1 0 10.1 10.1Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>; }
