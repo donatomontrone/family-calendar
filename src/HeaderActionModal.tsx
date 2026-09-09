@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
@@ -74,9 +75,11 @@ export default function HeaderActionModal({ hass, language, kind, onClose }: Hea
     onClose();
   };
 
-  return (
+  const themeClass = document.querySelector(".app-shell.night") ? "night" : "day";
+
+  return createPortal(
     <div
-      className="fc-modal-backdrop"
+      className={`fc-modal-backdrop ${themeClass}`}
       role="presentation"
       onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}
     >
@@ -140,7 +143,8 @@ export default function HeaderActionModal({ hass, language, kind, onClose }: Hea
           </div>
         )}
       </section>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
