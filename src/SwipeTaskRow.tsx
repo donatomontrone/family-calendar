@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react";
 
 type SwipeTaskRowProps = {
   item: { id: number; label: string; done: boolean };
@@ -12,174 +12,192 @@ type Gesture = {
   startX: number;
   startY: number;
   startOffset: number;
+  width: number;
   horizontal: boolean;
 };
 
-const REVEAL_WIDTH = 64;
+const REVEAL_WIDTH = 72;
 const START_THRESHOLD = 6;
-const OPEN_THRESHOLD = 28;
-const DELETE_RATIO = 0.46;
-const SWIPE_OPEN_EVENT = "family-calendar-task-swipe-open";
+const DELETE_RATIO = 0.52;
+const OPEN_EVENT = "family-calendar-task-swipe-open";
 
 export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: SwipeTaskRowProps) {
-  const [offset, setOffset] = useState(0);
-  const [dragging, setDragging] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
   const gestureRef = useRef<Gesture | null>(null);
   const offsetRef = useRef(0);
-  const suppressClickRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
+  const suppressClickUntilRef = useRef(0);
+  const instanceIdRef = useRef(`task-${item.id}-${Math.random().toString(36).slice(2)}`);
 
-  const setSwipeOffset = (value: number) => {
+  const paintOffset = (value: number) => {
+    const row = rowRef.current;
+    if (!row) return;
+
+    const reveal = Math.max(0, -value);
+    row.style.setProperty("--task-swipe-x", `${value}px`);
+    row.style.setProperty("--task-swipe-reveal", `${reveal}px`);
+    row.style.setProperty("--task-delete-opacity", String(Math.min(1, reveal / 34)));
+    row.classList.toggle("delete-commit-ready", reveal >= Math.max(REVEAL_WIDTH * 1.7, row.clientWidth * DELETE_RATIO));
+  };
+
+  const setOffset = (value: number, immediate = false) => {
     offsetRef.current = value;
-    setOffset(value);
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+
+    if (immediate) {
+      paintOffset(value);
+      return;
+    }
+
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      paintOffset(value);
+    });
+  };
+
+  const settle = (value: number) => {
+    const row = rowRef.current;
+    if (!row) return;
+    row.classList.remove("is-swiping");
+    setOffset(value, true);
   };
 
   useEffect(() => {
-    const closeWhenAnotherRowOpens = (event: Event) => {
-      const openedId = (event as CustomEvent<number>).detail;
-      if (openedId === item.id || offsetRef.current === 0) return;
-      setSwipeOffset(0);
+    const handleOtherRowOpen = (event: Event) => {
+      const id = (event as CustomEvent<string>).detail;
+      if (id === instanceIdRef.current || offsetRef.current === 0) return;
+      settle(0);
     };
 
-    window.addEventListener(SWIPE_OPEN_EVENT, closeWhenAnotherRowOpens);
-    return () => window.removeEventListener(SWIPE_OPEN_EVENT, closeWhenAnotherRowOpens);
-  }, [item.id]);
+    document.addEventListener(OPEN_EVENT, handleOtherRowOpen);
+    return () => {
+      document.removeEventListener(OPEN_EVENT, handleOtherRowOpen);
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+    if ((event.target as Element).closest(".swipe-delete-action")) return;
 
-    suppressClickRef.current = false;
+    const row = rowRef.current;
+    if (!row) return;
+
     gestureRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
       startOffset: offsetRef.current,
+      width: Math.max(1, row.getBoundingClientRect().width),
       horizontal: false,
     };
   };
 
   const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
     const gesture = gestureRef.current;
-    if (!gesture || gesture.pointerId !== event.pointerId) return;
+    const row = rowRef.current;
+    if (!gesture || !row || gesture.pointerId !== event.pointerId) return;
 
     const dx = event.clientX - gesture.startX;
     const dy = event.clientY - gesture.startY;
 
     if (!gesture.horizontal) {
       if (Math.abs(dx) < START_THRESHOLD && Math.abs(dy) < START_THRESHOLD) return;
-
-      // A vertical intent belongs to the task-list scroller. Abandon the row
-      // gesture without changing its current snapped position.
-      if (Math.abs(dy) >= Math.abs(dx) * 0.9) {
+      if (Math.abs(dy) >= Math.abs(dx) * 0.92) {
         gestureRef.current = null;
         return;
       }
 
       gesture.horizontal = true;
-      suppressClickRef.current = true;
-      setDragging(true);
+      row.classList.add("is-swiping");
       try {
-        event.currentTarget.setPointerCapture(event.pointerId);
+        row.setPointerCapture(event.pointerId);
       } catch {
-        // Pointer capture is an enhancement; React listeners remain sufficient.
+        // Pointer capture is an enhancement; the gesture still works without it.
       }
     }
 
     event.preventDefault();
-    const width = Math.max(1, event.currentTarget.getBoundingClientRect().width);
-    const rawOffset = gesture.startOffset + dx;
-    const next = Math.max(-width, Math.min(0, rawOffset));
-    setSwipeOffset(next);
+    const next = Math.max(-gesture.width, Math.min(0, gesture.startOffset + dx));
+    setOffset(next);
   };
 
   const finishGesture = (event: ReactPointerEvent<HTMLDivElement>, cancelled = false) => {
     const gesture = gestureRef.current;
-    if (!gesture || gesture.pointerId !== event.pointerId) return;
+    const row = rowRef.current;
+    if (!gesture || !row || gesture.pointerId !== event.pointerId) return;
     gestureRef.current = null;
 
-    if (gesture.horizontal) {
-      try {
-        event.currentTarget.releasePointerCapture(event.pointerId);
-      } catch {
-        // Browsers may release pointer capture automatically.
-      }
-    }
-
-    setDragging(false);
     if (!gesture.horizontal) return;
 
-    event.preventDefault();
+    try {
+      row.releasePointerCapture(event.pointerId);
+    } catch {
+      // Browsers may release capture automatically.
+    }
+
+    suppressClickUntilRef.current = performance.now() + 280;
+    row.classList.remove("is-swiping");
 
     if (cancelled) {
-      setSwipeOffset(gesture.startOffset <= -OPEN_THRESHOLD ? -REVEAL_WIDTH : 0);
+      settle(gesture.startOffset);
       return;
     }
 
-    const width = Math.max(1, event.currentTarget.getBoundingClientRect().width);
     const distance = -offsetRef.current;
-
-    if (distance >= width * DELETE_RATIO) {
-      // Full swipe: finish the destructive travel first, then remove the row.
-      setSwipeOffset(-width);
-      window.setTimeout(onDelete, 135);
+    if (distance >= gesture.width * DELETE_RATIO) {
+      row.classList.add("is-deleting");
+      setOffset(-gesture.width, true);
+      window.setTimeout(onDelete, 190);
       return;
     }
 
-    if (distance >= OPEN_THRESHOLD) {
-      window.dispatchEvent(new CustomEvent<number>(SWIPE_OPEN_EVENT, { detail: item.id }));
-      setSwipeOffset(-REVEAL_WIDTH);
+    if (distance >= REVEAL_WIDTH * 0.48) {
+      settle(-REVEAL_WIDTH);
+      document.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: instanceIdRef.current }));
       return;
     }
 
-    setSwipeOffset(0);
+    settle(0);
   };
 
-  const onContentClickCapture = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (suppressClickRef.current) {
-      suppressClickRef.current = false;
+  const onClickCapture = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (performance.now() < suppressClickUntilRef.current) {
       event.preventDefault();
       event.stopPropagation();
       return;
     }
 
-    // A tap on the content while the action is open closes the row first,
-    // matching the one-open-action behaviour of iOS lists.
-    if (offsetRef.current !== 0) {
-      event.preventDefault();
-      event.stopPropagation();
-      setSwipeOffset(0);
-    }
+    if (offsetRef.current === 0 || (event.target as Element).closest(".swipe-delete-action")) return;
+    event.preventDefault();
+    event.stopPropagation();
+    settle(0);
   };
-
-  const revealWidth = Math.max(0, -offset);
-  const revealVisible = revealWidth > 1;
-  const iconVisible = revealWidth >= 34;
-  const commitReady = revealWidth >= REVEAL_WIDTH * 1.7;
 
   return (
     <div
-      className={`task-row swipe-task-row ${item.done ? "done" : ""} ${dragging ? "is-swiping" : ""} ${revealVisible ? "has-swipe-reveal" : ""} ${iconVisible ? "has-delete-icon" : ""} ${commitReady ? "delete-commit-ready" : ""}`}
+      ref={rowRef}
+      className={`task-row swipe-task-row ${item.done ? "done" : ""}`}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={(event) => finishGesture(event)}
       onPointerCancel={(event) => finishGesture(event, true)}
+      onClickCapture={onClickCapture}
     >
       <button
         type="button"
         className="swipe-delete-action"
-        style={{ width: `${revealWidth}px` }}
         onClick={onDelete}
         aria-label={deleteLabel}
         title={deleteLabel}
-        tabIndex={revealWidth >= REVEAL_WIDTH - 2 ? 0 : -1}
       >
         <TrashIcon />
       </button>
 
-      <div
-        className="task-row-content"
-        style={{ transform: `translate3d(${offset}px,0,0)` }}
-        onClickCapture={onContentClickCapture}
-      >
+      <div className="task-row-content">
         <label>
           <input className="task-checkbox-input" type="checkbox" checked={item.done} onChange={onToggle} />
           <span className="task-check-indicator" aria-hidden="true"><CheckIcon /></span>
@@ -191,7 +209,14 @@ export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: 
 }
 
 function TrashIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.1 8.25h7.8l-.55 9.1a1.9 1.9 0 0 1-1.9 1.78h-2.9a1.9 1.9 0 0 1-1.9-1.78l-.55-9.1Z" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round"/><path d="M6.2 6.4h11.6M9.35 6.4V4.85h5.3V6.4M10.25 11v4.9M13.75 11v4.9" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/></svg>;
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <line x1="10" y1="11" x2="10" y2="17" />
+      <line x1="14" y1="11" x2="14" y2="17" />
+    </svg>
+  );
 }
 
 function CheckIcon() {
