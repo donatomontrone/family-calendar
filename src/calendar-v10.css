@@ -1,0 +1,255 @@
+/*
+ * Calendar V10 — swipe actions, overflow affordances and typography polish.
+ * Loaded after V4–V9 by ui-interactions.ts.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. Apple-like typography contract. Use the native system font first so
+ * Apple platforms render SF Pro without bundling proprietary font files.
+ * -------------------------------------------------------------------------- */
+.app-shell {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif !important;
+  font-synthesis: none;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.app-shell h1,
+.app-shell h2,
+.app-shell h3,
+.app-shell .reel-greeting strong,
+.app-shell .reel-clock,
+.app-shell .modal-head h2,
+.app-shell .device-controls-heading strong {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif !important;
+  letter-spacing: -.028em !important;
+}
+
+.app-shell h1 { font-weight: 650 !important; }
+.app-shell h2,
+.app-shell h3 { font-weight: 640 !important; }
+
+.app-shell button,
+.app-shell input,
+.app-shell select,
+.app-shell .task-label,
+.app-shell .entity-main strong,
+.app-shell .entity-main small,
+.app-shell .agenda-event,
+.app-shell .calendar-event,
+.app-shell .room-chip-strip button {
+  letter-spacing: -.012em !important;
+}
+
+.app-shell button { font-weight: 590; }
+
+.app-shell .section-kicker,
+.app-shell .weekday,
+.app-shell .reel-kicker {
+  font-weight: 720 !important;
+  letter-spacing: .075em !important;
+}
+
+.app-shell .task-label,
+.app-shell .entity-main strong {
+  font-weight: 590 !important;
+}
+
+.app-shell .entity-main small,
+.app-shell .agenda-date span,
+.app-shell .device-heading span {
+  font-weight: 520 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. LISTE swipe-to-delete. The destructive surface is only revealed by the
+ * gesture. A short swipe snaps to the trash action; a full swipe is committed
+ * by React once the row passes the deletion threshold.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card .task-list {
+  padding-inline: 0 !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .swipe-task-row {
+  position: relative !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  touch-action: pan-y !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .swipe-task-row + .swipe-task-row {
+  margin-top: 1px !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .swipe-delete-action {
+  position: absolute !important;
+  z-index: 0 !important;
+  top: 2px !important;
+  right: 0 !important;
+  bottom: 2px !important;
+  min-width: 66px !important;
+  padding: 0 20px 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  background: rgba(255,59,48,.14) !important;
+  color: #d94a42 !important;
+  box-shadow: none !important;
+  transition: background-color .14s ease, color .14s ease !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .swipe-delete-action svg {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .swipe-task-row.delete-commit-ready .swipe-delete-action {
+  background: rgba(255,59,48,.88) !important;
+  color: #fff !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-row-content {
+  position: relative !important;
+  z-index: 1 !important;
+  min-height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 7px 6px 5px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  will-change: transform;
+  transition: transform .26s cubic-bezier(.22,.85,.28,1) !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .swipe-task-row.is-swiping .task-row-content {
+  transition: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-row-content > label {
+  width: 100% !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.calendar-page-active .tasks-card .swipe-task-row:not(.is-swiping):hover .task-row-content {
+    background: rgba(118,118,128,.055) !important;
+  }
+  .app-shell.night.calendar-page-active .tasks-card .swipe-task-row:not(.is-swiping):hover .task-row-content {
+    background: rgba(255,255,255,.035) !important;
+  }
+}
+
+/* The historical direct-delete button is no longer part of the normal row
+ * anatomy; deletion is exposed through swipe instead. */
+.app-shell.calendar-page-active .tasks-card .delete-task {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Scroll-to-bottom affordances. They only exist while a region actually has
+ * hidden content below it, and disappear as soon as the user reaches the end.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .task-list-scroll-shell,
+.app-shell.calendar-page-active .entity-grid-scroll-shell {
+  position: relative !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.app-shell.calendar-page-active .task-list-scroll-shell {
+  align-self: stretch !important;
+}
+
+.app-shell.calendar-page-active .task-list-scroll-shell .task-list,
+.app-shell.calendar-page-active .entity-grid-scroll-shell .entity-grid {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+}
+
+.app-shell.calendar-page-active .scroll-bottom-button {
+  position: absolute !important;
+  z-index: 18 !important;
+  right: 10px !important;
+  bottom: 10px !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(60,60,67,.08) !important;
+  border-radius: 50% !important;
+  background: rgba(249,249,251,.90) !important;
+  color: #4d4d52 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88), 0 5px 18px rgba(0,0,0,.09) !important;
+  backdrop-filter: blur(22px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
+  cursor: pointer !important;
+  animation: fc-scroll-button-in .18s ease-out both;
+}
+
+.app-shell.calendar-page-active .scroll-bottom-button svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.app-shell.calendar-page-active .task-list-scroll-shell .scroll-bottom-button {
+  right: 14px !important;
+  bottom: 8px !important;
+}
+
+.app-shell.calendar-page-active .entity-grid-scroll-shell .scroll-bottom-button {
+  right: 12px !important;
+  bottom: 12px !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.calendar-page-active .scroll-bottom-button:hover {
+    background: #fff !important;
+    color: #1d1d1f !important;
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 7px 22px rgba(0,0,0,.12) !important;
+  }
+}
+
+.app-shell.calendar-page-active .scroll-bottom-button:active {
+  transform: scale(.94) !important;
+}
+
+.app-shell.night.calendar-page-active .scroll-bottom-button {
+  border-color: rgba(255,255,255,.05) !important;
+  background: rgba(58,58,60,.92) !important;
+  color: #e5e5ea !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 6px 18px rgba(0,0,0,.24) !important;
+}
+
+@keyframes fc-scroll-button-in {
+  from { opacity: 0; transform: translateY(5px) scale(.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell.calendar-page-active .tasks-card .task-row-content,
+  .app-shell.calendar-page-active .scroll-bottom-button {
+    transition: none !important;
+    animation: none !important;
+  }
+}
