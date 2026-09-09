@@ -1,0 +1,296 @@
+/*
+ * Calendar V13 — structural multi-day continuity + iPhone header composition.
+ *
+ * Multi-day bars are now drawn by ui-interactions.ts as measured overlays that
+ * span the real pixel distance between the first and last day in each week.
+ * This removes the last grid-line/padding gaps left by the old per-cell stitch.
+ * The header changes below remain phone-only.
+ */
+
+/* --------------------------------------------------------------------------
+ * True continuous calendar bars.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .month-grid {
+  position: relative !important;
+}
+
+.app-shell.calendar-page-active .calendar-event.is-bridged {
+  visibility: hidden !important;
+}
+
+.app-shell.calendar-page-active .calendar-event-bridge-layer {
+  position: absolute !important;
+  z-index: 30 !important;
+  inset: 0 !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+.app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+  position: absolute !important;
+  z-index: 31 !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  pointer-events: none !important;
+}
+
+.app-shell.calendar-page-active .month-grid .calendar-event-bridge.bridge-continues-before {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.app-shell.calendar-page-active .month-grid .calendar-event-bridge.bridge-continues-after {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* The original per-cell negative margins are no longer responsible for visual
+ * continuity. They stay hidden under the measured bridge and therefore cannot
+ * create seams or double-coloured edges. */
+.app-shell.calendar-page-active .calendar-event.is-bridged.continues-before,
+.app-shell.calendar-page-active .calendar-event.is-bridged.continues-after {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+ * iPhone header: three deliberate rows instead of one crowded action rail.
+ * Row 1 = greeting + family; row 2 = clock + weather; row 3 = alarm/actions.
+ * -------------------------------------------------------------------------- */
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  .app-shell.calendar-page-active > .shared-home-header {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 7px 4px 11px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting greeting avatars"
+      "clock weather weather"
+      "alarm notifications theme" !important;
+    grid-template-columns: minmax(0, 1fr) 42px auto !important;
+    grid-template-rows: auto auto 42px !important;
+    align-items: center !important;
+    column-gap: 8px !important;
+    row-gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    align-self: center !important;
+    gap: 3px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-greeting strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(18px, 5.5vw, 22px) !important;
+    line-height: 1 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-greeting span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-clock {
+    grid-area: clock !important;
+    min-width: 0 !important;
+    justify-self: start !important;
+    align-self: center !important;
+    font-size: clamp(36px, 11vw, 46px) !important;
+    line-height: .92 !important;
+    font-weight: 445 !important;
+    letter-spacing: -.055em !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  /* Flatten the desktop action wrapper so its children can occupy intentional
+   * cells in the phone header grid. */
+  .app-shell.calendar-page-active > .shared-home-header .reel-top-actions {
+    display: contents !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack {
+    grid-area: avatars !important;
+    justify-self: end !important;
+    align-self: center !important;
+    display: flex !important;
+    min-width: 0 !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack i {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack i + i {
+    margin-left: -7px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill {
+    grid-area: weather !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+    min-width: 94px !important;
+    max-width: 112px !important;
+    height: 38px !important;
+    padding: 0 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 14px !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill small {
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill strong {
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill {
+    grid-area: alarm !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    border-radius: 14px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill span {
+    display: inline !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    font-weight: 670 !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .round-top,
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    align-self: center !important;
+    border-radius: 14px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .round-top {
+    grid-area: notifications !important;
+    justify-self: center !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch {
+    grid-area: theme !important;
+    justify-self: end !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill svg,
+  .app-shell.calendar-page-active > .shared-home-header .round-top svg,
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+  }
+
+  .app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+    min-height: 15px !important;
+    height: 15px !important;
+    padding: 2px 4px !important;
+    border-radius: 5px !important;
+    font-size: 8.8px !important;
+    line-height: 11px !important;
+    font-weight: 630 !important;
+  }
+
+  .app-shell.calendar-page-active .month-grid .calendar-event-bridge > span:not(.continuation) {
+    display: none !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .app-shell.calendar-page-active > .shared-home-header {
+    grid-template-columns: minmax(0, 1fr) 40px auto !important;
+    grid-template-rows: auto auto 40px !important;
+    column-gap: 6px !important;
+    row-gap: 7px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-greeting strong {
+    font-size: 17px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-clock {
+    font-size: 34px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill {
+    min-width: 82px !important;
+    height: 36px !important;
+    padding-inline: 8px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill,
+  .app-shell.calendar-page-active > .shared-home-header .round-top,
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .round-top,
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch {
+    width: 40px !important;
+    min-width: 40px !important;
+  }
+}
