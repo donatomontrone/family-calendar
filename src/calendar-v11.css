@@ -1,0 +1,515 @@
+/*
+ * Calendar V11 — phone layout.
+ *
+ * Desktop/tablet are intentionally untouched. On phone-sized viewports the
+ * Calendar page becomes a readable single-column document: the month fits the
+ * viewport without horizontal scrolling, dense cards keep stable heights and
+ * scroll internally where appropriate, and the shared header respects iPhone
+ * safe areas while keeping every action available.
+ */
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  /* ------------------------------------------------------------------------
+   * 1. Phone canvas. Desktop is a fixed wall-display viewport; on a phone the
+   * natural interaction is one vertical document. The scrollbar stays hidden.
+   * ------------------------------------------------------------------------ */
+  .app-shell.calendar-page-active {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding-top: max(10px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(86px, calc(68px + env(safe-area-inset-bottom, 0px))) !important;
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+    display: grid !important;
+    grid-template-rows: auto auto !important;
+    gap: 10px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    scroll-padding-bottom: 92px !important;
+  }
+
+  .app-shell.calendar-page-active::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active .dashboard-grid {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-areas:
+      "calendar"
+      "left"
+      "right" !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto !important;
+    gap: 10px !important;
+    align-items: start !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.calendar-page-active .left-column,
+  .app-shell.calendar-page-active .right-column {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    gap: 10px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.calendar-page-active .left-column {
+    grid-template-rows: auto 360px !important;
+  }
+
+  /* ------------------------------------------------------------------------
+   * 2. Shared header. Greeting/clock stay on the first row; the action row is
+   * compact enough for a 320px viewport without becoming horizontally scrollable.
+   * ------------------------------------------------------------------------ */
+  .app-shell.calendar-page-active > .shared-home-header {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 4px 2px 8px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting clock"
+      "actions actions" !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 9px 12px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    gap: 2px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-greeting strong {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(17px, 5.2vw, 20px) !important;
+    line-height: 1.02 !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-greeting span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-clock {
+    grid-area: clock !important;
+    align-self: start !important;
+    font-size: clamp(30px, 9vw, 38px) !important;
+    line-height: .98 !important;
+    font-weight: 470 !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .reel-top-actions {
+    grid-area: actions !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill {
+    flex: 1 1 78px !important;
+    width: auto !important;
+    min-width: 66px !important;
+    max-width: 104px !important;
+    height: 38px !important;
+    padding: 0 9px !important;
+    border-radius: 14px !important;
+    gap: 5px !important;
+    font-size: 11.5px !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill small {
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill svg {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack {
+    flex: 0 0 auto !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack i {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack i + i {
+    margin-left: -7px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill,
+  .app-shell.calendar-page-active > .shared-home-header .round-top,
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch {
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 14px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill span {
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill svg,
+  .app-shell.calendar-page-active > .shared-home-header .round-top svg,
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+  }
+
+  /* ------------------------------------------------------------------------
+   * 3. Month view. Seven columns always fit the phone width — no 600px legacy
+   * minimum and no horizontal calendar scroller. Time prefixes move to Agenda
+   * on phones so event titles get the scarce horizontal space.
+   * ------------------------------------------------------------------------ */
+  .app-shell.calendar-page-active .calendar-card {
+    grid-area: calendar !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    border-radius: 22px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-toolbar {
+    position: static !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 14px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-toolbar h1 {
+    margin-top: 3px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(21px, 6vw, 25px) !important;
+    line-height: 1.04 !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-toolbar .section-kicker {
+    font-size: 9px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-actions {
+    width: auto !important;
+    margin: 0 !important;
+    justify-content: flex-end !important;
+    gap: 4px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-actions button {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    border-radius: 11px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-actions .today-button {
+    width: auto !important;
+    min-width: 48px !important;
+    padding: 0 9px !important;
+    font-size: 10.5px !important;
+  }
+
+  .app-shell.calendar-page-active .month-grid {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: 27px repeat(6, clamp(54px, 15vw, 66px)) !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.calendar-page-active .weekday {
+    min-width: 0 !important;
+    padding: 7px 1px !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-day {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 4px 3px !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.calendar-page-active .day-number {
+    min-width: 0 !important;
+    margin-bottom: 3px !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell.calendar-page-active .day-number i {
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  .app-shell.calendar-page-active .day-events {
+    min-width: 0 !important;
+    gap: 2px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event {
+    min-width: 0 !important;
+    max-width: calc(100% + 4px) !important;
+    min-height: 15px !important;
+    height: 15px !important;
+    padding: 2px 3px !important;
+    border-radius: 5px !important;
+    font-size: 8.8px !important;
+    line-height: 11px !important;
+    font-weight: 630 !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event > span:not(.continuation) {
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event.continues-before {
+    margin-left: -4px !important;
+    padding-left: 5px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event.continues-after {
+    margin-right: -4px !important;
+  }
+
+  /* ------------------------------------------------------------------------
+   * 4. Secondary cards. Agenda grows naturally; LISTE keeps the exact same
+   * 360px size when switching modes; Smart Home gets a stable phone viewport
+   * with its existing hidden-scroll device region.
+   * ------------------------------------------------------------------------ */
+  .app-shell.calendar-page-active .agenda-card {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.calendar-page-active .agenda-card .card-heading,
+  .app-shell.calendar-page-active .tasks-card .card-heading,
+  .app-shell.calendar-page-active .home-card .card-heading {
+    padding: 16px 16px 11px !important;
+  }
+
+  .app-shell.calendar-page-active .agenda-list {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0 12px 12px !important;
+  }
+
+  .app-shell.calendar-page-active .agenda-day {
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 11px 4px !important;
+  }
+
+  .app-shell.calendar-page-active .agenda-date strong,
+  .app-shell.calendar-page-active .agenda-event {
+    font-size: 12px !important;
+  }
+
+  .app-shell.calendar-page-active .agenda-date span,
+  .app-shell.calendar-page-active .agenda-events > small {
+    font-size: 10.5px !important;
+  }
+
+  .app-shell.calendar-page-active .tasks-card {
+    width: 100% !important;
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.calendar-page-active .tasks-card .task-list {
+    margin-inline: 12px !important;
+  }
+
+  .app-shell.calendar-page-active .tasks-card .task-row-content > label {
+    grid-template-columns: 25px minmax(0, 1fr) !important;
+    gap: 11px !important;
+  }
+
+  .app-shell.calendar-page-active .tasks-card .task-label {
+    font-size: 14px !important;
+  }
+
+  .app-shell.calendar-page-active .home-card {
+    width: 100% !important;
+    height: 480px !important;
+    min-height: 480px !important;
+    max-height: 480px !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip {
+    padding: 0 12px 12px !important;
+    scroll-padding-inline: 12px !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+    min-height: 0 !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .entity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+    padding: 0 12px 4px !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .entity-tile,
+  .app-shell.calendar-page-active .home-card .entity-main {
+    min-height: 104px !important;
+  }
+
+  /* ------------------------------------------------------------------------
+   * 5. Bottom page switch and dialogs. The dock respects the home indicator;
+   * device/header dialogs stay inside the visual viewport and never force a
+   * horizontal page overflow.
+   * ------------------------------------------------------------------------ */
+  .app-shell.calendar-page-active .page-dock-shell {
+    bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  .app-shell.calendar-page-active .page-switch-control {
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  .app-shell.calendar-page-active .device-controls {
+    width: calc(100vw - max(24px, env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px) + 16px)) !important;
+    max-width: 560px !important;
+    max-height: calc(100dvh - max(28px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 20px)) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .app-shell.calendar-page-active .device-controls::-webkit-scrollbar,
+  .app-shell.calendar-page-active .fc-modal::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active .fc-modal {
+    width: calc(100vw - 24px) !important;
+    max-width: 520px !important;
+    max-height: calc(100dvh - max(28px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 20px)) !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* Very narrow phones: keep the action row comfortable without dropping any
+ * functionality. Weather text is already reduced to temperature only. */
+@media (max-width: 350px) {
+  .app-shell.calendar-page-active > .shared-home-header .weather-pill {
+    max-width: 76px !important;
+    padding-inline: 7px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .avatar-stack i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+
+  .app-shell.calendar-page-active > .shared-home-header .security-pill,
+  .app-shell.calendar-page-active > .shared-home-header .round-top,
+  .app-shell.calendar-page-active > .shared-home-header .header-theme-switch {
+    flex-basis: 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-toolbar {
+    padding: 12px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-toolbar h1 {
+    font-size: 20px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-actions button {
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-actions .today-button {
+    min-width: 44px !important;
+    padding-inline: 7px !important;
+  }
+}
