@@ -4,6 +4,22 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [1.0.2] - 2026-09-09
+
+Second iPhone polish patch for the stable Calendar page.
+
+### Fixed
+
+- prevented iOS Safari from zooming the LISTE text input by using a 16px focused input size on phone layouts;
+- stabilized the Smart Home room rail so switching from Favorites to a room no longer shifts or clips the room buttons vertically;
+- moved Alarm and Notifications dialogs to the document top layer through a React portal and centered them against the dynamic visual viewport;
+- preserved light/dark modal appearance after portalling the shared header dialogs;
+- repaired multi-day event continuity on iPhone by allowing event segments to overlap the calendar grid boundary instead of being clipped by each day cell.
+
+### Notes
+
+This patch remains scoped to Calendar-page phone behavior. Desktop and tablet layouts are unchanged from the established stable baseline.
+
 ## [1.0.1] - 2026-09-09
 
 Phone-layout patch for the stable Calendar page.
