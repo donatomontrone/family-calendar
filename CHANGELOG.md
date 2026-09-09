@@ -4,6 +4,22 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [1.0.3] - 2026-09-09
+
+Third iPhone polish patch for the stable Calendar page.
+
+### Fixed
+
+- replaced the remaining per-day CSS stitching for multi-day calendar events with measured weekly overlay bars that span the exact pixel distance from the first to the last day, eliminating seams caused by cell padding and grid boundaries;
+- kept one visible event label while preserving the correct visual break only when an event crosses from Sunday to Monday into a new calendar row;
+- recalculated continuous event bars after responsive and visual-viewport size changes so they remain aligned on iPhone rotation and dynamic viewport changes;
+- redesigned the Calendar-page iPhone header into three deliberate rows: greeting and family avatars, clock and weather, then alarm with notification and theme actions;
+- removed the crowded horizontal phone action rail while retaining the existing desktop and tablet header layout.
+
+### Notes
+
+This patch remains scoped to the Calendar-page iPhone presentation and multi-day event rendering. Desktop and tablet geometry remain unchanged.
+
 ## [1.0.2] - 2026-09-09
 
 Second iPhone polish patch for the stable Calendar page.
