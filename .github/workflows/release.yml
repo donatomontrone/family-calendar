@@ -1,4 +1,4 @@
-name: Release 1.0.0
+name: Release
 
 on:
   push:
@@ -25,15 +25,26 @@ jobs:
         shell: bash
         run: |
           VERSION="$(jq -r '.version' custom_components/family_calendar/manifest.json)"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          if [ "$VERSION" != "1.0.0" ]; then
-            echo "This workflow only publishes v1.0.0; current version is $VERSION."
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Manifest version '$VERSION' is not a stable semantic version."
             exit 1
           fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Prepare release notes
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         shell: bash
-        run: sed -n '/^## \[1\.0\.0\]/,$p' CHANGELOG.md > release-notes.md
+        run: |
+          awk -v version="$VERSION" '
+            $0 ~ "^## \\[" version "\\]" { capture=1 }
+            capture && $0 ~ "^## \\[" && $0 !~ "^## \\[" version "\\]" { exit }
+            capture { print }
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "No CHANGELOG section found for $VERSION."
+            exit 1
+          fi
 
       - name: Create tag and GitHub release
         env:
