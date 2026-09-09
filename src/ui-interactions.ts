@@ -3,6 +3,7 @@ import calendarV5Styles from "./calendar-v5.css?inline";
 import calendarV6Styles from "./calendar-v6.css?inline";
 import calendarV7Styles from "./calendar-v7.css?inline";
 import calendarV8Styles from "./calendar-v8.css?inline";
+import calendarV9Styles from "./calendar-v9.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -19,7 +20,7 @@ type UiWindow = Window & {
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}`;
 
 function ensureFinalStyles() {
   let style = document.getElementById(FINAL_STYLE_ID) as HTMLStyleElement | null;
