@@ -4,6 +4,27 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [1.0.1] - 2026-09-09
+
+Phone-layout patch for the stable Calendar page.
+
+### Fixed
+
+- rebuilt the Calendar page composition for iPhone-sized viewports without changing the established desktop/tablet layout;
+- removed the legacy 600px minimum width from the phone month view, so all seven days fit the viewport without horizontal calendar scrolling;
+- changed the phone Calendar page from a clipped fixed-height wall-display canvas to a natural single-column vertical document with a hidden scrollbar;
+- preserved stable fixed geometry for the Lists card while allowing only its task region to scroll internally;
+- gave the Smart Home card a stable phone height with a two-column accessory grid and internal hidden scrolling when required;
+- compacted the shared header for narrow screens while retaining weather, family avatars, alarm, notifications and manual theme switching;
+- improved month toolbar, weekday, day-cell and event sizing for narrow displays;
+- reserved iPhone safe areas for the notch, Dynamic Island and Home indicator;
+- constrained device-control and header-action dialogs to the iPhone visual viewport;
+- added standalone-demo viewport metadata for `viewport-fit=cover` and iOS standalone presentation.
+
+### Notes
+
+This patch intentionally changes only the Calendar-page phone presentation. Desktop and tablet layouts remain on the v1.0.0 visual baseline. The hosted GitHub Pages demo is deployed automatically from `master`.
+
 ## [1.0.0] - 2026-09-09
 
 First stable UI baseline.
