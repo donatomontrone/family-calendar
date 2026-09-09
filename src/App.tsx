@@ -3,6 +3,8 @@ import HomeView from "./HomeView";
 import ClimateControl from "./ClimateControl";
 import SharedHeader from "./SharedHeader";
 import HeaderActionModal, { type HeaderAction } from "./HeaderActionModal";
+import ScrollRegion from "./ScrollRegion";
+import SwipeTaskRow from "./SwipeTaskRow";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -267,22 +269,23 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   </form>
                 )}
 
-                <div className="task-list">
+                <ScrollRegion
+                  className="task-list"
+                  shellClassName="task-list-scroll-shell"
+                  buttonLabel={language === "it" ? "Vai in fondo alla lista" : "Go to bottom of list"}
+                  resetKey={mode}
+                >
                   {currentTasks.map((item) => (
-                    <div className={`task-row ${item.done ? "done" : ""}`} key={item.id}>
-                      <label>
-                        <input className="task-checkbox-input" type="checkbox" checked={item.done} onChange={() => updateTask(item.id)} />
-                        <span className="task-check-indicator" aria-hidden="true"><CheckIcon /></span>
-                        <span className="task-label">{item.label}</span>
-                      </label>
-                      {item.done && (
-                        <button className="delete-task" onClick={() => deleteTask(item.id)} aria-label={t("delete", language)} title={t("delete", language)}>
-                          <TrashIcon />
-                        </button>
-                      )}
-                    </div>
+                    <SwipeTaskRow
+                      key={`${mode}-${item.id}`}
+                      item={item}
+                      deleteLabel={t("delete", language)}
+                      onToggle={() => updateTask(item.id)}
+                      onDelete={() => deleteTask(item.id)}
+                    />
                   ))}
-                </div>
+                </ScrollRegion>
+
                 <div className="segmented-control task-segmented-control">
                   <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
                   <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
@@ -339,7 +342,12 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
                 </div>
 
-                <div className="entity-grid">
+                <ScrollRegion
+                  className="entity-grid"
+                  shellClassName="entity-grid-scroll-shell"
+                  buttonLabel={language === "it" ? "Vai in fondo ai dispositivi" : "Go to bottom of devices"}
+                  resetKey={room}
+                >
                   {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
                   {roomEntities.map((entityId) => {
                     const state = hass.states[entityId];
@@ -382,7 +390,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                       </article>
                     );
                   })}
-                </div>
+                </ScrollRegion>
 
                 {selectedEntity && hass.states[selectedEntity] && (
                   <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => setSelectedEntity(null)} />
