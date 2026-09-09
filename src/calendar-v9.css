@@ -1,0 +1,150 @@
+/*
+ * Calendar V9 — LISTE-only finishing pass.
+ * Keeps the LISTE card geometrically stable, scrolls only its data rows and
+ * removes the grouped/table framing around reminders and the add composer.
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. Fixed LISTE card geometry. The card always fills the same dashboard row,
+ * regardless of Da fare/Spesa item count or whether the composer is visible.
+ * Only .task-list is allowed to consume/shrink the flexible middle track.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  align-self: stretch !important;
+  overflow: hidden !important;
+}
+
+.app-shell.calendar-page-active .tasks-card:not(:has(.task-composer)) {
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+}
+
+.app-shell.calendar-page-active .tasks-card:has(.task-composer) {
+  grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+}
+
+/* The segmented switch is a fixed footer of the card, never part of the
+ * vertical scrolling region. */
+.app-shell.calendar-page-active .tasks-card .task-segmented-control {
+  position: relative !important;
+  z-index: 6 !important;
+  align-self: end !important;
+  flex: 0 0 auto !important;
+  overflow: hidden !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Reminders list — no inset-group/table shell, no separators, no row
+ * borders. The round Apple-reminder checkbox remains the sole row affordance.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card .task-list {
+  min-height: 0 !important;
+  margin: 2px 14px 10px !important;
+  padding: 2px 0 !important;
+  display: block !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-list::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-row,
+.app-shell.calendar-page-active .tasks-card .task-row + .task-row {
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 6px 7px 6px 5px !important;
+  border: 0 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.calendar-page-active .tasks-card .task-row:hover {
+    background: rgba(118,118,128,.055) !important;
+  }
+
+  .app-shell.night.calendar-page-active .tasks-card .task-row:hover {
+    background: rgba(255,255,255,.035) !important;
+  }
+}
+
+/* Keep the actual reminder indicator crisp, without adding a surrounding row
+ * frame. */
+.app-shell.calendar-page-active .tasks-card .task-check-indicator {
+  box-shadow: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-checkbox-input:checked + .task-check-indicator {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Add composer — remove the outer wrapper entirely from the visual design.
+ * What remains visible is only the text field and the confirmation button.
+ * -------------------------------------------------------------------------- */
+.app-shell.calendar-page-active .tasks-card .task-composer {
+  margin: 0 14px 10px !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 40px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-composer input {
+  height: 40px !important;
+  min-width: 0 !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(60,60,67,.085) !important;
+  border-radius: 14px !important;
+  background: rgba(246,246,248,.92) !important;
+  color: #1d1d1f !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+
+.app-shell.night.calendar-page-active .tasks-card .task-composer input {
+  border-color: rgba(255,255,255,.05) !important;
+  background: #2f2f31 !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-composer input::placeholder {
+  color: #8e8e93 !important;
+}
+
+/* A shorter viewport still preserves the same hierarchy: heading and segmented
+ * footer remain fixed while only task rows scroll. */
+@media (max-height: 760px) {
+  .app-shell.calendar-page-active .tasks-card .task-list {
+    margin-bottom: 7px !important;
+  }
+
+  .app-shell.calendar-page-active .tasks-card .task-row,
+  .app-shell.calendar-page-active .tasks-card .task-row + .task-row {
+    min-height: 44px !important;
+    padding-block: 4px !important;
+  }
+}
