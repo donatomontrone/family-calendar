@@ -1,12 +1,35 @@
 # Family Calendar
 
+Family Calendar is a dedicated Home Assistant panel designed for family wall displays, tablets and always-on screens. It combines calendar, agenda, Todo/shopping lists and quick smart-home controls in a single full-screen interface that is separate from standard Lovelace dashboards.
+
+Current release: **v1.0.0** — first stable UI baseline.
+
+> v1.0.0 stabilizes the visual system and interaction model, especially the **Calendar** page. Real `calendar.*` and `todo.*` data adapters are still part of the next integration milestones; the standalone demo continues to use simulated data for those sections.
+
 ## Italiano
 
-**Family Calendar** è un pannello dedicato per Home Assistant pensato come calendario digitale familiare da parete o tablet. Il frontend è separato dalle dashboard Lovelace standard e riunisce calendario, agenda, Todo, lista della spesa e accesso rapido ai dispositivi smart della casa.
+### Cosa include la 1.0
 
-Il progetto è in fase **Alpha**. La parte visuale può già essere provata senza avere Home Assistant attivo tramite una demo standalone con dati simulati.
+- calendario mensile full-screen con eventi multi-day;
+- agenda dei prossimi giorni;
+- card LISTE con Todo e Spesa, aggiunta elementi, completamento e swipe-to-delete;
+- scrolling interno con scrollbar nascosta e scorciatoia per raggiungere il fondo;
+- card CASA INTELLIGENTE con stanze, preferiti e controlli rapidi;
+- dispositivi passivi mostrati come informazioni, senza falso stato acceso/spento;
+- luci White Ambiance con luminosità e temperatura del bianco;
+- tapparelle con posizione;
+- clima con temperatura, modalità HVAC, ventola e preset;
+- popup dedicati per i controlli dispositivo;
+- azione “Spegni tutto” per casa o stanza;
+- tema chiaro/scuro automatico tramite `sun.sun`, con override manuale;
+- header condiviso con meteo, allarme, notifiche e switch tema;
+- stile e tipografia ispirati ai pattern Apple, con font di sistema e controlli coerenti;
+- interazioni touch/mouse per segmented controls, stanze e liste;
+- localizzazione Italiano/Inglese;
+- demo standalone utilizzabile senza Home Assistant;
+- CI con build frontend, verifica bundle Home Assistant, Hassfest e HACS.
 
-### Prova subito la demo senza Home Assistant
+### Demo standalone
 
 Requisiti:
 
@@ -20,78 +43,104 @@ npm ci
 npm run dev
 ```
 
-Apri quindi l'indirizzo mostrato da Vite, normalmente `http://localhost:5173`.
+Apri l'indirizzo mostrato da Vite, normalmente `http://localhost:5173`.
 
-La demo include:
+La demo usa dati Home Assistant simulati e forza `it-IT` per rendere riproducibile il layout italiano durante lo sviluppo.
 
-- calendario mensile navigabile;
-- agenda dei prossimi giorni;
-- Todo e lista della spesa interattivi;
-- stanze simulate;
-- luci, switch, cover e climatizzazione simulati;
-- preferiti persistenti nel browser tramite `localStorage`;
-- layout responsive per desktop e tablet;
-- localizzazione italiana/inglese.
+### Home Assistant
 
-### Architettura
+La custom integration vive in:
 
 ```text
-src/
-  App.tsx              UI principale
-  demo.tsx             adapter standalone / mock Home Assistant
-  panel.tsx            custom element caricato da Home Assistant
-  ha.ts                 adapter tra UI e API Home Assistant
-  i18n.ts              localizzazione frontend
-  types.ts             tipi condivisi
-  styles.css           design system e layout
-
 custom_components/family_calendar/
-  __init__.py          setup integrazione e pannello
-  config_flow.py       configurazione Home Assistant
-  storage.py           persistenza preferiti
-  websocket.py         API WebSocket custom
-  frontend/            bundle compilato destinato a Home Assistant
 ```
 
-L'obiettivo architetturale è mantenere la UI indipendente dal backend: `App.tsx` riceve un oggetto `hass`, mentre la demo fornisce un adapter simulato e Home Assistant fornisce l'oggetto reale. In questo modo la stessa interfaccia può essere sviluppata e testata anche senza un'istanza Home Assistant.
-
-### Build frontend
-
-```bash
-npm run build
-```
-
-La build esegue il type-check TypeScript, genera il bundle Vite e lo copia in:
+La build frontend genera e copia automaticamente il bundle in:
 
 ```text
 custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-### Home Assistant / HACS
+Build completa:
 
-La custom integration è già presente nel repository, ma finché non viene definita e verificata la strategia definitiva di distribuzione del bundle frontend l'installazione HACS va considerata sperimentale.
+```bash
+npm run build
+```
 
-La roadmap completa è disponibile in [`ROADMAP.md`](ROADMAP.md).
+L'integrazione espone un pannello custom full-screen, persistenza preferiti tramite Home Assistant Store e WebSocket API dedicata.
 
-Le prossime priorità sono:
+### Stato dei dati reali
 
-1. completare e verificare la demo standalone;
-2. rendere affidabile il packaging del bundle frontend per HACS;
-3. collegare le entità `calendar.*` reali di Home Assistant;
-4. collegare le entità `todo.*`;
-5. aggiungere controlli smart-home specifici per dominio;
-6. supportare Google Calendar e Microsoft 365 attraverso Home Assistant;
-7. preparare la prima release stabile.
+La release 1.0 definisce la baseline stabile dell'interfaccia. I seguenti collegamenti backend restano volutamente separati dalla chiusura visuale della pagina Calendario:
+
+- eventi reali da `calendar.*`;
+- Todo/Shopping reali da `todo.*`;
+- selezione sorgenti Google Calendar tramite Home Assistant;
+- adapter Microsoft 365 / Outlook;
+- ulteriori rifiniture e funzionalità della pagina CASA.
+
+Le prossime modifiche UI saranno concentrate sulla pagina **CASA**, salvo indicazioni diverse.
+
+### Architettura
+
+```text
+src/
+  App.tsx                  shell principale e pagina Calendario
+  HomeView.tsx             pagina Casa
+  SharedHeader.tsx         header condiviso
+  SwipeTaskRow.tsx         gesture swipe delle liste
+  ScrollRegion.tsx         regioni scrollabili + jump-to-bottom
+  ClimateControl.tsx       controlli clima
+  demo.tsx                 adapter standalone / mock Home Assistant
+  panel.tsx                custom element Home Assistant
+  ha.ts                     adapter API Home Assistant
+  i18n.ts                  localizzazione
+  light-temperature.ts     gestione White Ambiance
+  *.css                    design system e layer visuali
+
+custom_components/family_calendar/
+  __init__.py              setup integrazione e pannello
+  config_flow.py           configurazione Home Assistant
+  storage.py               persistenza preferiti
+  websocket.py             API WebSocket custom
+  frontend/                bundle compilato
+```
+
+La UI riceve un oggetto `hass` e non contiene autenticazione provider. Google/Microsoft e le altre sorgenti esterne devono essere esposte tramite Home Assistant o adapter backend dell'integrazione.
+
+### Documentazione
+
+- [`ROADMAP.md`](ROADMAP.md) — roadmap e stato dei milestone
+- [`CHANGELOG.md`](CHANGELOG.md) — cronologia release
+- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — sviluppo, build e CI
+- [`docs/I18N.md`](docs/I18N.md) — localizzazione
 
 ---
 
 ## English
 
-**Family Calendar** is a dedicated Home Assistant panel designed as a family wall calendar for tablets and always-on displays. The frontend is separate from standard Lovelace dashboards and combines a calendar, agenda, Todo, shopping list, and quick access to smart-home devices.
+### What v1.0 includes
 
-The project is currently **Alpha**. The visual application can already be tested without a running Home Assistant instance through a standalone demo backed by simulated data.
+- full-screen monthly calendar with multi-day events;
+- upcoming agenda;
+- Todo/Shopping LISTS card with add, complete and swipe-to-delete interactions;
+- internal scrolling with hidden scrollbars and jump-to-bottom affordances;
+- SMART HOME card with rooms, favorites and quick controls;
+- passive/informational entities without misleading on/off states;
+- White Ambiance lights with brightness and white-temperature controls;
+- covers with position control;
+- climate temperature, HVAC mode, fan mode and presets;
+- dedicated device-control dialogs;
+- whole-home or room-scoped “Turn off all” action;
+- automatic light/dark appearance driven by `sun.sun`, plus manual override;
+- shared header with weather, alarm, notifications and theme switch;
+- Apple-inspired system typography and control language;
+- touch/mouse interactions for segmented controls, room rails and lists;
+- Italian/English localization;
+- standalone demo without Home Assistant;
+- CI for frontend build, Home Assistant bundle verification, Hassfest and HACS.
 
-### Run the demo without Home Assistant
+### Standalone demo
 
 Requirements:
 
@@ -105,65 +154,74 @@ npm ci
 npm run dev
 ```
 
-Then open the address shown by Vite, normally `http://localhost:5173`.
+Then open the address printed by Vite, normally `http://localhost:5173`.
 
-The demo includes:
+The demo uses simulated Home Assistant data and intentionally forces `it-IT` so the Italian layout remains deterministic during development.
 
-- navigable monthly calendar;
-- upcoming agenda;
-- interactive Todo and shopping lists;
-- simulated rooms;
-- simulated lights, switches, covers and climate devices;
-- browser-persistent favorites through `localStorage`;
-- responsive desktop/tablet layout;
-- Italian and English localization.
+### Home Assistant
 
-### Architecture
+The custom integration lives in:
 
 ```text
-src/
-  App.tsx              main UI
-  demo.tsx             standalone / mock Home Assistant adapter
-  panel.tsx            custom element loaded by Home Assistant
-  ha.ts                 UI to Home Assistant API adapter
-  i18n.ts              frontend localization
-  types.ts             shared types
-  styles.css           design system and layout
-
 custom_components/family_calendar/
-  __init__.py          integration and panel setup
-  config_flow.py       Home Assistant configuration
-  storage.py           favorites persistence
-  websocket.py         custom WebSocket API
-  frontend/            compiled bundle for Home Assistant
 ```
 
-The architectural goal is to keep the UI independent from the backend: `App.tsx` receives a `hass` object, while the demo supplies a simulated adapter and Home Assistant supplies the real object. This keeps the same interface usable during development even without a Home Assistant instance.
-
-### Frontend build
-
-```bash
-npm run build
-```
-
-The build runs TypeScript type-checking, creates the Vite bundle, and copies it to:
+The frontend build automatically creates and copies the bundle to:
 
 ```text
 custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-### Home Assistant / HACS
+Full build:
 
-The custom integration already lives in the repository, but HACS installation should still be considered experimental until the frontend bundle distribution strategy has been finalized and verified.
+```bash
+npm run build
+```
 
-See [`ROADMAP.md`](ROADMAP.md) for the complete roadmap.
+The integration provides a full-screen custom panel, Home Assistant Store persistence for favorites, and a dedicated WebSocket API.
 
-Current priorities are:
+### Real-data status
 
-1. finish and verify the standalone demo;
-2. make frontend bundle packaging reliable for HACS;
-3. connect real Home Assistant `calendar.*` entities;
-4. connect `todo.*` entities;
-5. add domain-aware smart-home controls;
-6. support Google Calendar and Microsoft 365 through Home Assistant;
-7. prepare the first stable release.
+v1.0 is the stable visual baseline. The following backend integrations remain separate milestones:
+
+- real events from `calendar.*`;
+- real Todo/Shopping data from `todo.*`;
+- Google Calendar source selection through Home Assistant;
+- Microsoft 365 / Outlook adapter;
+- further refinement and features for the HOME page.
+
+Unless explicitly requested otherwise, the next UI changes will focus on the **HOME** page.
+
+### Architecture
+
+```text
+src/
+  App.tsx                  main shell and Calendar page
+  HomeView.tsx             Home page
+  SharedHeader.tsx         shared header
+  SwipeTaskRow.tsx         list swipe gesture
+  ScrollRegion.tsx         scrollable regions + jump-to-bottom
+  ClimateControl.tsx       climate controls
+  demo.tsx                 standalone / mock Home Assistant adapter
+  panel.tsx                Home Assistant custom element
+  ha.ts                     Home Assistant API adapter
+  i18n.ts                  localization
+  light-temperature.ts     White Ambiance handling
+  *.css                    design system and visual layers
+
+custom_components/family_calendar/
+  __init__.py              integration and panel setup
+  config_flow.py           Home Assistant configuration
+  storage.py               favorites persistence
+  websocket.py             custom WebSocket API
+  frontend/                compiled bundle
+```
+
+The UI receives a `hass` object and contains no provider authentication. Google/Microsoft and other external sources should be exposed through Home Assistant or backend adapters in the integration.
+
+### Documentation
+
+- [`ROADMAP.md`](ROADMAP.md) — milestones and status
+- [`CHANGELOG.md`](CHANGELOG.md) — release history
+- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — development, build and CI
+- [`docs/I18N.md`](docs/I18N.md) — localization
