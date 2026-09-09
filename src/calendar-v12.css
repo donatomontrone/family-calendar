@@ -1,0 +1,170 @@
+/*
+ * Calendar V12 — iPhone interaction polish.
+ *
+ * This layer intentionally targets the phone Calendar layout only. Desktop and
+ * tablet geometry stay on the established v1.0 baseline.
+ */
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  /* ----------------------------------------------------------------------
+   * 1. LISTE composer: iOS Safari zooms focused form controls below 16px.
+   * Keep the input at 16px so the keyboard opens without changing page scale.
+   * ---------------------------------------------------------------------- */
+  .app-shell.calendar-page-active .tasks-card .task-composer input {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+  }
+
+  /* ----------------------------------------------------------------------
+   * 2. Smart Home room rail: reserve an invariant row for room tabs. Changing
+   * the device collection must never move, squeeze or vertically clip the rail.
+   * ---------------------------------------------------------------------- */
+  .app-shell.calendar-page-active .home-card {
+    display: grid !important;
+    grid-template-rows: auto 54px minmax(0, 1fr) !important;
+    align-content: stretch !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip {
+    width: 100% !important;
+    height: 54px !important;
+    min-height: 54px !important;
+    max-height: 54px !important;
+    margin: 0 !important;
+    padding: 6px 12px 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: stretch !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-padding-inline: 12px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    gap: 6px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    transform: none !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button.active,
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button:focus,
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button:focus-visible,
+  .app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button:active {
+    transform: none !important;
+  }
+
+  .app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+    overflow: hidden !important;
+  }
+
+  /* ----------------------------------------------------------------------
+   * 3. Header dialogs: the modal is portalled to document.body by the React
+   * component. Center against the dynamic visual viewport, including safe areas.
+   * ---------------------------------------------------------------------- */
+  .fc-modal-backdrop {
+    position: fixed !important;
+    z-index: 5000 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    padding-top: max(12px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(12px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: max(12px, env(safe-area-inset-left, 0px)) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .fc-modal-backdrop .fc-modal {
+    width: min(520px, 100%) !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - max(24px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 16px)) !important;
+    margin: 0 !important;
+    align-self: center !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .fc-modal-backdrop .fc-modal::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+  }
+
+  /* ----------------------------------------------------------------------
+   * 4. Multi-day events: V11 clipped every day cell on phones, which cut the
+   * negative margins used to stitch adjacent segments. Let the event layer
+   * overlap the one-pixel grid boundary and slightly overlap neighbouring
+   * segments so the duration reads as one uninterrupted bar within each week.
+   * ---------------------------------------------------------------------- */
+  .app-shell.calendar-page-active .calendar-day {
+    overflow: visible !important;
+  }
+
+  .app-shell.calendar-page-active .day-events {
+    position: relative !important;
+    z-index: 4 !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event {
+    position: relative !important;
+    z-index: 4 !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event.continues-before {
+    margin-left: -5px !important;
+    padding-left: 6px !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event.continues-after {
+    margin-right: -5px !important;
+    padding-right: 6px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  .app-shell.calendar-page-active .calendar-event .continuation {
+    display: none !important;
+  }
+}
