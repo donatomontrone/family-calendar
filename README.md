@@ -2,15 +2,17 @@
 
 Family Calendar is a dedicated Home Assistant panel designed for family wall displays, tablets and always-on screens. It combines calendar, agenda, Todo/shopping lists and quick smart-home controls in a single full-screen interface that is separate from standard Lovelace dashboards.
 
-Current release: **v1.0.0** — first stable UI baseline.
+Current release: **v1.0.1** — stable Calendar UI baseline with dedicated iPhone layout.
 
-> v1.0.0 stabilizes the visual system and interaction model, especially the **Calendar** page. Real `calendar.*` and `todo.*` data adapters are still part of the next integration milestones; the standalone demo continues to use simulated data for those sections.
+> v1.0.1 keeps the established desktop/tablet design unchanged and adds a phone-specific Calendar composition. Real `calendar.*` and `todo.*` data adapters are still part of the next integration milestones; the standalone demo continues to use simulated data for those sections.
 
 ## Italiano
 
 ### Cosa include la 1.0
 
 - calendario mensile full-screen con eventi multi-day;
+- layout dedicato per iPhone con calendario a 7 colonne senza scroll orizzontale;
+- rispetto delle safe area iOS per notch, Dynamic Island e Home indicator;
 - agenda dei prossimi giorni;
 - card LISTE con Todo e Spesa, aggiunta elementi, completamento e swipe-to-delete;
 - scrolling interno con scrollbar nascosta e scorciatoia per raggiungere il fondo;
@@ -31,7 +33,11 @@ Current release: **v1.0.0** — first stable UI baseline.
 
 ### Demo standalone
 
-Requisiti:
+Demo pubblica:
+
+https://donatomontrone.github.io/family-calendar/
+
+Requisiti per lo sviluppo locale:
 
 - Node.js 24
 - npm
@@ -122,6 +128,8 @@ La UI riceve un oggetto `hass` e non contiene autenticazione provider. Google/Mi
 ### What v1.0 includes
 
 - full-screen monthly calendar with multi-day events;
+- dedicated iPhone layout with a seven-column month view and no horizontal calendar scrolling;
+- iOS safe-area support for the notch, Dynamic Island and Home indicator;
 - upcoming agenda;
 - Todo/Shopping LISTS card with add, complete and swipe-to-delete interactions;
 - internal scrolling with hidden scrollbars and jump-to-bottom affordances;
@@ -142,7 +150,11 @@ La UI riceve un oggetto `hass` e non contiene autenticazione provider. Google/Mi
 
 ### Standalone demo
 
-Requirements:
+Public demo:
+
+https://donatomontrone.github.io/family-calendar/
+
+Local development requirements:
 
 - Node.js 24
 - npm
