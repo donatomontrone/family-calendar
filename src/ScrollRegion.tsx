@@ -42,6 +42,12 @@ export default function ScrollRegion({ className, shellClassName, buttonLabel, r
     };
   }, [resetKey]);
 
+  const scrollToBottom = () => {
+    const element = scrollRef.current;
+    if (!element) return;
+    element.scrollTo({ top: element.scrollHeight, behavior: "smooth" });
+  };
+
   return (
     <div className={shellClassName}>
       <div ref={scrollRef} className={className}>
@@ -51,7 +57,7 @@ export default function ScrollRegion({ className, shellClassName, buttonLabel, r
         <button
           type="button"
           className="scroll-bottom-button"
-          onClick={() => scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" })}
+          onClick={scrollToBottom}
           aria-label={buttonLabel}
           title={buttonLabel}
         >
