@@ -67,25 +67,32 @@
 /* --------------------------------------------------------------------------
  * 2. LISTE swipe-to-delete.
  *
- * The destructive action has ZERO width at rest. During a swipe its width is
- * exactly the uncovered distance, so no red surface can bleed through a normal
- * row. Only one row can remain snapped open; SwipeTaskRow closes the previous
- * one before revealing another.
+ * Pointer movement is painted through CSS custom properties by SwipeTaskRow,
+ * so dragging does not trigger a React render for every pointer event. Every
+ * reminder row has the exact same 52px geometry in every state.
  * -------------------------------------------------------------------------- */
 .app-shell.calendar-page-active .tasks-card .task-list {
   padding-inline: 0 !important;
 }
 
-.app-shell.calendar-page-active .tasks-card .swipe-task-row {
+.app-shell.calendar-page-active .tasks-card .swipe-task-row,
+.app-shell.calendar-page-active .tasks-card .task-row.swipe-task-row {
+  --task-swipe-x: 0px;
+  --task-swipe-reveal: 0px;
+  --task-delete-opacity: 0;
   position: relative !important;
   width: 100% !important;
-  min-width: 0 !important;
-  min-height: 48px !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: block !important;
   overflow: hidden !important;
   isolation: isolate !important;
+  box-sizing: border-box !important;
   border: 0 !important;
   border-radius: 12px !important;
   background: transparent !important;
@@ -94,65 +101,60 @@
 }
 
 .app-shell.calendar-page-active .tasks-card .swipe-task-row + .swipe-task-row {
-  margin-top: 1px !important;
+  margin-top: 2px !important;
 }
 
 .app-shell.calendar-page-active .tasks-card .swipe-delete-action {
   position: absolute !important;
   z-index: 0 !important;
-  top: 2px !important;
+  top: 0 !important;
   right: 0 !important;
-  bottom: 2px !important;
-  width: 0;
+  bottom: 0 !important;
+  width: var(--task-swipe-reveal, 0px) !important;
   min-width: 0 !important;
   max-width: 100% !important;
-  padding: 0 18px 0 10px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
   overflow: hidden !important;
   border: 0 !important;
-  border-radius: 11px !important;
-  background: rgba(255,59,48,.15) !important;
+  border-radius: 12px !important;
+  background: rgba(255,59,48,.16) !important;
   color: #d9534b !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+  opacity: var(--task-delete-opacity, 0) !important;
   box-shadow: none !important;
   outline: none !important;
-  transition: opacity .10s ease, background-color .14s ease, color .14s ease !important;
+  transform: none !important;
+  transition:
+    width .24s cubic-bezier(.22,.85,.28,1),
+    opacity .12s ease,
+    background-color .16s ease,
+    color .16s ease !important;
 }
 
-.app-shell.calendar-page-active .tasks-card .swipe-task-row.has-swipe-reveal .swipe-delete-action {
-  opacity: 1 !important;
-}
-
-.app-shell.calendar-page-active .tasks-card .swipe-task-row.has-delete-icon .swipe-delete-action {
-  pointer-events: auto !important;
+.app-shell.calendar-page-active .tasks-card .swipe-task-row.is-swiping .swipe-delete-action {
+  transition: none !important;
 }
 
 .app-shell.calendar-page-active .tasks-card .swipe-delete-action svg {
-  flex: 0 0 17px !important;
-  width: 17px !important;
-  height: 17px !important;
-  min-width: 17px !important;
-  min-height: 17px !important;
-  opacity: 0 !important;
-  transform: scale(.86) !important;
-  transition: opacity .12s ease, transform .16s cubic-bezier(.22,.85,.28,1) !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  opacity: clamp(0, var(--task-delete-opacity, 0), 1) !important;
+  transform: scale(.98) !important;
 }
 
-.app-shell.calendar-page-active .tasks-card .swipe-task-row.has-delete-icon .swipe-delete-action svg {
-  opacity: 1 !important;
-  transform: scale(1) !important;
-}
-
-.app-shell.calendar-page-active .tasks-card .swipe-task-row.delete-commit-ready .swipe-delete-action {
+.app-shell.calendar-page-active .tasks-card .swipe-task-row.delete-commit-ready .swipe-delete-action,
+.app-shell.calendar-page-active .tasks-card .swipe-task-row.is-deleting .swipe-delete-action {
   background: #ff453a !important;
   color: #fff !important;
 }
 
 .app-shell.calendar-page-active .tasks-card .swipe-delete-action:focus-visible {
-  outline: 2px solid rgba(255,255,255,.72) !important;
+  outline: 2px solid rgba(255,255,255,.68) !important;
   outline-offset: -4px !important;
 }
 
@@ -162,33 +164,64 @@
   width: 100% !important;
   min-width: 100% !important;
   max-width: 100% !important;
-  min-height: 48px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center !important;
-  padding: 6px 7px 6px 5px !important;
+  padding: 0 8px 0 5px !important;
   border: 0 !important;
   border-radius: 12px !important;
   background: transparent !important;
   box-shadow: none !important;
+  transform: translate3d(var(--task-swipe-x, 0px), 0, 0) !important;
   will-change: transform;
-  transition: transform .24s cubic-bezier(.22,.85,.28,1), background-color .14s ease !important;
+  backface-visibility: hidden;
+  contain: layout paint style;
+  transition:
+    transform .24s cubic-bezier(.22,.85,.28,1),
+    background-color .14s ease !important;
 }
 
 .app-shell.calendar-page-active .tasks-card .swipe-task-row.is-swiping .task-row-content {
   transition: none !important;
 }
 
+.app-shell.calendar-page-active .tasks-card .swipe-task-row.is-deleting .task-row-content {
+  opacity: .94 !important;
+}
+
 .app-shell.calendar-page-active .tasks-card .task-row-content > label {
   width: 100% !important;
   min-width: 0 !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  display: grid !important;
+  grid-template-columns: 24px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-check-indicator {
+  width: 23px !important;
+  height: 23px !important;
+  min-width: 23px !important;
+  min-height: 23px !important;
+}
+
+.app-shell.calendar-page-active .tasks-card .task-label {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .app-shell.calendar-page-active .tasks-card .swipe-task-row:not(.is-swiping):not(.has-swipe-reveal):hover .task-row-content {
+  .app-shell.calendar-page-active .tasks-card .swipe-task-row:not(.is-swiping):hover .task-row-content {
     background: rgba(118,118,128,.055) !important;
   }
-  .app-shell.night.calendar-page-active .tasks-card .swipe-task-row:not(.is-swiping):not(.has-swipe-reveal):hover .task-row-content {
+  .app-shell.night.calendar-page-active .tasks-card .swipe-task-row:not(.is-swiping):hover .task-row-content {
     background: rgba(255,255,255,.035) !important;
   }
 }
@@ -291,6 +324,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .app-shell.calendar-page-active .tasks-card .task-row-content,
+  .app-shell.calendar-page-active .tasks-card .swipe-delete-action,
   .app-shell.calendar-page-active .scroll-bottom-button {
     transition: none !important;
     animation: none !important;
