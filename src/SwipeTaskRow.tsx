@@ -1,4 +1,4 @@
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from "react";
 
 type SwipeTaskRowProps = {
   item: { id: number; label: string; done: boolean };
@@ -15,23 +15,39 @@ type Gesture = {
   horizontal: boolean;
 };
 
-const REVEAL_WIDTH = 66;
-const START_THRESHOLD = 5;
+const REVEAL_WIDTH = 64;
+const START_THRESHOLD = 6;
+const OPEN_THRESHOLD = 28;
 const DELETE_RATIO = 0.46;
+const SWIPE_OPEN_EVENT = "family-calendar-task-swipe-open";
 
 export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: SwipeTaskRowProps) {
   const [offset, setOffset] = useState(0);
   const [dragging, setDragging] = useState(false);
   const gestureRef = useRef<Gesture | null>(null);
   const offsetRef = useRef(0);
+  const suppressClickRef = useRef(false);
 
   const setSwipeOffset = (value: number) => {
     offsetRef.current = value;
     setOffset(value);
   };
 
+  useEffect(() => {
+    const closeWhenAnotherRowOpens = (event: Event) => {
+      const openedId = (event as CustomEvent<number>).detail;
+      if (openedId === item.id || offsetRef.current === 0) return;
+      setSwipeOffset(0);
+    };
+
+    window.addEventListener(SWIPE_OPEN_EVENT, closeWhenAnotherRowOpens);
+    return () => window.removeEventListener(SWIPE_OPEN_EVENT, closeWhenAnotherRowOpens);
+  }, [item.id]);
+
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+
+    suppressClickRef.current = false;
     gestureRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
@@ -50,23 +66,28 @@ export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: 
 
     if (!gesture.horizontal) {
       if (Math.abs(dx) < START_THRESHOLD && Math.abs(dy) < START_THRESHOLD) return;
-      if (Math.abs(dy) >= Math.abs(dx)) {
+
+      // A vertical intent belongs to the task-list scroller. Abandon the row
+      // gesture without changing its current snapped position.
+      if (Math.abs(dy) >= Math.abs(dx) * 0.9) {
         gestureRef.current = null;
         return;
       }
 
       gesture.horizontal = true;
+      suppressClickRef.current = true;
       setDragging(true);
       try {
         event.currentTarget.setPointerCapture(event.pointerId);
       } catch {
-        // Pointer capture is optional; React still receives the active gesture.
+        // Pointer capture is an enhancement; React listeners remain sufficient.
       }
     }
 
     event.preventDefault();
     const width = Math.max(1, event.currentTarget.getBoundingClientRect().width);
-    const next = Math.max(-width, Math.min(0, gesture.startOffset + dx));
+    const rawOffset = gesture.startOffset + dx;
+    const next = Math.max(-width, Math.min(0, rawOffset));
     setSwipeOffset(next);
   };
 
@@ -84,33 +105,59 @@ export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: 
     }
 
     setDragging(false);
-    if (cancelled || !gesture.horizontal) return;
+    if (!gesture.horizontal) return;
+
+    event.preventDefault();
+
+    if (cancelled) {
+      setSwipeOffset(gesture.startOffset <= -OPEN_THRESHOLD ? -REVEAL_WIDTH : 0);
+      return;
+    }
 
     const width = Math.max(1, event.currentTarget.getBoundingClientRect().width);
     const distance = -offsetRef.current;
 
     if (distance >= width * DELETE_RATIO) {
+      // Full swipe: finish the destructive travel first, then remove the row.
       setSwipeOffset(-width);
-      window.setTimeout(onDelete, 150);
+      window.setTimeout(onDelete, 135);
       return;
     }
 
-    setSwipeOffset(distance >= REVEAL_WIDTH * 0.5 ? -REVEAL_WIDTH : 0);
-  };
+    if (distance >= OPEN_THRESHOLD) {
+      window.dispatchEvent(new CustomEvent<number>(SWIPE_OPEN_EVENT, { detail: item.id }));
+      setSwipeOffset(-REVEAL_WIDTH);
+      return;
+    }
 
-  const closeBeforeContentAction = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (offsetRef.current === 0 || dragging) return;
-    event.preventDefault();
-    event.stopPropagation();
     setSwipeOffset(0);
   };
 
-  const revealWidth = Math.max(REVEAL_WIDTH, -offset);
-  const commitReady = -offset >= REVEAL_WIDTH * 1.65;
+  const onContentClickCapture = (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    // A tap on the content while the action is open closes the row first,
+    // matching the one-open-action behaviour of iOS lists.
+    if (offsetRef.current !== 0) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSwipeOffset(0);
+    }
+  };
+
+  const revealWidth = Math.max(0, -offset);
+  const revealVisible = revealWidth > 1;
+  const iconVisible = revealWidth >= 34;
+  const commitReady = revealWidth >= REVEAL_WIDTH * 1.7;
 
   return (
     <div
-      className={`task-row swipe-task-row ${item.done ? "done" : ""} ${dragging ? "is-swiping" : ""} ${commitReady ? "delete-commit-ready" : ""}`}
+      className={`task-row swipe-task-row ${item.done ? "done" : ""} ${dragging ? "is-swiping" : ""} ${revealVisible ? "has-swipe-reveal" : ""} ${iconVisible ? "has-delete-icon" : ""} ${commitReady ? "delete-commit-ready" : ""}`}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={(event) => finishGesture(event)}
@@ -123,6 +170,7 @@ export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: 
         onClick={onDelete}
         aria-label={deleteLabel}
         title={deleteLabel}
+        tabIndex={revealWidth >= REVEAL_WIDTH - 2 ? 0 : -1}
       >
         <TrashIcon />
       </button>
@@ -130,7 +178,7 @@ export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: 
       <div
         className="task-row-content"
         style={{ transform: `translate3d(${offset}px,0,0)` }}
-        onPointerDownCapture={closeBeforeContentAction}
+        onClickCapture={onContentClickCapture}
       >
         <label>
           <input className="task-checkbox-input" type="checkbox" checked={item.done} onChange={onToggle} />
