@@ -2,9 +2,9 @@
 
 Family Calendar is a dedicated Home Assistant panel designed for family wall displays, tablets and always-on screens. It combines calendar, agenda, Todo/shopping lists and quick smart-home controls in a single full-screen interface that is separate from standard Lovelace dashboards.
 
-Current release: **v1.0.1** — stable Calendar UI baseline with dedicated iPhone layout.
+Current release: **v1.0.2** — stable Calendar UI baseline with dedicated iPhone layout and interaction fixes.
 
-> v1.0.1 keeps the established desktop/tablet design unchanged and adds a phone-specific Calendar composition. Real `calendar.*` and `todo.*` data adapters are still part of the next integration milestones; the standalone demo continues to use simulated data for those sections.
+> v1.0.2 keeps the established desktop/tablet design unchanged and refines the phone-specific Calendar composition, including iOS input behavior, room navigation, centered dialogs and continuous multi-day event bars. Real `calendar.*` and `todo.*` data adapters are still part of the next integration milestones; the standalone demo continues to use simulated data for those sections.
 
 ## Italiano
 
