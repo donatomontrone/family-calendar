@@ -9,6 +9,7 @@ import calendarV11Styles from "./calendar-v11.css?inline";
 import calendarV12Styles from "./calendar-v12.css?inline";
 import calendarV13Styles from "./calendar-v13.css?inline";
 import homeV1Styles from "./home-v1.css?inline";
+import homeV2Styles from "./home-v2.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -32,7 +33,7 @@ type UiWindow = Window & {
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}`;
 const CALENDAR_TONES = ["mint", "blue", "amber", "violet"];
 
 function ensureFinalStyles() {
@@ -43,7 +44,7 @@ function ensureFinalStyles() {
   }
   if (style.textContent !== finalStyles) style.textContent = finalStyles;
 
-  // Keep the final UI contract physically last. The HA panel can inject
+  // Keep the final calendar contract physically last. The HA panel can inject
   // its bundled stylesheet after this module has initially executed.
   if (style.parentElement !== document.head || style !== document.head.lastElementChild) {
     document.head.appendChild(style);
@@ -172,37 +173,6 @@ function syncCalendarEventBridges() {
       }
     });
   });
-}
-
-function syncHomeThemeButton() {
-  const shell = document.querySelector<HTMLElement>(".app-shell.home-page-active");
-  const header = shell?.querySelector<HTMLElement>(".reel-home > .reel-topbar");
-  const notification = header?.querySelector<HTMLElement>(".round-top");
-  const theme = shell?.querySelector<HTMLElement>(":scope > .global-theme-switch.home-header-theme-switch");
-  if (!shell || !header || !notification || !theme) return;
-
-  const shellRect = shell.getBoundingClientRect();
-  const headerRect = header.getBoundingClientRect();
-  const notificationRect = notification.getBoundingClientRect();
-  const themeRect = theme.getBoundingClientRect();
-  if (notificationRect.width <= 0 || notificationRect.height <= 0 || themeRect.width <= 0) return;
-
-  // The Home theme control is currently rendered by App as a sibling rather
-  // than a child of the header. Measure the real header action geometry and
-  // place it in the same visual slot as Calendar, avoiding magic top offsets
-  // across iPhone safe areas, rotation, desktop and tablet widths.
-  theme.style.setProperty("top", `${notificationRect.top - shellRect.top}px`, "important");
-
-  const phoneLayout = window.matchMedia("(max-width: 700px), (max-height: 520px) and (max-width: 940px)").matches;
-  if (phoneLayout) {
-    const left = headerRect.right - shellRect.left - 4 - themeRect.width;
-    theme.style.setProperty("left", `${left}px`, "important");
-    theme.style.setProperty("right", "auto", "important");
-  } else {
-    const left = notificationRect.right - shellRect.left + 9;
-    theme.style.setProperty("left", `${left}px`, "important");
-    theme.style.setProperty("right", "auto", "important");
-  }
 }
 
 /*
@@ -335,7 +305,6 @@ if (!uiWindow.__familyCalendarUiInteractions) {
       ensureFinalStyles();
       syncSegmentWidth();
       syncCalendarEventBridges();
-      syncHomeThemeButton();
     });
   };
 
@@ -367,10 +336,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   scheduleUiSync();
 } else {
   // Even on HMR/module re-evaluation, refresh the final style layer and measured
-  // geometry immediately.
+  // calendar bridges immediately.
   ensureFinalStyles();
-  requestAnimationFrame(() => {
-    syncCalendarEventBridges();
-    syncHomeThemeButton();
-  });
+  requestAnimationFrame(syncCalendarEventBridges);
 }
