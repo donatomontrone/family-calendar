@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import "./ui-interactions";
 import "./calendar-header-home.css";
+import "./home-v4.css";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
@@ -32,7 +33,7 @@ export default function SharedHeader({
   const copy = language === "it" ? itCopy : enCopy;
 
   return (
-    <header className="reel-topbar">
+    <header className="reel-topbar shared-home-header casa-header-contract">
       <div className="reel-greeting">
         <strong>{greetingForHour(now.getHours(), copy)}</strong>
         <span>{now.toLocaleDateString(locale(language), { weekday: "long", day: "numeric", month: "long" })}</span>
