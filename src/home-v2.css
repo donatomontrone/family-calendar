@@ -1,0 +1,622 @@
+/*
+ * Home V2 — shared header geometry + one modal visual language.
+ *
+ * CASA intentionally mirrors the already approved CALENDARIO header at every
+ * breakpoint. Home-specific dialogs also use the same material, spacing,
+ * typography and close affordance as the header Alarm/Notifications dialogs.
+ */
+
+/* --------------------------------------------------------------------------
+ * HEADER — desktop/tablet. These values intentionally mirror the final
+ * CALENDARIO header contract one-for-one.
+ * -------------------------------------------------------------------------- */
+.app-shell.home-page-active .reel-home > .reel-topbar {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 94px !important;
+  height: 94px !important;
+  margin: 0 !important;
+  padding: 4px 5px 16px !important;
+  display: grid !important;
+  grid-template-columns: minmax(190px, 1fr) auto minmax(330px, 1.35fr) !important;
+  align-items: center !important;
+  gap: 24px !important;
+  box-sizing: border-box !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .reel-greeting {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .reel-greeting strong {
+  margin: 0 !important;
+  font-size: 20px !important;
+  line-height: 1.08 !important;
+  font-weight: 660 !important;
+  letter-spacing: -.025em !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .reel-greeting span {
+  margin: 0 !important;
+  color: var(--fc-secondary, #6e6e73) !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  font-weight: 500 !important;
+  text-transform: capitalize !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .reel-clock {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: clamp(46px, 4vw, 68px) !important;
+  line-height: .96 !important;
+  font-weight: 440 !important;
+  letter-spacing: -.055em !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .reel-top-actions {
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 9px !important;
+  margin: 0 !important;
+  padding: 0 49px 0 0 !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .weather-pill,
+.app-shell.home-page-active .reel-home > .reel-topbar .security-pill,
+.app-shell.home-page-active .reel-home > .reel-topbar .round-top,
+.app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+  height: 40px !important;
+  min-height: 40px !important;
+  border: 1px solid rgba(255,255,255,.46) !important;
+  border-radius: 20px !important;
+  background: var(--fc-material, rgba(248,248,250,.78)) !important;
+  box-shadow: var(--fc-control-shadow, inset 0 1px 0 rgba(255,255,255,.68), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04)) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .weather-pill {
+  padding: 0 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 11.5px !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .weather-pill small {
+  color: var(--fc-secondary, #6e6e73) !important;
+  font-size: 10.5px !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .security-pill {
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  font-size: 11.5px !important;
+  font-weight: 620 !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .round-top,
+.app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+  width: 40px !important;
+  min-width: 40px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .avatar-stack {
+  display: flex !important;
+  align-items: center !important;
+  height: 40px !important;
+  flex: 0 0 auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.app-shell.home-page-active .reel-home > .reel-topbar .avatar-stack i {
+  width: 34px !important;
+  height: 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 2px solid rgba(255,255,255,.82) !important;
+  border-radius: 50% !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+  position: absolute !important;
+  z-index: 70 !important;
+  top: calc(clamp(18px, 1.45vw, 32px) + 21px) !important;
+  right: calc(clamp(18px, 1.45vw, 32px) + 5px) !important;
+  color: var(--fc-secondary, #6e6e73) !important;
+}
+
+/* Match the approved CALENDARIO dark-header contrast exactly. */
+.app-shell.home-page-active.night .reel-home > .reel-topbar .weather-pill,
+.app-shell.home-page-active.night .reel-home > .reel-topbar .security-pill,
+.app-shell.home-page-active.night .reel-home > .reel-topbar .round-top,
+.app-shell.home-page-active.night > .global-theme-switch.home-header-theme-switch {
+  border-color: rgba(255,255,255,.05) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 4px 14px rgba(0,0,0,.16) !important;
+}
+
+.app-shell.home-page-active.night .reel-home > .reel-topbar .avatar-stack i {
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * HEADER — iPhone. Same three-row composition as CALENDARIO V13.
+ * The legacy Home theme button is a sibling, so its absolute position is
+ * derived from the same explicit row metrics rather than hand-tuned offsets.
+ * -------------------------------------------------------------------------- */
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  .app-shell.home-page-active {
+    --home-header-row-1: 38px;
+    --home-header-row-2: 42px;
+    --home-header-row-3: 42px;
+    --home-header-row-gap: 8px;
+    --home-header-pad-top: 7px;
+    padding-top: max(10px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: var(--home-header-pad-top) 4px 11px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting greeting avatars"
+      "clock weather weather"
+      "alarm notifications theme" !important;
+    grid-template-columns: minmax(0, 1fr) 42px auto !important;
+    grid-template-rows: var(--home-header-row-1) var(--home-header-row-2) var(--home-header-row-3) !important;
+    align-items: center !important;
+    column-gap: 8px !important;
+    row-gap: var(--home-header-row-gap) !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    align-self: center !important;
+    gap: 3px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .reel-greeting strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(18px, 5.5vw, 22px) !important;
+    line-height: 1 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .reel-greeting span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .reel-clock {
+    grid-area: clock !important;
+    min-width: 0 !important;
+    justify-self: start !important;
+    align-self: center !important;
+    font-size: clamp(36px, 11vw, 46px) !important;
+    line-height: .92 !important;
+    font-weight: 445 !important;
+    letter-spacing: -.055em !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .reel-top-actions {
+    display: contents !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .avatar-stack {
+    grid-area: avatars !important;
+    justify-self: end !important;
+    align-self: center !important;
+    display: flex !important;
+    min-width: 0 !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .avatar-stack i {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .weather-pill {
+    grid-area: weather !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+    min-width: 94px !important;
+    max-width: 112px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 14px !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .weather-pill small {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .weather-pill strong {
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .weather-pill svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .security-pill {
+    grid-area: alarm !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    border-radius: 14px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .security-pill span {
+    display: inline !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    font-weight: 670 !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .round-top,
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 14px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .round-top {
+    grid-area: notifications !important;
+    justify-self: center !important;
+    align-self: center !important;
+  }
+
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+    top: calc(
+      max(10px, env(safe-area-inset-top, 0px)) +
+      var(--home-header-pad-top) +
+      var(--home-header-row-1) +
+      var(--home-header-row-gap) +
+      var(--home-header-row-2) +
+      var(--home-header-row-gap)
+    ) !important;
+    right: calc(max(10px, env(safe-area-inset-right, 0px)) + 4px) !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .security-pill svg,
+  .app-shell.home-page-active .reel-home > .reel-topbar .round-top svg,
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .app-shell.home-page-active {
+    --home-header-row-1: 33px;
+    --home-header-row-2: 36px;
+    --home-header-row-3: 40px;
+    --home-header-row-gap: 7px;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar {
+    grid-template-columns: minmax(0, 1fr) 40px auto !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .reel-greeting strong {
+    font-size: 17px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .reel-clock {
+    font-size: 34px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .weather-pill {
+    min-width: 82px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding-inline: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .avatar-stack i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .security-pill,
+  .app-shell.home-page-active .reel-home > .reel-topbar .round-top,
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .app-shell.home-page-active .reel-home > .reel-topbar .round-top,
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+    width: 40px !important;
+    min-width: 40px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * MODALS — one visual system for Alarm, Notifications, room detail and every
+ * Home feature sheet. Content may differ, but shell, material and controls do
+ * not. This also guarantees viewport-centred dialogs on phone and tablet.
+ * -------------------------------------------------------------------------- */
+.fc-modal-backdrop,
+.app-shell.home-page-active .reel-backdrop {
+  position: fixed !important;
+  z-index: 5000 !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  padding-top: max(18px, env(safe-area-inset-top, 0px)) !important;
+  padding-right: max(18px, env(safe-area-inset-right, 0px)) !important;
+  padding-bottom: max(18px, env(safe-area-inset-bottom, 0px)) !important;
+  padding-left: max(18px, env(safe-area-inset-left, 0px)) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  background: rgba(16,16,20,.30) !important;
+  backdrop-filter: blur(22px) saturate(125%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(125%) !important;
+}
+
+.fc-modal-backdrop .fc-modal,
+.app-shell.home-page-active .reel-backdrop .reel-modal {
+  width: min(590px, 100%) !important;
+  max-width: 590px !important;
+  max-height: calc(100dvh - 36px) !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  border: 1px solid rgba(255,255,255,.64) !important;
+  border-radius: 30px !important;
+  background: rgba(248,248,250,.94) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 30px 90px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  backdrop-filter: blur(38px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(38px) saturate(165%) !important;
+}
+
+.app-shell.home-page-active .reel-backdrop .reel-modal.room-modal {
+  width: min(900px, 100%) !important;
+  max-width: 900px !important;
+}
+
+.fc-modal-backdrop .fc-modal::-webkit-scrollbar,
+.app-shell.home-page-active .reel-backdrop .reel-modal::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+.fc-modal-backdrop .fc-modal-head,
+.app-shell.home-page-active .reel-backdrop .modal-head {
+  width: 100% !important;
+  min-height: 44px !important;
+  margin: 0 0 16px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+}
+
+.fc-modal-backdrop .fc-modal-head > div:first-child,
+.app-shell.home-page-active .reel-backdrop .modal-head > div:first-child {
+  min-width: 0 !important;
+}
+
+.fc-modal-backdrop .fc-modal-head > div:first-child > span,
+.app-shell.home-page-active .reel-backdrop .modal-head .reel-kicker {
+  display: block !important;
+  margin: 0 0 4px !important;
+  color: #8e8e93 !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: .085em !important;
+  text-transform: uppercase !important;
+}
+
+.fc-modal-backdrop .fc-modal-head h2,
+.app-shell.home-page-active .reel-backdrop .modal-head h2 {
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif !important;
+  font-size: 24px !important;
+  line-height: 1.05 !important;
+  font-weight: 660 !important;
+  letter-spacing: -.026em !important;
+}
+
+.fc-modal-backdrop .fc-modal-close,
+.app-shell.home-page-active .reel-backdrop .modal-close {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  flex: 0 0 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(118,118,128,.12) !important;
+  color: #636366 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.62) !important;
+  cursor: pointer !important;
+}
+
+.fc-modal-backdrop .fc-modal-close svg,
+.app-shell.home-page-active .reel-backdrop .modal-close svg {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+.app-shell.home-page-active .reel-backdrop .modal-head > div:last-child {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.app-shell.home-page-active .reel-backdrop .modal-danger {
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 13px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: rgba(255,59,48,.10) !important;
+  color: #d92d24 !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+  box-shadow: none !important;
+}
+
+.fc-modal-backdrop.night .fc-modal,
+.app-shell.home-page-active.night .reel-backdrop .reel-modal {
+  border-color: rgba(255,255,255,.10) !important;
+  background: rgba(28,28,30,.95) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 30px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+.fc-modal-backdrop.night .fc-modal-head h2,
+.app-shell.home-page-active.night .reel-backdrop .modal-head h2 {
+  color: #f5f5f7 !important;
+}
+
+.fc-modal-backdrop.night .fc-modal-head > div:first-child > span,
+.app-shell.home-page-active.night .reel-backdrop .modal-head .reel-kicker {
+  color: #98989f !important;
+}
+
+.fc-modal-backdrop.night .fc-modal-close,
+.app-shell.home-page-active.night .reel-backdrop .modal-close {
+  background: rgba(255,255,255,.09) !important;
+  color: #d1d1d6 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  .fc-modal-backdrop,
+  .app-shell.home-page-active .reel-backdrop {
+    padding-top: max(12px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(12px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: max(12px, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  .fc-modal-backdrop .fc-modal,
+  .app-shell.home-page-active .reel-backdrop .reel-modal,
+  .app-shell.home-page-active .reel-backdrop .reel-modal.room-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - max(24px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 16px)) !important;
+    padding: 16px !important;
+    border-radius: 24px !important;
+  }
+
+  .fc-modal-backdrop .fc-modal-head,
+  .app-shell.home-page-active .reel-backdrop .modal-head {
+    min-height: 40px !important;
+    margin-bottom: 13px !important;
+  }
+
+  .fc-modal-backdrop .fc-modal-head h2,
+  .app-shell.home-page-active .reel-backdrop .modal-head h2 {
+    font-size: 21px !important;
+  }
+
+  .fc-modal-backdrop .fc-modal-close,
+  .app-shell.home-page-active .reel-backdrop .modal-close {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    flex-basis: 34px !important;
+  }
+}
