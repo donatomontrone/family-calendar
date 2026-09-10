@@ -43,7 +43,7 @@ function ensureFinalStyles() {
   }
   if (style.textContent !== finalStyles) style.textContent = finalStyles;
 
-  // Keep the final calendar contract physically last. The HA panel can inject
+  // Keep the final UI contract physically last. The HA panel can inject
   // its bundled stylesheet after this module has initially executed.
   if (style.parentElement !== document.head || style !== document.head.lastElementChild) {
     document.head.appendChild(style);
@@ -172,6 +172,37 @@ function syncCalendarEventBridges() {
       }
     });
   });
+}
+
+function syncHomeThemeButton() {
+  const shell = document.querySelector<HTMLElement>(".app-shell.home-page-active");
+  const header = shell?.querySelector<HTMLElement>(".reel-home > .reel-topbar");
+  const notification = header?.querySelector<HTMLElement>(".round-top");
+  const theme = shell?.querySelector<HTMLElement>(":scope > .global-theme-switch.home-header-theme-switch");
+  if (!shell || !header || !notification || !theme) return;
+
+  const shellRect = shell.getBoundingClientRect();
+  const headerRect = header.getBoundingClientRect();
+  const notificationRect = notification.getBoundingClientRect();
+  const themeRect = theme.getBoundingClientRect();
+  if (notificationRect.width <= 0 || notificationRect.height <= 0 || themeRect.width <= 0) return;
+
+  // The Home theme control is currently rendered by App as a sibling rather
+  // than a child of the header. Measure the real header action geometry and
+  // place it in the same visual slot as Calendar, avoiding magic top offsets
+  // across iPhone safe areas, rotation, desktop and tablet widths.
+  theme.style.setProperty("top", `${notificationRect.top - shellRect.top}px`, "important");
+
+  const phoneLayout = window.matchMedia("(max-width: 700px), (max-height: 520px) and (max-width: 940px)").matches;
+  if (phoneLayout) {
+    const left = headerRect.right - shellRect.left - 4 - themeRect.width;
+    theme.style.setProperty("left", `${left}px`, "important");
+    theme.style.setProperty("right", "auto", "important");
+  } else {
+    const left = notificationRect.right - shellRect.left + 9;
+    theme.style.setProperty("left", `${left}px`, "important");
+    theme.style.setProperty("right", "auto", "important");
+  }
 }
 
 /*
@@ -304,6 +335,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
       ensureFinalStyles();
       syncSegmentWidth();
       syncCalendarEventBridges();
+      syncHomeThemeButton();
     });
   };
 
@@ -335,7 +367,10 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   scheduleUiSync();
 } else {
   // Even on HMR/module re-evaluation, refresh the final style layer and measured
-  // calendar bridges immediately.
+  // geometry immediately.
   ensureFinalStyles();
-  requestAnimationFrame(syncCalendarEventBridges);
+  requestAnimationFrame(() => {
+    syncCalendarEventBridges();
+    syncHomeThemeButton();
+  });
 }
