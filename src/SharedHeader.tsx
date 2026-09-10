@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import "./ui-interactions";
+import "./calendar-header-home.css";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
