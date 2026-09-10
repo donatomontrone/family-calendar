@@ -10,6 +10,7 @@ import calendarV12Styles from "./calendar-v12.css?inline";
 import calendarV13Styles from "./calendar-v13.css?inline";
 import homeV1Styles from "./home-v1.css?inline";
 import homeV2Styles from "./home-v2.css?inline";
+import homeV3Styles from "./home-v3.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -33,7 +34,7 @@ type UiWindow = Window & {
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}`;
 const CALENDAR_TONES = ["mint", "blue", "amber", "violet"];
 
 function ensureFinalStyles() {
