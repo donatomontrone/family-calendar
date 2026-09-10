@@ -9,9 +9,6 @@ type SharedHeaderProps = {
   language: Language;
   onAlarm?: () => void;
   onNotifications?: () => void;
-  onThemeToggle?: () => void;
-  isNight?: boolean;
-  themeLabel?: string;
 };
 
 export default function SharedHeader({
@@ -20,9 +17,6 @@ export default function SharedHeader({
   language,
   onAlarm,
   onNotifications,
-  onThemeToggle,
-  isNight = false,
-  themeLabel,
 }: SharedHeaderProps) {
   const weather = Object.values(hass.states).find((state) => state.entity_id.startsWith("weather."));
   const alarm = Object.values(hass.states).find((state) => state.entity_id.startsWith("alarm_control_panel."));
@@ -31,48 +25,17 @@ export default function SharedHeader({
   const copy = language === "it" ? itCopy : enCopy;
 
   return (
-    <header className="reel-topbar shared-home-header">
+    <header className="reel-topbar">
       <div className="reel-greeting">
         <strong>{greetingForHour(now.getHours(), copy)}</strong>
         <span>{now.toLocaleDateString(locale(language), { weekday: "long", day: "numeric", month: "long" })}</span>
       </div>
-
-      <div className="reel-clock">
-        {now.toLocaleTimeString(locale(language), { hour: "2-digit", minute: "2-digit" })}
-      </div>
-
+      <div className="reel-clock">{now.toLocaleTimeString(locale(language), { hour: "2-digit", minute: "2-digit" })}</div>
       <div className="reel-top-actions">
-        <span className="weather-pill">
-          <SunIcon />
-          <strong>{Number.isFinite(outside) ? outside.toFixed(1) : "—"}°</strong>
-          <small>{copy.sunny}</small>
-        </span>
-        <span className="avatar-stack" aria-label={copy.family}>
-          <i>G</i><i>A</i>
-        </span>
-        <button
-          type="button"
-          className="security-pill"
-          onClick={onAlarm}
-          aria-label={armed ? copy.armed : copy.disarmed}
-        >
-          <ShieldIcon />
-          <span>{armed ? copy.armed : copy.disarmed}</span>
-        </button>
-        <button type="button" className="round-top" onClick={onNotifications} aria-label={copy.notifications} title={copy.notifications}>
-          <BellIcon />
-        </button>
-        {onThemeToggle && (
-          <button
-            type="button"
-            className="header-theme-switch"
-            onClick={onThemeToggle}
-            aria-label={themeLabel ?? copy.appearance}
-            title={themeLabel ?? copy.appearance}
-          >
-            {isNight ? <SunIcon /> : <MoonIcon />}
-          </button>
-        )}
+        <span className="weather-pill"><SunIcon /><strong>{Number.isFinite(outside) ? outside.toFixed(1) : "—"}°</strong><small>{copy.sunny}</small></span>
+        <span className="avatar-stack" aria-label={copy.family}><i>G</i><i>A</i></span>
+        <button type="button" className="security-pill" onClick={onAlarm} aria-label={armed ? copy.armed : copy.disarmed}><ShieldIcon /><span>{armed ? copy.armed : copy.disarmed}</span></button>
+        <button type="button" className="round-top" onClick={onNotifications} aria-label={copy.notifications}><BellIcon /></button>
       </div>
     </header>
   );
@@ -81,7 +44,6 @@ export default function SharedHeader({
 const itCopy = {
   sunny: "Soleggiato",
   notifications: "Notifiche",
-  appearance: "Aspetto",
   armed: "Inserito",
   disarmed: "Disattivo",
   family: "Famiglia",
@@ -94,7 +56,6 @@ const itCopy = {
 const enCopy: typeof itCopy = {
   sunny: "Sunny",
   notifications: "Notifications",
-  appearance: "Appearance",
   armed: "Armed",
   disarmed: "Disarmed",
   family: "Family",
@@ -129,8 +90,4 @@ function BellIcon() {
 
 function SunIcon() {
   return <Svg><><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.45"/><path d="M12 3.3v2M12 18.7v2M3.3 12h2M18.7 12h2M5.9 5.9l1.4 1.4M16.7 16.7l1.4 1.4M18.1 5.9l-1.4 1.4M7.3 16.7l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></></Svg>;
-}
-
-function MoonIcon() {
-  return <Svg><path d="M18.7 15.4A7.8 7.8 0 0 1 8.6 5.3a7.8 7.8 0 1 0 10.1 10.1Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></Svg>;
 }
