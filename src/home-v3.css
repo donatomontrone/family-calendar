@@ -1,110 +1,353 @@
 /*
- * Home V3 — topology-aware room grid for the actual seven-area home.
- * Open space, disimpegno, two bathrooms, cameretta, bedroom and exterior must
- * all remain visible inside the fixed CASA viewport without page scrolling.
+ * Home V3 — desktop/tablet CASA contract.
+ * Phone behaviour remains owned by Home V1/V2 while the current refactor is
+ * deliberately focused on >= 701px layouts.
  */
+
+@media (min-width: 701px) {
+  .app-shell.home-page-active {
+    --home-blue: #007aff;
+    --home-cyan: #5ac8fa;
+    --home-green: #34c759;
+    --home-orange: #ff9f0a;
+    --home-yellow: #ffd60a;
+    --home-indigo: #5e5ce6;
+    --home-card: rgba(255,255,255,.82);
+    --home-soft: #f2f2f7;
+    --home-border: rgba(60,60,67,.10);
+    --home-secondary: #6e6e73;
+  }
+
+  .app-shell.home-page-active.night {
+    --home-card: rgba(36,36,39,.86);
+    --home-soft: #2c2c2e;
+    --home-border: rgba(255,255,255,.065);
+    --home-secondary: #aeaeb2;
+  }
+
+  .app-shell.home-page-active .reel-dashboard {
+    grid-template-columns: minmax(0, 1fr) minmax(278px, 22vw) !important;
+    gap: clamp(12px, 1vw, 18px) !important;
+  }
+
+  .app-shell.home-page-active .reel-room-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    gap: clamp(9px, .75vw, 14px) !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.home-page-active .reel-room.room-card-v4 {
+    position: relative !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 11px 12px 9px !important;
+    display: grid !important;
+    grid-template-rows: 34px minmax(45px, auto) auto minmax(38px, 1fr) 18px !important;
+    align-content: stretch !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--home-border) !important;
+    border-radius: 22px !important;
+    background: var(--home-card) !important;
+    box-shadow: 0 7px 22px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.78) !important;
+    backdrop-filter: blur(24px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-room.room-card-v4 {
+    box-shadow: 0 8px 26px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  }
+
+  .app-shell.home-page-active .room-card-v4::after { display: none !important; }
+
+  .app-shell.home-page-active .room-head-v4 {
+    min-width: 0 !important;
+    height: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .room-title-v4 {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .room-title-v4 > i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 10px !important;
+    background: rgba(0,122,255,.10) !important;
+    color: var(--home-blue) !important;
+  }
+
+  .app-shell.home-page-active .room-title-v4 > i svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .app-shell.home-page-active .room-title-v4 strong {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(13px, .95vw, 16px) !important;
+    line-height: 1 !important;
+    font-weight: 660 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  .app-shell.home-page-active .room-head-v4 > b {
+    flex: 0 0 auto !important;
+    font-size: clamp(20px, 1.55vw, 27px) !important;
+    line-height: 1 !important;
+    font-weight: 430 !important;
+    letter-spacing: -.04em !important;
+  }
+
+  .app-shell.home-page-active .room-device-section {
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .app-shell.home-page-active .room-section-label {
+    display: block !important;
+    margin-bottom: 4px !important;
+    color: var(--home-secondary) !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    font-weight: 650 !important;
+    letter-spacing: .07em !important;
+    text-transform: uppercase !important;
+  }
+
+  .app-shell.home-page-active .room-device-grid-v4 {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+  }
+
+  .app-shell.home-page-active .room-device-button-v4 {
+    position: relative !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    padding: 5px 6px !important;
+    display: grid !important;
+    grid-template-columns: 25px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 5px !important;
+    border: 1px solid rgba(60,60,67,.07) !important;
+    border-radius: 12px !important;
+    background: var(--home-soft) !important;
+    color: #1d1d1f !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+    text-align: left !important;
+    transition: transform .16s ease, background .18s ease, border-color .18s ease !important;
+  }
+
+  .app-shell.home-page-active.night .room-device-button-v4 {
+    color: #f5f5f7 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+  }
+
+  .app-shell.home-page-active .room-device-button-v4 > span {
+    width: 25px !important;
+    height: 25px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 8px !important;
+    background: #e5e5ea !important;
+    color: #636366 !important;
+  }
+
+  .app-shell.home-page-active.night .room-device-button-v4 > span {
+    background: #3a3a3c !important;
+    color: #c7c7cc !important;
+  }
+
+  .app-shell.home-page-active .room-device-button-v4 > span svg { width: 14px !important; height: 14px !important; }
+  .app-shell.home-page-active .room-device-button-v4 > div { min-width: 0 !important; display: flex !important; flex-direction: column !important; gap: 2px !important; }
+  .app-shell.home-page-active .room-device-button-v4 strong,
+  .app-shell.home-page-active .room-device-button-v4 small { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+  .app-shell.home-page-active .room-device-button-v4 strong { font-size: 9px !important; line-height: 1 !important; font-weight: 630 !important; }
+  .app-shell.home-page-active .room-device-button-v4 small { color: var(--home-secondary) !important; font-size: 7.5px !important; line-height: 1 !important; }
+
+  .app-shell.home-page-active .room-device-button-v4.active:not(.domain-light):not(.domain-climate) {
+    border-color: #abd1f8 !important;
+    background: #c9e3ff !important;
+  }
+  .app-shell.home-page-active .room-device-button-v4.active:not(.domain-light):not(.domain-climate) > span { background: #fff !important; color: var(--home-blue) !important; }
+  .app-shell.home-page-active.night .room-device-button-v4.active:not(.domain-light):not(.domain-climate) { border-color: rgba(255,255,255,.055) !important; background: #3f3f41 !important; }
+  .app-shell.home-page-active.night .room-device-button-v4.active:not(.domain-light):not(.domain-climate) > span { background: #545456 !important; color: #f2f2f7 !important; }
+
+  .app-shell.home-page-active .room-device-button-v4.domain-light.active {
+    border-color: color-mix(in srgb, var(--room-device-accent, #e8eef7) 45%, rgba(60,60,67,.08)) !important;
+    background: color-mix(in srgb, var(--room-device-accent, #e8eef7) 42%, #fff) !important;
+  }
+  .app-shell.home-page-active .room-device-button-v4.domain-light.active > span { background: #fff !important; color: #9b7a44 !important; }
+  .app-shell.home-page-active.night .room-device-button-v4.domain-light.active { background: color-mix(in srgb, var(--room-device-accent, #e8eef7) 13%, #3a3a3c) !important; }
+
+  .app-shell.home-page-active .room-device-button-v4.domain-climate.active { border-color: #ffd0a0 !important; background: #fff0df !important; }
+  .app-shell.home-page-active .room-device-button-v4.domain-climate.active > span { background: #fff !important; color: var(--home-orange) !important; }
+  .app-shell.home-page-active.night .room-device-button-v4.domain-climate.active { border-color: rgba(255,159,10,.22) !important; background: rgba(255,159,10,.12) !important; }
+
+  .app-shell.home-page-active .room-device-button-v4.selected::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: -2px !important;
+    border: 1.5px solid var(--home-blue) !important;
+    border-radius: 13px !important;
+    pointer-events: none !important;
+  }
+
+  .app-shell.home-page-active .room-quick-control-v4 {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 5px 8px 6px !important;
+    border: 1px solid rgba(60,60,67,.07) !important;
+    border-radius: 12px !important;
+    background: rgba(118,118,128,.055) !important;
+  }
+
+  .app-shell.home-page-active.night .room-quick-control-v4 { border-color: rgba(255,255,255,.05) !important; background: rgba(118,118,128,.10) !important; }
+  .app-shell.home-page-active .room-quick-control-head { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 8px !important; margin-bottom: 4px !important; }
+  .app-shell.home-page-active .room-quick-control-head > div:first-child { min-width: 0 !important; display: flex !important; flex-direction: column !important; gap: 1px !important; }
+  .app-shell.home-page-active .room-quick-control-head small { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; color: var(--home-secondary) !important; font-size: 7.5px !important; }
+  .app-shell.home-page-active .room-quick-control-head strong { display: flex !important; align-items: baseline !important; gap: 6px !important; font-size: 9px !important; line-height: 1 !important; font-weight: 620 !important; }
+  .app-shell.home-page-active .room-quick-control-head strong b { color: var(--home-secondary) !important; font-size: 8px !important; font-weight: 560 !important; }
+
+  .app-shell.home-page-active .room-light-mode-v4 { flex: 0 0 auto !important; display: flex !important; gap: 3px !important; }
+  .app-shell.home-page-active .room-light-mode-v4 button { width: 24px !important; height: 20px !important; display: grid !important; place-items: center !important; border: 0 !important; border-radius: 7px !important; background: rgba(118,118,128,.10) !important; color: var(--home-secondary) !important; }
+  .app-shell.home-page-active .room-light-mode-v4 button.active { background: #fff !important; color: var(--home-blue) !important; box-shadow: 0 1px 3px rgba(0,0,0,.09) !important; }
+  .app-shell.home-page-active.night .room-light-mode-v4 button.active { background: #48484a !important; color: #f5f5f7 !important; }
+  .app-shell.home-page-active .room-light-mode-v4 svg { width: 12px !important; height: 12px !important; }
+
+  .app-shell.home-page-active .room-quick-control-v4 input[type="range"] {
+    width: 100% !important;
+    height: 12px !important;
+    margin: 0 !important;
+    accent-color: var(--home-blue) !important;
+  }
+  .app-shell.home-page-active .room-quick-control-v4 input.white-temperature-range { accent-color: #b38b55 !important; }
+
+  .app-shell.home-page-active .room-passive-section-v4 { min-height: 0 !important; overflow: hidden !important; }
+  .app-shell.home-page-active .room-passive-grid-v4 { min-width: 0 !important; display: grid !important; grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 4px 6px !important; }
+  .app-shell.home-page-active .room-passive-device-v4 { min-width: 0 !important; min-height: 24px !important; display: grid !important; grid-template-columns: 21px minmax(0,1fr) !important; align-items: center !important; gap: 5px !important; }
+  .app-shell.home-page-active .room-passive-device-v4 > span { width: 21px !important; height: 21px !important; display: grid !important; place-items: center !important; border-radius: 7px !important; background: rgba(118,118,128,.09) !important; color: #636366 !important; }
+  .app-shell.home-page-active.night .room-passive-device-v4 > span { background: rgba(118,118,128,.16) !important; color: #c7c7cc !important; }
+  .app-shell.home-page-active .room-passive-device-v4 svg { width: 12px !important; height: 12px !important; }
+  .app-shell.home-page-active .room-passive-device-v4 > div { min-width: 0 !important; display: flex !important; flex-direction: column !important; gap: 1px !important; }
+  .app-shell.home-page-active .room-passive-device-v4 strong,
+  .app-shell.home-page-active .room-passive-device-v4 small { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+  .app-shell.home-page-active .room-passive-device-v4 strong { font-size: 8.5px !important; line-height: 1 !important; font-weight: 610 !important; }
+  .app-shell.home-page-active .room-passive-device-v4 small { color: var(--home-secondary) !important; font-size: 7.5px !important; line-height: 1 !important; font-weight: 520 !important; }
+  .app-shell.home-page-active .room-empty-v4 { grid-column: 1 / -1 !important; color: var(--home-secondary) !important; font-size: 8px !important; }
+  .app-shell.home-page-active .room-detail-v4 { align-self: end !important; justify-self: end !important; position: static !important; min-height: 18px !important; padding: 0 !important; font-size: 8px !important; color: var(--home-blue) !important; }
+
+  /* Thermostat summary: one calm Apple-style information card rather than a
+     sparkline dashboard widget. */
+  .app-shell.home-page-active .thermostat-card-v4 {
+    min-height: 0 !important;
+    padding: 12px !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0,1fr) !important;
+    gap: 8px !important;
+    text-align: left !important;
+  }
+  .app-shell.home-page-active .thermostat-v4-head { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 8px !important; }
+  .app-shell.home-page-active .thermostat-v4-head > span { display: inline-flex !important; align-items: center !important; gap: 6px !important; font-size: 11px !important; font-weight: 650 !important; }
+  .app-shell.home-page-active .thermostat-v4-head svg { width: 15px !important; height: 15px !important; color: var(--home-orange) !important; }
+  .app-shell.home-page-active .thermostat-v4-head > b { color: var(--home-blue) !important; font-size: 9px !important; font-weight: 600 !important; }
+  .app-shell.home-page-active .thermostat-v4-body { min-height: 0 !important; display: grid !important; grid-template-columns: minmax(88px,.8fr) minmax(0,1fr) !important; align-items: center !important; gap: 12px !important; }
+  .app-shell.home-page-active .thermostat-v4-ring { width: clamp(78px, 6vw, 98px) !important; aspect-ratio: 1 !important; margin: auto !important; padding: 7px !important; display: grid !important; place-items: center !important; border-radius: 50% !important; background: conic-gradient(var(--home-orange) var(--thermostat-progress), rgba(118,118,128,.12) 0) !important; }
+  .app-shell.home-page-active .thermostat-v4-ring::before { content: "" !important; grid-area: 1/1 !important; width: 100% !important; height: 100% !important; border-radius: 50% !important; background: var(--home-card) !important; box-shadow: inset 0 0 0 1px var(--home-border) !important; }
+  .app-shell.home-page-active .thermostat-v4-ring > div { grid-area: 1/1 !important; z-index: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 2px !important; }
+  .app-shell.home-page-active .thermostat-v4-ring strong { font-size: clamp(20px,1.8vw,29px) !important; line-height: 1 !important; font-weight: 440 !important; letter-spacing: -.05em !important; }
+  .app-shell.home-page-active .thermostat-v4-ring span { color: var(--home-secondary) !important; font-size: 8px !important; font-weight: 550 !important; }
+  .app-shell.home-page-active .thermostat-v4-stats { min-width: 0 !important; display: grid !important; gap: 5px !important; }
+  .app-shell.home-page-active .thermostat-v4-stats > span { min-width: 0 !important; padding-bottom: 5px !important; display: flex !important; align-items: baseline !important; justify-content: space-between !important; gap: 7px !important; border-bottom: 1px solid rgba(60,60,67,.07) !important; }
+  .app-shell.home-page-active.night .thermostat-v4-stats > span { border-bottom-color: rgba(255,255,255,.055) !important; }
+  .app-shell.home-page-active .thermostat-v4-stats > span:last-child { border-bottom: 0 !important; padding-bottom: 0 !important; }
+  .app-shell.home-page-active .thermostat-v4-stats small { color: var(--home-secondary) !important; font-size: 8px !important; }
+  .app-shell.home-page-active .thermostat-v4-stats strong { max-width: 58% !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; font-size: 9px !important; font-weight: 630 !important; }
+
+  /* Room detail uses the same state language as CALENDARIO / CASA INTELLIGENTE. */
+  .app-shell.home-page-active .home-room-modal-grid-v4 { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+  .app-shell.home-page-active .home-room-modal-grid-v4 .apple-accessory-tile { min-height: 118px !important; }
+  .app-shell.home-page-active .home-room-modal-grid-v4 .apple-accessory-tile.passive { background: var(--home-soft) !important; }
+  .app-shell.home-page-active .home-room-modal-grid-v4 .apple-accessory-tile.active:not(.domain-light):not(.domain-climate) { background: #c9e3ff !important; border-color: #abd1f8 !important; }
+  .app-shell.home-page-active.night .home-room-modal-grid-v4 .apple-accessory-tile.active:not(.domain-light):not(.domain-climate) { background: #3f3f41 !important; border-color: rgba(255,255,255,.055) !important; }
+  .app-shell.home-page-active .home-room-modal-grid-v4 .apple-accessory-tile.domain-light.active { background: color-mix(in srgb, var(--accessory-accent, #e8eef7) 42%, #fff) !important; }
+  .app-shell.home-page-active.night .home-room-modal-grid-v4 .apple-accessory-tile.domain-light.active { background: color-mix(in srgb, var(--accessory-accent, #e8eef7) 13%, #3a3a3c) !important; }
+  .app-shell.home-page-active .home-inline-light-v4,
+  .app-shell.home-page-active .home-inline-cover-v4 { grid-column: 1 / -1 !important; display: grid !important; gap: 5px !important; }
+  .app-shell.home-page-active .home-inline-light-v4 label,
+  .app-shell.home-page-active .home-inline-cover-v4 { display: grid !important; gap: 3px !important; }
+  .app-shell.home-page-active .home-inline-light-v4 label > span,
+  .app-shell.home-page-active .home-inline-cover-v4 > span { display: flex !important; justify-content: space-between !important; color: var(--home-secondary) !important; font-size: 9px !important; }
+  .app-shell.home-page-active .home-inline-light-v4 input,
+  .app-shell.home-page-active .home-inline-cover-v4 input { width: 100% !important; accent-color: var(--home-blue) !important; }
+  .app-shell.home-page-active .home-inline-light-v4 .white-temperature-range { accent-color: #b38b55 !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 { display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 8px !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 article { min-width: 0 !important; padding: 10px !important; display: grid !important; grid-template-columns: 34px minmax(0,1fr) !important; align-items: center !important; gap: 9px !important; border-radius: 14px !important; background: var(--home-soft) !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 article > span { width: 34px !important; height: 34px !important; display: grid !important; place-items: center !important; border-radius: 10px !important; background: rgba(0,122,255,.10) !important; color: var(--home-blue) !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 svg { width: 17px !important; height: 17px !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 article > div { min-width: 0 !important; display: flex !important; flex-direction: column !important; gap: 2px !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 strong,
+  .app-shell.home-page-active .home-generic-grid-v4 small { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 strong { font-size: 12px !important; }
+  .app-shell.home-page-active .home-generic-grid-v4 small { color: var(--home-secondary) !important; font-size: 10px !important; }
+}
 
 @media (min-width: 1101px) {
   .app-shell.home-page-active .reel-room-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
-    grid-auto-rows: minmax(0, 1fr) !important;
-  }
-
-  .app-shell.home-page-active .reel-room {
-    padding: clamp(10px, .75vw, 14px) !important;
-  }
-
-  .app-shell.home-page-active .room-insights > span:nth-child(n + 5) {
-    display: none !important;
-  }
-
-  .app-shell.home-page-active .room-accessory-row button:nth-child(n + 5) {
-    display: none !important;
   }
 }
 
 @media (min-width: 701px) and (max-width: 1100px) {
-  .app-shell.home-page-active .reel-room-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
-    grid-auto-rows: minmax(0, 1fr) !important;
-  }
-
-  .app-shell.home-page-active .room-scene-row button {
-    min-height: 46px !important;
-  }
-
-  .app-shell.home-page-active .room-level {
-    margin-block: 6px !important;
-  }
-
-  .app-shell.home-page-active .room-insights {
-    margin-bottom: 5px !important;
-  }
-
-  .app-shell.home-page-active .room-accessory-row button {
-    min-height: 44px !important;
-  }
-}
-
-@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
-  .app-shell.home-page-active .reel-room-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
-    grid-auto-rows: minmax(0, 1fr) !important;
-  }
-
-  .app-shell.home-page-active .reel-room-head strong {
-    font-size: clamp(10.5px, 3vw, 12.5px) !important;
-  }
-
-  .app-shell.home-page-active .reel-room-head b {
-    font-size: clamp(17px, 4.8vw, 21px) !important;
-  }
-}
-
-/* Short iPhones cannot preserve both four room rows and the full secondary
- * controls. Keep every room reachable and move dense controls into the detail
- * sheet, while still keeping the page itself completely non-scrollable. */
-@media (max-width: 700px) and (max-height: 740px) {
   .app-shell.home-page-active .reel-dashboard {
-    grid-template-rows: minmax(0, 1fr) 118px !important;
-    gap: 6px !important;
+    grid-template-columns: minmax(0,1fr) minmax(238px, 29vw) !important;
+    gap: 9px !important;
   }
-
-  .app-shell.home-page-active .reel-side {
-    height: 118px !important;
-    min-height: 118px !important;
-    grid-template-rows: 44px 68px !important;
-    gap: 6px !important;
+  .app-shell.home-page-active .reel-room-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
   }
-
-  .app-shell.home-page-active .reel-side > .home-message-card,
-  .app-shell.home-page-active .reel-side > .alarm-row,
-  .app-shell.home-page-active .reel-side > .thermostat-card,
-  .app-shell.home-page-active .reel-side > .waste-card {
-    height: 44px !important;
-    min-height: 44px !important;
-    max-height: 44px !important;
+  .app-shell.home-page-active .reel-room.room-card-v4 {
+    padding: 8px 9px 7px !important;
+    grid-template-rows: 30px minmax(39px, auto) auto minmax(30px,1fr) 16px !important;
+    gap: 3px !important;
+    border-radius: 18px !important;
   }
-
-  .app-shell.home-page-active .reel-tools-grid {
-    height: 68px !important;
-    min-height: 68px !important;
-  }
-
-  .app-shell.home-page-active .reel-room {
-    padding: 7px 8px !important;
-  }
-
-  .app-shell.home-page-active .room-scene-row,
-  .app-shell.home-page-active .room-level {
-    display: none !important;
-  }
-
-  .app-shell.home-page-active .room-open-detail {
-    right: 7px !important;
-    bottom: 4px !important;
-  }
+  .app-shell.home-page-active .room-title-v4 > i { width: 27px !important; height: 27px !important; min-width: 27px !important; border-radius: 9px !important; }
+  .app-shell.home-page-active .room-title-v4 > i svg { width: 15px !important; height: 15px !important; }
+  .app-shell.home-page-active .room-title-v4 strong { font-size: 12px !important; }
+  .app-shell.home-page-active .room-head-v4 > b { font-size: 19px !important; }
+  .app-shell.home-page-active .room-device-button-v4 { height: 36px !important; grid-template-columns: 22px minmax(0,1fr) !important; padding: 4px !important; }
+  .app-shell.home-page-active .room-device-button-v4 > span { width: 22px !important; height: 22px !important; }
+  .app-shell.home-page-active .room-device-button-v4 strong { font-size: 8px !important; }
+  .app-shell.home-page-active .room-device-button-v4 small { display: none !important; }
+  .app-shell.home-page-active .room-quick-control-v4 { padding: 4px 6px !important; }
+  .app-shell.home-page-active .room-quick-control-head small { display: none !important; }
+  .app-shell.home-page-active .room-passive-device-v4:nth-child(n+3) { display: none !important; }
+  .app-shell.home-page-active .room-passive-grid-v4 { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  .app-shell.home-page-active .room-passive-device-v4 strong { font-size: 7.8px !important; }
+  .app-shell.home-page-active .room-passive-device-v4 small { font-size: 7px !important; }
+  .app-shell.home-page-active .thermostat-v4-body { grid-template-columns: 78px minmax(0,1fr) !important; gap: 8px !important; }
+  .app-shell.home-page-active .thermostat-v4-ring { width: 70px !important; }
+  .app-shell.home-page-active .thermostat-v4-ring strong { font-size: 20px !important; }
+  .app-shell.home-page-active .home-room-modal-grid-v4 { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
 }
