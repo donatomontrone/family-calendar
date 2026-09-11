@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import ClimateControl from "./ClimateControl";
+import DeviceControls from "./DeviceControls";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -40,6 +41,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [favorites, setFavoriteIds] = useState<string[]>([]);
   const [overlay, setOverlay] = useState<Overlay>(null);
+  const [roomClimateEntityId, setRoomClimateEntityId] = useState<string | null>(null);
   const copy = language === "it" ? itCopy : enCopy;
 
   useEffect(() => {
@@ -63,7 +65,6 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
   const temperatures = rooms.map((room, index) => room.temperature ?? (demo ? 21.7 + index * 0.3 : undefined));
   const knownTemperatures = temperatures.filter((value): value is number => typeof value === "number");
   const climateIds = allActionable.filter((id) => domainOf(id) === "climate");
-  const alarm = Object.values(hass.states).find((state) => state.entity_id.startsWith("alarm_control_panel."));
   const weather = Object.values(hass.states).find((state) => state.entity_id.startsWith("weather."));
   const outside = Number(weather?.attributes.temperature ?? 24.5);
 
@@ -85,20 +86,6 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
 
   return (
     <section className="reel-home home-refactor-v4">
-      <header className="reel-topbar">
-        <div className="reel-greeting">
-          <strong>{greetingForHour(now.getHours(), copy)}</strong>
-          <span>{now.toLocaleDateString(locale(language), { weekday: "long", day: "numeric", month: "long" })}</span>
-        </div>
-        <div className="reel-clock">{now.toLocaleTimeString(locale(language), { hour: "2-digit", minute: "2-digit" })}</div>
-        <div className="reel-top-actions">
-          <span className="weather-pill"><SunIcon /><strong>{outside.toFixed(1)}°</strong><small>{copy.sunny}</small></span>
-          <span className="avatar-stack"><i>G</i><i>A</i></span>
-          <button className="security-pill" onClick={() => openHeaderAction("alarm")}><ShieldIcon /><span>{alarm && alarm.state !== "disarmed" ? copy.armed : copy.disarmed}</span></button>
-          <button className="round-top" aria-label={copy.notifications} onClick={() => openHeaderAction("notifications")}><BellIcon /></button>
-        </div>
-      </header>
-
       <div className="reel-dashboard">
         <div className="reel-room-grid">
           {rooms.map((room) => (
@@ -107,7 +94,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
               hass={hass}
               room={room}
               language={language}
-              onOpen={() => setSelectedRoom(room.area.area_id)}
+              onClimate={(entityId) => setRoomClimateEntityId(entityId)}
             />
           ))}
         </div>
@@ -155,6 +142,12 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
         </aside>
       </div>
 
+      {roomClimateEntityId && hass.states[roomClimateEntityId] && (
+        <div className="home-calendar-device-overlay" onMouseDown={(event) => { if (event.currentTarget === event.target) setRoomClimateEntityId(null); }}>
+          <DeviceControls hass={hass} entityId={roomClimateEntityId} language={language} onClose={() => setRoomClimateEntityId(null)} />
+        </div>
+      )}
+
       {selected && (
         <RoomSheet
           hass={hass}
@@ -181,7 +174,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
   );
 }
 
-function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomModel; language: Language; onOpen: () => void }) {
+function RoomCard({ hass, room, language, onClimate }: { hass: Hass; room: RoomModel; language: Language; onClimate: (entityId: string) => void }) {
   const visibleControlIds = room.controllableIds.filter((id) => domainOf(id) !== "climate");
   const editableIds = visibleControlIds.filter((id) => ["light", "cover"].includes(domainOf(id)));
   const climateId = room.controllableIds.find((id) => domainOf(id) === "climate");
@@ -199,15 +192,24 @@ function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomMode
 
   const runEntity = (entityId: string) => {
     if (editableIds.includes(entityId)) setSelectedControl(entityId);
+    if (domainOf(entityId) === "cover") return;
     void activateEntity(hass, entityId);
   };
 
   return (
     <article className="reel-room room-card-v4">
-      <button className="reel-room-head room-head-v4" onClick={onOpen}>
+      <div className="reel-room-head room-head-v4">
         <span className="room-title-v4"><i>{roomIcon(room.area.name)}</i><strong>{room.area.name}</strong></span>
-        <b>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</b>
-      </button>
+        <button
+          type="button"
+          className="room-temperature-button"
+          disabled={!climateId}
+          aria-label={climateId ? `${language === "it" ? "Apri clima" : "Open climate"} ${room.area.name}` : undefined}
+          onClick={() => { if (climateId) onClimate(climateId); }}
+        >
+          <b>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</b>
+        </button>
+      </div>
 
       <div className="room-device-section room-device-active-section">
         <span className="room-section-label">{language === "it" ? "Controlli" : "Controls"}</span>
@@ -253,8 +255,6 @@ function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomMode
           {!visiblePassiveIds.length && !climateActive && <small className="room-empty-v4">{language === "it" ? "Nessun sensore" : "No sensors"}</small>}
         </div>
       </div>
-
-      <button className="room-open-detail room-detail-v4" onClick={onOpen}>{language === "it" ? "Dettagli" : "Details"}<ChevronIcon /></button>
     </article>
   );
 }
