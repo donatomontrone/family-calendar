@@ -1,0 +1,478 @@
+/* CASA V10 — phone room-card polish + robust document scrolling.
+ * Loaded after V8/V9. Phone-only; desktop/tablet remain untouched.
+ */
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  /* -------------------------------------------------------------------- */
+  /* Scrolling: let the document own vertical scrolling on phones.         */
+  /* Avoid nested viewport scrollers and parent touch-action restrictions. */
+  /* -------------------------------------------------------------------- */
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body {
+    position: static !important;
+    overscroll-behavior-y: auto !important;
+  }
+
+  #root {
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+    touch-action: auto !important;
+    overscroll-behavior-y: auto !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 {
+    padding-bottom: max(144px, calc(118px + env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-rows: max-content !important;
+    align-content: start !important;
+    gap: 10px !important;
+  }
+
+  /* -------------------------------------------------------------------- */
+  /* Room card: compact Apple-Home-like composition instead of a mini page. */
+  /* -------------------------------------------------------------------- */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
+    display: block !important;
+    grid-template-rows: none !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 12px !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    border-top-width: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 {
+    width: 100% !important;
+    min-height: 42px !important;
+    height: auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    border-radius: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 strong {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 17px !important;
+    line-height: 1.08 !important;
+    font-weight: 690 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 23px !important;
+    line-height: 1 !important;
+    font-weight: 430 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-section {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 12px 0 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-section-label {
+    display: block !important;
+    margin: 0 0 7px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 760 !important;
+    letter-spacing: .09em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
+    width: 100% !important;
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: max-content !important;
+    gap: 7px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    padding: 7px 8px !important;
+    display: grid !important;
+    grid-template-columns: 34px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border-radius: 15px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4:only-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    border-radius: 11px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > div {
+    min-width: 0 !important;
+    display: block !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    display: block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong {
+    font-size: 12px !important;
+    line-height: 1.08 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    margin-top: 3px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  /* -------------------------------------------------------------------- */
+  /* Selected light/cover control: stable two-part header + clean range.   */
+  /* -------------------------------------------------------------------- */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 10px 0 0 !important;
+    padding: 10px 0 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 38px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto !important;
+    align-items: end !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head > div:first-child {
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 4px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head small {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 520 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head strong {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    font-weight: 670 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head strong b {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 730 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 34px !important;
+    padding: 2px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 30px) !important;
+    gap: 2px !important;
+    align-self: end !important;
+    border-radius: 11px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    margin: 5px 0 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    touch-action: pan-x !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-moz-range-track {
+    height: 5px !important;
+    border-radius: 999px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-webkit-slider-thumb {
+    width: 20px !important;
+    height: 20px !important;
+    margin-top: -7.5px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-moz-range-thumb {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* -------------------------------------------------------------------- */
+  /* Sensors/status: compact rows, never stretched to fill card height.    */
+  /* -------------------------------------------------------------------- */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-section-v4 {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 12px 0 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    align-self: auto !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    grid-template-rows: none !important;
+    grid-auto-rows: max-content !important;
+    align-content: start !important;
+    gap: 7px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 44px !important;
+    height: 44px !important;
+    max-height: 44px !important;
+    padding: 6px 8px !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border-radius: 13px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4:only-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > div {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto !important;
+    align-items: baseline !important;
+    gap: 7px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    line-height: 1.05 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong {
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    font-size: 10.5px !important;
+    font-weight: 680 !important;
+    text-align: right !important;
+  }
+
+  /* Header already opens the room detail; remove the oversized duplicate CTA. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-detail-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-open-detail {
+    display: none !important;
+  }
+
+  /* Dark card material: preserve room accent, reduce glare and blue wash. */
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
+    border-top-color: var(--room-shared-accent) !important;
+    border-right-color: rgba(255,255,255,.065) !important;
+    border-bottom-color: rgba(255,255,255,.065) !important;
+    border-left-color: rgba(255,255,255,.065) !important;
+    background: #222226 !important;
+    box-shadow: 0 5px 18px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.025) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4:not(.active) {
+    background: #2a2a2e !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4.active {
+    background: color-mix(in srgb, var(--room-shared-accent) 20%, #2d2d31) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-passive-device-v4 {
+    background: #29292d !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 strong {
+    font-size: 16px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b {
+    font-size: 21px !important;
+  }
+}
