@@ -40,9 +40,9 @@ export default function SharedHeader({
       </div>
       <div className="reel-clock">{now.toLocaleTimeString(locale(language), { hour: "2-digit", minute: "2-digit" })}</div>
       <div className="reel-top-actions">
-        <span className="weather-pill"><SunIcon /><strong>{Number.isFinite(outside) ? outside.toFixed(1) : "—"}°</strong><small>{copy.sunny}</small></span>
-        <span className="avatar-stack" aria-label={copy.family}><i>G</i><i>A</i></span>
-        <button type="button" className="security-pill" onClick={onAlarm} aria-label={armed ? copy.armed : copy.disarmed}><ShieldIcon /><span>{armed ? copy.armed : copy.disarmed}</span></button>
+        <span className="weather-pill"><SunIcon /><strong>{outside.toFixed(1)}°</strong><small>{copy.sunny}</small></span>
+        <span className="avatar-stack"><i>G</i><i>A</i></span>
+        <button type="button" className="security-pill" onClick={onAlarm}><ShieldIcon /><span>{armed ? copy.armed : copy.disarmed}</span></button>
         <button type="button" className="round-top" onClick={onNotifications} aria-label={copy.notifications}><BellIcon /></button>
         {onThemeToggle && (
           <button type="button" className="header-theme-switch" onClick={onThemeToggle} aria-label={themeLabel ?? copy.appearance}>
@@ -54,17 +54,17 @@ export default function SharedHeader({
   );
 }
 
+/* Keep these strings byte-for-byte aligned with HomeView: the shared calendar
+ * header is a second renderer of the approved CASA header, not a variation. */
 const itCopy = {
-  sunny: "Soleggiato",
+  sunny: "Sereno",
   notifications: "Notifiche",
   appearance: "Aspetto",
   armed: "Inserito",
-  disarmed: "Disattivo",
-  family: "Famiglia",
+  disarmed: "Disinserito",
   goodMorning: "Buongiorno",
   goodAfternoon: "Buon pomeriggio",
   goodEvening: "Buonasera",
-  goodNight: "Buonanotte",
 };
 
 const enCopy: typeof itCopy = {
@@ -73,40 +73,40 @@ const enCopy: typeof itCopy = {
   appearance: "Appearance",
   armed: "Armed",
   disarmed: "Disarmed",
-  family: "Family",
   goodMorning: "Good morning",
   goodAfternoon: "Good afternoon",
   goodEvening: "Good evening",
-  goodNight: "Good night",
 };
 
 function greetingForHour(hour: number, copy: typeof itCopy) {
-  if (hour < 5) return copy.goodNight;
-  if (hour < 12) return copy.goodMorning;
-  if (hour < 18) return copy.goodAfternoon;
-  return copy.goodEvening;
+  return hour < 12 ? copy.goodMorning : hour < 18 ? copy.goodAfternoon : copy.goodEvening;
 }
 
 function locale(language: Language) {
   return language === "it" ? "it-IT" : "en-GB";
 }
 
-function Svg({ children }: { children: ReactNode }) {
-  return <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{children}</svg>;
+/* These SVGs are the same definitions used by HomeView's approved CASA header. */
+function Icon({ children }: { children: ReactNode }) {
+  return <svg viewBox="0 0 24 24" aria-hidden="true">{children}</svg>;
+}
+
+function StrokeIcon({ children }: { children: ReactNode }) {
+  return <Icon><g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{children}</g></Icon>;
 }
 
 function ShieldIcon() {
-  return <Svg><><path d="M12 3.2 18.7 6v5c0 4.8-2.6 7.9-6.7 9.8C7.9 18.9 5.3 15.8 5.3 11V6Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/><path d="m9.2 12 1.7 1.7 3.9-3.9" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round"/></></Svg>;
+  return <StrokeIcon><path d="M12 3.2 18.7 6v5c0 4.8-2.6 7.9-6.7 9.8C7.9 18.9 5.3 15.8 5.3 11V6Z"/><path d="m9.2 12 1.7 1.7 3.9-3.9"/></StrokeIcon>;
 }
 
 function BellIcon() {
-  return <Svg><path d="M6.7 16.8h10.6l-1.4-2V10a3.9 3.9 0 0 0-7.8 0v4.8ZM10.2 19h3.6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></Svg>;
+  return <StrokeIcon><path d="M6.7 16.8h10.6l-1.4-2V10a3.9 3.9 0 0 0-7.8 0v4.8Z"/><path d="M10.2 19h3.6"/></StrokeIcon>;
 }
 
 function SunIcon() {
-  return <Svg><><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.45"/><path d="M12 3.3v2M12 18.7v2M3.3 12h2M18.7 12h2M5.9 5.9l1.4 1.4M16.7 16.7l1.4 1.4M18.1 5.9l-1.4 1.4M7.3 16.7l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></></Svg>;
+  return <StrokeIcon><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/></StrokeIcon>;
 }
 
 function MoonIcon() {
-  return <Svg><path d="M18.7 15.4A7.8 7.8 0 0 1 8.6 5.3a7.8 7.8 0 1 0 10.1 10.1Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></Svg>;
+  return <StrokeIcon><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5 7.5 7.5 0 1 0 19 14.5Z"/></StrokeIcon>;
 }
