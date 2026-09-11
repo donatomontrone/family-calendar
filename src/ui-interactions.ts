@@ -11,6 +11,7 @@ import calendarV13Styles from "./calendar-v13.css?inline";
 import homeV1Styles from "./home-v1.css?inline";
 import homeV2Styles from "./home-v2.css?inline";
 import homeV3Styles from "./home-v3.css?inline";
+import homeLiquidGlassStyles from "./home-liquid-glass-v5.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -30,11 +31,12 @@ type CalendarSegment = {
 type UiWindow = Window & {
   __familyCalendarUiInteractions?: boolean;
   __familyCalendarHeaderActionHandler?: EventListener;
+  __familyCalendarHomeRoomClickHandler?: EventListener;
 };
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}`;
 const CALENDAR_TONES = ["mint", "blue", "amber", "violet"];
 
 function ensureFinalStyles() {
@@ -198,6 +200,44 @@ const headerActionHandler: EventListener = (event) => {
 
 uiWindow.__familyCalendarHeaderActionHandler = headerActionHandler;
 document.addEventListener("click", headerActionHandler, true);
+
+/*
+ * CASA room cards intentionally have no general room navigation anymore.
+ * The temperature is the sole room-level affordance and opens the existing
+ * climate sheet. This capture bridge prevents the legacy RoomSheet handler on
+ * the room header from firing, while preserving every device control inside it.
+ */
+if (uiWindow.__familyCalendarHomeRoomClickHandler) {
+  document.removeEventListener("click", uiWindow.__familyCalendarHomeRoomClickHandler, true);
+}
+
+const homeRoomClickHandler: EventListener = (event) => {
+  if (!(event.target instanceof Element)) return;
+  const shell = event.target.closest<HTMLElement>(".app-shell.home-page-active");
+  if (!shell) return;
+
+  const details = event.target.closest<HTMLButtonElement>(".room-detail-v4, .room-open-detail");
+  if (details) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    return;
+  }
+
+  const roomHeader = event.target.closest<HTMLButtonElement>(".room-head-v4");
+  if (!roomHeader) return;
+
+  const temperature = roomHeader.querySelector<HTMLElement>(":scope > b");
+  const clickedTemperature = Boolean(temperature && temperature.contains(event.target));
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+
+  if (!clickedTemperature) return;
+  shell.querySelector<HTMLButtonElement>(".thermostat-card-v4")?.click();
+};
+
+uiWindow.__familyCalendarHomeRoomClickHandler = homeRoomClickHandler;
+document.addEventListener("click", homeRoomClickHandler, true);
 
 if (!uiWindow.__familyCalendarUiInteractions) {
   uiWindow.__familyCalendarUiInteractions = true;
