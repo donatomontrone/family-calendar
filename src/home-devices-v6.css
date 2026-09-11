@@ -1,0 +1,286 @@
+/* CASA V6 — desktop/tablet accessory presentation.
+ *
+ * The room panel already follows the approved CALENDARIO visual language. This
+ * layer fixes the part that was still too dense: accessories must be readable
+ * at a glance, with enough width for the name/state and a clear separation
+ * between active controls and passive sensors.
+ */
+
+@media (min-width: 701px) {
+  /* The previous layout reserved five grid rows even though the room content
+   * has only four visual blocks. That wasted vertical space and squeezed the
+   * actual accessory grid. Give devices the dominant share of the panel. */
+  .app-shell.home-page-active .home-v5-room-content {
+    grid-template-rows: auto minmax(0, 1fr) auto minmax(92px, .38fr) !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-content > .home-v5-section-title:first-child {
+    grid-row: 1 !important;
+  }
+
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid {
+    grid-row: 2 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 88px !important;
+    gap: 9px !important;
+    padding: 1px !important;
+    align-content: start !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+    overscroll-behavior: contain !important;
+  }
+
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Accessory tiles use a horizontal Home-app-like information hierarchy:
+   * symbol -> name/state -> secondary actions. This is considerably easier to
+   * scan than the former compressed square layout. */
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile {
+    min-height: 88px !important;
+    height: 88px !important;
+    border-radius: 18px !important;
+    background: rgba(244,244,247,.82) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 4px 14px rgba(0,0,0,.026) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main {
+    min-height: 88px !important;
+    height: 88px !important;
+    padding: 12px 49px 12px 60px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 4px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-icon {
+    top: 50% !important;
+    left: 13px !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 12px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-icon svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main strong {
+    display: block !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #1d1d1f !important;
+    font-size: 14px !important;
+    line-height: 1.12 !important;
+    font-weight: 680 !important;
+    letter-spacing: -.018em !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main small {
+    display: block !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #717176 !important;
+    font-size: 11.5px !important;
+    line-height: 1.15 !important;
+    font-weight: 550 !important;
+    letter-spacing: -.004em !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .favorite-button,
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .control-button {
+    right: 10px !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    border-radius: 9px !important;
+    background: rgba(118,118,128,.075) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .favorite-button {
+    top: 9px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .control-button {
+    bottom: 9px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .favorite-button svg,
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .control-button svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.86), 0 7px 18px rgba(0,0,0,.04) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile.selected {
+    border-color: rgba(0,122,255,.30) !important;
+    box-shadow: inset 0 0 0 1px rgba(0,122,255,.09), inset 0 1px 0 rgba(255,255,255,.84), 0 5px 16px rgba(0,0,0,.035) !important;
+  }
+
+  /* Device controls are a compact inspector below the accessory grid. They no
+   * longer compete visually with the device cards for the primary reading area. */
+  .app-shell.home-page-active .home-v5-inline-control.device-controls {
+    grid-row: 3 !important;
+    min-height: 82px !important;
+    padding: 11px 13px !important;
+    grid-template-columns: minmax(170px, .62fr) repeat(2, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    gap: 10px 16px !important;
+    border-radius: 18px !important;
+    background: rgba(118,118,128,.045) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control .device-controls-heading {
+    grid-row: auto !important;
+    align-items: center !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control .device-controls-heading strong {
+    font-size: 13.5px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control .control-meta span,
+  .app-shell.home-page-active .home-v5-inline-control .control-meta strong {
+    font-size: 11px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control input[type="range"] {
+    height: 24px !important;
+  }
+
+  /* Passive sensors remain available, but visually quieter than controls. */
+  .app-shell.home-page-active .home-v5-passive-section {
+    grid-row: 4 !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    gap: 7px !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.home-page-active .home-v5-passive-grid {
+    min-height: 0 !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(54px, 1fr) !important;
+    align-content: stretch !important;
+    gap: 7px !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.home-page-active .home-v5-passive-item {
+    min-height: 54px !important;
+    padding: 8px 9px 8px 43px !important;
+    border-radius: 14px !important;
+    background: rgba(118,118,128,.045) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-passive-item .entity-icon {
+    top: 50% !important;
+    left: 9px !important;
+    width: 28px !important;
+    height: 28px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-passive-item strong {
+    font-size: 10.8px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-passive-item small {
+    font-size: 9.8px !important;
+  }
+
+  .app-shell.night.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile {
+    background: rgba(58,58,60,.90) !important;
+    border-color: rgba(255,255,255,.065) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 5px 16px rgba(0,0,0,.14) !important;
+  }
+
+  .app-shell.night.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main strong {
+    color: #f5f5f7 !important;
+  }
+
+  .app-shell.night.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main small {
+    color: #b6b6bb !important;
+  }
+
+  .app-shell.night.home-page-active .home-v5-inline-control.device-controls,
+  .app-shell.night.home-page-active .home-v5-passive-item {
+    border-color: rgba(255,255,255,.055) !important;
+    background: rgba(255,255,255,.045) !important;
+  }
+}
+
+/* Wide desktop has enough physical room for three columns without sacrificing
+ * readability. On normal desktop/tablet we intentionally stay at two columns. */
+@media (min-width: 1560px) {
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Tablet: keep the same visual language but simplify the control inspector so
+ * it does not squeeze the accessory names. */
+@media (min-width: 701px) and (max-width: 1080px) {
+  .app-shell.home-page-active .home-v5-room-content {
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 82px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile,
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main {
+    min-height: 82px !important;
+    height: 82px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main {
+    padding-left: 56px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-icon {
+    left: 11px !important;
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main strong {
+    font-size: 13px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main small {
+    font-size: 10.5px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control.device-controls {
+    min-height: 76px !important;
+    grid-template-columns: minmax(140px, .55fr) minmax(0, 1fr) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control .control-row:nth-of-type(n+3) {
+    grid-column: 2 !important;
+  }
+
+  .app-shell.home-page-active .home-v5-passive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
