@@ -12,6 +12,7 @@ import homeV1Styles from "./home-v1.css?inline";
 import homeV2Styles from "./home-v2.css?inline";
 import homeV3Styles from "./home-v3.css?inline";
 import homeLiquidGlassStyles from "./home-liquid-glass-v5.css?inline";
+import homeRoomRefinementStyles from "./home-room-refinement-v6.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -32,11 +33,13 @@ type UiWindow = Window & {
   __familyCalendarUiInteractions?: boolean;
   __familyCalendarHeaderActionHandler?: EventListener;
   __familyCalendarHomeRoomClickHandler?: EventListener;
+  __familyCalendarHomeClimateRoomIndex?: number | null;
+  __familyCalendarHomeClimateRoomName?: string | null;
 };
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}\n${homeRoomRefinementStyles}`;
 const CALENDAR_TONES = ["mint", "blue", "amber", "violet"];
 
 function ensureFinalStyles() {
@@ -178,6 +181,52 @@ function syncCalendarEventBridges() {
   });
 }
 
+function syncHomeRoomPresentation() {
+  const shell = document.querySelector<HTMLElement>(".app-shell.home-page-active");
+  if (!shell) return;
+
+  shell.querySelectorAll<HTMLButtonElement>(".room-device-button-v4.domain-climate").forEach((button) => {
+    button.hidden = true;
+    button.tabIndex = -1;
+    button.setAttribute("aria-hidden", "true");
+  });
+
+  shell.querySelectorAll<HTMLElement>(".room-passive-device-v4").forEach((item) => {
+    const status = item.querySelector<HTMLElement>("small")?.textContent?.trim() ?? "";
+    const isTemperature = /^-?\d+(?:[.,]\d+)?\s*°(?:C|F)?$/i.test(status);
+    item.classList.toggle("is-room-temperature-sensor", isTemperature);
+    if (isTemperature) item.setAttribute("aria-hidden", "true");
+    else item.removeAttribute("aria-hidden");
+  });
+}
+
+function syncHomeRoomClimateFilter() {
+  const modal = document.querySelector<HTMLElement>(".app-shell.home-page-active .climate-modal.feature-modal");
+  if (!modal) return;
+
+  const grid = modal.querySelector<HTMLElement>(".climate-grid");
+  if (!grid) return;
+
+  const index = uiWindow.__familyCalendarHomeClimateRoomIndex;
+  const roomName = uiWindow.__familyCalendarHomeClimateRoomName ?? "";
+  const children = Array.from(grid.children).filter((child): child is HTMLElement => child instanceof HTMLElement);
+
+  children.forEach((child) => child.removeAttribute("data-room-climate-selected"));
+
+  if (typeof index !== "number" || index < 0 || index >= children.length) {
+    grid.classList.remove("room-climate-filtered");
+    modal.classList.remove("room-climate-modal");
+    modal.querySelector<HTMLElement>(".modal-head h2")?.removeAttribute("data-room-name");
+    return;
+  }
+
+  grid.classList.add("room-climate-filtered");
+  modal.classList.add("room-climate-modal");
+  children[index].setAttribute("data-room-climate-selected", "true");
+  const title = modal.querySelector<HTMLElement>(".modal-head h2");
+  if (title) title.setAttribute("data-room-name", roomName);
+}
+
 /*
  * Header actions are deliberately installed outside the one-time interaction
  * guard. Vite HMR keeps window state alive, so an older guarded listener could
@@ -203,9 +252,9 @@ document.addEventListener("click", headerActionHandler, true);
 
 /*
  * CASA room cards intentionally have no general room navigation anymore.
- * The temperature is the sole room-level affordance and opens the existing
- * climate sheet. This capture bridge prevents the legacy RoomSheet handler on
- * the room header from firing, while preserving every device control inside it.
+ * The temperature is the sole room-level climate affordance. The legacy room
+ * header still exists in HomeView, so this capture bridge suppresses its old
+ * RoomSheet click while scoping the existing climate overlay to that room.
  */
 if (uiWindow.__familyCalendarHomeRoomClickHandler) {
   document.removeEventListener("click", uiWindow.__familyCalendarHomeRoomClickHandler, true);
@@ -215,6 +264,14 @@ const homeRoomClickHandler: EventListener = (event) => {
   if (!(event.target instanceof Element)) return;
   const shell = event.target.closest<HTMLElement>(".app-shell.home-page-active");
   if (!shell) return;
+
+  // Explicit global climate entries continue to open the all-room view.
+  if (event.isTrusted && event.target.closest(".thermostat-card-v4, .reel-tools-grid > button:nth-child(4)")) {
+    uiWindow.__familyCalendarHomeClimateRoomIndex = null;
+    uiWindow.__familyCalendarHomeClimateRoomName = null;
+    requestAnimationFrame(syncHomeRoomClimateFilter);
+    return;
+  }
 
   const details = event.target.closest<HTMLButtonElement>(".room-detail-v4, .room-open-detail");
   if (details) {
@@ -233,7 +290,16 @@ const homeRoomClickHandler: EventListener = (event) => {
   event.stopImmediatePropagation();
 
   if (!clickedTemperature) return;
+
+  const roomCard = roomHeader.closest<HTMLElement>(".reel-room");
+  const roomCards = Array.from(shell.querySelectorAll<HTMLElement>(".reel-room-grid > .reel-room"));
+  const roomIndex = roomCard ? roomCards.indexOf(roomCard) : -1;
+  if (roomIndex < 0) return;
+
+  uiWindow.__familyCalendarHomeClimateRoomIndex = roomIndex;
+  uiWindow.__familyCalendarHomeClimateRoomName = roomHeader.querySelector<HTMLElement>(".room-title-v4 strong")?.textContent?.trim() ?? "";
   shell.querySelector<HTMLButtonElement>(".thermostat-card-v4")?.click();
+  requestAnimationFrame(() => requestAnimationFrame(syncHomeRoomClimateFilter));
 };
 
 uiWindow.__familyCalendarHomeRoomClickHandler = homeRoomClickHandler;
@@ -346,6 +412,8 @@ if (!uiWindow.__familyCalendarUiInteractions) {
       ensureFinalStyles();
       syncSegmentWidth();
       syncCalendarEventBridges();
+      syncHomeRoomPresentation();
+      syncHomeRoomClimateFilter();
     });
   };
 
@@ -379,5 +447,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   // Even on HMR/module re-evaluation, refresh the final style layer and measured
   // calendar bridges immediately.
   ensureFinalStyles();
+  syncHomeRoomPresentation();
+  syncHomeRoomClimateFilter();
   requestAnimationFrame(syncCalendarEventBridges);
 }

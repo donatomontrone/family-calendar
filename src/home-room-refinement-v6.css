@@ -1,0 +1,217 @@
+/*
+ * CASA V6 — focused room-card refinements for desktop/tablet.
+ * Keeps the approved Liquid Glass direction while tightening climate,
+ * sensor/status presentation and continuous controls.
+ */
+
+@media (min-width: 701px) {
+  /* Room temperature is the only room-level climate affordance: visually
+   * lightweight, without a pill/container around the value. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b {
+    min-width: auto !important;
+    padding: 3px 0 3px 10px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    color: var(--lg-label) !important;
+    cursor: pointer !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b:hover {
+    border: 0 !important;
+    background: transparent !important;
+    color: var(--lg-blue) !important;
+    box-shadow: none !important;
+  }
+
+  /* Climate already lives in the room temperature affordance, therefore it
+   * must not compete with lights/covers/switches in the Controls section. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-climate {
+    display: none !important;
+  }
+
+  /* Give Sensors & status the unused lower-card space. Values are aligned to
+   * the right like compact Apple status rows rather than tiny technical chips. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-section-v4 {
+    min-height: 0 !important;
+    align-self: stretch !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    align-content: stretch !important;
+    overflow: hidden !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(38px, 1fr)) !important;
+    gap: 7px !important;
+    align-content: stretch !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4:nth-child(n+3) {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 38px !important;
+    padding: 6px 8px !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 7px !important;
+    border: 1px solid var(--lg-line-soft) !important;
+    border-radius: 13px !important;
+    background: rgba(255,255,255,.30) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.38) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-passive-device-v4,
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-passive-device-v4:nth-child(n+3) {
+    background: rgba(118,118,128,.10) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span {
+    width: 28px !important;
+    height: 28px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--lg-line-soft) !important;
+    border-radius: 9px !important;
+    background: var(--lg-control) !important;
+    color: var(--lg-secondary) !important;
+    box-shadow: inset 0 1px 0 var(--lg-glint) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > div {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong {
+    color: var(--lg-secondary) !important;
+    font-size: 9px !important;
+    font-weight: 590 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    flex: 0 0 auto !important;
+    max-width: 58% !important;
+    color: var(--lg-label) !important;
+    text-align: right !important;
+    font-size: 10.5px !important;
+    font-weight: 680 !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  /* The room temperature is already represented top-right and should not be
+   * repeated in Sensors & status. ui-interactions marks that rendered row. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4.is-room-temperature-sensor {
+    display: none !important;
+  }
+
+  /* Light brightness, white-temperature and cover-position controls reserve the
+   * exact same geometry. Switching device therefore never changes range size. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 76px !important;
+    min-height: 76px !important;
+    max-height: 76px !important;
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-rows: 29px 22px !important;
+    align-content: center !important;
+    gap: 7px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 29px !important;
+    min-height: 29px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 {
+    width: 61px !important;
+    min-width: 61px !important;
+    max-width: 61px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"] {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 22px !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input.white-temperature-range::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-moz-range-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input.white-temperature-range::-moz-range-track {
+    height: 5px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-webkit-slider-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    margin-top: -7px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-moz-range-thumb {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* A temperature click opens the existing climate UI but scoped to the room
+   * that owns the clicked card. Non-selected room climate cards stay out of the
+   * layout entirely, so the popup reads as a true per-room control. */
+  .app-shell.home-page-active .climate-modal.room-climate-modal {
+    width: min(520px, calc(100vw - 40px)) !important;
+  }
+
+  .app-shell.home-page-active .climate-modal .climate-grid.room-climate-filtered {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .app-shell.home-page-active .climate-modal .climate-grid.room-climate-filtered > :not([data-room-climate-selected="true"]) {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .climate-modal .climate-grid.room-climate-filtered > [data-room-climate-selected="true"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head h2::after {
+    content: " · " attr(data-room-name);
+    color: var(--lg-secondary) !important;
+    font-weight: 520 !important;
+  }
+}
