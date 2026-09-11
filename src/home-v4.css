@@ -1,0 +1,1301 @@
+/*
+ * Home V4 — Calendar-derived visual language.
+ *
+ * The CALENDARIO page is the visual source of truth for surfaces, typography,
+ * spacing and device states. CASA keeps its own information architecture, but
+ * uses the same Apple-like material system. The approved CASA header remains
+ * the source of truth for the shared header and is mirrored onto CALENDARIO.
+ */
+
+/* ========================================================================== */
+/* SHARED HEADER — CASA is the source of truth, CALENDARIO mirrors it exactly. */
+/* ========================================================================== */
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 94px !important;
+  height: 94px !important;
+  margin: 0 !important;
+  padding: 4px 5px 16px !important;
+  display: grid !important;
+  grid-template-columns: minmax(190px, 1fr) auto minmax(330px, 1.35fr) !important;
+  align-items: center !important;
+  gap: 24px !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-greeting {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 3px !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-greeting strong {
+  margin: 0 !important;
+  font-size: 20px !important;
+  line-height: 1.08 !important;
+  font-weight: 660 !important;
+  letter-spacing: -.025em !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-greeting span {
+  margin: 0 !important;
+  color: var(--fc-secondary, #6e6e73) !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  font-weight: 500 !important;
+  text-transform: capitalize !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-clock {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: clamp(46px, 4vw, 68px) !important;
+  line-height: .96 !important;
+  font-weight: 440 !important;
+  letter-spacing: -.055em !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+}
+
+/* CASA reserves one 40px slot + 9px gap for its theme control. CALENDARIO's
+ * theme control lives inside the same header, but is positioned into that exact
+ * reserved slot so every preceding item has the same pixel geometry. */
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-top-actions {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 49px 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 9px !important;
+  overflow: visible !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill,
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .security-pill,
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .round-top,
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+  height: 40px !important;
+  min-height: 40px !important;
+  border: 1px solid rgba(255,255,255,.46) !important;
+  border-radius: 20px !important;
+  background: var(--fc-material, rgba(248,248,250,.78)) !important;
+  color: inherit !important;
+  box-shadow: var(--fc-control-shadow, inset 0 1px 0 rgba(255,255,255,.68), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04)) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill {
+  padding: 0 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 11.5px !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill small {
+  color: var(--fc-secondary, #6e6e73) !important;
+  font-size: 10.5px !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .security-pill {
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  font-size: 11.5px !important;
+  font-weight: 620 !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .round-top {
+  position: relative !important;
+  inset: auto !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+  position: absolute !important;
+  z-index: 5 !important;
+  top: 21px !important;
+  right: 5px !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  color: var(--fc-secondary, #6e6e73) !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .avatar-stack {
+  height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .avatar-stack i {
+  width: 34px !important;
+  height: 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 2px solid rgba(255,255,255,.82) !important;
+  border-radius: 50% !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+}
+
+.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .avatar-stack i + i {
+  margin-left: -7px !important;
+}
+
+.app-shell.night.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill,
+.app-shell.night.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .security-pill,
+.app-shell.night.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .round-top,
+.app-shell.night.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+  border-color: rgba(255,255,255,.05) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 4px 14px rgba(0,0,0,.16) !important;
+}
+
+.app-shell.night.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .avatar-stack i {
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+/* iPhone header mirrors the already-approved CASA three-row composition. */
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract {
+    --shared-header-row-1: 38px;
+    --shared-header-row-2: 42px;
+    --shared-header-row-3: 42px;
+    --shared-header-row-gap: 8px;
+    --shared-header-pad-top: 7px;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: var(--shared-header-pad-top) 4px 11px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting greeting avatars"
+      "clock weather weather"
+      "alarm notifications theme" !important;
+    grid-template-columns: minmax(0, 1fr) 42px 42px !important;
+    grid-template-rows: var(--shared-header-row-1) var(--shared-header-row-2) var(--shared-header-row-3) !important;
+    align-items: center !important;
+    column-gap: 8px !important;
+    row-gap: var(--shared-header-row-gap) !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    align-self: center !important;
+    gap: 3px !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-greeting strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(18px, 5.5vw, 22px) !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-greeting span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-clock {
+    grid-area: clock !important;
+    justify-self: start !important;
+    align-self: center !important;
+    font-size: clamp(36px, 11vw, 46px) !important;
+    line-height: .92 !important;
+    font-weight: 445 !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-top-actions {
+    display: contents !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .avatar-stack {
+    grid-area: avatars !important;
+    justify-self: end !important;
+    align-self: center !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .avatar-stack i {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill {
+    grid-area: weather !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+    min-width: 94px !important;
+    max-width: 112px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 14px !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill small {
+    display: none !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill strong {
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .security-pill {
+    grid-area: alarm !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    border-radius: 14px !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .security-pill span {
+    display: inline !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    font-weight: 670 !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .round-top,
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+    position: relative !important;
+    inset: auto !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    align-self: center !important;
+    border-radius: 14px !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .round-top {
+    grid-area: notifications !important;
+    justify-self: center !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+    grid-area: theme !important;
+    justify-self: end !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .security-pill svg,
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .round-top svg,
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .header-theme-switch svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract {
+    --shared-header-row-1: 33px;
+    --shared-header-row-2: 36px;
+    --shared-header-row-3: 40px;
+    --shared-header-row-gap: 7px;
+    grid-template-columns: minmax(0, 1fr) 40px 40px !important;
+    column-gap: 6px !important;
+  }
+
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-greeting strong { font-size: 17px !important; }
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .reel-clock { font-size: 34px !important; }
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .weather-pill {
+    min-width: 82px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding-inline: 8px !important;
+  }
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .avatar-stack i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .security-pill,
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .round-top,
+  .app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+}
+
+/* ========================================================================== */
+/* CASA — desktop/tablet visual system derived from CALENDARIO.                */
+/* ========================================================================== */
+
+@media (min-width: 701px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 {
+    --home-surface: rgba(255,255,255,.82);
+    --home-surface-strong: rgba(255,255,255,.94);
+    --home-line: rgba(60,60,67,.10);
+    --home-line-soft: rgba(60,60,67,.07);
+    --home-secondary: #86868b;
+    --home-tertiary: #aeaeb2;
+    --home-fill: rgba(118,118,128,.08);
+    --home-blue: #007aff;
+    --home-green: #34c759;
+    --home-orange: #ff9f0a;
+    --home-red: #ff3b30;
+    --home-shadow: 0 10px 32px rgba(0,0,0,.045), inset 0 1px 0 rgba(255,255,255,.72);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    text-rendering: optimizeLegibility !important;
+  }
+
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 {
+    --home-surface: rgba(36,36,38,.86);
+    --home-surface-strong: rgba(44,44,46,.94);
+    --home-line: rgba(255,255,255,.07);
+    --home-line-soft: rgba(255,255,255,.045);
+    --home-secondary: #aeaeb2;
+    --home-tertiary: #8e8e93;
+    --home-fill: rgba(118,118,128,.16);
+    --home-shadow: 0 12px 34px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.035);
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    grid-template-columns: minmax(0, 1fr) clamp(278px, 22vw, 336px) !important;
+    gap: clamp(12px, 1vw, 16px) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    gap: clamp(10px, .8vw, 14px) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side-card,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button {
+    border: 1px solid var(--home-line) !important;
+    background: var(--home-surface) !important;
+    box-shadow: var(--home-shadow) !important;
+    backdrop-filter: blur(24px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(135%) !important;
+  }
+
+  /* Room cards use the exact same restrained surface language as Calendar. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4 {
+    position: relative !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 13px 14px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+    border-radius: 24px !important;
+    color: var(--fc-label, #1d1d1f) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4::before,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    text-align: left !important;
+    cursor: pointer !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 11px !important;
+    background: rgba(0,122,255,.10) !important;
+    color: #007aff !important;
+    font-style: normal !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 strong {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 15px !important;
+    line-height: 1.1 !important;
+    font-weight: 650 !important;
+    letter-spacing: -.018em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b {
+    flex: 0 0 auto !important;
+    color: var(--fc-label, #1d1d1f) !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+    letter-spacing: -.03em !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-section {
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-section-label {
+    display: block !important;
+    margin: 0 0 5px !important;
+    color: #9a9aa0 !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    font-weight: 750 !important;
+    letter-spacing: .105em !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Controllable accessories intentionally mimic CALENDARIO entity tiles. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    min-width: 0 !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    padding: 6px 7px !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--home-line-soft) !important;
+    border-radius: 14px !important;
+    background: rgba(118,118,128,.055) !important;
+    color: var(--fc-label, #1d1d1f) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.46) !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    transition: transform .14s ease, border-color .18s ease, background .18s ease !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 9px !important;
+    background: rgba(118,118,128,.12) !important;
+    color: #636366 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > div {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong {
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+    font-weight: 620 !important;
+    letter-spacing: -.012em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    color: var(--home-secondary) !important;
+    font-size: 8.5px !important;
+    line-height: 1.05 !important;
+    font-weight: 520 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4:active {
+    transform: scale(.975) !important;
+  }
+
+  .app-shell.day.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active:not(.domain-light):not(.domain-climate) {
+    border-color: #abd1f8 !important;
+    background: #c9e3ff !important;
+  }
+
+  .app-shell.day.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active:not(.domain-light):not(.domain-climate) > span {
+    background: #007aff !important;
+    color: #fff !important;
+  }
+
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active:not(.domain-light):not(.domain-climate) {
+    border-color: rgba(255,255,255,.06) !important;
+    background: #3f3f41 !important;
+  }
+
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active:not(.domain-light):not(.domain-climate) > span {
+    background: #555558 !important;
+    color: #f5f5f7 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light.active {
+    border-color: color-mix(in srgb, var(--room-device-accent, #e8eef7) 44%, #b8c1cc) !important;
+    background: color-mix(in srgb, var(--room-device-accent, #e8eef7) 35%, var(--home-surface-strong)) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light.active > span {
+    background: color-mix(in srgb, var(--room-device-accent, #e8eef7) 74%, #7b838d) !important;
+    color: #fff !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-climate.active {
+    border-color: rgba(255,159,10,.22) !important;
+    background: rgba(255,159,10,.13) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-climate.active > span {
+    background: #ff9f0a !important;
+    color: #fff !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.selected {
+    box-shadow: 0 0 0 2px rgba(0,122,255,.16), inset 0 1px 0 rgba(255,255,255,.46) !important;
+  }
+
+  /* Editable light/cover value: a quiet, integrated control rather than a
+   * decorative status bar. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 7px 9px 8px !important;
+    display: grid !important;
+    gap: 6px !important;
+    border: 1px solid var(--home-line-soft) !important;
+    border-radius: 14px !important;
+    background: rgba(118,118,128,.055) !important;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.018) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head > div:first-child {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head > div:first-child > small {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head > div:first-child > strong {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+    color: var(--home-secondary) !important;
+    font-size: 9.5px !important;
+    font-weight: 590 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head b {
+    color: var(--fc-label, #1d1d1f) !important;
+    font-size: 10.5px !important;
+    font-weight: 680 !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 {
+    flex: 0 0 auto !important;
+    padding: 2px !important;
+    display: flex !important;
+    gap: 2px !important;
+    border-radius: 9px !important;
+    background: rgba(118,118,128,.10) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button {
+    width: 24px !important;
+    height: 22px !important;
+    min-width: 24px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: transparent !important;
+    color: var(--home-secondary) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button.active {
+    background: var(--home-surface-strong) !important;
+    color: #007aff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 > input[type="range"] {
+    width: 100% !important;
+    height: 18px !important;
+    margin: 0 !important;
+    accent-color: #007aff !important;
+    cursor: pointer !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 > input.white-temperature-range {
+    accent-color: #8aaed4 !important;
+  }
+
+  /* Passive entities are information, not buttons. They intentionally lose the
+   * boxed-device look and read like Calendar secondary metadata. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-section-v4 {
+    min-height: 0 !important;
+    margin-top: auto !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 4px 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 {
+    min-width: 0 !important;
+    height: 28px !important;
+    padding: 2px 0 !important;
+    display: grid !important;
+    grid-template-columns: 22px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 6px !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span {
+    width: 22px !important;
+    height: 22px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 7px !important;
+    background: rgba(118,118,128,.09) !important;
+    color: var(--home-secondary) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > div {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong {
+    color: var(--home-secondary) !important;
+    font-size: 9px !important;
+    font-weight: 570 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    color: var(--fc-label, #1d1d1f) !important;
+    font-size: 9px !important;
+    font-weight: 660 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4:nth-child(n + 5) {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-empty-v4 {
+    grid-column: 1 / -1 !important;
+    color: var(--home-tertiary) !important;
+    font-size: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-detail-v4 {
+    align-self: flex-end !important;
+    min-height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #007aff !important;
+    font-size: 9.5px !important;
+    font-weight: 620 !important;
+    cursor: pointer !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-detail-v4 svg {
+    width: 11px !important;
+    height: 11px !important;
+  }
+
+  /* ------------------------------------------------------------------------ */
+  /* Right rail — same card rhythm and hierarchy used by CALENDARIO.           */
+  /* ------------------------------------------------------------------------ */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    grid-template-rows: auto auto minmax(138px, 1.12fr) auto minmax(126px, .95fr) !important;
+    gap: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side-card {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    color: var(--fc-label, #1d1d1f) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .home-message-card {
+    padding: 12px 13px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-kicker,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-head > span,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .side-heading > span {
+    color: #9a9aa0 !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    font-weight: 750 !important;
+    letter-spacing: .105em !important;
+    text-transform: uppercase !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .house-message {
+    margin-top: 7px !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .house-message > svg {
+    width: 28px !important;
+    height: 28px !important;
+    padding: 6px !important;
+    border-radius: 9px !important;
+    background: rgba(52,199,89,.12) !important;
+    color: #34c759 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .house-message strong {
+    font-size: 12px !important;
+    font-weight: 650 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .house-message span {
+    color: var(--home-secondary) !important;
+    font-size: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .alarm-row {
+    min-height: 48px !important;
+    padding: 7px 10px !important;
+    display: grid !important;
+    grid-template-columns: 30px minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-align: left !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .alarm-row .side-icon {
+    width: 30px !important;
+    height: 30px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 9px !important;
+    background: rgba(52,199,89,.12) !important;
+    color: #34c759 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .alarm-row strong {
+    font-size: 11px !important;
+    font-weight: 640 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .alarm-row small {
+    display: block !important;
+    margin-top: 2px !important;
+    color: var(--home-secondary) !important;
+    font-size: 8.5px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .alarm-row > b {
+    color: #007aff !important;
+    font-size: 9px !important;
+    font-weight: 640 !important;
+  }
+
+  /* Thermostat: one clear primary value, three quiet secondary facts. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-card-v4 {
+    min-height: 0 !important;
+    padding: 12px 13px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    text-align: left !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-head {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-head > span {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-head svg {
+    width: 13px !important;
+    height: 13px !important;
+    color: #ff9f0a !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-head > b {
+    color: #007aff !important;
+    font-size: 9px !important;
+    font-weight: 640 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-body {
+    min-height: 0 !important;
+    flex: 1 !important;
+    display: grid !important;
+    grid-template-columns: minmax(92px, .85fr) minmax(0, 1.15fr) !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-ring {
+    --ring-line: rgba(255,159,10,.22);
+    position: relative !important;
+    width: 92px !important;
+    height: 92px !important;
+    min-width: 92px !important;
+    justify-self: center !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+    background: conic-gradient(#ff9f0a var(--thermostat-progress), var(--ring-line) 0) !important;
+    box-shadow: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-ring::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 6px !important;
+    border-radius: 50% !important;
+    background: var(--home-surface-strong) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-ring > div {
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 2px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-ring strong {
+    font-size: 23px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+    letter-spacing: -.04em !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-ring span {
+    color: var(--home-secondary) !important;
+    font-size: 8px !important;
+    font-weight: 560 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-stats {
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 5px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-stats > span {
+    min-width: 0 !important;
+    padding: 5px 7px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    border-radius: 9px !important;
+    background: var(--home-fill) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-stats small {
+    color: var(--home-secondary) !important;
+    font-size: 8.5px !important;
+    font-weight: 540 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-v4-stats strong {
+    color: var(--fc-label, #1d1d1f) !important;
+    font-size: 9.5px !important;
+    font-weight: 650 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .waste-card {
+    padding: 10px 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .waste-value {
+    margin-top: 6px !important;
+    display: grid !important;
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .waste-value .side-icon {
+    width: 30px !important;
+    height: 30px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 9px !important;
+    background: rgba(52,199,89,.11) !important;
+    color: #34c759 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .waste-value strong {
+    font-size: 10.5px !important;
+    font-weight: 640 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .waste-value small {
+    display: block !important;
+    margin-top: 2px !important;
+    color: var(--home-secondary) !important;
+    font-size: 8.5px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 7px 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+    border-radius: 15px !important;
+    color: var(--home-secondary) !important;
+    cursor: pointer !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button > span:first-child,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button > svg {
+    color: #007aff !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid small,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid span:last-child {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: var(--fc-label, #1d1d1f) !important;
+    font-size: 8.5px !important;
+    font-weight: 590 !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4:hover,
+    .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button:hover,
+    .app-shell.home-page-active .reel-home.home-refactor-v4 .alarm-row:hover,
+    .app-shell.home-page-active .reel-home.home-refactor-v4 .thermostat-card-v4:hover {
+      border-color: rgba(0,122,255,.16) !important;
+      transform: translateY(-1px) !important;
+    }
+  }
+}
+
+/* Wide desktop: seven rooms fit naturally in the approved fixed viewport. */
+@media (min-width: 1180px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Tablet / compact desktop: preserve the fixed page while keeping room cards
+ * readable. Controls remain available; dense secondary facts are reduced first. */
+@media (min-width: 701px) and (max-width: 1179px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    grid-template-columns: minmax(0, 1fr) 260px !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4 {
+    padding: 9px 10px !important;
+    gap: 5px !important;
+    border-radius: 19px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    border-radius: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 strong {
+    font-size: 13px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b {
+    font-size: 17px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    height: 40px !important;
+    min-height: 40px !important;
+    grid-template-columns: 24px minmax(0,1fr) !important;
+    padding: 4px 5px !important;
+    border-radius: 11px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    border-radius: 7px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong { font-size: 9px !important; }
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small { font-size: 7.5px !important; }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    padding: 4px 7px 5px !important;
+    gap: 3px !important;
+    border-radius: 11px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 {
+    height: 23px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4:nth-child(n + 3) {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-detail-v4 {
+    min-height: 16px !important;
+    font-size: 8.5px !important;
+  }
+}
+
+/* Landscape tablets have less vertical room; use two rows rather than crushing
+ * seven room cards into four unreadable rows. */
+@media (min-width: 701px) and (max-width: 1179px) and (max-height: 850px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    grid-template-columns: minmax(0, 1fr) 248px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-section-v4 {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    margin-top: auto !important;
+  }
+}
+
+/* Dark surfaces deliberately match the CALENDARIO page rather than introducing
+ * a second Home-only palette. */
+@media (min-width: 701px) {
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .reel-room,
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .reel-side-card,
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button {
+    color: #f5f5f7 !important;
+  }
+
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i {
+    background: rgba(10,132,255,.16) !important;
+    color: #0a84ff !important;
+  }
+
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4,
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    background: rgba(118,118,128,.12) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+  }
+
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span,
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span {
+    background: rgba(118,118,128,.18) !important;
+    color: #aeaeb2 !important;
+  }
+}
