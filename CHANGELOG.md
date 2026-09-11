@@ -4,6 +4,33 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [1.0.4] - 2026-09-11
+
+HOME room-card refinement and frontend delivery fix.
+
+### Added
+
+- compact per-room climate status in the lower status area when climate is enabled, including the configured target temperature or target range;
+- stable per-room accent colours for HOME room cards, limited to the upper portion of each room card;
+- shared room accent styling for active controls so an enabled device uses the same colour family as its containing room.
+
+### Changed
+
+- removed climate entities from the room Controls grid and kept room temperature as the dedicated room-level climate affordance;
+- removed duplicate room-temperature sensor rows from Sensors & status;
+- expanded Sensors & status to use the available lower-card width more effectively;
+- normalized brightness, white-temperature and cover-position control geometry so switching controls does not resize the slider area;
+- Home Assistant frontend builds are now committed to `custom_components/family_calendar/frontend/family-calendar-panel.js` on `master` instead of being discarded after CI.
+
+### Fixed
+
+- fixed the distribution path that previously allowed source changes to pass CI without updating the JavaScript bundle actually served by Home Assistant;
+- release validation now rebuilds the frontend and refuses to publish when the committed Home Assistant bundle is stale.
+
+### Notes
+
+This release contains the compiled Home Assistant frontend bundle. HACS installations updating to 1.0.4 therefore receive the HOME UI changes instead of remaining on the older 1.0.3 runtime bundle.
+
 ## [1.0.3] - 2026-09-09
 
 Third iPhone polish patch for the stable Calendar page.
