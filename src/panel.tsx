@@ -5,6 +5,7 @@ import type { Hass } from "./types";
 import "./segmented-gestures";
 import "./ui-interactions";
 import "./room-card-accent";
+import "./exact-shared-ui";
 import baseStyles from "./styles.css?inline";
 import themeStyles from "./theme.css?inline";
 import homeStyles from "./home-view.css?inline";
