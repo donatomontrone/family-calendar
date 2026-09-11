@@ -51,13 +51,22 @@
     background: none !important;
   }
 
-  /* Keep the room icon neutral so the accent remains confined to the top edge. */
+  /* Room icon uses the same accent as the room top border. */
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i,
   .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i {
-    border-color: var(--lg-line-soft) !important;
-    background: var(--lg-control) !important;
-    color: var(--lg-label) !important;
+    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 14%, var(--lg-control)) !important;
+    color: var(--room-shared-accent) !important;
     box-shadow: inset 0 1px 0 var(--lg-glint) !important;
+  }
+
+  /* Every controllable-device icon inherits the room accent too. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 > span,
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 > span {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 14%, var(--lg-control)) !important;
+    color: var(--room-shared-accent) !important;
+    box-shadow: none !important;
   }
 
   /* OFF controls stay neutral. */
@@ -83,9 +92,9 @@
   }
 
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span {
-    border-color: var(--room-shared-accent) !important;
-    background: var(--room-shared-accent) !important;
-    color: #fff !important;
+    border-color: color-mix(in srgb, var(--room-shared-accent) 48%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 18%, var(--lg-control)) !important;
+    color: var(--room-shared-accent) !important;
     box-shadow: none !important;
   }
 
@@ -101,5 +110,19 @@
 
   .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:hover {
     background: color-mix(in srgb, var(--room-shared-accent) 34%, rgba(72,72,77,.95)) !important;
+  }
+
+  /* Brightness only: the range track uses the room accent. White-temperature
+   * keeps its dedicated warm/cool gradient, and cover-position is untouched. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range) {
+    accent-color: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-webkit-slider-runnable-track {
+    background: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-moz-range-track {
+    background: var(--room-shared-accent) !important;
   }
 }
