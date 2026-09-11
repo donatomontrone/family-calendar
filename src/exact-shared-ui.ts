@@ -5,13 +5,11 @@ type ExactSharedWindow = Window & {
 };
 
 const exactWindow = window as ExactSharedWindow;
-const HEADER_CONTEXT_ID = "family-calendar-exact-home-header-context";
 const RUNTIME_STYLE_ID = "family-calendar-exact-shared-runtime-styles";
 
 const runtimeStyles = `
-/* Interaction state changes are intentionally immediate. The previous global
- * transition + glass combinations were repainting large blurred surfaces and
- * made every page/control transition visibly stutter. */
+/* Keep interaction feedback immediate. The previous transition + large glass
+ * surfaces caused expensive repaints and visible stutter on page changes. */
 main.app-shell,
 main.app-shell *,
 main.app-shell *::before,
@@ -23,37 +21,7 @@ main.app-shell *::after {
   scroll-behavior: auto !important;
 }
 
-/* Keep the React CALENDARIO header as the live source, while rendering the
- * visible copy through exactly the same CASA CSS ancestry. */
-main.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract[data-exact-source-hidden="true"] {
-  display: none !important;
-}
-
-#${HEADER_CONTEXT_ID} {
-  position: relative !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  max-width: none !important;
-  max-height: none !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: visible !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  pointer-events: none !important;
-}
-
-#${HEADER_CONTEXT_ID} > .exact-home-header-reel {
-  display: contents !important;
-}
-
-#${HEADER_CONTEXT_ID} .exact-home-header-copy,
-#${HEADER_CONTEXT_ID} > .exact-home-theme-proxy {
-  pointer-events: auto !important;
-}
-
+/* Never animate the room-temperature affordance. */
 main.app-shell.home-page-active .room-head-v4,
 main.app-shell.home-page-active .room-head-v4:active,
 main.app-shell.home-page-active .room-head-v4 > b,
@@ -63,6 +31,7 @@ main.app-shell.home-page-active .room-head-v4 > b:active {
   transform: none !important;
 }
 
+/* CASA room climate uses the exact CALENDARIO device-controls surface. */
 .reel-backdrop.exact-calendar-climate-context {
   z-index: 2200 !important;
   padding: 0 !important;
@@ -114,67 +83,14 @@ function ensureRuntimeStyles() {
   if (style.textContent !== runtimeStyles) style.textContent = runtimeStyles;
 }
 
-function removeCalendarHeaderCopy() {
-  document.getElementById(HEADER_CONTEXT_ID)?.remove();
+/* Remove every artifact produced by the previous header-copy implementation.
+ * From now on CALENDARIO renders its real SharedHeader React node directly. */
+function cleanupLegacyHeaderClone() {
+  document.getElementById("family-calendar-exact-home-header-context")?.remove();
   document.querySelectorAll<HTMLElement>("header[data-exact-source-hidden='true']").forEach((header) => {
     header.removeAttribute("data-exact-source-hidden");
+    header.style.removeProperty("display");
   });
-}
-
-function syncCalendarHeader() {
-  const shell = document.querySelector<HTMLElement>("main.app-shell.calendar-page-active");
-  if (!shell) {
-    removeCalendarHeaderCopy();
-    return;
-  }
-
-  const source = shell.querySelector<HTMLElement>(":scope > header.reel-topbar.shared-home-header.casa-header-contract");
-  if (!source) return;
-
-  source.setAttribute("data-exact-source-hidden", "true");
-
-  let context = document.getElementById(HEADER_CONTEXT_ID) as HTMLElement | null;
-  if (!context) {
-    context = document.createElement("div");
-    context.id = HEADER_CONTEXT_ID;
-    shell.insertBefore(context, source);
-  } else if (context.parentElement !== shell) {
-    context.remove();
-    shell.insertBefore(context, source);
-  }
-
-  const night = shell.classList.contains("night");
-  context.className = `app-shell home-page-active ${night ? "night" : "day"}`;
-
-  const signature = `${source.innerHTML}|${night ? "night" : "day"}`;
-  if (context.dataset.sourceSignature === signature && context.querySelector(".exact-home-header-copy")) return;
-
-  const headerCopy = source.cloneNode(true) as HTMLElement;
-  headerCopy.className = "reel-topbar exact-home-header-copy";
-  headerCopy.removeAttribute("data-exact-source-hidden");
-  headerCopy.removeAttribute("style");
-
-  const sourceThemeButton = source.querySelector<HTMLButtonElement>(".header-theme-switch");
-  headerCopy.querySelector(".header-theme-switch")?.remove();
-
-  const reelContext = document.createElement("section");
-  reelContext.className = "reel-home home-refactor-v4 exact-home-header-reel";
-  reelContext.appendChild(headerCopy);
-
-  const children: Node[] = [reelContext];
-  if (sourceThemeButton) {
-    const themeProxy = sourceThemeButton.cloneNode(true) as HTMLButtonElement;
-    themeProxy.className = "global-theme-switch home-header-theme-switch exact-home-theme-proxy";
-    themeProxy.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      sourceThemeButton.click();
-    });
-    children.push(themeProxy);
-  }
-
-  context.replaceChildren(...children);
-  context.dataset.sourceSignature = signature;
 }
 
 const climateObservers = new WeakMap<HTMLElement, MutationObserver>();
@@ -260,28 +176,19 @@ function normalizeRoomClimateModal() {
 
 function syncExactSharedUi() {
   ensureRuntimeStyles();
-  syncCalendarHeader();
+  cleanupLegacyHeaderClone();
   normalizeRoomClimateModal();
 }
 
 if (!exactWindow.__familyCalendarExactSharedUi) {
   exactWindow.__familyCalendarExactSharedUi = true;
-  ensureRuntimeStyles();
   syncExactSharedUi();
 
   const shell = document.querySelector<HTMLElement>("main.app-shell");
   if (shell) {
-    /* Only the root page/theme class matters for the header. */
-    const pageObserver = new MutationObserver(syncExactSharedUi);
-    pageObserver.observe(shell, { attributes: true, attributeFilter: ["class"] });
-
-    /* React inserts/removes page content and overlays as child nodes. Watching
-     * structure only is enough and runs in the mutation microtask before paint. */
+    /* Child insertion is observed only to normalize a newly mounted climate
+     * popup in the same mutation microtask, before the browser paints it. */
     const structureObserver = new MutationObserver(syncExactSharedUi);
     structureObserver.observe(shell, { childList: true, subtree: true });
   }
-
-  /* The source clock changes over time. A single cheap sync replaces watching
-   * every character mutation in the entire UI. */
-  window.setInterval(syncCalendarHeader, 1000);
 }
