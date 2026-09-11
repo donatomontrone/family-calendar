@@ -1,0 +1,615 @@
+/*
+ * Shared Exact V13 — the final source of truth for UI that MUST be identical
+ * between CALENDARIO and CASA.
+ *
+ * This file is injected physically last by ui-interactions.ts. It deliberately
+ * does not branch visual geometry by page: both pages receive the same header
+ * and the same climate DeviceControls contract.
+ */
+
+/* --------------------------------------------------------------------------
+ * SHARED PAGE FRAME — same physical header origin on both pages.
+ * -------------------------------------------------------------------------- */
+main.app-shell:is(.calendar-page-active, .home-page-active) {
+  padding-top: clamp(12px, 1.25vw, 24px) !important;
+  padding-right: clamp(12px, 1.25vw, 24px) !important;
+  padding-left: clamp(12px, 1.25vw, 24px) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * ONE HEADER. Same DOM + same computed CSS, with no page-specific variables.
+ * Repeating the shared-home-header class is intentional: this final contract
+ * outranks historical page-scoped !important rules.
+ * -------------------------------------------------------------------------- */
+main.app-shell > header.shared-home-header.shared-home-header {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 94px !important;
+  min-height: 94px !important;
+  max-height: 94px !important;
+  margin: 0 !important;
+  padding: 4px 5px 16px !important;
+  display: grid !important;
+  grid-template-columns: minmax(190px, 1fr) auto minmax(330px, 1.35fr) !important;
+  grid-template-rows: 74px !important;
+  align-items: center !important;
+  gap: 24px !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  color: #1d1d1f !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+main.app-shell.night > header.shared-home-header.shared-home-header {
+  color: #f5f5f7 !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .reel-greeting {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+  transform: none !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .reel-greeting strong {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font-size: 20px !important;
+  line-height: 1.08 !important;
+  font-weight: 660 !important;
+  letter-spacing: -.025em !important;
+  white-space: nowrap !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .reel-greeting span {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #6e6e73 !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  font-weight: 500 !important;
+  text-transform: capitalize !important;
+  white-space: nowrap !important;
+}
+
+main.app-shell.night > header.shared-home-header.shared-home-header .reel-greeting span {
+  color: #aeaeb2 !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .reel-clock {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-self: center !important;
+  color: inherit !important;
+  font-size: clamp(46px, 4vw, 68px) !important;
+  line-height: .96 !important;
+  font-weight: 440 !important;
+  letter-spacing: -.055em !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .reel-top-actions {
+  min-width: 0 !important;
+  height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 9px !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .weather-pill,
+main.app-shell > header.shared-home-header.shared-home-header .security-pill,
+main.app-shell > header.shared-home-header.shared-home-header .round-top,
+main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch {
+  position: relative !important;
+  inset: auto !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(60,60,67,.085) !important;
+  border-radius: 20px !important;
+  background: rgba(246,246,248,.92) !important;
+  color: #4b4b50 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.90), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04) !important;
+  backdrop-filter: blur(20px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(145%) !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+main.app-shell.night > header.shared-home-header.shared-home-header .weather-pill,
+main.app-shell.night > header.shared-home-header.shared-home-header .security-pill,
+main.app-shell.night > header.shared-home-header.shared-home-header .round-top,
+main.app-shell.night > header.shared-home-header.shared-home-header .header-theme-switch {
+  border-color: rgba(255,255,255,.075) !important;
+  background: #3a3a3c !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 6px 18px rgba(0,0,0,.18) !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .weather-pill {
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  font-size: 11.5px !important;
+  white-space: nowrap !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .weather-pill strong {
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+  font-weight: 680 !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .weather-pill small {
+  display: inline !important;
+  color: #6e6e73 !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+  font-weight: 520 !important;
+}
+
+main.app-shell.night > header.shared-home-header.shared-home-header .weather-pill small {
+  color: #aeaeb2 !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .weather-pill svg,
+main.app-shell > header.shared-home-header.shared-home-header .security-pill svg,
+main.app-shell > header.shared-home-header.shared-home-header .round-top svg,
+main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  margin: 0 !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .avatar-stack {
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .avatar-stack i {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 2px solid rgba(255,255,255,.82) !important;
+  border-radius: 50% !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  font-style: normal !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .avatar-stack i + i {
+  margin-left: -7px !important;
+}
+
+main.app-shell.night > header.shared-home-header.shared-home-header .avatar-stack i {
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .security-pill {
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+  font-weight: 620 !important;
+  white-space: nowrap !important;
+}
+
+main.app-shell > header.shared-home-header.shared-home-header .round-top,
+main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch {
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+/* --------------------------------------------------------------------------
+ * ONE DEVICE/CLIMATE MODAL CONTRACT.
+ * Calendar can mount DeviceControls inside its Smart Home card and Home can
+ * mount it inside .home-calendar-device-overlay: the modal itself computes to
+ * exactly the same geometry/material in both cases.
+ * -------------------------------------------------------------------------- */
+main.app-shell .device-controls.device-controls-climate {
+  position: fixed !important;
+  z-index: 4200 !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(590px, calc(100vw - 36px)) !important;
+  min-width: 0 !important;
+  max-width: 590px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 36px) !important;
+  margin: 0 !important;
+  padding: 13px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 1px solid rgba(255,255,255,.64) !important;
+  border-radius: 30px !important;
+  background: rgba(248,248,250,.92) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 0 0 100vmax rgba(16,16,20,.34), 0 30px 90px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  backdrop-filter: blur(38px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(38px) saturate(165%) !important;
+  transform: translate3d(-50%,-50%,0) !important;
+  filter: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+main.app-shell .device-controls.device-controls-climate::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+main.app-shell.night .device-controls.device-controls-climate {
+  border-color: rgba(255,255,255,.10) !important;
+  background: rgba(28,28,30,.94) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,.58), 0 30px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+main.app-shell .device-controls.device-controls-climate .device-controls-heading {
+  width: 100% !important;
+  min-height: 40px !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+main.app-shell .device-controls.device-controls-climate .device-controls-heading .section-kicker {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #9a9aa0 !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 720 !important;
+  letter-spacing: .075em !important;
+  text-transform: uppercase !important;
+}
+
+main.app-shell .device-controls.device-controls-climate .device-controls-heading strong {
+  display: block !important;
+  margin: 3px 0 0 !important;
+  padding: 0 !important;
+  color: #1d1d1f !important;
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.028em !important;
+}
+
+main.app-shell.night .device-controls.device-controls-climate .device-controls-heading strong {
+  color: #f5f5f7 !important;
+}
+
+main.app-shell .device-controls.device-controls-climate .device-controls-heading > button {
+  width: 27px !important;
+  height: 27px !important;
+  min-width: 27px !important;
+  min-height: 27px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(118,118,128,.10) !important;
+  color: #6e6e73 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+main.app-shell.night .device-controls.device-controls-climate .device-controls-heading > button {
+  background: rgba(255,255,255,.075) !important;
+  color: #f5f5f7 !important;
+}
+
+main.app-shell .device-controls.device-controls-climate .device-controls-heading > button svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* The Home wrapper contributes no visual material at all. The 100vmax shadow
+ * belongs to DeviceControls, exactly as in Calendar. It remains only as a
+ * full-viewport click target so tapping outside can close the dialog. */
+main.app-shell.home-page-active .home-calendar-device-overlay {
+  position: fixed !important;
+  z-index: 4190 !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* --------------------------------------------------------------------------
+ * PHONE — exact same three-row header and exact same modal viewport.
+ * -------------------------------------------------------------------------- */
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  main.app-shell:is(.calendar-page-active, .home-page-active) {
+    padding-top: max(10px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 7px 4px 11px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting greeting avatars"
+      "clock weather weather"
+      "alarm notifications theme" !important;
+    grid-template-columns: minmax(0, 1fr) 42px auto !important;
+    grid-template-rows: auto auto 42px !important;
+    align-items: center !important;
+    column-gap: 8px !important;
+    row-gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .reel-greeting {
+    grid-area: greeting !important;
+    align-self: center !important;
+    gap: 3px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .reel-greeting strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(18px, 5.5vw, 22px) !important;
+    line-height: 1 !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .reel-greeting span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .reel-clock {
+    grid-area: clock !important;
+    justify-self: start !important;
+    align-self: center !important;
+    font-size: clamp(36px, 11vw, 46px) !important;
+    line-height: .92 !important;
+    font-weight: 445 !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .reel-top-actions {
+    display: contents !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .avatar-stack {
+    grid-area: avatars !important;
+    justify-self: end !important;
+    align-self: center !important;
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .avatar-stack i {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .weather-pill {
+    grid-area: weather !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+    min-width: 94px !important;
+    max-width: 112px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding: 0 10px !important;
+    border-radius: 14px !important;
+    gap: 6px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .weather-pill small {
+    display: none !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .weather-pill strong {
+    font-size: 12px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .weather-pill svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .security-pill {
+    grid-area: alarm !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    padding: 0 13px !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    border-radius: 14px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .security-pill span {
+    display: inline !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    font-weight: 670 !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .round-top,
+  main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    max-width: 42px !important;
+    max-height: 42px !important;
+    padding: 0 !important;
+    border-radius: 14px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .round-top {
+    grid-area: notifications !important;
+    justify-self: center !important;
+    align-self: center !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch {
+    grid-area: theme !important;
+    justify-self: end !important;
+    align-self: center !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .security-pill svg,
+  main.app-shell > header.shared-home-header.shared-home-header .round-top svg,
+  main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+  }
+
+  main.app-shell .device-controls.device-controls-climate {
+    width: calc(100vw - max(24px, env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px) + 16px)) !important;
+    max-width: 560px !important;
+    max-height: calc(100dvh - max(28px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 20px)) !important;
+    padding: 13px !important;
+    border-radius: 30px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+
+@media (max-width: 350px) {
+  main.app-shell > header.shared-home-header.shared-home-header {
+    grid-template-columns: minmax(0, 1fr) 40px auto !important;
+    grid-template-rows: auto auto 40px !important;
+    column-gap: 6px !important;
+    row-gap: 7px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .reel-greeting strong {
+    font-size: 17px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .reel-clock {
+    font-size: 34px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .weather-pill {
+    min-width: 82px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding-inline: 8px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .avatar-stack,
+  main.app-shell > header.shared-home-header.shared-home-header .avatar-stack i {
+    height: 30px !important;
+    min-height: 30px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .avatar-stack i {
+    width: 30px !important;
+    min-width: 30px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .security-pill,
+  main.app-shell > header.shared-home-header.shared-home-header .round-top,
+  main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch {
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+  }
+
+  main.app-shell > header.shared-home-header.shared-home-header .round-top,
+  main.app-shell > header.shared-home-header.shared-home-header .header-theme-switch {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+  }
+}
