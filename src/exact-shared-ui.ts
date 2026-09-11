@@ -1,5 +1,7 @@
 type ExactSharedWindow = Window & {
   __familyCalendarExactSharedUi?: boolean;
+  __familyCalendarHomeClimateRoomIndex?: number | null;
+  __familyCalendarHomeClimateRoomName?: string | null;
 };
 
 const exactWindow = window as ExactSharedWindow;
@@ -7,18 +9,35 @@ const HEADER_CONTEXT_ID = "family-calendar-exact-home-header-context";
 const RUNTIME_STYLE_ID = "family-calendar-exact-shared-runtime-styles";
 
 const runtimeStyles = `
-/* The Calendar header source remains mounted for React state/event handling,
- * but the visible header is a literal DOM copy rendered inside the CASA CSS
- * context. CASA itself is never restyled by this runtime layer. */
+/* Interaction state changes are intentionally immediate. The previous global
+ * transition + glass combinations were repainting large blurred surfaces and
+ * made every page/control transition visibly stutter. */
+main.app-shell,
+main.app-shell *,
+main.app-shell *::before,
+main.app-shell *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+/* Keep the React CALENDARIO header as the live source, while rendering the
+ * visible copy through exactly the same CASA CSS ancestry. */
 main.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa-header-contract[data-exact-source-hidden="true"] {
   display: none !important;
 }
 
 #${HEADER_CONTEXT_ID} {
-  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
   min-height: 0 !important;
+  max-width: none !important;
   max-height: none !important;
   height: auto !important;
+  margin: 0 !important;
   padding: 0 !important;
   overflow: visible !important;
   background: transparent !important;
@@ -28,13 +47,6 @@ main.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa
 
 #${HEADER_CONTEXT_ID} > .exact-home-header-reel {
   display: contents !important;
-  width: auto !important;
-  min-width: 0 !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  padding: 0 !important;
-  overflow: visible !important;
 }
 
 #${HEADER_CONTEXT_ID} .exact-home-header-copy,
@@ -42,17 +54,6 @@ main.app-shell.calendar-page-active > header.reel-topbar.shared-home-header.casa
   pointer-events: auto !important;
 }
 
-/* The proxy is positioned in the same final slot used by CASA's external
- * appearance button. Desktop uses the header-content origin; phone remains
- * governed by the existing CASA responsive rules. */
-@media (min-width: 701px) {
-  #${HEADER_CONTEXT_ID} > .exact-home-theme-proxy {
-    top: 21px !important;
-    right: 5px !important;
-  }
-}
-
-/* Room temperature is an immediate affordance. No press/scale animation. */
 main.app-shell.home-page-active .room-head-v4,
 main.app-shell.home-page-active .room-head-v4:active,
 main.app-shell.home-page-active .room-head-v4 > b,
@@ -62,9 +63,6 @@ main.app-shell.home-page-active .room-head-v4 > b:active {
   transform: none !important;
 }
 
-/* The Home room-climate modal is put into a scoped CALENDARIO context at
- * runtime. The backdrop itself must therefore stay visually neutral: the
- * exact Calendar modal supplies its own 100vmax dimming shadow. */
 .reel-backdrop.exact-calendar-climate-context {
   z-index: 2200 !important;
   padding: 0 !important;
@@ -75,12 +73,8 @@ main.app-shell.home-page-active .room-head-v4 > b:active {
   transition: none !important;
 }
 
-.reel-backdrop.exact-calendar-climate-context > .exact-home-climate-controls,
-.reel-backdrop.exact-calendar-climate-context > .exact-home-climate-controls * {
-  animation-duration: 0s !important;
-}
-
 .reel-backdrop.exact-calendar-climate-context > .exact-home-climate-controls {
+  z-index: 2201 !important;
   animation: none !important;
   transition: none !important;
 }
@@ -93,9 +87,6 @@ main.app-shell.home-page-active .room-head-v4 > b:active {
   display: none !important;
 }
 
-/* CALENDARIO uses <strong> for the selected device title; CASA's existing
- * overlay supplies an <h2>. Give that existing node the exact same geometry
- * without replacing React-owned DOM nodes. */
 .exact-home-climate-controls .device-controls-heading .exact-device-title {
   display: block !important;
   margin: 3px 0 0 !important;
@@ -117,45 +108,15 @@ function ensureRuntimeStyles() {
     style = document.createElement("style");
     style.id = RUNTIME_STYLE_ID;
     style.textContent = runtimeStyles;
+    document.head.appendChild(style);
+    return;
   }
   if (style.textContent !== runtimeStyles) style.textContent = runtimeStyles;
-  if (style.parentElement !== document.head || style !== document.head.lastElementChild) {
-    document.head.appendChild(style);
-  }
-}
-
-function numericStyle(value: string) {
-  const parsed = Number.parseFloat(value);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-function measureHomeShellPadding(isNight: boolean) {
-  const probe = document.createElement("div");
-  probe.className = `app-shell home-page-active ${isNight ? "night" : "day"}`;
-  probe.setAttribute("aria-hidden", "true");
-  probe.style.setProperty("position", "fixed", "important");
-  probe.style.setProperty("left", "-20000px", "important");
-  probe.style.setProperty("top", "0", "important");
-  probe.style.setProperty("width", "100vw", "important");
-  probe.style.setProperty("height", "0", "important");
-  probe.style.setProperty("min-height", "0", "important");
-  probe.style.setProperty("max-height", "0", "important");
-  probe.style.setProperty("visibility", "hidden", "important");
-  probe.style.setProperty("pointer-events", "none", "important");
-  document.body.appendChild(probe);
-  const computed = getComputedStyle(probe);
-  const result = {
-    left: numericStyle(computed.paddingLeft),
-    right: numericStyle(computed.paddingRight),
-  };
-  probe.remove();
-  return result;
 }
 
 function removeCalendarHeaderCopy() {
   document.getElementById(HEADER_CONTEXT_ID)?.remove();
   document.querySelectorAll<HTMLElement>("header[data-exact-source-hidden='true']").forEach((header) => {
-    header.style.removeProperty("display");
     header.removeAttribute("data-exact-source-hidden");
   });
 }
@@ -171,7 +132,6 @@ function syncCalendarHeader() {
   if (!source) return;
 
   source.setAttribute("data-exact-source-hidden", "true");
-  source.style.setProperty("display", "none", "important");
 
   let context = document.getElementById(HEADER_CONTEXT_ID) as HTMLElement | null;
   if (!context) {
@@ -184,22 +144,9 @@ function syncCalendarHeader() {
   }
 
   const night = shell.classList.contains("night");
-  const desiredContextClass = `app-shell home-page-active ${night ? "night" : "day"}`;
-  if (context.className !== desiredContextClass) context.className = desiredContextClass;
+  context.className = `app-shell home-page-active ${night ? "night" : "day"}`;
 
-  const shellStyle = getComputedStyle(shell);
-  const calendarPaddingLeft = numericStyle(shellStyle.paddingLeft);
-  const calendarPaddingRight = numericStyle(shellStyle.paddingRight);
-  const homePadding = measureHomeShellPadding(night);
-  const leftDelta = homePadding.left - calendarPaddingLeft;
-  const rightDelta = homePadding.right - calendarPaddingRight;
-
-  context.style.setProperty("position", "relative", "important");
-  context.style.setProperty("margin-left", `${leftDelta}px`, "important");
-  context.style.setProperty("margin-right", `${rightDelta}px`, "important");
-  context.style.setProperty("width", `calc(100% - ${leftDelta + rightDelta}px)`, "important");
-
-  const signature = `${source.innerHTML}|${night ? "night" : "day"}|${Math.round(window.innerWidth)}|${leftDelta}|${rightDelta}`;
+  const signature = `${source.innerHTML}|${night ? "night" : "day"}`;
   if (context.dataset.sourceSignature === signature && context.querySelector(".exact-home-header-copy")) return;
 
   const headerCopy = source.cloneNode(true) as HTMLElement;
@@ -230,91 +177,111 @@ function syncCalendarHeader() {
   context.dataset.sourceSignature = signature;
 }
 
+const climateObservers = new WeakMap<HTMLElement, MutationObserver>();
+
+function keepClimateNormalized(modal: HTMLElement) {
+  if (climateObservers.has(modal)) return;
+  const observer = new MutationObserver(() => {
+    if (!modal.isConnected) {
+      observer.disconnect();
+      climateObservers.delete(modal);
+      return;
+    }
+    if (!modal.classList.contains("exact-home-climate-controls")) normalizeRoomClimateModal();
+  });
+  observer.observe(modal, { attributes: true, attributeFilter: ["class"] });
+  climateObservers.set(modal, observer);
+}
+
 function normalizeRoomClimateModal() {
   const shell = document.querySelector<HTMLElement>("main.app-shell.home-page-active");
   if (!shell) return;
 
+  const roomIndex = exactWindow.__familyCalendarHomeClimateRoomIndex;
+  if (typeof roomIndex !== "number" || roomIndex < 0) return;
+
   const modal = shell.querySelector<HTMLElement>(
-    ".reel-backdrop .climate-modal.feature-modal.room-climate-modal, .reel-backdrop .exact-home-climate-controls",
+    ".reel-backdrop .climate-modal.feature-modal, .reel-backdrop .exact-home-climate-controls",
   );
   if (!modal) return;
 
-  const grid = modal.querySelector<HTMLElement>(".climate-grid");
+  const grid = modal.querySelector<HTMLElement>(".climate-grid, .exact-climate-grid");
   if (!grid) return;
 
-  const selected = grid.querySelector<HTMLElement>(":scope > [data-room-climate-selected='true']");
+  const children = Array.from(grid.children).filter((child): child is HTMLElement => child instanceof HTMLElement);
+  const selected = children[roomIndex];
   if (!selected) return;
 
+  children.forEach((child, index) => {
+    if (index === roomIndex) {
+      child.setAttribute("data-room-climate-selected", "true");
+      child.style.removeProperty("display");
+    } else {
+      child.removeAttribute("data-room-climate-selected");
+      child.style.setProperty("display", "none", "important");
+    }
+  });
+
+  const roomName = exactWindow.__familyCalendarHomeClimateRoomName ?? "";
   const deviceName = selected.querySelector<HTMLElement>(".climate-control-title strong")?.textContent?.trim()
-    || modal.querySelector<HTMLElement>(".modal-head h2, .device-controls-heading .exact-device-title")?.textContent?.trim()
+    || roomName
     || (document.documentElement.lang.toLowerCase().startsWith("it") ? "Clima" : "Climate");
 
   const backdrop = modal.closest<HTMLElement>(".reel-backdrop");
   if (!backdrop) return;
   backdrop.classList.add("calendar-page-active", "exact-calendar-climate-context");
 
-  const exactModalClass = "device-controls device-controls-climate exact-home-climate-controls";
-  if (modal.className !== exactModalClass) modal.className = exactModalClass;
+  modal.className = "device-controls device-controls-climate exact-home-climate-controls";
 
   const heading = modal.querySelector<HTMLElement>(".modal-head, .device-controls-heading");
   if (heading) {
-    if (heading.className !== "device-controls-heading") heading.className = "device-controls-heading";
+    heading.className = "device-controls-heading";
     const kicker = heading.querySelector<HTMLElement>(".reel-kicker, .section-kicker");
     if (kicker) {
-      if (kicker.className !== "section-kicker") kicker.className = "section-kicker";
-      const controlsLabel = document.documentElement.lang.toLowerCase().startsWith("it") ? "CONTROLLI" : "CONTROLS";
-      if (kicker.textContent !== controlsLabel) kicker.textContent = controlsLabel;
+      kicker.className = "section-kicker";
+      kicker.textContent = document.documentElement.lang.toLowerCase().startsWith("it") ? "CONTROLLI" : "CONTROLS";
     }
     const title = heading.querySelector<HTMLElement>("h2, .exact-device-title");
     if (title) {
-      if (title.className !== "exact-device-title") title.className = "exact-device-title";
-      if (title.textContent !== deviceName) title.textContent = deviceName;
+      title.className = "exact-device-title";
+      title.textContent = deviceName;
     }
     const close = heading.querySelector<HTMLButtonElement>("button");
-    if (close?.hasAttribute("class")) close.removeAttribute("class");
+    if (close) close.removeAttribute("class");
   }
 
-  if (!grid.classList.contains("exact-climate-grid")) grid.classList.add("exact-climate-grid");
-  Array.from(grid.children).forEach((child) => {
-    if (!(child instanceof HTMLElement)) return;
-    if (child === selected) child.style.removeProperty("display");
-    else child.style.setProperty("display", "none", "important");
-  });
-
-  if (!selected.classList.contains("climate-compact")) selected.classList.add("climate-compact");
-  if (selected.classList.contains("climate-full")) selected.classList.remove("climate-full");
+  grid.classList.add("exact-climate-grid");
+  selected.classList.add("climate-compact");
+  selected.classList.remove("climate-full");
   selected.querySelector<HTMLElement>(".climate-control-title > div > strong")?.style.setProperty("display", "none", "important");
+
+  keepClimateNormalized(modal);
 }
 
 function syncExactSharedUi() {
   ensureRuntimeStyles();
   syncCalendarHeader();
   normalizeRoomClimateModal();
-  ensureRuntimeStyles();
 }
 
 if (!exactWindow.__familyCalendarExactSharedUi) {
   exactWindow.__familyCalendarExactSharedUi = true;
+  ensureRuntimeStyles();
+  syncExactSharedUi();
 
-  let frame = 0;
-  const schedule = () => {
-    if (frame) cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(() => {
-      frame = 0;
-      syncExactSharedUi();
-    });
-  };
+  const shell = document.querySelector<HTMLElement>("main.app-shell");
+  if (shell) {
+    /* Only the root page/theme class matters for the header. */
+    const pageObserver = new MutationObserver(syncExactSharedUi);
+    pageObserver.observe(shell, { attributes: true, attributeFilter: ["class"] });
 
-  const observer = new MutationObserver(schedule);
-  observer.observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    characterData: true,
-    attributes: true,
-    attributeFilter: ["class"],
-  });
+    /* React inserts/removes page content and overlays as child nodes. Watching
+     * structure only is enough and runs in the mutation microtask before paint. */
+    const structureObserver = new MutationObserver(syncExactSharedUi);
+    structureObserver.observe(shell, { childList: true, subtree: true });
+  }
 
-  window.addEventListener("resize", schedule, { passive: true });
-  document.addEventListener("click", schedule, true);
-  schedule();
+  /* The source clock changes over time. A single cheap sync replaces watching
+   * every character mutation in the entire UI. */
+  window.setInterval(syncCalendarHeader, 1000);
 }
