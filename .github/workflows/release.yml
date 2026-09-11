@@ -16,9 +16,39 @@ jobs:
   release:
     if: github.repository == 'donatomontrone/family-calendar'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Verify committed Home Assistant bundle
+        shell: bash
+        run: |
+          BUNDLE="custom_components/family_calendar/frontend/family-calendar-panel.js"
+          test -s "$BUNDLE"
+          if ! git diff --quiet -- "$BUNDLE"; then
+            echo "The committed Home Assistant frontend bundle is stale."
+            echo "Wait for the Frontend workflow to commit the generated bundle, then rerun the release."
+            git diff --stat -- "$BUNDLE"
+            exit 1
+          fi
+          echo "Committed frontend bundle matches the current sources."
 
       - name: Verify release version
         id: version
