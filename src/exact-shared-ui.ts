@@ -66,6 +66,7 @@ main.app-shell.home-page-active .room-head-v4 > b:active {
  * runtime. The backdrop itself must therefore stay visually neutral: the
  * exact Calendar modal supplies its own 100vmax dimming shadow. */
 .reel-backdrop.exact-calendar-climate-context {
+  z-index: 2200 !important;
   padding: 0 !important;
   background: transparent !important;
   backdrop-filter: none !important;
@@ -183,7 +184,8 @@ function syncCalendarHeader() {
   }
 
   const night = shell.classList.contains("night");
-  context.className = `app-shell home-page-active ${night ? "night" : "day"}`;
+  const desiredContextClass = `app-shell home-page-active ${night ? "night" : "day"}`;
+  if (context.className !== desiredContextClass) context.className = desiredContextClass;
 
   const shellStyle = getComputedStyle(shell);
   const calendarPaddingLeft = numericStyle(shellStyle.paddingLeft);
@@ -251,34 +253,36 @@ function normalizeRoomClimateModal() {
   if (!backdrop) return;
   backdrop.classList.add("calendar-page-active", "exact-calendar-climate-context");
 
-  modal.className = "device-controls device-controls-climate exact-home-climate-controls";
+  const exactModalClass = "device-controls device-controls-climate exact-home-climate-controls";
+  if (modal.className !== exactModalClass) modal.className = exactModalClass;
 
   const heading = modal.querySelector<HTMLElement>(".modal-head, .device-controls-heading");
   if (heading) {
-    heading.className = "device-controls-heading";
+    if (heading.className !== "device-controls-heading") heading.className = "device-controls-heading";
     const kicker = heading.querySelector<HTMLElement>(".reel-kicker, .section-kicker");
     if (kicker) {
-      kicker.className = "section-kicker";
-      kicker.textContent = document.documentElement.lang.toLowerCase().startsWith("it") ? "CONTROLLI" : "CONTROLS";
+      if (kicker.className !== "section-kicker") kicker.className = "section-kicker";
+      const controlsLabel = document.documentElement.lang.toLowerCase().startsWith("it") ? "CONTROLLI" : "CONTROLS";
+      if (kicker.textContent !== controlsLabel) kicker.textContent = controlsLabel;
     }
     const title = heading.querySelector<HTMLElement>("h2, .exact-device-title");
     if (title) {
-      title.className = "exact-device-title";
-      title.textContent = deviceName;
+      if (title.className !== "exact-device-title") title.className = "exact-device-title";
+      if (title.textContent !== deviceName) title.textContent = deviceName;
     }
     const close = heading.querySelector<HTMLButtonElement>("button");
-    if (close) close.removeAttribute("class");
+    if (close?.hasAttribute("class")) close.removeAttribute("class");
   }
 
-  grid.classList.add("exact-climate-grid");
+  if (!grid.classList.contains("exact-climate-grid")) grid.classList.add("exact-climate-grid");
   Array.from(grid.children).forEach((child) => {
     if (!(child instanceof HTMLElement)) return;
     if (child === selected) child.style.removeProperty("display");
     else child.style.setProperty("display", "none", "important");
   });
 
-  selected.classList.add("climate-compact");
-  selected.classList.remove("climate-full");
+  if (!selected.classList.contains("climate-compact")) selected.classList.add("climate-compact");
+  if (selected.classList.contains("climate-full")) selected.classList.remove("climate-full");
   selected.querySelector<HTMLElement>(".climate-control-title > div > strong")?.style.setProperty("display", "none", "important");
 }
 
