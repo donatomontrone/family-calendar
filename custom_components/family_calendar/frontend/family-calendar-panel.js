@@ -23984,6 +23984,7 @@ main.app-shell.home-page-active .room-head-v4 > b:active {
  * runtime. The backdrop itself must therefore stay visually neutral: the
  * exact Calendar modal supplies its own 100vmax dimming shadow. */
 .reel-backdrop.exact-calendar-climate-context {
+  z-index: 2200 !important;
   padding: 0 !important;
   background: transparent !important;
   backdrop-filter: none !important;
@@ -24060,26 +24061,26 @@ function ri() {
 	t.setAttribute("data-exact-source-hidden", "true"), t.style.setProperty("display", "none", "important");
 	let n = document.getElementById(Xr);
 	n ? n.parentElement !== e && (n.remove(), e.insertBefore(n, t)) : (n = document.createElement("div"), n.id = Xr, e.insertBefore(n, t));
-	let r = e.classList.contains("night");
-	n.className = `app-shell home-page-active ${r ? "night" : "day"}`;
-	let i = getComputedStyle(e), a = ei(i.paddingLeft), o = ei(i.paddingRight), s = ti(r), c = s.left - a, l = s.right - o;
-	n.style.setProperty("position", "relative", "important"), n.style.setProperty("margin-left", `${c}px`, "important"), n.style.setProperty("margin-right", `${l}px`, "important"), n.style.setProperty("width", `calc(100% - ${c + l}px)`, "important");
-	let u = `${t.innerHTML}|${r ? "night" : "day"}|${Math.round(window.innerWidth)}|${c}|${l}`;
-	if (n.dataset.sourceSignature === u && n.querySelector(".exact-home-header-copy")) return;
-	let d = t.cloneNode(!0);
-	d.className = "reel-topbar exact-home-header-copy", d.removeAttribute("data-exact-source-hidden"), d.removeAttribute("style");
-	let f = t.querySelector(".header-theme-switch");
-	d.querySelector(".header-theme-switch")?.remove();
-	let p = document.createElement("section");
-	p.className = "reel-home home-refactor-v4 exact-home-header-reel", p.appendChild(d);
-	let m = [p];
-	if (f) {
-		let e = f.cloneNode(!0);
+	let r = e.classList.contains("night"), i = `app-shell home-page-active ${r ? "night" : "day"}`;
+	n.className !== i && (n.className = i);
+	let a = getComputedStyle(e), o = ei(a.paddingLeft), s = ei(a.paddingRight), c = ti(r), l = c.left - o, u = c.right - s;
+	n.style.setProperty("position", "relative", "important"), n.style.setProperty("margin-left", `${l}px`, "important"), n.style.setProperty("margin-right", `${u}px`, "important"), n.style.setProperty("width", `calc(100% - ${l + u}px)`, "important");
+	let d = `${t.innerHTML}|${r ? "night" : "day"}|${Math.round(window.innerWidth)}|${l}|${u}`;
+	if (n.dataset.sourceSignature === d && n.querySelector(".exact-home-header-copy")) return;
+	let f = t.cloneNode(!0);
+	f.className = "reel-topbar exact-home-header-copy", f.removeAttribute("data-exact-source-hidden"), f.removeAttribute("style");
+	let p = t.querySelector(".header-theme-switch");
+	f.querySelector(".header-theme-switch")?.remove();
+	let m = document.createElement("section");
+	m.className = "reel-home home-refactor-v4 exact-home-header-reel", m.appendChild(f);
+	let h = [m];
+	if (p) {
+		let e = p.cloneNode(!0);
 		e.className = "global-theme-switch home-header-theme-switch exact-home-theme-proxy", e.addEventListener("click", (e) => {
-			e.preventDefault(), e.stopPropagation(), f.click();
-		}), m.push(e);
+			e.preventDefault(), e.stopPropagation(), p.click();
+		}), h.push(e);
 	}
-	n.replaceChildren(...m), n.dataset.sourceSignature = u;
+	n.replaceChildren(...h), n.dataset.sourceSignature = d;
 }
 function ii() {
 	let e = document.querySelector("main.app-shell.home-page-active");
@@ -24092,20 +24093,26 @@ function ii() {
 	if (!r) return;
 	let i = r.querySelector(".climate-control-title strong")?.textContent?.trim() || t.querySelector(".modal-head h2, .device-controls-heading .exact-device-title")?.textContent?.trim() || (document.documentElement.lang.toLowerCase().startsWith("it") ? "Clima" : "Climate"), a = t.closest(".reel-backdrop");
 	if (!a) return;
-	a.classList.add("calendar-page-active", "exact-calendar-climate-context"), t.className = "device-controls device-controls-climate exact-home-climate-controls";
-	let o = t.querySelector(".modal-head, .device-controls-heading");
-	if (o) {
-		o.className = "device-controls-heading";
-		let e = o.querySelector(".reel-kicker, .section-kicker");
-		e && (e.className = "section-kicker", e.textContent = document.documentElement.lang.toLowerCase().startsWith("it") ? "CONTROLLI" : "CONTROLS");
-		let t = o.querySelector("h2, .exact-device-title");
-		t && (t.className = "exact-device-title", t.textContent = i);
-		let n = o.querySelector("button");
-		n && n.removeAttribute("class");
+	a.classList.add("calendar-page-active", "exact-calendar-climate-context");
+	let o = "device-controls device-controls-climate exact-home-climate-controls";
+	t.className !== o && (t.className = o);
+	let s = t.querySelector(".modal-head, .device-controls-heading");
+	if (s) {
+		s.className !== "device-controls-heading" && (s.className = "device-controls-heading");
+		let e = s.querySelector(".reel-kicker, .section-kicker");
+		if (e) {
+			e.className !== "section-kicker" && (e.className = "section-kicker");
+			let t = document.documentElement.lang.toLowerCase().startsWith("it") ? "CONTROLLI" : "CONTROLS";
+			e.textContent !== t && (e.textContent = t);
+		}
+		let t = s.querySelector("h2, .exact-device-title");
+		t && (t.className !== "exact-device-title" && (t.className = "exact-device-title"), t.textContent !== i && (t.textContent = i));
+		let n = s.querySelector("button");
+		n?.hasAttribute("class") && n.removeAttribute("class");
 	}
-	n.classList.add("exact-climate-grid"), Array.from(n.children).forEach((e) => {
+	n.classList.contains("exact-climate-grid") || n.classList.add("exact-climate-grid"), Array.from(n.children).forEach((e) => {
 		e instanceof HTMLElement && (e === r ? e.style.removeProperty("display") : e.style.setProperty("display", "none", "important"));
-	}), r.classList.add("climate-compact"), r.classList.remove("climate-full"), r.querySelector(".climate-control-title > div > strong")?.style.setProperty("display", "none", "important");
+	}), r.classList.contains("climate-compact") || r.classList.add("climate-compact"), r.classList.contains("climate-full") && r.classList.remove("climate-full"), r.querySelector(".climate-control-title > div > strong")?.style.setProperty("display", "none", "important");
 }
 function ai() {
 	$r(), ri(), ii(), $r();
