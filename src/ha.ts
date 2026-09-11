@@ -20,12 +20,22 @@ export async function setFavorites(hass: Hass, entityIds: string[]): Promise<voi
   });
 }
 
+function isRoomCoverSelectionClick(): boolean {
+  const active = document.activeElement;
+  return active instanceof HTMLElement
+    && active.matches(".app-shell.home-page-active .room-device-button-v4.domain-cover");
+}
+
 export async function activateEntity(hass: Hass, entityId: string): Promise<void> {
   const state = hass.states[entityId];
   if (!state) return;
 
   const [domain] = entityId.split(".");
   if (domain === "cover") {
+    // In the CASA room card, clicking a cover is a selection gesture only.
+    // Position changes are performed exclusively by the dedicated cover control.
+    if (isRoomCoverSelectionClick()) return;
+
     await hass.callService("cover", state.state === "open" ? "close_cover" : "open_cover", { entity_id: entityId });
     return;
   }
