@@ -67,7 +67,7 @@
 
   /* Kill the old per-domain accent at its source. Any legacy rule that still
    * references --room-active-accent now resolves to the room colour. */
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.room-device-button-v4 {
     --room-active-accent: var(--room-shared-accent) !important;
   }
 
@@ -107,17 +107,17 @@
     background: color-mix(in srgb, var(--room-shared-accent) 30%, rgba(58,58,62,.92)) !important;
   }
 
-  /* Active-device icon tile uses the exact room colour; the glyph stays white
-   * for contrast. This also catches covers previously forced to blue. */
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span {
+  /* Active-device icon tile uses the exact room colour; this intentionally has
+   * higher specificity than the legacy blue non-light rule in V5/V6. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 button.room-device-button-v4.room-device-button-v4.active > span {
     border-color: var(--room-shared-accent) !important;
     background: var(--room-shared-accent) !important;
     color: #fff !important;
     box-shadow: none !important;
   }
 
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span svg,
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span svg * {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 button.room-device-button-v4.room-device-button-v4.active > span svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 button.room-device-button-v4.room-device-button-v4.active > span svg * {
     color: #fff !important;
   }
 
