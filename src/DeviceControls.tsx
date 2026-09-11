@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import type { ReactNode } from "react";
 import ClimateControl from "./ClimateControl";
 import type { Hass } from "./types";
@@ -20,41 +21,58 @@ export default function DeviceControls({ hass, entityId, language, onClose }: De
   const brightness = Math.round((Number(state.attributes.brightness ?? 200) / 255) * 100);
   const position = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
   const whiteTemperature = getWhiteTemperature(state.attributes);
+  const isNight = typeof document !== "undefined" && document.querySelector("main.app-shell")?.classList.contains("night");
 
-  return (
-    <div className={`device-controls device-controls-${domain}`} role="dialog" aria-modal="true" aria-label={`${t("controls", language)} ${displayName(hass, entityId)}`}>
-      <div className="device-controls-heading">
-        <div><span className="section-kicker">{t("controls", language)}</span><strong>{displayName(hass, entityId)}</strong></div>
-        <button onClick={onClose} aria-label={t("close", language)}><CloseIcon /></button>
+  const dialog = (
+    <div
+      id="family-shared-device-overlay"
+      className={`app-shell shared-device-controls-overlay ${isNight ? "night" : "day"}`}
+      onMouseDown={(event) => {
+        if (event.currentTarget === event.target) onClose();
+      }}
+    >
+      <div
+        id="family-shared-device-controls"
+        className={`device-controls device-controls-${domain}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${t("controls", language)} ${displayName(hass, entityId)}`}
+      >
+        <div className="device-controls-heading">
+          <div><span className="section-kicker">{t("controls", language)}</span><strong>{displayName(hass, entityId)}</strong></div>
+          <button onClick={onClose} aria-label={t("close", language)}><CloseIcon /></button>
+        </div>
+        {domain === "light" && (
+          <>
+            <ControlRow label={t("brightness", language)} value={`${brightness}%`}>
+              <input type="range" min="1" max="100" defaultValue={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
+            </ControlRow>
+            <ControlRow label={language === "it" ? "Temperatura bianco" : "White temperature"} value={`${whiteTemperature.currentKelvin} K`}>
+              <input
+                className="white-temperature-control"
+                type="range"
+                min={whiteTemperature.minKelvin}
+                max={whiteTemperature.maxKelvin}
+                step="50"
+                defaultValue={whiteTemperature.currentKelvin}
+                onChange={(event) => void setLightColorTemperature(hass, entityId, Number(event.target.value))}
+              />
+            </ControlRow>
+          </>
+        )}
+        {domain === "cover" && (
+          <ControlRow label={t("position", language)} value={`${position}%`}>
+            <input type="range" min="0" max="100" defaultValue={position} onChange={(event) => void setCoverPosition(hass, entityId, Number(event.target.value))} />
+          </ControlRow>
+        )}
+        {domain === "climate" && (
+          <ClimateControl hass={hass} entityId={entityId} language={language} variant="compact" showName={false} />
+        )}
       </div>
-      {domain === "light" && (
-        <>
-          <ControlRow label={t("brightness", language)} value={`${brightness}%`}>
-            <input type="range" min="1" max="100" defaultValue={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
-          </ControlRow>
-          <ControlRow label={language === "it" ? "Temperatura bianco" : "White temperature"} value={`${whiteTemperature.currentKelvin} K`}>
-            <input
-              className="white-temperature-control"
-              type="range"
-              min={whiteTemperature.minKelvin}
-              max={whiteTemperature.maxKelvin}
-              step="50"
-              defaultValue={whiteTemperature.currentKelvin}
-              onChange={(event) => void setLightColorTemperature(hass, entityId, Number(event.target.value))}
-            />
-          </ControlRow>
-        </>
-      )}
-      {domain === "cover" && (
-        <ControlRow label={t("position", language)} value={`${position}%`}>
-          <input type="range" min="0" max="100" defaultValue={position} onChange={(event) => void setCoverPosition(hass, entityId, Number(event.target.value))} />
-        </ControlRow>
-      )}
-      {domain === "climate" && (
-        <ClimateControl hass={hass} entityId={entityId} language={language} variant="compact" showName={false} />
-      )}
     </div>
   );
+
+  return typeof document === "undefined" ? dialog : createPortal(dialog, document.body);
 }
 
 function ControlRow({ label, value, children }: { label: string; value: string; children: ReactNode }) {
