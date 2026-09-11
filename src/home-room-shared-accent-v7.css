@@ -135,17 +135,22 @@
     background: color-mix(in srgb, var(--room-shared-accent) 34%, rgba(72,72,77,.95)) !important;
   }
 
-  /* Brightness only: the range track uses the room accent. White-temperature
-   * keeps its dedicated warm/cool gradient, and cover-position is untouched. */
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range) {
+  /* Continuous controls: light brightness and cover position both use the room
+   * accent. White-temperature alone keeps its dedicated warm/cool gradient. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range),
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 .room-quick-control-v4.domain-cover input[type="range"] {
     accent-color: var(--room-shared-accent) !important;
   }
 
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-webkit-slider-runnable-track {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 .room-quick-control-v4.domain-cover input[type="range"]::-webkit-slider-runnable-track {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 24%, transparent) !important;
     background: var(--room-shared-accent) !important;
   }
 
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-moz-range-track {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-moz-range-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4.room-card-v4 .room-quick-control-v4.domain-cover input[type="range"]::-moz-range-track {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 24%, transparent) !important;
     background: var(--room-shared-accent) !important;
   }
 }
