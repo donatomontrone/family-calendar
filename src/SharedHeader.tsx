@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import "./ui-interactions";
 import "./calendar-header-home.css";
 import "./home-v4.css";
+import exactSharedStyles from "./shared-exact-v14.css?inline";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
@@ -33,7 +34,8 @@ export default function SharedHeader({
   const copy = language === "it" ? itCopy : enCopy;
 
   return (
-    <header className="reel-topbar shared-home-header casa-header-contract">
+    <header id="family-shared-header" className="reel-topbar shared-home-header casa-header-contract">
+      <style id="family-shared-exact-styles">{exactSharedStyles}</style>
       <div className="reel-greeting">
         <strong>{greetingForHour(now.getHours(), copy)}</strong>
         <span>{now.toLocaleDateString(locale(language), { weekday: "long", day: "numeric", month: "long" })}</span>
@@ -54,8 +56,6 @@ export default function SharedHeader({
   );
 }
 
-/* Keep these strings byte-for-byte aligned with HomeView: the shared calendar
- * header is a second renderer of the approved CASA header, not a variation. */
 const itCopy = {
   sunny: "Sereno",
   notifications: "Notifiche",
@@ -86,7 +86,6 @@ function locale(language: Language) {
   return language === "it" ? "it-IT" : "en-GB";
 }
 
-/* These SVGs are the same definitions used by HomeView's approved CASA header. */
 function Icon({ children }: { children: ReactNode }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true">{children}</svg>;
 }
