@@ -1,0 +1,722 @@
+/*
+ * CASA V8 — adaptive phone layout.
+ *
+ * Mobile is intentionally a vertical, scrollable Home experience rather than
+ * a compressed desktop dashboard. Desktop/tablet remain untouched.
+ */
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  .app-shell.home-page-active {
+    --home-mobile-pad: max(10px, env(safe-area-inset-left, 0px));
+    --home-mobile-accent: #4f8cff;
+    width: 100% !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding-top: max(10px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-padding-bottom: 104px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    padding: 0 0 max(96px, calc(82px + env(safe-area-inset-bottom, 0px))) !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Header: same information hierarchy as CASA, recomposed for one hand.   */
+  /* ---------------------------------------------------------------------- */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar {
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 142px !important;
+    height: auto !important;
+    margin: 0 0 10px !important;
+    padding: 3px 2px 10px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting greeting avatars"
+      "clock weather weather"
+      "alarm notifications spacer" !important;
+    grid-template-columns: minmax(0, 1fr) 44px 44px !important;
+    grid-template-rows: 36px 42px 44px !important;
+    align-items: center !important;
+    column-gap: 8px !important;
+    row-gap: 7px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    gap: 3px !important;
+    align-self: center !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .reel-greeting strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(18px, 5.6vw, 22px) !important;
+    line-height: 1 !important;
+    font-weight: 680 !important;
+    letter-spacing: -.028em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .reel-greeting span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.12 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .reel-clock {
+    grid-area: clock !important;
+    justify-self: start !important;
+    align-self: center !important;
+    min-width: 0 !important;
+    font-size: clamp(38px, 11vw, 48px) !important;
+    line-height: .92 !important;
+    font-weight: 445 !important;
+    letter-spacing: -.055em !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .reel-top-actions {
+    display: contents !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .avatar-stack {
+    grid-area: avatars !important;
+    justify-self: end !important;
+    align-self: center !important;
+    height: 34px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .avatar-stack i {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .weather-pill,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .security-pill,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .round-top,
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+    min-height: 42px !important;
+    border-radius: 14px !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.70), 0 3px 12px rgba(0,0,0,.045) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .weather-pill {
+    grid-area: weather !important;
+    justify-self: end !important;
+    width: auto !important;
+    min-width: 102px !important;
+    max-width: 124px !important;
+    height: 42px !important;
+    padding: 0 11px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .weather-pill small {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .weather-pill strong {
+    font-size: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .weather-pill svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .security-pill {
+    grid-area: alarm !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    height: 44px !important;
+    min-width: 0 !important;
+    padding: 0 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .security-pill span {
+    display: inline !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    font-weight: 670 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .round-top {
+    grid-area: notifications !important;
+    justify-self: center !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+    position: absolute !important;
+    z-index: 70 !important;
+    top: calc(max(10px, env(safe-area-inset-top, 0px)) + 95px) !important;
+    right: max(12px, calc(env(safe-area-inset-right, 0px) + 12px)) !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .security-pill svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .round-top svg,
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Main dashboard: one readable room per row; no desktop compression.      */
+  /* ---------------------------------------------------------------------- */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-rows: auto !important;
+    gap: 12px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
+    --room-shared-accent: #4f8cff;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 14px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(60,60,67,.09) !important;
+    border-top: 4px solid var(--room-shared-accent) !important;
+    border-radius: 22px !important;
+    background: rgba(252,252,253,.96) !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,.045), inset 0 1px 0 rgba(255,255,255,.78) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 1) { --room-shared-accent: #4f8cff; }
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 2) { --room-shared-accent: #34c759; }
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 3) { --room-shared-accent: #30b0c7; }
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 4) { --room-shared-accent: #ff9f0a; }
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 5) { --room-shared-accent: #8e7dff; }
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 6) { --room-shared-accent: #ff6482; }
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n) { --room-shared-accent: #32ade6; }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4::before,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 {
+    width: 100% !important;
+    min-height: 48px !important;
+    padding: 0 !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 {
+    min-width: 0 !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--room-shared-accent) !important;
+    border-radius: 14px !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 12%, #fff) !important;
+    color: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i svg * {
+    color: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 strong {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 18px !important;
+    line-height: 1.1 !important;
+    font-weight: 690 !important;
+    letter-spacing: -.02em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b {
+    flex: 0 0 auto !important;
+    font-size: 27px !important;
+    line-height: 1 !important;
+    font-weight: 430 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-section {
+    margin-top: 14px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-section-label {
+    display: block !important;
+    margin-bottom: 7px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 760 !important;
+    letter-spacing: .08em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    --room-active-accent: var(--room-shared-accent) !important;
+    min-width: 0 !important;
+    min-height: 64px !important;
+    padding: 9px !important;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 9px !important;
+    border-radius: 16px !important;
+    text-align: left !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--room-shared-accent) !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 12%, #fff) !important;
+    color: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span svg * {
+    color: inherit !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > div {
+    min-width: 0 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    display: block !important;
+    margin-top: 3px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 40%, rgba(60,60,67,.10)) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 22%, #fff) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active > span {
+    border-color: var(--room-shared-accent) !important;
+    background: var(--room-shared-accent) !important;
+    color: #fff !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active > span svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active > span svg * {
+    color: #fff !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active.selected {
+    border-color: var(--room-shared-accent) !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 14%, transparent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    width: 100% !important;
+    margin-top: 11px !important;
+    padding: 12px 0 2px !important;
+    border-top: 1px solid rgba(60,60,67,.08) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head {
+    min-width: 0 !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head small {
+    font-size: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head strong {
+    font-size: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"] {
+    width: 100% !important;
+    min-height: 32px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range),
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-cover input[type="range"] {
+    accent-color: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-cover input[type="range"]::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-moz-range-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-cover input[type="range"]::-moz-range-track {
+    background: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 {
+    min-width: 0 !important;
+    min-height: 46px !important;
+    padding: 7px !important;
+    border-radius: 13px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > span {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong {
+    font-size: 10.5px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    font-size: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-detail-v4 {
+    position: static !important;
+    width: max-content !important;
+    min-height: 36px !important;
+    margin: 10px 0 0 auto !important;
+    padding: 0 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 3px !important;
+    font-size: 10px !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Utility column becomes a readable continuation of the Home feed.       */
+  /* ---------------------------------------------------------------------- */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: 14px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "message message"
+      "alarm waste"
+      "climate climate"
+      "tools tools" !important;
+    grid-auto-rows: auto !important;
+    gap: 10px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-side > .home-message-card { grid-area: message !important; }
+  .app-shell.home-page-active .reel-side > .alarm-row { grid-area: alarm !important; }
+  .app-shell.home-page-active .reel-side > .thermostat-card,
+  .app-shell.home-page-active .reel-side > .thermostat-card-v4 { grid-area: climate !important; }
+  .app-shell.home-page-active .reel-side > .waste-card { grid-area: waste !important; }
+  .app-shell.home-page-active .reel-side > .reel-tools-grid { grid-area: tools !important; }
+
+  .app-shell.home-page-active .reel-side-card,
+  .app-shell.home-page-active .reel-tools-grid button {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 18px !important;
+    background: rgba(252,252,253,.95) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,.72) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .app-shell.home-page-active .home-message-card {
+    min-height: 78px !important;
+    padding: 13px 14px !important;
+  }
+
+  .app-shell.home-page-active .house-message {
+    margin-top: 8px !important;
+    gap: 9px !important;
+  }
+
+  .app-shell.home-page-active .house-message strong,
+  .app-shell.home-page-active .alarm-row strong,
+  .app-shell.home-page-active .waste-value strong {
+    font-size: 12px !important;
+  }
+
+  .app-shell.home-page-active .house-message span,
+  .app-shell.home-page-active .alarm-row small,
+  .app-shell.home-page-active .waste-value small {
+    display: block !important;
+    font-size: 9.5px !important;
+  }
+
+  .app-shell.home-page-active .alarm-row,
+  .app-shell.home-page-active .waste-card {
+    min-height: 82px !important;
+    padding: 11px !important;
+  }
+
+  .app-shell.home-page-active .alarm-row b,
+  .app-shell.home-page-active .waste-card .side-heading b {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .thermostat-card-v4,
+  .app-shell.home-page-active .thermostat-card {
+    width: 100% !important;
+    min-height: 176px !important;
+    padding: 13px !important;
+  }
+
+  .app-shell.home-page-active .thermostat-v4-body {
+    min-width: 0 !important;
+    gap: 12px !important;
+  }
+
+  .app-shell.home-page-active .thermostat-v4-ring {
+    width: 104px !important;
+    height: 104px !important;
+    min-width: 104px !important;
+  }
+
+  .app-shell.home-page-active .thermostat-v4-stats {
+    min-width: 0 !important;
+  }
+
+  .app-shell.home-page-active .reel-tools-grid {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: none !important;
+    grid-auto-rows: 66px !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-tools-grid button {
+    width: 100% !important;
+    min-height: 66px !important;
+    padding: 8px 4px !important;
+    gap: 5px !important;
+  }
+
+  .app-shell.home-page-active .reel-tools-grid svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .app-shell.home-page-active .reel-tools-grid span {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Dialogs fit the phone viewport. The approved compact climate dialog is  */
+  /* deliberately excluded and remains governed by exact-shared-ui.          */
+  /* ---------------------------------------------------------------------- */
+  .app-shell.home-page-active .reel-backdrop:not(.exact-calendar-climate-context) {
+    padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)) !important;
+    align-items: end !important;
+    justify-items: center !important;
+  }
+
+  .app-shell.home-page-active .reel-backdrop:not(.exact-calendar-climate-context) > .reel-modal {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: min(88dvh, 760px) !important;
+    margin: 0 !important;
+    padding: 15px !important;
+    border-radius: 24px !important;
+  }
+
+  .app-shell.home-page-active .room-modal-grid,
+  .app-shell.home-page-active .home-room-modal-grid-v4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  /* Night mode uses opaque materials on phone to avoid expensive blur while scrolling. */
+  .app-shell.home-page-active.night .reel-room-grid > .reel-room.room-card-v4,
+  .app-shell.home-page-active.night .reel-side-card,
+  .app-shell.home-page-active.night .reel-tools-grid button {
+    border-color: rgba(255,255,255,.075) !important;
+    background: rgba(38,38,42,.97) !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  }
+
+  .app-shell.home-page-active.night .room-title-v4 > i,
+  .app-shell.home-page-active.night .room-device-button-v4 > span {
+    background: color-mix(in srgb, var(--room-shared-accent) 18%, #2c2c30) !important;
+  }
+
+  .app-shell.home-page-active.night .room-device-button-v4.active {
+    background: color-mix(in srgb, var(--room-shared-accent) 28%, #303034) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar {
+    grid-template-columns: minmax(0, 1fr) 42px 42px !important;
+    column-gap: 6px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    min-height: 58px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "message"
+      "alarm"
+      "waste"
+      "climate"
+      "tools" !important;
+  }
+
+  .app-shell.home-page-active .reel-tools-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .app-shell.home-page-active .room-modal-grid,
+  .app-shell.home-page-active .home-room-modal-grid-v4 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 940px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar {
+    min-height: 88px !important;
+    grid-template-areas: "greeting clock weather avatars alarm notifications spacer" !important;
+    grid-template-columns: minmax(150px, 1fr) auto auto auto auto 42px 42px !important;
+    grid-template-rows: 54px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 > .reel-topbar .security-pill {
+    width: auto !important;
+    min-width: 112px !important;
+  }
+
+  .app-shell.home-page-active > .global-theme-switch.home-header-theme-switch {
+    top: calc(max(10px, env(safe-area-inset-top, 0px)) + 8px) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
