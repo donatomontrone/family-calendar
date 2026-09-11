@@ -182,7 +182,11 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
 }
 
 function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomModel; language: Language; onOpen: () => void }) {
-  const editableIds = room.controllableIds.filter((id) => ["light", "cover"].includes(domainOf(id)));
+  const visibleControlIds = room.controllableIds.filter((id) => domainOf(id) !== "climate");
+  const editableIds = visibleControlIds.filter((id) => ["light", "cover"].includes(domainOf(id)));
+  const climateId = room.controllableIds.find((id) => domainOf(id) === "climate");
+  const climateActive = Boolean(climateId && isActive(hass, climateId));
+  const visiblePassiveIds = room.passiveIds.filter((id) => !isRoomTemperatureSensor(hass, id)).slice(0, climateActive ? 3 : 4);
   const [selectedControl, setSelectedControl] = useState<string | null>(() => editableIds[0] ?? null);
   const [lightMode, setLightMode] = useState<LightControlMode>("brightness");
   const selectedState = selectedControl ? hass.states[selectedControl] : undefined;
@@ -208,7 +212,7 @@ function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomMode
       <div className="room-device-section room-device-active-section">
         <span className="room-section-label">{language === "it" ? "Controlli" : "Controls"}</span>
         <div className="room-device-grid-v4">
-          {room.controllableIds.slice(0, 4).map((id) => (
+          {visibleControlIds.slice(0, 4).map((id) => (
             <RoomDeviceButton
               key={id}
               hass={hass}
@@ -217,7 +221,7 @@ function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomMode
               onClick={() => runEntity(id)}
             />
           ))}
-          {!room.controllableIds.length && <small className="room-empty-v4">{language === "it" ? "Nessun dispositivo controllabile" : "No controllable devices"}</small>}
+          {!visibleControlIds.length && <small className="room-empty-v4">{language === "it" ? "Nessun dispositivo controllabile" : "No controllable devices"}</small>}
         </div>
       </div>
 
@@ -234,13 +238,19 @@ function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomMode
       <div className="room-device-section room-passive-section-v4">
         <span className="room-section-label">{language === "it" ? "Sensori e stato" : "Sensors & status"}</span>
         <div className="room-passive-grid-v4">
-          {room.passiveIds.slice(0, 4).map((id) => (
+          {visiblePassiveIds.map((id) => (
             <div className="room-passive-device-v4" key={id}>
               <span>{iconForEntity(hass, id)}</span>
               <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
             </div>
           ))}
-          {!room.passiveIds.length && <small className="room-empty-v4">{language === "it" ? "Nessun sensore" : "No sensors"}</small>}
+          {climateActive && climateId && (
+            <div className="room-passive-device-v4 room-climate-status-v6">
+              <span><ClimateIcon /></span>
+              <div><strong>{language === "it" ? "Clima acceso" : "Climate on"}</strong><small>{climateTargetLabel(hass, climateId, language)}</small></div>
+            </div>
+          )}
+          {!visiblePassiveIds.length && !climateActive && <small className="room-empty-v4">{language === "it" ? "Nessun sensore" : "No sensors"}</small>}
         </div>
       </div>
 
@@ -394,6 +404,25 @@ function domainOf(entityId: string) { return entityId.split(".")[0]; }
 function locale(language: Language) { return language === "it" ? "it-IT" : "en-GB"; }
 function average(values: number[]) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
 function shortName(name: string, roomName: string) { const cleaned = name.replace(new RegExp(roomName, "ig"), "").replace(/^[\s_-]+|[\s_-]+$/g, ""); return cleaned || name; }
+
+function isRoomTemperatureSensor(hass: Hass, entityId: string) {
+  if (domainOf(entityId) !== "sensor") return false;
+  const state = hass.states[entityId];
+  const deviceClass = String(state?.attributes.device_class ?? "").toLowerCase();
+  const unit = String(state?.attributes.unit_of_measurement ?? "").toLowerCase();
+  return deviceClass === "temperature" || unit === "°c" || unit === "°f";
+}
+
+function climateTargetLabel(hass: Hass, entityId: string, language: Language) {
+  const attributes = hass.states[entityId]?.attributes ?? {};
+  const format = (value: number) => value.toLocaleString(locale(language), { minimumFractionDigits: value % 1 === 0 ? 0 : 1, maximumFractionDigits: 1 });
+  const target = Number(attributes.temperature);
+  if (Number.isFinite(target)) return `${format(target)}°`;
+  const low = Number(attributes.target_temp_low);
+  const high = Number(attributes.target_temp_high);
+  if (Number.isFinite(low) && Number.isFinite(high)) return `${format(low)}–${format(high)}°`;
+  return language === "it" ? "Attivo" : "Active";
+}
 
 function findTemperature(hass: Hass, ids: string[]) {
   const state = ids.map((id) => hass.states[id]).find((item) => item?.attributes.device_class === "temperature" || item?.attributes.unit_of_measurement === "°C");
