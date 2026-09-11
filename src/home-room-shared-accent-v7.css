@@ -154,168 +154,405 @@
     background: var(--room-shared-accent) !important;
   }
 
-  /* Clicking the room temperature must feel immediate: the room header itself
-   * must not shrink or animate while the climate panel opens. */
+  /* The temperature affordance is immediate: no press/scale animation. */
   .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4,
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4:active {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4:active,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b:active {
     transition: none !important;
     animation: none !important;
     transform: none !important;
   }
 
-  /* The room-scoped climate popup adopts the exact visual grammar used by the
-   * Calendar Smart Home .device-controls panel. The Home implementation still
-   * reuses its filtered climate entity, but visually it is the same compact
-   * control surface instead of a separate large feature modal. */
-  .app-shell.home-page-active .reel-backdrop:has(.climate-modal),
-  .app-shell.home-page-active .reel-backdrop:has(.climate-modal) > .climate-modal {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  .app-shell.home-page-active .reel-backdrop:has(.room-climate-modal) {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  .app-shell.home-page-active .climate-modal.feature-modal.room-climate-modal {
-    width: min(370px, calc(100vw - 48px)) !important;
-    max-height: calc(100vh - 48px) !important;
+  /* ---------------------------------------------------------------------- */
+  /* SHARED HEADER CONTRACT — CASA is the literal visual source of truth.   */
+  /* The two page headers use the same geometry and the same control metrics. */
+  /* ---------------------------------------------------------------------- */
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract {
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 94px !important;
+    height: 94px !important;
     margin: 0 !important;
-    padding: 14px !important;
-    overflow: auto !important;
-    border: 1px solid var(--line, rgba(60,60,67,.10)) !important;
-    border-radius: 20px !important;
-    background: rgba(255,255,255,.78) !important;
-    box-shadow: 0 10px 24px rgba(0,0,0,.045) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    padding: 4px 5px 16px !important;
+    display: grid !important;
+    grid-template-columns: minmax(190px, 1fr) auto minmax(330px, 1.35fr) !important;
+    align-items: center !important;
+    gap: 24px !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
   }
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head {
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .reel-greeting,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .reel-greeting {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .reel-greeting strong,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .reel-greeting strong {
+    margin: 0 !important;
+    font-size: 20px !important;
+    line-height: 1.08 !important;
+    font-weight: 660 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .reel-greeting span,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .reel-greeting span {
+    margin: 0 !important;
+    color: var(--fc-secondary, #6e6e73) !important;
+    font-size: 11.5px !important;
+    line-height: 1.25 !important;
+    font-weight: 500 !important;
+    text-transform: capitalize !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .reel-clock,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .reel-clock {
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: clamp(46px, 4vw, 68px) !important;
+    line-height: .96 !important;
+    font-weight: 440 !important;
+    letter-spacing: -.055em !important;
+    font-variant-numeric: tabular-nums !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .reel-top-actions,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .reel-top-actions {
+    min-width: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    gap: 10px !important;
-    margin: 0 0 12px !important;
+    justify-content: flex-end !important;
+    gap: 9px !important;
+    margin: 0 !important;
+    padding: 0 49px 0 0 !important;
+    overflow: visible !important;
   }
 
-  /* Calendar DeviceControls uses the CONTROLLI kicker + device name. Rebuild
-   * that same heading from the room name already attached by ui-interactions. */
-  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head .reel-kicker {
-    font-size: 0 !important;
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .weather-pill,
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .security-pill,
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .round-top,
+  .app-shell.home-page-active.home-page-active > .global-theme-switch.home-header-theme-switch,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .weather-pill,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .security-pill,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .round-top,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+    height: 40px !important;
+    min-height: 40px !important;
+    border: 1px solid rgba(255,255,255,.46) !important;
+    border-radius: 20px !important;
+    background: var(--fc-material, rgba(248,248,250,.78)) !important;
+    color: inherit !important;
+    box-shadow: var(--fc-control-shadow, inset 0 1px 0 rgba(255,255,255,.68), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04)) !important;
+    backdrop-filter: blur(24px) saturate(155%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .weather-pill,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .weather-pill {
+    padding: 0 9px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: #a56d00 !important;
+    font-size: 10px !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .weather-pill small,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .weather-pill small {
+    color: #8e8e93 !important;
+    font-size: inherit !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .weather-pill svg,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .weather-pill svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .security-pill,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .security-pill {
+    padding: 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    color: #65656a !important;
+    font-size: 9px !important;
+    font-weight: 650 !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .round-top,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .round-top {
+    width: 30px !important;
+    min-width: 30px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    color: #65656a !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .security-pill svg,
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .round-top svg,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .security-pill svg,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .round-top svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .avatar-stack,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .avatar-stack {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .avatar-stack i,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .avatar-stack i {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 2px solid rgba(255,255,255,.8) !important;
+    border-radius: 50% !important;
+    color: #fff !important;
+    font-size: 9px !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
     line-height: 1 !important;
   }
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head .reel-kicker::before {
-    content: "CONTROLLI";
-    color: #9a9aa0;
-    font-size: 9px;
-    font-weight: 750;
-    letter-spacing: .13em;
-    text-transform: uppercase;
+  .app-shell.home-page-active.home-page-active .reel-home > .reel-topbar .avatar-stack i + i,
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .avatar-stack i + i {
+    margin-left: -7px !important;
   }
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head h2 {
-    margin: 3px 0 0 !important;
-    font-size: 0 !important;
-    line-height: 1.1 !important;
-  }
-
-  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head h2::before {
-    content: "Clima " attr(data-room-name);
-    color: var(--lg-label, #1d1d1f);
-    font-size: 12px;
-    font-weight: 680;
-    letter-spacing: -.02em;
-  }
-
-  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head h2::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-close {
-    width: 27px !important;
-    height: 27px !important;
-    min-width: 27px !important;
-    min-height: 27px !important;
+  /* CALENDARIO's theme button is rendered inside SharedHeader, but is placed in
+   * the exact same final slot occupied by CASA's external theme button. */
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .header-theme-switch {
+    position: absolute !important;
+    z-index: 60 !important;
+    top: 21px !important;
+    right: 5px !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 40px !important;
+    min-width: 40px !important;
     padding: 0 !important;
-    border: 0 !important;
-    border-radius: 50% !important;
-    background: rgba(118,118,128,.10) !important;
-    color: #6e6e73 !important;
-    box-shadow: none !important;
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-  }
-
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-grid.room-climate-filtered {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 0 !important;
+    place-items: center !important;
+    color: var(--fc-secondary, #6e6e73) !important;
   }
 
-  /* Home currently renders ClimateControl full; these values are the same
-   * compact contract used by Calendar DeviceControls. */
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-control {
-    gap: 7px !important;
-    padding: 9px !important;
-    border-radius: 14px !important;
-    background: rgba(118,118,128,.035) !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    animation: none !important;
-    transition: none !important;
+  .app-shell.calendar-page-active.calendar-page-active > .reel-topbar.shared-home-header.casa-header-contract .header-theme-switch svg,
+  .app-shell.home-page-active.home-page-active > .global-theme-switch.home-header-theme-switch svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
   }
+}
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-control-title strong {
-    display: none !important;
-  }
+/* -------------------------------------------------------------------------- */
+/* ROOM CLIMATE POPUP — literal CALENDARIO DeviceControls visual contract.    */
+/* -------------------------------------------------------------------------- */
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-control-icon {
-    width: 25px !important;
-    height: 25px !important;
-    border-radius: 8px !important;
-  }
+.app-shell.home-page-active.home-page-active .reel-backdrop:has(.climate-modal.room-climate-modal) {
+  z-index: 2200 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  animation: none !important;
+  transition: none !important;
+}
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-current strong {
-    font-size: 16px !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.feature-modal.room-climate-modal {
+  position: fixed !important;
+  z-index: 2201 !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(620px, calc(100vw - 36px)) !important;
+  max-width: 620px !important;
+  max-height: calc(100vh - 36px) !important;
+  margin: 0 !important;
+  padding: 18px !important;
+  gap: 13px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.56) !important;
+  border-radius: 28px !important;
+  background: rgba(246,246,248,.86) !important;
+  box-shadow: 0 0 0 100vmax rgba(20,20,24,.30), 0 24px 80px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.88) !important;
+  backdrop-filter: blur(34px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(34px) saturate(160%) !important;
+  transform: translate(-50%,-50%) !important;
+  animation: none !important;
+  transition: none !important;
+}
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-target-row {
-    grid-template-columns: 27px minmax(0, 1fr) 27px !important;
-    gap: 6px !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .modal-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+}
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-step-button {
-    width: 27px !important;
-    height: 27px !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .modal-head .reel-kicker {
+  display: block !important;
+  margin: 0 !important;
+  color: #9a9aa0 !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  font-weight: 750 !important;
+  letter-spacing: .13em !important;
+  text-transform: uppercase !important;
+}
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-target-value {
-    min-height: 38px !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .modal-head .reel-kicker::before {
+  content: "CONTROLLI" !important;
+  font-size: 9px !important;
+}
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-target-value strong {
-    font-size: 18px !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .modal-head h2 {
+  display: block !important;
+  margin: 3px 0 0 !important;
+  color: var(--lg-label, #1d1d1f) !important;
+  font-size: 0 !important;
+  line-height: 1.1 !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+}
 
-  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-mode-button {
-    min-height: 38px !important;
-    border-radius: 9px !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .modal-head h2::before {
+  content: "Clima " attr(data-room-name) !important;
+  font-size: 12px !important;
+}
 
-  .app-shell.home-page-active.night .climate-modal.feature-modal.room-climate-modal {
-    border-color: rgba(255,255,255,.08) !important;
-    background: rgba(44,44,46,.90) !important;
-    box-shadow: 0 10px 24px rgba(0,0,0,.20) !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .modal-head h2::after {
+  content: none !important;
+  display: none !important;
+}
 
-  .app-shell.home-page-active.night .climate-modal.room-climate-modal .climate-control {
-    background: rgba(118,118,128,.10) !important;
-  }
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .modal-close {
+  width: 27px !important;
+  height: 27px !important;
+  min-width: 27px !important;
+  min-height: 27px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,.58) !important;
+  color: #6e6e73 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 1px 2px rgba(0,0,0,.035), 0 7px 20px rgba(0,0,0,.045) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-grid.room-climate-filtered {
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-grid.room-climate-filtered > :not([data-room-climate-selected="true"]) {
+  display: none !important;
+}
+
+/* ClimateControl is rendered as `full` in CASA, but these are the exact
+ * `climate-compact` values used by CALENDARIO DeviceControls. */
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-control[data-room-climate-selected="true"],
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-grid.room-climate-filtered > .climate-control {
+  gap: 7px !important;
+  padding: 9px !important;
+  border-radius: 14px !important;
+  background: rgba(118,118,128,.035) !important;
+  box-shadow: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-control-title strong {
+  display: none !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-control-icon {
+  width: 25px !important;
+  height: 25px !important;
+  border-radius: 8px !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-current strong {
+  font-size: 16px !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-target-row {
+  grid-template-columns: 27px 1fr 27px !important;
+  gap: 6px !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-step-button {
+  width: 27px !important;
+  height: 27px !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-target-value {
+  min-height: 38px !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-target-value strong {
+  font-size: 18px !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-mode-button {
+  min-height: 38px !important;
+  border-radius: 9px !important;
+}
+
+/* Same glass treatment CALENDARIO applies to controls inside .device-controls. */
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-step-button,
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-mode-button,
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-chip-row button {
+  background: rgba(255,255,255,.58) !important;
+  border-color: rgba(255,255,255,.60) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 1px 2px rgba(0,0,0,.035), 0 7px 20px rgba(0,0,0,.045) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+}
+
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-mode-button.active,
+.app-shell.home-page-active.home-page-active .climate-modal.room-climate-modal .climate-chip-row button.active {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.36), 0 6px 18px color-mix(in srgb, var(--climate-accent) 18%, transparent) !important;
+}
+
+.app-shell.home-page-active.night .climate-modal.feature-modal.room-climate-modal {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(38,38,40,.90) !important;
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,.50), 0 26px 90px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.05) !important;
 }
