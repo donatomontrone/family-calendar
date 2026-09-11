@@ -1,68 +1,137 @@
 /*
- * CASA V7 — active-device driven room-card accent.
+ * CASA V7 — room-owned accent system used by both the GitHub Pages demo and
+ * the Home Assistant panel.
  *
- * A room card is neutral while every controllable device is off. When at least
- * one room device is active, room-card-accent.ts copies that device's accent to
- * --room-active-accent on the owning room card. Only the upper band is tinted.
+ * The colour belongs to the room card itself and is always visible only in the
+ * upper portion. Controls remain neutral while off; when active they reuse the
+ * exact same room accent. Device state never decides whether the room is tinted.
  */
 
 @media (min-width: 701px) {
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4 {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
+    --room-shared-accent: #4f8cff;
     position: relative !important;
     overflow: hidden !important;
     isolation: isolate !important;
   }
 
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4::before {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 1) {
+    --room-shared-accent: #4f8cff;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 2) {
+    --room-shared-accent: #34c759;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 3) {
+    --room-shared-accent: #30b0c7;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 4) {
+    --room-shared-accent: #ff9f0a;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 5) {
+    --room-shared-accent: #8e7dff;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 6) {
+    --room-shared-accent: #ff6482;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n) {
+    --room-shared-accent: #32ade6;
+  }
+
+  /* Clearly visible colour band on the ROOM card itself. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4::before {
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 116px;
+    height: 124px;
     z-index: 0;
     pointer-events: none;
-    opacity: 0;
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--room-active-accent, #0a84ff) 46%, rgba(255,255,255,.92)) 0%,
-      color-mix(in srgb, var(--room-active-accent, #0a84ff) 30%, rgba(255,255,255,.76)) 58%,
-      color-mix(in srgb, var(--room-active-accent, #0a84ff) 10%, transparent) 84%,
-      transparent 100%
-    );
-    transition: opacity .2s ease, background .2s ease;
-  }
-
-  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room.room-card-v4::before {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--room-active-accent, #0a84ff) 38%, rgba(44,44,47,.94)) 0%,
-      color-mix(in srgb, var(--room-active-accent, #0a84ff) 25%, rgba(44,44,47,.90)) 58%,
-      color-mix(in srgb, var(--room-active-accent, #0a84ff) 9%, transparent) 84%,
-      transparent 100%
-    );
-  }
-
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4[data-room-active="true"]::before {
     opacity: 1;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--room-shared-accent) 42%, rgba(255,255,255,.94)) 0%,
+      color-mix(in srgb, var(--room-shared-accent) 32%, rgba(255,255,255,.86)) 62%,
+      color-mix(in srgb, var(--room-shared-accent) 13%, transparent) 86%,
+      transparent 100%
+    );
   }
 
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4 > * {
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4::before {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--room-shared-accent) 42%, rgba(44,44,47,.96)) 0%,
+      color-mix(in srgb, var(--room-shared-accent) 30%, rgba(44,44,47,.92)) 62%,
+      color-mix(in srgb, var(--room-shared-accent) 12%, transparent) 86%,
+      transparent 100%
+    );
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 > * {
     position: relative;
     z-index: 1;
   }
 
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4[data-room-active="true"] {
-    border-color: color-mix(in srgb, var(--room-active-accent) 22%, var(--lg-line)) !important;
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 24%, var(--lg-line)) !important;
   }
 
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4[data-room-active="true"] .room-title-v4 > i {
-    border-color: color-mix(in srgb, var(--room-active-accent) 32%, transparent) !important;
-    background: color-mix(in srgb, var(--room-active-accent) 24%, var(--lg-surface-strong)) !important;
-    color: var(--room-active-accent) !important;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-active-accent) 15%, transparent), inset 0 1px 0 rgba(255,255,255,.52) !important;
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 34%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 24%, var(--lg-surface-strong)) !important;
+    color: var(--room-shared-accent) !important;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-shared-accent) 15%, transparent), inset 0 1px 0 rgba(255,255,255,.55) !important;
   }
 
-  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room.room-card-v4[data-room-active="true"] .room-title-v4 > i {
-    background: color-mix(in srgb, var(--room-active-accent) 22%, rgba(58,58,62,.92)) !important;
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i {
+    background: color-mix(in srgb, var(--room-shared-accent) 22%, rgba(58,58,62,.92)) !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+  }
+
+  /* OFF controls stay neutral. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4:not(.active) {
+    border-color: var(--lg-line-soft) !important;
+    background: rgba(118,118,128,.055) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4:not(.active) {
+    background: rgba(118,118,128,.13) !important;
+  }
+
+  /* ON controls inherit the room colour, regardless of device domain. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active,
+  .app-shell.day.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:not(.domain-climate),
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:not(.domain-climate) {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, var(--lg-line-soft)) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 28%, var(--lg-surface-strong)) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:not(.domain-climate) {
+    background: color-mix(in srgb, var(--room-shared-accent) 30%, rgba(58,58,62,.92)) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, transparent) !important;
+    background: var(--room-shared-accent) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-shared-accent) 22%, transparent), inset 0 1px 0 rgba(255,255,255,.24) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active.selected {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 52%, var(--lg-line-soft)) !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 16%, transparent), inset 0 1px 0 rgba(255,255,255,.58) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:hover {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 48%, var(--lg-line-soft)) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 34%, var(--lg-control-hover)) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:hover {
+    background: color-mix(in srgb, var(--room-shared-accent) 34%, rgba(72,72,77,.95)) !important;
   }
 }
