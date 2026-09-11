@@ -2,17 +2,18 @@
  * CASA V7 — room-owned accent system used by both the GitHub Pages demo and
  * the Home Assistant panel.
  *
- * The colour belongs to the room card itself and is always visible only in the
- * upper portion. Controls remain neutral while off; when active they reuse the
- * exact same room accent. Device state never decides whether the room is tinted.
+ * Each room keeps a stable accent colour. The room surface itself stays fully
+ * neutral: colour is limited to a solid upper border. Controls remain neutral
+ * while off; active controls reuse the exact same room accent.
  */
 
 @media (min-width: 701px) {
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
     --room-shared-accent: #4f8cff;
-    position: relative !important;
-    overflow: hidden !important;
-    isolation: isolate !important;
+    border-top: 5px solid var(--room-shared-accent) !important;
+    border-right-color: var(--lg-line) !important;
+    border-bottom-color: var(--lg-line) !important;
+    border-left-color: var(--lg-line) !important;
   }
 
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4:nth-child(7n + 1) {
@@ -43,56 +44,20 @@
     --room-shared-accent: #32ade6;
   }
 
-  /* Clearly visible colour band on the ROOM card itself.
-   * content/display are !important because reel-home.css intentionally disables
-   * generic room-card pseudo-elements later in the compiled stylesheet. */
+  /* No coloured surface or gradient: only the top border carries the room accent. */
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4::before {
-    content: "" !important;
-    display: block !important;
-    position: absolute !important;
-    inset: 0 0 auto 0 !important;
-    height: 124px !important;
-    z-index: 0 !important;
-    pointer-events: none !important;
-    opacity: 1 !important;
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--room-shared-accent) 42%, rgba(255,255,255,.94)) 0%,
-      color-mix(in srgb, var(--room-shared-accent) 32%, rgba(255,255,255,.86)) 62%,
-      color-mix(in srgb, var(--room-shared-accent) 13%, transparent) 86%,
-      transparent 100%
-    ) !important;
+    content: none !important;
+    display: none !important;
+    background: none !important;
   }
 
-  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4::before {
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--room-shared-accent) 42%, rgba(44,44,47,.96)) 0%,
-      color-mix(in srgb, var(--room-shared-accent) 30%, rgba(44,44,47,.92)) 62%,
-      color-mix(in srgb, var(--room-shared-accent) 12%, transparent) 86%,
-      transparent 100%
-    ) !important;
-  }
-
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 24%, var(--lg-line)) !important;
-  }
-
-  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 34%, transparent) !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 24%, var(--lg-surface-strong)) !important;
-    color: var(--room-shared-accent) !important;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-shared-accent) 15%, transparent), inset 0 1px 0 rgba(255,255,255,.55) !important;
-  }
-
+  /* Keep the room icon neutral so the accent remains confined to the top edge. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i,
   .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i {
-    background: color-mix(in srgb, var(--room-shared-accent) 22%, rgba(58,58,62,.92)) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+    border-color: var(--lg-line-soft) !important;
+    background: var(--lg-control) !important;
+    color: var(--lg-label) !important;
+    box-shadow: inset 0 1px 0 var(--lg-glint) !important;
   }
 
   /* OFF controls stay neutral. */
@@ -109,7 +74,7 @@
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active,
   .app-shell.day.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:not(.domain-climate),
   .app-shell.night.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:not(.domain-climate) {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, var(--lg-line-soft)) !important;
+    border-color: color-mix(in srgb, var(--room-shared-accent) 42%, var(--lg-line-soft)) !important;
     background: color-mix(in srgb, var(--room-shared-accent) 28%, var(--lg-surface-strong)) !important;
   }
 
@@ -118,19 +83,19 @@
   }
 
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, transparent) !important;
+    border-color: var(--room-shared-accent) !important;
     background: var(--room-shared-accent) !important;
     color: #fff !important;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-shared-accent) 22%, transparent), inset 0 1px 0 rgba(255,255,255,.24) !important;
+    box-shadow: none !important;
   }
 
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active.selected {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 52%, var(--lg-line-soft)) !important;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 16%, transparent), inset 0 1px 0 rgba(255,255,255,.58) !important;
+    border-color: var(--room-shared-accent) !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 16%, transparent) !important;
   }
 
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active:hover {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 48%, var(--lg-line-soft)) !important;
+    border-color: var(--room-shared-accent) !important;
     background: color-mix(in srgb, var(--room-shared-accent) 34%, var(--lg-control-hover)) !important;
   }
 
