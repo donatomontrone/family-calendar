@@ -51,22 +51,38 @@
     background: none !important;
   }
 
-  /* Room icon uses the same accent as the room top border. */
+  /* Room icon: outline and glyph use the exact room accent. */
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i,
   .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, transparent) !important;
+    border-color: var(--room-shared-accent) !important;
     background: color-mix(in srgb, var(--room-shared-accent) 14%, var(--lg-control)) !important;
     color: var(--room-shared-accent) !important;
     box-shadow: inset 0 1px 0 var(--lg-glint) !important;
   }
 
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-title-v4 > i svg * {
+    color: var(--room-shared-accent) !important;
+  }
+
+  /* Kill the old per-domain accent at its source. Any legacy rule that still
+   * references --room-active-accent now resolves to the room colour. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 {
+    --room-active-accent: var(--room-shared-accent) !important;
+  }
+
   /* Every controllable-device icon inherits the room accent too. */
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 > span,
   .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 > span {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 38%, transparent) !important;
+    border-color: var(--room-shared-accent) !important;
     background: color-mix(in srgb, var(--room-shared-accent) 14%, var(--lg-control)) !important;
     color: var(--room-shared-accent) !important;
     box-shadow: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 > span svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4 > span svg * {
+    color: inherit !important;
   }
 
   /* OFF controls stay neutral. */
@@ -91,11 +107,18 @@
     background: color-mix(in srgb, var(--room-shared-accent) 30%, rgba(58,58,62,.92)) !important;
   }
 
+  /* Active-device icon tile uses the exact room colour; the glyph stays white
+   * for contrast. This also catches covers previously forced to blue. */
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 48%, transparent) !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 18%, var(--lg-control)) !important;
-    color: var(--room-shared-accent) !important;
+    border-color: var(--room-shared-accent) !important;
+    background: var(--room-shared-accent) !important;
+    color: #fff !important;
     box-shadow: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span svg,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active > span svg * {
+    color: #fff !important;
   }
 
   .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 .room-device-button-v4.active.selected {
