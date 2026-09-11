@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import HomeView from "./HomeView";
-import ClimateControl from "./ClimateControl";
+import DeviceControls from "./DeviceControls";
 import SharedHeader from "./SharedHeader";
 import HeaderActionModal, { type HeaderAction } from "./HeaderActionModal";
 import ScrollRegion from "./ScrollRegion";
@@ -13,10 +13,7 @@ import {
   getAreas,
   getEntityRegistry,
   getFavorites,
-  setCoverPosition,
   setFavorites,
-  setLightBrightness,
-  setLightColorTemperature,
 } from "./ha";
 import { getLanguage, t, type Language } from "./i18n";
 import { getWhiteTemperature, whiteTemperatureAccent } from "./light-temperature";
@@ -213,200 +210,193 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
 
   return (
     <main className={`app-shell ${isNight ? "night" : "day"} ${page === "home" ? "home-page-active" : "calendar-page-active"}`}>
+      <SharedHeader
+        hass={hass}
+        now={now}
+        language={language}
+        onAlarm={openAlarm}
+        onNotifications={openNotifications}
+        onThemeToggle={toggleTheme}
+        isNight={isNight}
+        themeLabel={themeLabel}
+      />
+
       {page === "calendar" ? (
-        <>
-          <SharedHeader
-            hass={hass}
-            now={now}
-            language={language}
-            onAlarm={openAlarm}
-            onNotifications={openNotifications}
-            onThemeToggle={toggleTheme}
-            isNight={isNight}
-            themeLabel={themeLabel}
-          />
-          <section className="dashboard-grid">
-            <aside className="left-column">
-              <AgendaPanel now={now} events={events} language={language} />
-              <section className="card tasks-card">
-                <div className="card-heading split tasks-heading">
-                  <div>
-                    <span className="section-kicker">{t("lists", language)}</span>
-                    <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
-                  </div>
-                  <button
-                    className={`task-add-button ${addingTask ? "active" : ""}`}
-                    type="button"
-                    aria-label={addingTask ? t("close", language) : t("add", language)}
-                    title={addingTask ? t("close", language) : t("add", language)}
-                    onClick={() => {
-                      setAddingTask((value) => !value);
-                      if (addingTask) setTaskDraft("");
-                    }}
-                  >
-                    {addingTask ? <CloseIcon /> : <PlusIcon />}
-                  </button>
+        <section className="dashboard-grid">
+          <aside className="left-column">
+            <AgendaPanel now={now} events={events} language={language} />
+            <section className="card tasks-card">
+              <div className="card-heading split tasks-heading">
+                <div>
+                  <span className="section-kicker">{t("lists", language)}</span>
+                  <h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2>
                 </div>
-
-                {addingTask && (
-                  <form className="task-composer" onSubmit={addTask}>
-                    <input
-                      autoFocus
-                      value={taskDraft}
-                      onChange={(event) => setTaskDraft(event.target.value)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Escape") {
-                          setTaskDraft("");
-                          setAddingTask(false);
-                        }
-                      }}
-                      placeholder={language === "it" ? "Nuovo elemento" : "New item"}
-                      aria-label={t("add", language)}
-                    />
-                    <button className="task-save-button" type="submit" aria-label={t("add", language)} title={t("add", language)} disabled={!taskDraft.trim()}>
-                      <CheckIcon />
-                    </button>
-                  </form>
-                )}
-
-                <ScrollRegion
-                  className="task-list"
-                  shellClassName="task-list-scroll-shell"
-                  buttonLabel={language === "it" ? "Vai in fondo alla lista" : "Go to bottom of list"}
-                  resetKey={mode}
+                <button
+                  className={`task-add-button ${addingTask ? "active" : ""}`}
+                  type="button"
+                  aria-label={addingTask ? t("close", language) : t("add", language)}
+                  title={addingTask ? t("close", language) : t("add", language)}
+                  onClick={() => {
+                    setAddingTask((value) => !value);
+                    if (addingTask) setTaskDraft("");
+                  }}
                 >
-                  {currentTasks.map((item) => (
-                    <SwipeTaskRow
-                      key={`${mode}-${item.id}`}
-                      item={item}
-                      deleteLabel={t("delete", language)}
-                      onToggle={() => updateTask(item.id)}
-                      onDelete={() => deleteTask(item.id)}
-                    />
-                  ))}
-                </ScrollRegion>
+                  {addingTask ? <CloseIcon /> : <PlusIcon />}
+                </button>
+              </div>
 
-                <div className="segmented-control task-segmented-control">
-                  <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
-                  <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
-                </div>
-              </section>
-            </aside>
-
-            <CalendarPanel
-              month={visibleMonth}
-              today={now}
-              events={events}
-              language={language}
-              onPrevious={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}
-              onNext={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}
-              onToday={() => setVisibleMonth(new Date(now.getFullYear(), now.getMonth(), 1))}
-            />
-
-            <aside className="right-column">
-              <section className="card home-card">
-                <div className="card-heading split home-heading">
-                  <div>
-                    <span className="section-kicker">{t("smartHome", language)}</span>
-                    <h2>{t("home", language)}</h2>
-                  </div>
-                  <button className="power-all" onClick={() => void turnOffScope()} aria-label={t("turnOffAll", language)} title={t("turnOffAll", language)}>
-                    <PowerIcon />
+              {addingTask && (
+                <form className="task-composer" onSubmit={addTask}>
+                  <input
+                    autoFocus
+                    value={taskDraft}
+                    onChange={(event) => setTaskDraft(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        setTaskDraft("");
+                        setAddingTask(false);
+                      }
+                    }}
+                    placeholder={language === "it" ? "Nuovo elemento" : "New item"}
+                    aria-label={t("add", language)}
+                  />
+                  <button className="task-save-button" type="submit" aria-label={t("add", language)} title={t("add", language)} disabled={!taskDraft.trim()}>
+                    <CheckIcon />
                   </button>
-                </div>
+                </form>
+              )}
 
-                <div className="room-switcher room-chip-strip" role="tablist" aria-label={t("room", language)}>
+              <ScrollRegion
+                className="task-list"
+                shellClassName="task-list-scroll-shell"
+                buttonLabel={language === "it" ? "Vai in fondo alla lista" : "Go to bottom of list"}
+                resetKey={mode}
+              >
+                {currentTasks.map((item) => (
+                  <SwipeTaskRow
+                    key={`${mode}-${item.id}`}
+                    item={item}
+                    deleteLabel={t("delete", language)}
+                    onToggle={() => updateTask(item.id)}
+                    onDelete={() => deleteTask(item.id)}
+                  />
+                ))}
+              </ScrollRegion>
+
+              <div className="segmented-control task-segmented-control">
+                <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
+                <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
+              </div>
+            </section>
+          </aside>
+
+          <CalendarPanel
+            month={visibleMonth}
+            today={now}
+            events={events}
+            language={language}
+            onPrevious={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}
+            onNext={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}
+            onToday={() => setVisibleMonth(new Date(now.getFullYear(), now.getMonth(), 1))}
+          />
+
+          <aside className="right-column">
+            <section className="card home-card">
+              <div className="card-heading split home-heading">
+                <div>
+                  <span className="section-kicker">{t("smartHome", language)}</span>
+                  <h2>{t("home", language)}</h2>
+                </div>
+                <button className="power-all" onClick={() => void turnOffScope()} aria-label={t("turnOffAll", language)} title={t("turnOffAll", language)}>
+                  <PowerIcon />
+                </button>
+              </div>
+
+              <div className="room-switcher room-chip-strip" role="tablist" aria-label={t("room", language)}>
+                <button
+                  role="tab"
+                  aria-selected={room === "__favorites"}
+                  className={room === "__favorites" ? "active" : ""}
+                  onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}
+                >
+                  <StarIcon /> {t("favorites", language)}
+                </button>
+                {areas.map((area) => (
                   <button
                     role="tab"
-                    aria-selected={room === "__favorites"}
-                    className={room === "__favorites" ? "active" : ""}
-                    onClick={() => { setRoom("__favorites"); setSelectedEntity(null); }}
+                    aria-selected={room === area.area_id}
+                    className={room === area.area_id ? "active" : ""}
+                    key={area.area_id}
+                    onClick={() => { setRoom(area.area_id); setSelectedEntity(null); }}
                   >
-                    <StarIcon /> {t("favorites", language)}
+                    <span className="room-chip-dot" />{area.name}
                   </button>
-                  {areas.map((area) => (
-                    <button
-                      role="tab"
-                      aria-selected={room === area.area_id}
-                      className={room === area.area_id ? "active" : ""}
-                      key={area.area_id}
-                      onClick={() => { setRoom(area.area_id); setSelectedEntity(null); }}
+                ))}
+              </div>
+
+              <div className="device-heading">
+                <h3>{room === "__favorites" ? t("favorites", language) : areas.find((area) => area.area_id === room)?.name}</h3>
+                <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
+              </div>
+
+              <ScrollRegion
+                className="entity-grid"
+                shellClassName="entity-grid-scroll-shell"
+                buttonLabel={language === "it" ? "Vai in fondo ai dispositivi" : "Go to bottom of devices"}
+                resetKey={room}
+              >
+                {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
+                {roomEntities.map((entityId) => {
+                  const state = hass.states[entityId];
+                  const domain = entityId.split(".")[0];
+                  const passive = isPassiveDashboardEntity(hass, entityId);
+                  const active = !passive && ACTIVE_ENTITY_STATES.has(state.state);
+                  const configurable = !passive && ["light", "cover", "climate"].includes(domain);
+                  const status = entityStatus(hass, entityId, language);
+                  const content = (
+                    <>
+                      <span className="entity-icon">{iconForEntity(hass, entityId)}</span>
+                      <strong>{displayName(hass, entityId)}</strong>
+                      <small>{status}</small>
+                    </>
+                  );
+                  return (
+                    <article
+                      className={`entity-tile domain-${domain} ${passive ? "passive" : ""} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
+                      style={accessoryStyle(hass, entityId)}
+                      key={entityId}
                     >
-                      <span className="room-chip-dot" />{area.name}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="device-heading">
-                  <h3>{room === "__favorites" ? t("favorites", language) : areas.find((area) => area.area_id === room)?.name}</h3>
-                  <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
-                </div>
-
-                <ScrollRegion
-                  className="entity-grid"
-                  shellClassName="entity-grid-scroll-shell"
-                  buttonLabel={language === "it" ? "Vai in fondo ai dispositivi" : "Go to bottom of devices"}
-                  resetKey={room}
-                >
-                  {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
-                  {roomEntities.map((entityId) => {
-                    const state = hass.states[entityId];
-                    const domain = entityId.split(".")[0];
-                    const passive = isPassiveDashboardEntity(hass, entityId);
-                    const active = !passive && ACTIVE_ENTITY_STATES.has(state.state);
-                    const configurable = !passive && ["light", "cover", "climate"].includes(domain);
-                    const status = entityStatus(hass, entityId, language);
-                    const content = (
-                      <>
-                        <span className="entity-icon">{iconForEntity(hass, entityId)}</span>
-                        <strong>{displayName(hass, entityId)}</strong>
-                        <small>{status}</small>
-                      </>
-                    );
-                    return (
-                      <article
-                        className={`entity-tile domain-${domain} ${passive ? "passive" : ""} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`}
-                        style={accessoryStyle(hass, entityId)}
-                        key={entityId}
-                      >
-                        {passive ? (
-                          <div className="entity-main entity-main-passive" aria-label={`${displayName(hass, entityId)}: ${status}`}>{content}</div>
-                        ) : (
-                          <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>{content}</button>
-                        )}
+                      {passive ? (
+                        <div className="entity-main entity-main-passive" aria-label={`${displayName(hass, entityId)}: ${status}`}>{content}</div>
+                      ) : (
+                        <button className="entity-main" onClick={() => void activateEntity(hass, entityId)}>{content}</button>
+                      )}
+                      <button
+                        className={`favorite-button ${favorites.includes(entityId) ? "selected" : ""}`}
+                        aria-label={t("favorites", language)}
+                        onClick={() => void toggleFavorite(entityId)}
+                      ><StarIcon /></button>
+                      {configurable && (
                         <button
-                          className={`favorite-button ${favorites.includes(entityId) ? "selected" : ""}`}
-                          aria-label={t("favorites", language)}
-                          onClick={() => void toggleFavorite(entityId)}
-                        ><StarIcon /></button>
-                        {configurable && (
-                          <button
-                            className="control-button"
-                            aria-label={t("controls", language)}
-                            title={t("controls", language)}
-                            onClick={() => setSelectedEntity(selectedEntity === entityId ? null : entityId)}
-                          ><SlidersIcon /></button>
-                        )}
-                      </article>
-                    );
-                  })}
-                </ScrollRegion>
+                          className="control-button"
+                          aria-label={t("controls", language)}
+                          title={t("controls", language)}
+                          onClick={() => setSelectedEntity(selectedEntity === entityId ? null : entityId)}
+                        ><SlidersIcon /></button>
+                      )}
+                    </article>
+                  );
+                })}
+              </ScrollRegion>
 
-                {selectedEntity && hass.states[selectedEntity] && (
-                  <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => setSelectedEntity(null)} />
-                )}
-              </section>
-            </aside>
-          </section>
-        </>
+              {selectedEntity && hass.states[selectedEntity] && (
+                <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => setSelectedEntity(null)} />
+              )}
+            </section>
+          </aside>
+        </section>
       ) : (
         <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
-      )}
-
-      {page === "home" && (
-        <button type="button" className="global-theme-switch home-header-theme-switch" aria-label={themeLabel} title={themeLabel} onClick={toggleTheme}>
-          {isNight ? <SunIcon /> : <MoonIcon />}
-        </button>
       )}
 
       {headerAction && (
@@ -512,53 +502,6 @@ function CalendarPanel({ month, today, events, language, onPrevious, onNext, onT
       </div>
     </section>
   );
-}
-
-function DeviceControls({ hass, entityId, language, onClose }: { hass: Hass; entityId: string; language: Language; onClose: () => void }) {
-  const state = hass.states[entityId];
-  const domain = entityId.split(".")[0];
-  const brightness = Math.round((Number(state.attributes.brightness ?? 200) / 255) * 100);
-  const position = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
-  const whiteTemperature = getWhiteTemperature(state.attributes);
-
-  return (
-    <div className={`device-controls device-controls-${domain}`} role="dialog" aria-modal="true" aria-label={`${t("controls", language)} ${displayName(hass, entityId)}`}>
-      <div className="device-controls-heading">
-        <div><span className="section-kicker">{t("controls", language)}</span><strong>{displayName(hass, entityId)}</strong></div>
-        <button onClick={onClose} aria-label={t("close", language)}><CloseIcon /></button>
-      </div>
-      {domain === "light" && (
-        <>
-          <ControlRow label={t("brightness", language)} value={`${brightness}%`}>
-            <input type="range" min="1" max="100" defaultValue={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
-          </ControlRow>
-          <ControlRow label={language === "it" ? "Temperatura bianco" : "White temperature"} value={`${whiteTemperature.currentKelvin} K`}>
-            <input
-              className="white-temperature-control"
-              type="range"
-              min={whiteTemperature.minKelvin}
-              max={whiteTemperature.maxKelvin}
-              step="50"
-              defaultValue={whiteTemperature.currentKelvin}
-              onChange={(event) => void setLightColorTemperature(hass, entityId, Number(event.target.value))}
-            />
-          </ControlRow>
-        </>
-      )}
-      {domain === "cover" && (
-        <ControlRow label={t("position", language)} value={`${position}%`}>
-          <input type="range" min="0" max="100" defaultValue={position} onChange={(event) => void setCoverPosition(hass, entityId, Number(event.target.value))} />
-        </ControlRow>
-      )}
-      {domain === "climate" && (
-        <ClimateControl hass={hass} entityId={entityId} language={language} variant="compact" showName={false} />
-      )}
-    </div>
-  );
-}
-
-function ControlRow({ label, value, children }: { label: string; value: string; children: ReactNode }) {
-  return <div className="control-row"><div className="control-meta"><span>{label}</span><strong>{value}</strong></div>{children}</div>;
 }
 
 function getMonthCells(month: Date) {
@@ -678,5 +621,3 @@ function CheckIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path 
 function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 7.5 9 9M16.5 7.5l-9 9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>; }
 function ChevronLeftIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function ChevronRightIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-function SunIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><><circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></></svg>; }
-function MoonIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.7 15.4A7.8 7.8 0 0 1 8.6 5.3a7.8 7.8 0 1 0 10.1 10.1Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>; }
