@@ -13,6 +13,7 @@ import homeV2Styles from "./home-v2.css?inline";
 import homeV3Styles from "./home-v3.css?inline";
 import homeLiquidGlassStyles from "./home-liquid-glass-v5.css?inline";
 import homeRoomRefinementStyles from "./home-room-refinement-v6.css?inline";
+import homeSharedUiV12Styles from "./home-shared-ui-v12.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -39,7 +40,7 @@ type UiWindow = Window & {
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}\n${homeRoomRefinementStyles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}\n${homeRoomRefinementStyles}\n${homeSharedUiV12Styles}`;
 const CALENDAR_TONES = ["mint", "blue", "amber", "violet"];
 
 function ensureFinalStyles() {
@@ -50,8 +51,6 @@ function ensureFinalStyles() {
   }
   if (style.textContent !== finalStyles) style.textContent = finalStyles;
 
-  // Keep the final calendar contract physically last. The HA panel can inject
-  // its bundled stylesheet after this module has initially executed.
   if (style.parentElement !== document.head || style !== document.head.lastElementChild) {
     document.head.appendChild(style);
   }
@@ -160,8 +159,6 @@ function syncCalendarEventBridges() {
         bridge.style.width = `${lastRect.right - firstRect.left}px`;
         bridge.style.height = `${firstRect.height}px`;
 
-        // Exactly one visible label per event. If the real start is outside the
-        // visible 42-day window, label the first visible weekly segment instead.
         if (runStart === 0) {
           const firstOriginal = continuous[0].element;
           const time = firstOriginal.querySelector<HTMLElement>(":scope > span:not(.continuation)")?.textContent?.trim();
@@ -200,6 +197,8 @@ function syncHomeRoomPresentation() {
   });
 }
 
+/* Legacy global-climate filtering remains only for the all-zones feature modal.
+ * Room-temperature clicks now bypass this bridge and use a direct entity id in React. */
 function syncHomeRoomClimateFilter() {
   const modal = document.querySelector<HTMLElement>(".app-shell.home-page-active .climate-modal.feature-modal");
   if (!modal) return;
@@ -227,11 +226,6 @@ function syncHomeRoomClimateFilter() {
   if (title) title.setAttribute("data-room-name", roomName);
 }
 
-/*
- * Header actions are deliberately installed outside the one-time interaction
- * guard. Vite HMR keeps window state alive, so an older guarded listener could
- * otherwise survive a code update and leave Alarm/Notifications unresponsive.
- */
 if (uiWindow.__familyCalendarHeaderActionHandler) {
   document.removeEventListener("click", uiWindow.__familyCalendarHeaderActionHandler, true);
 }
@@ -250,12 +244,8 @@ const headerActionHandler: EventListener = (event) => {
 uiWindow.__familyCalendarHeaderActionHandler = headerActionHandler;
 document.addEventListener("click", headerActionHandler, true);
 
-/*
- * CASA room cards intentionally have no general room navigation anymore.
- * The temperature is the sole room-level climate affordance. The legacy room
- * header still exists in HomeView, so this capture bridge suppresses its old
- * RoomSheet click while scoping the existing climate overlay to that room.
- */
+/* Compatibility bridge for the old room header. The new React temperature
+ * button MUST pass through untouched: it owns the precise climate entity. */
 if (uiWindow.__familyCalendarHomeRoomClickHandler) {
   document.removeEventListener("click", uiWindow.__familyCalendarHomeRoomClickHandler, true);
 }
@@ -265,7 +255,8 @@ const homeRoomClickHandler: EventListener = (event) => {
   const shell = event.target.closest<HTMLElement>(".app-shell.home-page-active");
   if (!shell) return;
 
-  // Explicit global climate entries continue to open the all-room view.
+  if (event.target.closest(".room-temperature-button")) return;
+
   if (event.isTrusted && event.target.closest(".thermostat-card-v4, .reel-tools-grid > button:nth-child(4)")) {
     uiWindow.__familyCalendarHomeClimateRoomIndex = null;
     uiWindow.__familyCalendarHomeClimateRoomName = null;
@@ -280,26 +271,11 @@ const homeRoomClickHandler: EventListener = (event) => {
     return;
   }
 
-  const roomHeader = event.target.closest<HTMLButtonElement>(".room-head-v4");
+  const roomHeader = event.target.closest<HTMLElement>(".room-head-v4");
   if (!roomHeader) return;
-
-  const temperature = roomHeader.querySelector<HTMLElement>(":scope > b");
-  const clickedTemperature = Boolean(temperature && temperature.contains(event.target));
 
   event.preventDefault();
   event.stopImmediatePropagation();
-
-  if (!clickedTemperature) return;
-
-  const roomCard = roomHeader.closest<HTMLElement>(".reel-room");
-  const roomCards = Array.from(shell.querySelectorAll<HTMLElement>(".reel-room-grid > .reel-room"));
-  const roomIndex = roomCard ? roomCards.indexOf(roomCard) : -1;
-  if (roomIndex < 0) return;
-
-  uiWindow.__familyCalendarHomeClimateRoomIndex = roomIndex;
-  uiWindow.__familyCalendarHomeClimateRoomName = roomHeader.querySelector<HTMLElement>(".room-title-v4 strong")?.textContent?.trim() ?? "";
-  shell.querySelector<HTMLButtonElement>(".thermostat-card-v4")?.click();
-  requestAnimationFrame(() => requestAnimationFrame(syncHomeRoomClimateFilter));
 };
 
 uiWindow.__familyCalendarHomeRoomClickHandler = homeRoomClickHandler;
@@ -341,9 +317,6 @@ if (!uiWindow.__familyCalendarUiInteractions) {
     const strip = roomStripFromTarget(event.target);
     if (!strip || strip.scrollWidth <= strip.clientWidth + 1) return;
 
-    // Do not capture on pointer-down. Capturing immediately retargets pointer-up
-    // to the strip and prevents the room button from receiving its normal click.
-    // Capture begins only after we know the user is actually dragging.
     drag = {
       strip,
       pointerId: event.pointerId,
@@ -444,8 +417,6 @@ if (!uiWindow.__familyCalendarUiInteractions) {
 
   scheduleUiSync();
 } else {
-  // Even on HMR/module re-evaluation, refresh the final style layer and measured
-  // calendar bridges immediately.
   ensureFinalStyles();
   syncHomeRoomPresentation();
   syncHomeRoomClimateFilter();
