@@ -342,3 +342,498 @@
     ) !important;
   }
 }
+
+/*
+ * CASA V11 — FINAL phone contract.
+ * This block deliberately lives in home-room-refinement-v6.css because
+ * ui-interactions keeps this stylesheet physically last in <head>. Earlier
+ * V8/V9/V10 mobile layers were correct but could be overwritten afterwards.
+ */
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    position: static !important;
+    touch-action: auto !important;
+    overscroll-behavior-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body {
+    display: block !important;
+  }
+
+  .app-shell.home-page-active {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+    touch-action: auto !important;
+    overscroll-behavior-y: auto !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    touch-action: auto !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 {
+    padding-bottom: max(154px, calc(126px + env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    display: block !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-rows: max-content !important;
+    align-content: start !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important;
+    padding: 12px !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    border-top-width: 4px !important;
+    border-top-style: solid !important;
+    border-top-color: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 {
+    width: 100% !important;
+    min-height: 42px !important;
+    height: auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    border-radius: 12px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 strong {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 17px !important;
+    line-height: 1.08 !important;
+    font-weight: 690 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b {
+    flex: 0 0 auto !important;
+    min-width: 48px !important;
+    min-height: 40px !important;
+    padding: 0 2px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 22px !important;
+    line-height: 1 !important;
+    font-weight: 450 !important;
+    letter-spacing: -.045em !important;
+    cursor: pointer !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-section {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 12px 0 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-section-label {
+    display: block !important;
+    margin: 0 0 7px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 760 !important;
+    letter-spacing: .085em !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
+    width: 100% !important;
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: max-content !important;
+    gap: 7px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    padding: 7px 8px !important;
+    display: grid !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border-radius: 15px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    border-radius: 11px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > div {
+    min-width: 0 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong {
+    font-size: 12px !important;
+    line-height: 1.05 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    margin-top: 3px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  /* Quick control: device name and active property are deliberately separated. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 10px 0 0 !important;
+    padding: 11px 0 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    border-top: 1px solid rgba(118,118,128,.12) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: block !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head > div:first-child {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: block !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head small {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 7px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #8e8e93 !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    font-weight: 540 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head strong {
+    width: 100% !important;
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    font-size: 12.5px !important;
+    line-height: 1.1 !important;
+    font-weight: 680 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head strong b {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 750 !important;
+  }
+
+  /* The light mode control becomes a proper two-segment switch with labels. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 38px !important;
+    margin: 10px 0 0 !important;
+    padding: 3px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3px !important;
+    border: 1px solid rgba(118,118,128,.12) !important;
+    border-radius: 12px !important;
+    background: rgba(118,118,128,.10) !important;
+    box-shadow: none !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button {
+    width: 100% !important;
+    height: 30px !important;
+    min-width: 0 !important;
+    min-height: 30px !important;
+    padding: 0 7px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: #6e6e73 !important;
+    box-shadow: none !important;
+    font-size: 10px !important;
+    font-weight: 650 !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button::after {
+    content: attr(aria-label);
+    display: inline !important;
+    max-width: calc(100% - 20px) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button svg {
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button.active {
+    background: var(--room-shared-accent) !important;
+    color: #fff !important;
+    box-shadow: 0 1px 4px color-mix(in srgb, var(--room-shared-accent) 24%, transparent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    touch-action: pan-x !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-cover input[type="range"]::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range)::-moz-range-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-cover input[type="range"]::-moz-range-track {
+    height: 6px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input.white-temperature-range::-webkit-slider-runnable-track,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input.white-temperature-range::-moz-range-track {
+    height: 6px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(90deg, #ffad4d 0%, #ffd49a 30%, #fff2d8 50%, #dcecff 72%, #91c3ff 100%) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 22px !important;
+    height: 22px !important;
+    margin-top: -8px !important;
+    border: 2px solid #fff !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    box-shadow: 0 2px 7px rgba(0,0,0,.22) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"]::-moz-range-thumb {
+    width: 22px !important;
+    height: 22px !important;
+    border: 2px solid #fff !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    box-shadow: 0 2px 7px rgba(0,0,0,.22) !important;
+  }
+
+  /* Sensor rows are content-sized. No flex/minmax stretch is allowed. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-section-v4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 12px 0 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    align-self: auto !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: none !important;
+    grid-auto-rows: 44px !important;
+    align-content: start !important;
+    gap: 7px !important;
+    overflow: visible !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4:nth-child(n+3) {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    padding: 6px 8px !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border-radius: 13px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 > div {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 strong {
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 small {
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    text-align: right !important;
+  }
+
+  /* Details is obsolete. Temperature is the only room-level affordance. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-detail-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-open-detail {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .reel-room-grid > .reel-room.room-card-v4 {
+    border-top-color: var(--room-shared-accent) !important;
+    border-right-color: rgba(255,255,255,.065) !important;
+    border-bottom-color: rgba(255,255,255,.065) !important;
+    border-left-color: rgba(255,255,255,.065) !important;
+    background: #222226 !important;
+    color: #f5f5f7 !important;
+    box-shadow: 0 5px 18px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.025) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-light-mode-v4 {
+    border-color: rgba(255,255,255,.08) !important;
+    background: rgba(118,118,128,.22) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-light-mode-v4 button {
+    color: #b9bbc1 !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-light-mode-v4 button.active {
+    color: #fff !important;
+    background: var(--room-shared-accent) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-quick-control-head small {
+    color: #98989f !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 button {
+    padding-inline: 5px !important;
+    font-size: 9.5px !important;
+  }
+}
