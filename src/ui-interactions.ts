@@ -14,6 +14,7 @@ import homeV3Styles from "./home-v3.css?inline";
 import homeLiquidGlassStyles from "./home-liquid-glass-v5.css?inline";
 import homeRoomRefinementStyles from "./home-room-refinement-v6.css?inline";
 import homeSharedUiV12Styles from "./home-shared-ui-v12.css?inline";
+import sharedExactV13Styles from "./shared-exact-v13.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -40,7 +41,7 @@ type UiWindow = Window & {
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}\n${homeRoomRefinementStyles}\n${homeSharedUiV12Styles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}\n${homeRoomRefinementStyles}\n${homeSharedUiV12Styles}\n${sharedExactV13Styles}`;
 const CALENDAR_TONES = ["mint", "blue", "amber", "violet"];
 
 function ensureFinalStyles() {
