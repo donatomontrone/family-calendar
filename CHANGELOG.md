@@ -4,6 +4,23 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [1.0.5] - 2026-09-11
+
+HOME room-card active accent fix.
+
+### Fixed
+
+- room cards on the CASA page now become tinted only when a device inside that room is actually active;
+- the tint is applied to the upper band of the room card itself instead of to the nested device card;
+- the active room colour is derived at runtime from the active device: light colour-temperature accent for lights, blue for covers/media, green for switches/locks, purple for fans/vacuums, and orange for climate;
+- when multiple devices are active, the selected active control is preferred, then an active light, then the first active control;
+- room cards return to the neutral Liquid Glass surface when no device in the room is active;
+- removed the previous fixed `nth-child` room palette, which coloured rooms independently of device state and did not implement the requested behaviour.
+
+### Notes
+
+This patch adds a dedicated runtime room-accent synchronizer and ships the resulting compiled Home Assistant frontend bundle.
+
 ## [1.0.4] - 2026-09-11
 
 HOME room-card refinement and frontend delivery fix.
