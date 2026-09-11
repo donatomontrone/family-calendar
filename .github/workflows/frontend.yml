@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: frontend-${{ github.ref }}
@@ -40,3 +40,17 @@ jobs:
         run: |
           test -s custom_components/family_calendar/frontend/family-calendar-panel.js
           echo "Frontend bundle generated successfully."
+
+      - name: Commit Home Assistant frontend bundle
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.actor != 'github-actions[bot]'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add custom_components/family_calendar/frontend/family-calendar-panel.js
+          if git diff --cached --quiet; then
+            echo "Frontend bundle is already up to date."
+            exit 0
+          fi
+          git commit -m "build: update Home Assistant frontend bundle [skip ci]"
+          git push
