@@ -1,0 +1,603 @@
+/*
+ * Shared Exact V14
+ *
+ * This is the final, page-agnostic contract for the two pieces that must be
+ * pixel-identical in CASA and CALENDARIO: the global header and DeviceControls
+ * climate dialog. ID selectors intentionally outrank every historical
+ * page-scoped !important rule.
+ */
+
+/* --------------------------------------------------------------------------
+ * HEADER — one DOM node, one computed style.
+ * -------------------------------------------------------------------------- */
+#family-shared-header {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 94px !important;
+  min-height: 94px !important;
+  max-height: 94px !important;
+  margin: 0 !important;
+  padding: 4px 5px 16px !important;
+  display: grid !important;
+  grid-template-columns: minmax(190px, 1fr) auto minmax(330px, 1.35fr) !important;
+  grid-template-rows: 74px !important;
+  align-items: center !important;
+  gap: 24px !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif !important;
+  font-synthesis: none !important;
+}
+
+#family-shared-header .reel-greeting {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+  transform: none !important;
+}
+
+#family-shared-header .reel-greeting strong {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font-size: 20px !important;
+  line-height: 1.08 !important;
+  font-weight: 660 !important;
+  letter-spacing: -.025em !important;
+  white-space: nowrap !important;
+}
+
+#family-shared-header .reel-greeting span {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #6e6e73 !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  font-weight: 500 !important;
+  text-transform: capitalize !important;
+  white-space: nowrap !important;
+}
+
+.app-shell.night > #family-shared-header .reel-greeting span {
+  color: #aeaeb2 !important;
+}
+
+#family-shared-header .reel-clock {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-self: center !important;
+  color: inherit !important;
+  font-size: clamp(46px, 4vw, 68px) !important;
+  line-height: .96 !important;
+  font-weight: 440 !important;
+  letter-spacing: -.055em !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+#family-shared-header .reel-top-actions {
+  min-width: 0 !important;
+  height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 9px !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+#family-shared-header .weather-pill,
+#family-shared-header .security-pill,
+#family-shared-header .round-top,
+#family-shared-header .header-theme-switch {
+  position: relative !important;
+  inset: auto !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255,255,255,.46) !important;
+  border-radius: 20px !important;
+  background: rgba(248,248,250,.78) !important;
+  color: #6e6e73 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.68), 0 1px 2px rgba(0,0,0,.035), 0 5px 15px rgba(0,0,0,.04) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.app-shell.night > #family-shared-header .weather-pill,
+.app-shell.night > #family-shared-header .security-pill,
+.app-shell.night > #family-shared-header .round-top,
+.app-shell.night > #family-shared-header .header-theme-switch {
+  border-color: rgba(255,255,255,.05) !important;
+  background: rgba(44,44,46,.82) !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 4px 14px rgba(0,0,0,.16) !important;
+}
+
+#family-shared-header .weather-pill {
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  font-size: 11.5px !important;
+  white-space: nowrap !important;
+}
+
+#family-shared-header .weather-pill strong {
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+}
+
+#family-shared-header .weather-pill small {
+  color: #6e6e73 !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+}
+
+.app-shell.night > #family-shared-header .weather-pill small {
+  color: #aeaeb2 !important;
+}
+
+#family-shared-header .weather-pill svg,
+#family-shared-header .security-pill svg,
+#family-shared-header .round-top svg,
+#family-shared-header .header-theme-switch svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+}
+
+#family-shared-header .avatar-stack {
+  width: auto !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+}
+
+#family-shared-header .avatar-stack i {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 2px solid rgba(255,255,255,.82) !important;
+  border-radius: 50% !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+}
+
+#family-shared-header .avatar-stack i + i {
+  margin-left: -7px !important;
+}
+
+.app-shell.night > #family-shared-header .avatar-stack i {
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+#family-shared-header .security-pill {
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+  font-weight: 620 !important;
+  white-space: nowrap !important;
+}
+
+#family-shared-header .round-top,
+#family-shared-header .header-theme-switch {
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+/* --------------------------------------------------------------------------
+ * SHARED DEVICE CONTROLS PORTAL — same DOM parent for CASA and CALENDARIO.
+ * -------------------------------------------------------------------------- */
+#family-shared-device-overlay {
+  --line: rgba(60,60,67,.10);
+  --blue: #0a84ff;
+  position: fixed !important;
+  z-index: 5000 !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 18px !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  background: rgba(16,16,20,.34) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif !important;
+  font-synthesis: none !important;
+}
+
+#family-shared-device-overlay.night {
+  --line: rgba(255,255,255,.07);
+  background: rgba(0,0,0,.58) !important;
+}
+
+#family-shared-device-controls {
+  position: relative !important;
+  inset: auto !important;
+  width: min(590px, calc(100vw - 36px)) !important;
+  min-width: 0 !important;
+  max-width: 590px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 36px) !important;
+  margin: 0 !important;
+  padding: 13px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 1px solid rgba(255,255,255,.64) !important;
+  border-radius: 30px !important;
+  background: rgba(248,248,250,.92) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 30px 90px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  backdrop-filter: blur(38px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(38px) saturate(165%) !important;
+  transform: none !important;
+  filter: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+#family-shared-device-controls::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+#family-shared-device-overlay.night #family-shared-device-controls {
+  border-color: rgba(255,255,255,.10) !important;
+  background: rgba(28,28,30,.94) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 30px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+#family-shared-device-controls .device-controls-heading {
+  width: 100% !important;
+  min-height: 40px !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+#family-shared-device-controls .device-controls-heading .section-kicker {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #9a9aa0 !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 720 !important;
+  letter-spacing: .075em !important;
+  text-transform: uppercase !important;
+}
+
+#family-shared-device-controls .device-controls-heading strong {
+  display: block !important;
+  margin: 3px 0 0 !important;
+  padding: 0 !important;
+  color: #1d1d1f !important;
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.028em !important;
+}
+
+#family-shared-device-overlay.night #family-shared-device-controls .device-controls-heading strong {
+  color: #f5f5f7 !important;
+}
+
+#family-shared-device-controls .device-controls-heading > button {
+  width: 27px !important;
+  height: 27px !important;
+  min-width: 27px !important;
+  min-height: 27px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(118,118,128,.10) !important;
+  color: #6e6e73 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+#family-shared-device-overlay.night #family-shared-device-controls .device-controls-heading > button {
+  background: rgba(255,255,255,.075) !important;
+  color: #f5f5f7 !important;
+}
+
+#family-shared-device-controls .device-controls-heading > button svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+#family-shared-device-controls.device-controls-climate .climate-control {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+#family-shared-device-overlay.night .climate-control {
+  border-color: rgba(255,255,255,.07) !important;
+  background: rgba(44,44,46,.82) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 10px 28px rgba(0,0,0,.18) !important;
+}
+
+#family-shared-device-overlay.night .climate-control-title strong,
+#family-shared-device-overlay.night .climate-current strong,
+#family-shared-device-overlay.night .climate-target-value strong {
+  color: #f5f5f7 !important;
+}
+
+#family-shared-device-overlay.night .climate-target-value,
+#family-shared-device-overlay.night .climate-mode-button,
+#family-shared-device-overlay.night .climate-chip-row button,
+#family-shared-device-overlay.night .climate-step-button {
+  background-color: rgba(255,255,255,.07) !important;
+}
+
+#family-shared-device-overlay.night .climate-target-value {
+  background: var(--climate-accent-soft) !important;
+}
+
+#family-shared-device-overlay.night .climate-step-button {
+  color: #f5f5f7 !important;
+}
+
+/* No transition or animation can make one page appear to morph into another. */
+#family-shared-header *,
+#family-shared-header *::before,
+#family-shared-header *::after,
+#family-shared-device-overlay *,
+#family-shared-device-overlay *::before,
+#family-shared-device-overlay *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  #family-shared-header {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 7px 4px 11px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting greeting avatars"
+      "clock weather weather"
+      "alarm notifications theme" !important;
+    grid-template-columns: minmax(0, 1fr) 42px 42px !important;
+    grid-template-rows: 38px 42px 42px !important;
+    align-items: center !important;
+    column-gap: 8px !important;
+    row-gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  #family-shared-header .reel-greeting {
+    grid-area: greeting !important;
+    align-self: center !important;
+  }
+
+  #family-shared-header .reel-greeting strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(18px, 5.5vw, 22px) !important;
+    line-height: 1 !important;
+  }
+
+  #family-shared-header .reel-greeting span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  #family-shared-header .reel-clock {
+    grid-area: clock !important;
+    justify-self: start !important;
+    align-self: center !important;
+    font-size: clamp(36px, 11vw, 46px) !important;
+    line-height: .92 !important;
+    font-weight: 445 !important;
+  }
+
+  #family-shared-header .reel-top-actions {
+    display: contents !important;
+  }
+
+  #family-shared-header .avatar-stack {
+    grid-area: avatars !important;
+    justify-self: end !important;
+    align-self: center !important;
+  }
+
+  #family-shared-header .avatar-stack i {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  #family-shared-header .weather-pill {
+    grid-area: weather !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: auto !important;
+    min-width: 94px !important;
+    max-width: 112px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 10px !important;
+    border-radius: 14px !important;
+  }
+
+  #family-shared-header .weather-pill small {
+    display: none !important;
+  }
+
+  #family-shared-header .weather-pill strong {
+    font-size: 12px !important;
+  }
+
+  #family-shared-header .weather-pill svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+  }
+
+  #family-shared-header .security-pill {
+    grid-area: alarm !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    border-radius: 14px !important;
+  }
+
+  #family-shared-header .security-pill span {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    font-weight: 670 !important;
+  }
+
+  #family-shared-header .round-top,
+  #family-shared-header .header-theme-switch {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    max-width: 42px !important;
+    border-radius: 14px !important;
+  }
+
+  #family-shared-header .round-top {
+    grid-area: notifications !important;
+    justify-self: center !important;
+    align-self: center !important;
+  }
+
+  #family-shared-header .header-theme-switch {
+    grid-area: theme !important;
+    justify-self: end !important;
+    align-self: center !important;
+  }
+
+  #family-shared-device-overlay {
+    padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  #family-shared-device-controls {
+    width: min(590px, calc(100vw - 20px)) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+    padding: 13px !important;
+    border-radius: 24px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  #family-shared-header {
+    grid-template-columns: minmax(0, 1fr) 40px 40px !important;
+    grid-template-rows: 33px 36px 40px !important;
+    row-gap: 7px !important;
+  }
+
+  #family-shared-header .reel-greeting strong { font-size: 17px !important; }
+  #family-shared-header .reel-clock { font-size: 34px !important; }
+  #family-shared-header .weather-pill {
+    min-width: 82px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding-inline: 8px !important;
+  }
+  #family-shared-header .avatar-stack i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+  #family-shared-header .security-pill,
+  #family-shared-header .round-top,
+  #family-shared-header .header-theme-switch {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+  #family-shared-header .round-top,
+  #family-shared-header .header-theme-switch {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+  }
+}
