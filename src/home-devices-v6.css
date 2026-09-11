@@ -1,761 +1,286 @@
-/*
- * CASA — central room panel, desktop/tablet.
+/* CASA V6 — desktop/tablet accessory presentation.
  *
- * This is the authoritative visual contract for the middle card only.
- * CALENDARIO remains the reference for materials, typography, device states,
- * compact controls and Apple-like restraint. Phone layout is intentionally
- * untouched in this pass.
+ * The room panel already follows the approved CALENDARIO visual language. This
+ * layer fixes the part that was still too dense: accessories must be readable
+ * at a glance, with enough width for the name/state and a clear separation
+ * between active controls and passive sensors.
  */
 
 @media (min-width: 701px) {
-  /* -----------------------------------------------------------------------
-   * Room card shell
-   * ----------------------------------------------------------------------- */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-panel {
-    position: relative !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    display: grid !important;
-    grid-template-rows: auto auto minmax(0, 1fr) !important;
-    overflow: hidden !important;
-    border: 1px solid rgba(60,60,67,.09) !important;
-    border-radius: 28px !important;
-    background: rgba(255,255,255,.82) !important;
-    box-shadow: 0 10px 32px rgba(0,0,0,.045), inset 0 1px 0 rgba(255,255,255,.76) !important;
-    backdrop-filter: blur(24px) saturate(135%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(135%) !important;
-  }
-
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-room-panel {
-    border-color: rgba(255,255,255,.065) !important;
-    background: rgba(36,36,38,.90) !important;
-    box-shadow: 0 12px 34px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.035) !important;
-  }
-
-  /* Header: fewer competing surfaces, more typographic hierarchy. */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-heading {
-    min-height: 82px !important;
-    padding: 18px 20px 12px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 16px !important;
-    border: 0 !important;
-    background: transparent !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-heading h1 {
-    margin-top: 4px !important;
-    font-size: clamp(28px, 2.05vw, 35px) !important;
-    line-height: .98 !important;
-    font-weight: 675 !important;
-    letter-spacing: -.038em !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-actions {
-    flex: 0 0 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 7px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-temperature-pill,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-detail-button,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-panel .power-all {
-    height: 38px !important;
-    min-height: 38px !important;
-    border-radius: 13px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-temperature-pill {
-    padding: 0 11px !important;
-    border: 1px solid rgba(60,60,67,.07) !important;
-    background: rgba(118,118,128,.065) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.55) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-detail-button {
-    padding: 0 11px !important;
-    border: 0 !important;
-    background: rgba(0,122,255,.085) !important;
-    color: #007aff !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-panel .power-all {
-    width: 38px !important;
-    min-width: 38px !important;
-    background: rgba(255,59,48,.085) !important;
-    color: #d70015 !important;
-  }
-
-  /* Room picker: same compact chip language as CASA INTELLIGENTE. */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-switcher.room-switcher.room-chip-strip {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 51px !important;
-    min-height: 51px !important;
-    margin: 0 !important;
-    padding: 0 20px 13px !important;
-    display: flex !important;
-    align-items: flex-start !important;
-    gap: 8px !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    scrollbar-width: none !important;
-    overscroll-behavior-x: contain !important;
-    scroll-snap-type: x proximity !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-switcher::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-switcher > button {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    min-width: max-content !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    padding: 0 13px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 7px !important;
-    border: 1px solid rgba(60,60,67,.075) !important;
-    border-radius: 15px !important;
-    background: rgba(118,118,128,.065) !important;
-    color: #646469 !important;
-    font-size: 12.5px !important;
-    line-height: 1 !important;
-    font-weight: 640 !important;
-    letter-spacing: -.01em !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.58) !important;
-    scroll-snap-align: start !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-switcher > button.active {
-    border-color: rgba(199,141,0,.15) !important;
-    background: rgba(255,214,10,.17) !important;
-    color: #6c5200 !important;
-  }
-
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-room-switcher > button {
-    border-color: rgba(255,255,255,.07) !important;
-    background: rgba(255,255,255,.07) !important;
-    color: #c7c7cc !important;
-    box-shadow: none !important;
-  }
-
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-room-switcher > button.active {
-    background: rgba(255,214,10,.14) !important;
-    color: #ffe36e !important;
-  }
-
-  /* -----------------------------------------------------------------------
-   * Main room workspace
-   * Devices are the primary object. The selected accessory gets a quiet,
-   * dedicated inspector on the right instead of expanding below the grid.
-   * Sensors stay in a secondary strip at the bottom.
-   * ----------------------------------------------------------------------- */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-content {
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    padding: 3px 20px 18px !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1.58fr) minmax(238px, .78fr) !important;
-    grid-template-rows: auto minmax(0, 1fr) auto !important;
-    column-gap: 16px !important;
-    row-gap: 10px !important;
-    overflow: hidden !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-content > .home-v5-section-title:first-child {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
-    min-height: 31px !important;
-    padding: 0 2px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-section-title h3 {
-    margin-top: 3px !important;
-    font-size: 16px !important;
-    line-height: 1 !important;
-    font-weight: 675 !important;
-    letter-spacing: -.022em !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-section-title > span {
-    min-width: 24px !important;
-    height: 24px !important;
-    padding: 0 8px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 999px !important;
-    background: rgba(118,118,128,.075) !important;
-    color: #77777d !important;
-    font-size: 10px !important;
-    line-height: 1 !important;
-    font-weight: 650 !important;
-  }
-
-  /* Device grid */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid.entity-grid {
-    grid-column: 1 !important;
-    grid-row: 2 !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 1px 2px 2px !important;
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-auto-rows: 94px !important;
-    align-content: start !important;
+  /* The previous layout reserved five grid rows even though the room content
+   * has only four visual blocks. That wasted vertical space and squeezed the
+   * actual accessory grid. Give devices the dominant share of the panel. */
+  .app-shell.home-page-active .home-v5-room-content {
+    grid-template-rows: auto minmax(0, 1fr) auto minmax(92px, .38fr) !important;
     gap: 10px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-content > .home-v5-section-title:first-child {
+    grid-row: 1 !important;
+  }
+
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid {
+    grid-row: 2 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 88px !important;
+    gap: 9px !important;
+    padding: 1px !important;
+    align-content: start !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    overscroll-behavior: contain !important;
     scrollbar-width: none !important;
+    overscroll-behavior: contain !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid::-webkit-scrollbar {
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid::-webkit-scrollbar {
     display: none !important;
   }
 
-  /* When a room has no adjustable device there is no inspector, so accessories
-   * can use the full width instead of leaving a dead column. */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-content:not(:has(.home-v5-inline-control)) > .home-v5-section-title:first-child,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-content:not(:has(.home-v5-inline-control)) .home-v5-device-grid {
-    grid-column: 1 / -1 !important;
+  /* Accessory tiles use a horizontal Home-app-like information hierarchy:
+   * symbol -> name/state -> secondary actions. This is considerably easier to
+   * scan than the former compressed square layout. */
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile {
+    min-height: 88px !important;
+    height: 88px !important;
+    border-radius: 18px !important;
+    background: rgba(244,244,247,.82) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 4px 14px rgba(0,0,0,.026) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-content:not(:has(.home-v5-inline-control)) .home-v5-device-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
-
-  /* Accessory cards: larger touch target and simpler visual reading order. */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile {
-    --device-accent: #8e8e93;
-    position: relative !important;
-    min-width: 0 !important;
-    min-height: 94px !important;
-    height: 94px !important;
-    overflow: hidden !important;
-    border: 1px solid rgba(60,60,67,.075) !important;
-    border-radius: 20px !important;
-    background: rgba(244,244,247,.88) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.84), 0 5px 16px rgba(0,0,0,.028) !important;
-    transition: transform .14s cubic-bezier(.2,.8,.2,1), border-color .16s ease, background-color .16s ease, box-shadow .16s ease !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile:hover {
-    transform: translateY(-1px) !important;
-    border-color: rgba(60,60,67,.12) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 20px rgba(0,0,0,.04) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-light.active {
-    --device-accent: var(--accessory-active, #ffd60a);
-    border-color: color-mix(in srgb, var(--device-accent) 22%, rgba(60,60,67,.07)) !important;
-    background: color-mix(in srgb, var(--device-accent) 18%, rgba(255,255,255,.98)) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-climate.active {
-    --device-accent: #ff9f0a;
-    border-color: rgba(255,159,10,.20) !important;
-    background: rgba(255,159,10,.115) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-cover.active { --device-accent: #64b5f6; }
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-switch.active,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-fan.active,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-media_player.active,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-lock.active,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.domain-vacuum.active {
-    --device-accent: #007aff;
-    border-color: #abd1f8 !important;
-    background: #c9e3ff !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.selected {
-    border-color: rgba(0,122,255,.32) !important;
-    box-shadow: inset 0 0 0 1px rgba(0,122,255,.11), inset 0 1px 0 rgba(255,255,255,.88), 0 7px 20px rgba(0,0,0,.038) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main {
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 94px !important;
-    height: 94px !important;
-    padding: 14px 49px 14px 62px !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main {
+    min-height: 88px !important;
+    height: 88px !important;
+    padding: 12px 49px 12px 60px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
     gap: 4px !important;
-    border: 0 !important;
-    border-radius: inherit !important;
-    background: transparent !important;
-    color: inherit !important;
-    text-align: left !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main:active {
-    transform: scale(.985) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-icon {
-    position: absolute !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-icon {
     top: 50% !important;
-    left: 14px !important;
-    width: 38px !important;
-    height: 38px !important;
-    margin: 0 !important;
-    display: grid !important;
-    place-items: center !important;
-    border-radius: 13px !important;
-    background: rgba(118,118,128,.54) !important;
-    color: #fff !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.14) !important;
+    left: 13px !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 12px !important;
     transform: translateY(-50%) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.active .entity-icon {
-    background: color-mix(in srgb, var(--device-accent) 84%, #000 16%) !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-icon svg {
+    width: 19px !important;
+    height: 19px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-icon svg {
-    width: 20px !important;
-    height: 20px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main strong {
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main strong {
     display: block !important;
     width: 100% !important;
-    min-width: 0 !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     color: #1d1d1f !important;
-    font-size: 14.2px !important;
+    font-size: 14px !important;
     line-height: 1.12 !important;
-    font-weight: 690 !important;
-    letter-spacing: -.019em !important;
+    font-weight: 680 !important;
+    letter-spacing: -.018em !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main small {
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main small {
     display: block !important;
     width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
-    color: #707075 !important;
+    color: #717176 !important;
     font-size: 11.5px !important;
-    line-height: 1.18 !important;
+    line-height: 1.15 !important;
     font-weight: 550 !important;
+    letter-spacing: -.004em !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .favorite-button,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .control-button {
-    position: absolute !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .favorite-button,
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .control-button {
     right: 10px !important;
-    width: 29px !important;
-    height: 29px !important;
-    min-width: 29px !important;
-    min-height: 29px !important;
-    padding: 0 !important;
-    display: grid !important;
-    place-items: center !important;
-    border: 0 !important;
-    border-radius: 10px !important;
-    background: rgba(118,118,128,.08) !important;
-    color: #74747a !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.5) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .favorite-button { top: 10px !important; }
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .control-button { bottom: 10px !important; }
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .favorite-button svg,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .control-button svg { width: 14px !important; height: 14px !important; }
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .favorite-button.selected { background: #fff4c7 !important; color: #8f6b00 !important; }
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.selected .control-button { background: rgba(0,122,255,.13) !important; color: #007aff !important; }
-
-  /* -----------------------------------------------------------------------
-   * Selected accessory inspector
-   * ----------------------------------------------------------------------- */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control.device-controls {
-    grid-column: 2 !important;
-    grid-row: 1 / span 2 !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 16px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    gap: 16px !important;
-    overflow: hidden !important;
-    border: 1px solid rgba(60,60,67,.07) !important;
-    border-radius: 22px !important;
-    background: rgba(118,118,128,.052) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.62) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading {
-    width: 100% !important;
-    min-width: 0 !important;
-    display: grid !important;
-    grid-template-columns: minmax(0,1fr) 32px !important;
-    align-items: start !important;
-    gap: 10px !important;
-    padding-bottom: 13px !important;
-    border-bottom: 1px solid rgba(60,60,67,.07) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading > div {
-    min-width: 0 !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading strong {
-    display: block !important;
-    margin-top: 5px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    color: var(--fc-label, #1d1d1f) !important;
-    font-size: 16px !important;
-    line-height: 1.1 !important;
-    font-weight: 680 !important;
-    letter-spacing: -.022em !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading button {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    padding: 0 !important;
-    display: grid !important;
-    place-items: center !important;
-    border: 0 !important;
-    border-radius: 11px !important;
-    background: rgba(118,118,128,.10) !important;
-    color: #77777d !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading button svg {
-    width: 15px !important;
-    height: 15px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .control-row {
-    min-width: 0 !important;
-    display: grid !important;
-    gap: 8px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .control-meta {
-    min-width: 0 !important;
-    display: flex !important;
-    align-items: baseline !important;
-    justify-content: space-between !important;
-    gap: 10px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .control-meta span {
-    color: #77777d !important;
-    font-size: 11.5px !important;
-    font-weight: 570 !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .control-meta strong {
-    color: var(--fc-label, #1d1d1f) !important;
-    font-size: 11.5px !important;
-    font-weight: 680 !important;
-    font-variant-numeric: tabular-nums !important;
-  }
-
-  /* Same range language as CALENDARIO: thin track, white thumb, no browser UI. */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control input[type="range"] {
-    width: 100% !important;
+    width: 28px !important;
     height: 28px !important;
-    margin: 0 !important;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    background: transparent !important;
-    cursor: pointer !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    border-radius: 9px !important;
+    background: rgba(118,118,128,.075) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control input[type="range"]::-webkit-slider-runnable-track {
-    height: 7px !important;
-    border: 0 !important;
-    border-radius: 999px !important;
-    background: rgba(118,118,128,.18) !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .favorite-button {
+    top: 9px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control input.white-temperature-control::-webkit-slider-runnable-track {
-    background: linear-gradient(90deg, #ffd6a6 0%, #fff3dd 48%, #c9e3ff 100%) !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .control-button {
+    bottom: 9px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control input[type="range"]::-webkit-slider-thumb {
-    width: 21px !important;
-    height: 21px !important;
-    margin-top: -7px !important;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: 0 !important;
-    border-radius: 50% !important;
-    background: #fff !important;
-    box-shadow: 0 1px 2px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.14) !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .favorite-button svg,
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .control-button svg {
+    width: 14px !important;
+    height: 14px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control input[type="range"]::-moz-range-track {
-    height: 7px !important;
-    border: 0 !important;
-    border-radius: 999px !important;
-    background: rgba(118,118,128,.18) !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.86), 0 7px 18px rgba(0,0,0,.04) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control input.white-temperature-control::-moz-range-track {
-    background: linear-gradient(90deg, #ffd6a6 0%, #fff3dd 48%, #c9e3ff 100%) !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile.selected {
+    border-color: rgba(0,122,255,.30) !important;
+    box-shadow: inset 0 0 0 1px rgba(0,122,255,.09), inset 0 1px 0 rgba(255,255,255,.84), 0 5px 16px rgba(0,0,0,.035) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control input[type="range"]::-moz-range-thumb {
-    width: 21px !important;
-    height: 21px !important;
-    border: 0 !important;
-    border-radius: 50% !important;
-    background: #fff !important;
-    box-shadow: 0 1px 2px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.14) !important;
-  }
-
-  /* Climate inside the inspector must read as a control, not a second card. */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .climate-control,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .climate-card {
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-
-  /* -----------------------------------------------------------------------
-   * Passive sensors: a low-noise status strip, visually below controls.
-   * ----------------------------------------------------------------------- */
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-section {
-    grid-column: 1 / -1 !important;
+  /* Device controls are a compact inspector below the accessory grid. They no
+   * longer compete visually with the device cards for the primary reading area. */
+  .app-shell.home-page-active .home-v5-inline-control.device-controls {
     grid-row: 3 !important;
-    min-width: 0 !important;
+    min-height: 82px !important;
+    padding: 11px 13px !important;
+    grid-template-columns: minmax(170px, .62fr) repeat(2, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    gap: 10px 16px !important;
+    border-radius: 18px !important;
+    background: rgba(118,118,128,.045) !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control .device-controls-heading {
+    grid-row: auto !important;
+    align-items: center !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control .device-controls-heading strong {
+    font-size: 13.5px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control .control-meta span,
+  .app-shell.home-page-active .home-v5-inline-control .control-meta strong {
+    font-size: 11px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-inline-control input[type="range"] {
+    height: 24px !important;
+  }
+
+  /* Passive sensors remain available, but visually quieter than controls. */
+  .app-shell.home-page-active .home-v5-passive-section {
+    grid-row: 4 !important;
     min-height: 0 !important;
-    padding-top: 10px !important;
     display: grid !important;
-    grid-template-rows: auto auto !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
     gap: 7px !important;
     overflow: hidden !important;
-    border-top: 1px solid rgba(60,60,67,.065) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-grid {
-    min-width: 0 !important;
+  .app-shell.home-page-active .home-v5-passive-grid {
     min-height: 0 !important;
-    display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    grid-auto-rows: 55px !important;
-    gap: 8px !important;
+    grid-auto-rows: minmax(54px, 1fr) !important;
+    align-content: stretch !important;
+    gap: 7px !important;
     overflow: hidden !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-item {
-    position: relative !important;
-    min-width: 0 !important;
-    min-height: 55px !important;
-    height: 55px !important;
-    padding: 8px 10px 8px 45px !important;
-    display: flex !important;
-    align-items: center !important;
-    border: 1px solid rgba(60,60,67,.06) !important;
-    border-radius: 15px !important;
+  .app-shell.home-page-active .home-v5-passive-item {
+    min-height: 54px !important;
+    padding: 8px 9px 8px 43px !important;
+    border-radius: 14px !important;
     background: rgba(118,118,128,.045) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.4) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-item .entity-icon {
-    position: absolute !important;
+  .app-shell.home-page-active .home-v5-passive-item .entity-icon {
     top: 50% !important;
-    left: 10px !important;
-    width: 29px !important;
-    height: 29px !important;
-    display: grid !important;
-    place-items: center !important;
-    border-radius: 10px !important;
-    background: rgba(118,118,128,.11) !important;
-    color: #77777d !important;
-    box-shadow: none !important;
+    left: 9px !important;
+    width: 28px !important;
+    height: 28px !important;
     transform: translateY(-50%) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-item .entity-icon svg {
-    width: 15px !important;
-    height: 15px !important;
+  .app-shell.home-page-active .home-v5-passive-item strong {
+    font-size: 10.8px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-item > div {
-    min-width: 0 !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-item strong {
-    display: block !important;
-    width: 100% !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    color: var(--fc-label, #1d1d1f) !important;
-    font-size: 11px !important;
-    line-height: 1.12 !important;
-    font-weight: 640 !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-item small {
-    display: block !important;
-    width: 100% !important;
-    margin-top: 2px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    color: #7b7b80 !important;
+  .app-shell.home-page-active .home-v5-passive-item small {
     font-size: 9.8px !important;
-    line-height: 1.1 !important;
-    font-weight: 540 !important;
   }
 
-  /* Dark mode */
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile {
-    border-color: rgba(255,255,255,.065) !important;
+  .app-shell.night.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile {
     background: rgba(58,58,60,.90) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 5px 16px rgba(0,0,0,.15) !important;
+    border-color: rgba(255,255,255,.065) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 5px 16px rgba(0,0,0,.14) !important;
   }
 
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile.active:not(.domain-light):not(.domain-climate) {
-    border-color: rgba(255,255,255,.06) !important;
-    background: #3f3f41 !important;
-  }
-
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main strong,
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading strong,
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-inline-control .control-meta strong,
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-passive-item strong {
+  .app-shell.night.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main strong {
     color: #f5f5f7 !important;
   }
 
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main small,
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-inline-control .control-meta span,
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-passive-item small {
-    color: #b8b8bd !important;
+  .app-shell.night.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main small {
+    color: #b6b6bb !important;
   }
 
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-inline-control.device-controls,
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-passive-item {
+  .app-shell.night.home-page-active .home-v5-inline-control.device-controls,
+  .app-shell.night.home-page-active .home-v5-passive-item {
     border-color: rgba(255,255,255,.055) !important;
     background: rgba(255,255,255,.045) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
-  }
-
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading,
-  .app-shell.night.home-page-active .home-refactor-v5 .home-v5-passive-section {
-    border-color: rgba(255,255,255,.06) !important;
   }
 }
 
-/* Large desktop: keep the inspector, let the accessory side breathe with
- * three columns only when there is enough physical room. */
-@media (min-width: 1680px) {
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-content {
-    grid-template-columns: minmax(0, 1.72fr) minmax(260px, .72fr) !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid.entity-grid {
+/* Wide desktop has enough physical room for three columns without sacrificing
+ * readability. On normal desktop/tablet we intentionally stay at two columns. */
+@media (min-width: 1560px) {
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 
-/* Tablet / compact desktop: preserve the same composition but give the
- * inspector a narrower, predictable column and simplify sensor density. */
-@media (min-width: 701px) and (max-width: 1120px) {
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-heading {
-    padding-inline: 15px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-switcher.room-switcher.room-chip-strip {
-    padding-inline: 15px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-room-content {
-    padding: 2px 15px 14px !important;
-    grid-template-columns: minmax(0, 1fr) minmax(218px, .72fr) !important;
-    column-gap: 11px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid.entity-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-auto-rows: 86px !important;
+/* Tablet: keep the same visual language but simplify the control inspector so
+ * it does not squeeze the accessory names. */
+@media (min-width: 701px) and (max-width: 1080px) {
+  .app-shell.home-page-active .home-v5-room-content {
     gap: 8px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-tile,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main {
-    min-height: 86px !important;
-    height: 86px !important;
+  .app-shell.home-page-active .home-v5-device-grid.entity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 82px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main {
-    padding: 11px 44px 11px 56px !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-tile,
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main {
+    min-height: 82px !important;
+    height: 82px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-icon {
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main {
+    padding-left: 56px !important;
+  }
+
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-icon {
     left: 11px !important;
     width: 34px !important;
     height: 34px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main strong {
-    font-size: 12.8px !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main strong {
+    font-size: 13px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .entity-main small {
-    font-size: 10.3px !important;
+  .app-shell.home-page-active .home-v5-room-panel .home-v5-device-grid .entity-main small {
+    font-size: 10.5px !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .favorite-button,
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .control-button {
-    right: 8px !important;
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
-    min-height: 26px !important;
+  .app-shell.home-page-active .home-v5-inline-control.device-controls {
+    min-height: 76px !important;
+    grid-template-columns: minmax(140px, .55fr) minmax(0, 1fr) !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .favorite-button { top: 8px !important; }
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-device-grid .control-button { bottom: 8px !important; }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control.device-controls {
-    padding: 13px !important;
-    gap: 12px !important;
-    border-radius: 19px !important;
+  .app-shell.home-page-active .home-v5-inline-control .control-row:nth-of-type(n+3) {
+    grid-column: 2 !important;
   }
 
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-inline-control .device-controls-heading strong {
-    font-size: 14px !important;
-  }
-
-  .app-shell.home-page-active .home-refactor-v5 .home-v5-passive-grid {
+  .app-shell.home-page-active .home-v5-passive-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 7px !important;
   }
 }
