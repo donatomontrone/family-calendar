@@ -153,4 +153,169 @@
     border-color: color-mix(in srgb, var(--room-shared-accent) 24%, transparent) !important;
     background: var(--room-shared-accent) !important;
   }
+
+  /* Clicking the room temperature must feel immediate: the room header itself
+   * must not shrink or animate while the climate panel opens. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4:active {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* The room-scoped climate popup adopts the exact visual grammar used by the
+   * Calendar Smart Home .device-controls panel. The Home implementation still
+   * reuses its filtered climate entity, but visually it is the same compact
+   * control surface instead of a separate large feature modal. */
+  .app-shell.home-page-active .reel-backdrop:has(.climate-modal),
+  .app-shell.home-page-active .reel-backdrop:has(.climate-modal) > .climate-modal {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .app-shell.home-page-active .reel-backdrop:has(.room-climate-modal) {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.feature-modal.room-climate-modal {
+    width: min(370px, calc(100vw - 48px)) !important;
+    max-height: calc(100vh - 48px) !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    overflow: auto !important;
+    border: 1px solid var(--line, rgba(60,60,67,.10)) !important;
+    border-radius: 20px !important;
+    background: rgba(255,255,255,.78) !important;
+    box-shadow: 0 10px 24px rgba(0,0,0,.045) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    margin: 0 0 12px !important;
+  }
+
+  /* Calendar DeviceControls uses the CONTROLLI kicker + device name. Rebuild
+   * that same heading from the room name already attached by ui-interactions. */
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head .reel-kicker {
+    font-size: 0 !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head .reel-kicker::before {
+    content: "CONTROLLI";
+    color: #9a9aa0;
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head h2 {
+    margin: 3px 0 0 !important;
+    font-size: 0 !important;
+    line-height: 1.1 !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head h2::before {
+    content: "Clima " attr(data-room-name);
+    color: var(--lg-label, #1d1d1f);
+    font-size: 12px;
+    font-weight: 680;
+    letter-spacing: -.02em;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-head h2::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .modal-close {
+    width: 27px !important;
+    height: 27px !important;
+    min-width: 27px !important;
+    min-height: 27px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(118,118,128,.10) !important;
+    color: #6e6e73 !important;
+    box-shadow: none !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-grid.room-climate-filtered {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  /* Home currently renders ClimateControl full; these values are the same
+   * compact contract used by Calendar DeviceControls. */
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-control {
+    gap: 7px !important;
+    padding: 9px !important;
+    border-radius: 14px !important;
+    background: rgba(118,118,128,.035) !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-control-title strong {
+    display: none !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-control-icon {
+    width: 25px !important;
+    height: 25px !important;
+    border-radius: 8px !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-current strong {
+    font-size: 16px !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-target-row {
+    grid-template-columns: 27px minmax(0, 1fr) 27px !important;
+    gap: 6px !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-step-button {
+    width: 27px !important;
+    height: 27px !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-target-value {
+    min-height: 38px !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-target-value strong {
+    font-size: 18px !important;
+  }
+
+  .app-shell.home-page-active .climate-modal.room-climate-modal .climate-mode-button {
+    min-height: 38px !important;
+    border-radius: 9px !important;
+  }
+
+  .app-shell.home-page-active.night .climate-modal.feature-modal.room-climate-modal {
+    border-color: rgba(255,255,255,.08) !important;
+    background: rgba(44,44,46,.90) !important;
+    box-shadow: 0 10px 24px rgba(0,0,0,.20) !important;
+  }
+
+  .app-shell.home-page-active.night .climate-modal.room-climate-modal .climate-control {
+    background: rgba(118,118,128,.10) !important;
+  }
 }
