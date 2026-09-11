@@ -132,6 +132,45 @@
     display: none !important;
   }
 
+  /* When a room climate entity is actually active, reuse one status-cell slot
+   * as a concise system indicator: state on the left, configured setpoint on
+   * the right. It is deliberately not an additional control. */
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-climate-status-v6 {
+    border-color: rgba(255,159,10,.18) !important;
+    background: linear-gradient(145deg, rgba(255,159,10,.12), rgba(255,204,112,.055)) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-climate-status-v6 > span {
+    border-color: rgba(255,159,10,.15) !important;
+    background: rgba(255,159,10,.13) !important;
+    color: var(--lg-orange) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-climate-status-v6 strong {
+    color: var(--lg-label) !important;
+    font-weight: 650 !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-climate-status-v6 small {
+    color: #bd6f00 !important;
+    font-weight: 740 !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-climate-status-v6 {
+    border-color: rgba(255,179,64,.16) !important;
+    background: linear-gradient(145deg, rgba(255,159,10,.13), rgba(118,118,128,.09)) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-climate-status-v6 > span {
+    border-color: rgba(255,179,64,.13) !important;
+    background: rgba(255,159,10,.15) !important;
+    color: #ffb340 !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-climate-status-v6 small {
+    color: #ffb340 !important;
+  }
+
   /* Light brightness, white-temperature and cover-position controls reserve the
    * exact same geometry. Switching device therefore never changes range size. */
   .app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
