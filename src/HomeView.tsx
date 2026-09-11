@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import ClimateControl from "./ClimateControl";
+import SharedHeader from "./SharedHeader";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -17,7 +18,6 @@ import type { Language } from "./i18n";
 const CONTROL_DOMAINS = new Set(["light", "switch", "cover", "climate", "fan", "media_player", "lock", "vacuum"]);
 const ACTIVE_STATES = new Set(["on", "open", "heat", "cool", "heat_cool", "auto", "fan_only", "dry", "playing", "unlocked", "cleaning"]);
 type Overlay = "routines" | "batteries" | "climate" | "sensors" | "cameras" | "media" | "vacuum" | "car" | "cover" | null;
-type LightControlMode = "brightness" | "temperature";
 
 type HomeViewProps = {
   hass: Hass;
@@ -37,7 +37,9 @@ type RoomModel = {
 };
 
 export default function HomeView({ hass, areas, entities, now, demo, language }: HomeViewProps) {
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+  const [activeRoomId, setActiveRoomId] = useState<string | null>(null);
+  const [detailRoomId, setDetailRoomId] = useState<string | null>(null);
+  const [selectedControl, setSelectedControl] = useState<string | null>(null);
   const [favorites, setFavoriteIds] = useState<string[]>([]);
   const [overlay, setOverlay] = useState<Overlay>(null);
   const copy = language === "it" ? itCopy : enCopy;
@@ -58,14 +60,37 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
     return { area, allIds, controllableIds, passiveIds, temperature: findTemperature(hass, allIds) };
   }), [areas, entities, hass]);
 
-  const selected = selectedRoom ? rooms.find((room) => room.area.area_id === selectedRoom) ?? null : null;
+  useEffect(() => {
+    if (!rooms.length) return;
+    if (!activeRoomId || !rooms.some((room) => room.area.area_id === activeRoomId)) {
+      setActiveRoomId(rooms[0].area.area_id);
+    }
+  }, [rooms, activeRoomId]);
+
+  const activeRoom = rooms.find((room) => room.area.area_id === activeRoomId) ?? rooms[0] ?? null;
+  const detailRoom = detailRoomId ? rooms.find((room) => room.area.area_id === detailRoomId) ?? null : null;
   const allActionable = useMemo(() => rooms.flatMap((room) => room.controllableIds), [rooms]);
   const temperatures = rooms.map((room, index) => room.temperature ?? (demo ? 21.7 + index * 0.3 : undefined));
   const knownTemperatures = temperatures.filter((value): value is number => typeof value === "number");
   const climateIds = allActionable.filter((id) => domainOf(id) === "climate");
+  const lightIds = allActionable.filter((id) => domainOf(id) === "light");
+  const coverIds = allActionable.filter((id) => domainOf(id) === "cover");
+  const activeLights = lightIds.filter((id) => isActive(hass, id)).length;
+  const openCovers = coverIds.filter((id) => Number(hass.states[id]?.attributes.current_position ?? 0) > 0).length;
   const alarm = Object.values(hass.states).find((state) => state.entity_id.startsWith("alarm_control_panel."));
   const weather = Object.values(hass.states).find((state) => state.entity_id.startsWith("weather."));
   const outside = Number(weather?.attributes.temperature ?? 24.5);
+  const isNight = typeof document !== "undefined" && document.querySelector(".app-shell.night") !== null;
+
+  useEffect(() => {
+    if (!activeRoom) {
+      setSelectedControl(null);
+      return;
+    }
+    const configurable = activeRoom.controllableIds.filter((id) => ["light", "cover", "climate"].includes(domainOf(id)));
+    if (selectedControl && configurable.includes(selectedControl)) return;
+    setSelectedControl(configurable[0] ?? null);
+  }, [activeRoom, selectedControl]);
 
   async function toggleFavorite(entityId: string) {
     const next = favorites.includes(entityId) ? favorites.filter((id) => id !== entityId) : [...favorites, entityId];
@@ -77,92 +102,167 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
     document.dispatchEvent(new CustomEvent("family-calendar-header-action", { detail: kind }));
   }
 
+  function toggleTheme() {
+    document.querySelector<HTMLButtonElement>(".global-theme-switch.home-header-theme-switch")?.click();
+  }
+
   async function runScene(name: "night" | "guest" | "movie") {
     const keys = name === "night" ? ["buonanotte", "good_night", "night"] : name === "guest" ? ["ospiti", "guest"] : ["film", "movie"];
     const scene = Object.keys(hass.states).find((id) => id.startsWith("scene.") && keys.some((key) => id.includes(key)));
     if (scene) await hass.callService("scene", "turn_on", { entity_id: scene });
   }
 
+  async function turnOffRoom() {
+    if (!activeRoom) return;
+    await deactivateEntities(hass, activeRoom.controllableIds);
+  }
+
+  const averageInside = average(knownTemperatures.length ? knownTemperatures : [22]);
+  const climateActive = climateIds.some((id) => isActive(hass, id));
+
   return (
-    <section className="reel-home home-refactor-v4">
-      <header className="reel-topbar">
-        <div className="reel-greeting">
-          <strong>{greetingForHour(now.getHours(), copy)}</strong>
-          <span>{now.toLocaleDateString(locale(language), { weekday: "long", day: "numeric", month: "long" })}</span>
-        </div>
-        <div className="reel-clock">{now.toLocaleTimeString(locale(language), { hour: "2-digit", minute: "2-digit" })}</div>
-        <div className="reel-top-actions">
-          <span className="weather-pill"><SunIcon /><strong>{outside.toFixed(1)}°</strong><small>{copy.sunny}</small></span>
-          <span className="avatar-stack"><i>G</i><i>A</i></span>
-          <button className="security-pill" onClick={() => openHeaderAction("alarm")}><ShieldIcon /><span>{alarm && alarm.state !== "disarmed" ? copy.armed : copy.disarmed}</span></button>
-          <button className="round-top" aria-label={copy.notifications} onClick={() => openHeaderAction("notifications")}><BellIcon /></button>
-        </div>
-      </header>
+    <section className="reel-home home-refactor-v5">
+      <SharedHeader
+        hass={hass}
+        now={now}
+        language={language}
+        onAlarm={() => openHeaderAction("alarm")}
+        onNotifications={() => openHeaderAction("notifications")}
+        onThemeToggle={toggleTheme}
+        isNight={isNight}
+        themeLabel={language === "it" ? "Cambia aspetto" : "Change appearance"}
+      />
 
-      <div className="reel-dashboard">
-        <div className="reel-room-grid">
-          {rooms.map((room) => (
-            <RoomCard
-              key={room.area.area_id}
-              hass={hass}
-              room={room}
-              language={language}
-              onOpen={() => setSelectedRoom(room.area.area_id)}
-            />
-          ))}
-        </div>
-
-        <aside className="reel-side">
-          <section className="reel-side-card home-message-card">
-            <span className="reel-kicker">{copy.houseSays}</span>
-            <div className="house-message"><CheckIcon /><div><strong>{copy.allClear}</strong><span>{copy.allClearDetail}</span></div></div>
+      <div className="home-v5-dashboard">
+        <aside className="home-v5-left-column">
+          <section className="card home-v5-overview-card">
+            <div className="card-heading home-v5-card-heading">
+              <span className="section-kicker">{copy.home}</span>
+              <h2>{copy.atAGlance}</h2>
+            </div>
+            <div className="home-v5-overview-status">
+              <span className="home-v5-status-symbol"><CheckIcon /></span>
+              <div><strong>{copy.allClear}</strong><small>{copy.allClearDetail}</small></div>
+            </div>
+            <div className="home-v5-category-list">
+              <StatusRow icon={<BulbIcon />} label={copy.lights} value={`${activeLights}/${lightIds.length}`} tone="yellow" />
+              <StatusRow icon={<ThermometerIcon />} label={copy.climate} value={`${averageInside.toFixed(1)}°`} tone="orange" />
+              <StatusRow icon={<ShieldIcon />} label={copy.security} value={alarm && alarm.state !== "disarmed" ? copy.armed : copy.disarmed} tone="green" />
+              <StatusRow icon={<CoverIcon />} label={copy.covers} value={`${openCovers}/${coverIds.length}`} tone="blue" />
+            </div>
           </section>
 
-          <button className="reel-side-card alarm-row" onClick={() => openHeaderAction("alarm")}>
-            <span className="side-icon mint"><ShieldIcon /></span><div><strong>{copy.alarm}</strong><small>{copy.disarmed} · {copy.homeFree}</small></div><b>{copy.manage}</b>
-          </button>
+          <section className="card home-v5-scenes-card">
+            <div className="card-heading home-v5-card-heading">
+              <span className="section-kicker">{copy.routines}</span>
+              <h2>{copy.scenes}</h2>
+            </div>
+            <div className="home-v5-scene-list">
+              <SceneButton icon={<MoonIcon />} label={copy.goodNight} onClick={() => void runScene("night")} />
+              <SceneButton icon={<UsersIcon />} label={copy.guestMode} onClick={() => void runScene("guest")} />
+              <SceneButton icon={<MediaIcon />} label={copy.movieNight} onClick={() => void runScene("movie")} />
+            </div>
+          </section>
+        </aside>
 
-          <button className="reel-side-card thermostat-card thermostat-card-v4" onClick={() => setOverlay("climate")}>
-            <div className="thermostat-v4-head"><span><ThermometerIcon />{copy.climate}</span><b>{copy.manage}</b></div>
-            <div className="thermostat-v4-body">
-              <div className="thermostat-v4-ring" style={{ "--thermostat-progress": `${Math.min(100, Math.max(0, ((average(knownTemperatures.length ? knownTemperatures : [22]) - 16) / 14) * 100))}%` } as CSSProperties}>
-                <div><strong>{average(knownTemperatures.length ? knownTemperatures : [22]).toFixed(1)}°</strong><span>{copy.inside}</span></div>
+        <section className="card home-v5-room-panel">
+          <div className="card-heading split home-v5-room-heading">
+            <div>
+              <span className="section-kicker">{copy.rooms}</span>
+              <h1>{activeRoom?.area.name ?? copy.home}</h1>
+            </div>
+            <div className="home-v5-room-actions">
+              {activeRoom && typeof activeRoom.temperature === "number" && <span className="home-v5-temperature-pill"><ThermometerIcon />{activeRoom.temperature.toFixed(1)}°</span>}
+              <button className="power-all" type="button" onClick={() => void turnOffRoom()} aria-label={copy.turnOffRoom} title={copy.turnOffRoom}><PowerIcon /></button>
+              {activeRoom && <button className="home-v5-detail-button" type="button" onClick={() => setDetailRoomId(activeRoom.area.area_id)}>{copy.details}<ChevronIcon /></button>}
+            </div>
+          </div>
+
+          <div className="room-switcher room-chip-strip home-v5-room-switcher" role="tablist" aria-label={copy.rooms}>
+            {rooms.map((room) => (
+              <button
+                key={room.area.area_id}
+                role="tab"
+                aria-selected={activeRoom?.area.area_id === room.area.area_id}
+                className={activeRoom?.area.area_id === room.area.area_id ? "active" : ""}
+                onClick={() => { setActiveRoomId(room.area.area_id); setSelectedControl(null); }}
+              >
+                <span className="home-v5-room-chip-icon">{roomIcon(room.area.name)}</span>
+                {room.area.name}
+              </button>
+            ))}
+          </div>
+
+          <div className="home-v5-room-content">
+            <div className="home-v5-section-title"><div><span className="section-kicker">{copy.controls}</span><h3>{copy.accessories}</h3></div><span>{activeRoom?.controllableIds.length ?? 0}</span></div>
+
+            <div className="entity-grid home-v5-device-grid">
+              {activeRoom?.controllableIds.map((entityId) => (
+                <HomeAccessoryTile
+                  key={entityId}
+                  hass={hass}
+                  entityId={entityId}
+                  language={language}
+                  favorite={favorites.includes(entityId)}
+                  selected={selectedControl === entityId}
+                  onToggleFavorite={() => void toggleFavorite(entityId)}
+                  onSelectControl={() => setSelectedControl(selectedControl === entityId ? null : entityId)}
+                />
+              ))}
+              {activeRoom && activeRoom.controllableIds.length === 0 && <div className="empty-state">{copy.noControllable}</div>}
+            </div>
+
+            {selectedControl && hass.states[selectedControl] && (
+              <InlineDeviceControl hass={hass} entityId={selectedControl} language={language} onClose={() => setSelectedControl(null)} />
+            )}
+
+            <div className="home-v5-passive-section">
+              <div className="home-v5-section-title"><div><span className="section-kicker">{copy.status}</span><h3>{copy.sensorsAndStatus}</h3></div><span>{activeRoom?.passiveIds.length ?? 0}</span></div>
+              <div className="home-v5-passive-grid">
+                {activeRoom?.passiveIds.slice(0, 6).map((entityId) => (
+                  <div className="home-v5-passive-item" key={entityId}>
+                    <span className="entity-icon">{iconForEntity(hass, entityId)}</span>
+                    <div><strong>{shortName(displayName(hass, entityId), activeRoom.area.name)}</strong><small>{entityStatus(hass, entityId, language)}</small></div>
+                  </div>
+                ))}
+                {activeRoom && activeRoom.passiveIds.length === 0 && <div className="empty-state">{copy.noSensors}</div>}
               </div>
-              <div className="thermostat-v4-stats">
-                <span><small>{copy.outside}</small><strong>{outside.toFixed(1)}°</strong></span>
-                <span><small>{copy.zones}</small><strong>{climateIds.length}</strong></span>
-                <span><small>{copy.status}</small><strong>{climateIds.some((id) => isActive(hass, id)) ? copy.active : copy.idle}</strong></span>
-              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside className="home-v5-right-column">
+          <button className="card home-v5-climate-card" type="button" onClick={() => setOverlay("climate")}>
+            <div className="home-v5-climate-header"><div><span className="section-kicker">{copy.climate}</span><h2>{copy.temperature}</h2></div><span className={`home-v5-climate-state ${climateActive ? "active" : ""}`}>{climateActive ? copy.active : copy.idle}</span></div>
+            <div className="home-v5-climate-value"><strong>{averageInside.toFixed(1)}°</strong><small>{copy.inside}</small></div>
+            <div className="home-v5-climate-meta">
+              <span><small>{copy.outside}</small><strong>{Number.isFinite(outside) ? outside.toFixed(1) : "—"}°</strong></span>
+              <span><small>{copy.zones}</small><strong>{climateIds.length}</strong></span>
             </div>
           </button>
 
-          <section className="reel-side-card waste-card">
-            <div className="side-heading"><span><RecycleIcon /> {copy.waste}</span><b>{copy.today}</b></div>
-            <div className="waste-value"><span className="side-icon mint"><TrashBinIcon /></span><div><strong>{copy.residual}</strong><small>{copy.collectionReady}</small></div></div>
+          <section className="card home-v5-services-card">
+            <div className="card-heading home-v5-card-heading"><span className="section-kicker">{copy.home}</span><h2>{copy.services}</h2></div>
+            <div className="home-v5-service-grid">
+              <ServiceButton icon={<RadarIcon />} label={copy.sensors} onClick={() => setOverlay("sensors")} />
+              <ServiceButton icon={<CameraIcon />} label={copy.cameras} onClick={() => setOverlay("cameras")} />
+              <ServiceButton icon={<MediaIcon />} label={copy.media} onClick={() => setOverlay("media")} />
+              <ServiceButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => setOverlay("vacuum")} />
+              <ServiceButton icon={<CoverIcon />} label={copy.covers} onClick={() => setOverlay("cover")} />
+              <ServiceButton icon={<BatteryIcon />} label={copy.batteries} onClick={() => setOverlay("batteries")} />
+            </div>
           </section>
-
-          <div className="reel-tools-grid">
-            <ToolButton icon={<SparklesIcon />} label={copy.routines} onClick={() => setOverlay("routines")} />
-            <ToolButton icon={<BatteryIcon />} label={copy.batteries} onClick={() => setOverlay("batteries")} />
-            <ToolButton icon={<RadarIcon />} label={copy.sensors} onClick={() => setOverlay("sensors")} />
-            <ToolButton icon={<ClimateIcon />} label={copy.climate} onClick={() => setOverlay("climate")} />
-            <ToolButton icon={<CameraIcon />} label={copy.cameras} onClick={() => setOverlay("cameras")} />
-            <ToolButton icon={<MediaIcon />} label={copy.media} onClick={() => setOverlay("media")} />
-            <ToolButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => setOverlay("vacuum")} />
-            <ToolButton icon={<CarIcon />} label={copy.car} onClick={() => setOverlay("car")} />
-            <ToolButton icon={<CoverIcon />} label={copy.covers} onClick={() => setOverlay("cover")} />
-          </div>
         </aside>
       </div>
 
-      {selected && (
+      {detailRoom && (
         <RoomSheet
           hass={hass}
-          room={selected}
+          room={detailRoom}
           language={language}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
-          onClose={() => setSelectedRoom(null)}
+          onClose={() => setDetailRoomId(null)}
         />
       )}
 
@@ -181,137 +281,82 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
   );
 }
 
-function RoomCard({ hass, room, language, onOpen }: { hass: Hass; room: RoomModel; language: Language; onOpen: () => void }) {
-  const editableIds = room.controllableIds.filter((id) => ["light", "cover"].includes(domainOf(id)));
-  const [selectedControl, setSelectedControl] = useState<string | null>(() => editableIds[0] ?? null);
-  const [lightMode, setLightMode] = useState<LightControlMode>("brightness");
-  const selectedState = selectedControl ? hass.states[selectedControl] : undefined;
-  const selectedDomain = selectedControl ? domainOf(selectedControl) : null;
-
-  useEffect(() => {
-    if (selectedControl && editableIds.includes(selectedControl)) return;
-    setSelectedControl(editableIds[0] ?? null);
-  }, [room.area.area_id, editableIds.join("|"), selectedControl]);
-
-  const runEntity = (entityId: string) => {
-    if (editableIds.includes(entityId)) setSelectedControl(entityId);
-    void activateEntity(hass, entityId);
-  };
-
-  return (
-    <article className="reel-room room-card-v4">
-      <button className="reel-room-head room-head-v4" onClick={onOpen}>
-        <span className="room-title-v4"><i>{roomIcon(room.area.name)}</i><strong>{room.area.name}</strong></span>
-        <b>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</b>
-      </button>
-
-      <div className="room-device-section room-device-active-section">
-        <span className="room-section-label">{language === "it" ? "Controlli" : "Controls"}</span>
-        <div className="room-device-grid-v4">
-          {room.controllableIds.slice(0, 4).map((id) => (
-            <RoomDeviceButton
-              key={id}
-              hass={hass}
-              entityId={id}
-              selected={selectedControl === id}
-              onClick={() => runEntity(id)}
-            />
-          ))}
-          {!room.controllableIds.length && <small className="room-empty-v4">{language === "it" ? "Nessun dispositivo controllabile" : "No controllable devices"}</small>}
-        </div>
-      </div>
-
-      {selectedState && (selectedDomain === "light" || selectedDomain === "cover") && (
-        <RoomQuickControl
-          hass={hass}
-          entityId={selectedControl!}
-          language={language}
-          lightMode={lightMode}
-          onLightMode={setLightMode}
-        />
-      )}
-
-      <div className="room-device-section room-passive-section-v4">
-        <span className="room-section-label">{language === "it" ? "Sensori e stato" : "Sensors & status"}</span>
-        <div className="room-passive-grid-v4">
-          {room.passiveIds.slice(0, 4).map((id) => (
-            <div className="room-passive-device-v4" key={id}>
-              <span>{iconForEntity(hass, id)}</span>
-              <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
-            </div>
-          ))}
-          {!room.passiveIds.length && <small className="room-empty-v4">{language === "it" ? "Nessun sensore" : "No sensors"}</small>}
-        </div>
-      </div>
-
-      <button className="room-open-detail room-detail-v4" onClick={onOpen}>{language === "it" ? "Dettagli" : "Details"}<ChevronIcon /></button>
-    </article>
-  );
-}
-
-function RoomDeviceButton({ hass, entityId, selected, onClick }: { hass: Hass; entityId: string; selected: boolean; onClick: () => void }) {
+function HomeAccessoryTile({ hass, entityId, language, favorite, selected, onToggleFavorite, onSelectControl }: {
+  hass: Hass;
+  entityId: string;
+  language: Language;
+  favorite: boolean;
+  selected: boolean;
+  onToggleFavorite: () => void;
+  onSelectControl: () => void;
+}) {
   const state = hass.states[entityId];
   const domain = domainOf(entityId);
   const active = isActive(hass, entityId);
   const unavailable = ["unavailable", "unknown"].includes(state?.state ?? "unknown");
-  const style = domain === "light" ? ({ "--room-device-accent": whiteTemperatureAccent(getWhiteTemperature(state.attributes)) } as CSSProperties) : undefined;
+  const configurable = ["light", "cover", "climate"].includes(domain);
+  const style = domain === "light" ? ({ "--accessory-active": whiteTemperatureAccent(getWhiteTemperature(state.attributes)) } as CSSProperties) : undefined;
+
   return (
-    <button
-      className={`room-device-button-v4 domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""}`}
-      style={style}
-      onClick={onClick}
-      disabled={unavailable}
-    >
-      <span>{iconForEntity(hass, entityId)}</span>
-      <div><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? "Non disponibile" : entityStatus(hass, entityId, "it")}</small></div>
-    </button>
+    <article className={`entity-tile domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""} ${unavailable ? "unavailable" : ""}`} style={style}>
+      <button className="entity-main" type="button" onClick={() => !unavailable && void activateEntity(hass, entityId)} disabled={unavailable}>
+        <span className="entity-icon">{iconForEntity(hass, entityId)}</span>
+        <strong>{displayName(hass, entityId)}</strong>
+        <small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small>
+      </button>
+      <button className={`favorite-button ${favorite ? "selected" : ""}`} type="button" onClick={onToggleFavorite} aria-label={favorite ? (language === "it" ? "Rimuovi dai preferiti" : "Remove from favorites") : (language === "it" ? "Aggiungi ai preferiti" : "Add to favorites")}><StarIcon /></button>
+      {configurable && !unavailable && <button className="control-button" type="button" onClick={onSelectControl} aria-label={language === "it" ? "Controlli" : "Controls"}><SlidersIcon /></button>}
+    </article>
   );
 }
 
-function RoomQuickControl({ hass, entityId, language, lightMode, onLightMode }: { hass: Hass; entityId: string; language: Language; lightMode: LightControlMode; onLightMode: (mode: LightControlMode) => void }) {
+function InlineDeviceControl({ hass, entityId, language, onClose }: { hass: Hass; entityId: string; language: Language; onClose: () => void }) {
   const state = hass.states[entityId];
   const domain = domainOf(entityId);
-  const temperature = domain === "light" ? getWhiteTemperature(state.attributes) : null;
-  const brightness = Math.round((Number(state.attributes.brightness ?? 180) / 255) * 100);
-  const coverPosition = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
-  const value = domain === "cover" ? coverPosition : lightMode === "brightness" ? brightness : temperature!.currentKelvin;
-  const min = domain === "cover" ? 0 : lightMode === "brightness" ? 1 : temperature!.minKelvin;
-  const max = domain === "cover" ? 100 : lightMode === "brightness" ? 100 : temperature!.maxKelvin;
-  const step = domain === "light" && lightMode === "temperature" ? 50 : 1;
-  const label = domain === "cover"
-    ? (language === "it" ? "Posizione" : "Position")
-    : lightMode === "brightness"
-      ? (language === "it" ? "Luminosità" : "Brightness")
-      : (language === "it" ? "Temperatura bianco" : "White temperature");
-  const formatted = domain === "light" && lightMode === "temperature" ? `${Math.round(value)} K` : `${Math.round(value)}%`;
+  const brightness = Math.round((Number(state.attributes.brightness ?? 200) / 255) * 100);
+  const position = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
+  const white = getWhiteTemperature(state.attributes);
 
   return (
-    <div className={`room-quick-control-v4 domain-${domain}`}>
-      <div className="room-quick-control-head">
-        <div><small>{displayName(hass, entityId)}</small><strong>{label}<b>{formatted}</b></strong></div>
-        {domain === "light" && (
-          <div className="room-light-mode-v4">
-            <button className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")} aria-label={language === "it" ? "Luminosità" : "Brightness"}><SunIcon /></button>
-            <button className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")} aria-label={language === "it" ? "Temperatura bianco" : "White temperature"}><ThermometerIcon /></button>
-          </div>
-        )}
+    <section className={`home-v5-inline-control device-controls device-controls-${domain}`}>
+      <div className="device-controls-heading">
+        <div><span className="section-kicker">{language === "it" ? "Controlli" : "Controls"}</span><strong>{displayName(hass, entityId)}</strong></div>
+        <button type="button" onClick={onClose} aria-label={language === "it" ? "Chiudi" : "Close"}><CloseIcon /></button>
       </div>
-      <input
-        className={domain === "light" && lightMode === "temperature" ? "white-temperature-range" : ""}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(event) => {
-          const next = Number(event.target.value);
-          if (domain === "cover") void setCoverPosition(hass, entityId, next);
-          else if (lightMode === "brightness") void setLightBrightness(hass, entityId, next);
-          else void setLightColorTemperature(hass, entityId, next);
-        }}
-      />
-    </div>
+      {domain === "light" && (
+        <>
+          <ControlRow label={language === "it" ? "Luminosità" : "Brightness"} value={`${brightness}%`}>
+            <input type="range" min="1" max="100" value={brightness} onChange={(event) => void setLightBrightness(hass, entityId, Number(event.target.value))} />
+          </ControlRow>
+          <ControlRow label={language === "it" ? "Temperatura bianco" : "White temperature"} value={`${Math.round(white.currentKelvin)} K`}>
+            <input className="white-temperature-control" type="range" min={white.minKelvin} max={white.maxKelvin} step="50" value={white.currentKelvin} onChange={(event) => void setLightColorTemperature(hass, entityId, Number(event.target.value))} />
+          </ControlRow>
+        </>
+      )}
+      {domain === "cover" && (
+        <ControlRow label={language === "it" ? "Posizione" : "Position"} value={`${Math.round(position)}%`}>
+          <input type="range" min="0" max="100" value={position} onChange={(event) => void setCoverPosition(hass, entityId, Number(event.target.value))} />
+        </ControlRow>
+      )}
+      {domain === "climate" && <ClimateControl hass={hass} entityId={entityId} language={language} variant="compact" showName={false} />}
+    </section>
   );
+}
+
+function ControlRow({ label, value, children }: { label: string; value: string; children: ReactNode }) {
+  return <div className="control-row"><div className="control-meta"><span>{label}</span><strong>{value}</strong></div>{children}</div>;
+}
+
+function StatusRow({ icon, label, value, tone }: { icon: ReactNode; label: string; value: string; tone: string }) {
+  return <div className={`home-v5-status-row tone-${tone}`}><span>{icon}</span><strong>{label}</strong><b>{value}</b></div>;
+}
+
+function SceneButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) {
+  return <button className="home-v5-scene-button" type="button" onClick={onClick}><span>{icon}</span><strong>{label}</strong><ChevronIcon /></button>;
+}
+
+function ServiceButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) {
+  return <button className="home-v5-service-button" type="button" onClick={onClick}><span>{icon}</span><strong>{label}</strong></button>;
 }
 
 function RoomSheet({ hass, room, language, favorites, onToggleFavorite, onClose }: { hass: Hass; room: RoomModel; language: Language; favorites: string[]; onToggleFavorite: (id: string) => Promise<void>; onClose: () => void }) {
@@ -376,7 +421,6 @@ function GenericFeaturePanel({ hass, kind, language }: { hass: Hass; kind: Exclu
   return <div className="home-generic-grid-v4">{items.map((state) => <article key={state.entity_id}><span>{iconForEntity(hass, state.entity_id)}</span><div><strong>{displayName(hass, state.entity_id)}</strong><small>{entityStatus(hass, state.entity_id, language)}</small></div></article>)}</div>;
 }
 
-function ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) { return <button onClick={onClick}>{icon}<span>{label}</span></button>; }
 function RoutineRow({ icon, title, onClick }: { icon: ReactNode; title: string; onClick: () => void }) { return <button className="routine-row" onClick={onClick}><span>{icon}</span><div><strong>{title}</strong></div><ChevronIcon /></button>; }
 
 function isPassive(hass: Hass, entityId: string) {
@@ -391,7 +435,6 @@ function isPassive(hass: Hass, entityId: string) {
 
 function isActive(hass: Hass, entityId: string) { return ACTIVE_STATES.has(hass.states[entityId]?.state ?? ""); }
 function domainOf(entityId: string) { return entityId.split(".")[0]; }
-function locale(language: Language) { return language === "it" ? "it-IT" : "en-GB"; }
 function average(values: number[]) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
 function shortName(name: string, roomName: string) { const cleaned = name.replace(new RegExp(roomName, "ig"), "").replace(/^[\s_-]+|[\s_-]+$/g, ""); return cleaned || name; }
 
@@ -404,16 +447,23 @@ function findTemperature(hass: Hass, ids: string[]) {
 function entityStatus(hass: Hass, entityId: string, language: Language) {
   const state = hass.states[entityId];
   if (!state) return "—";
+  const domain = domainOf(entityId);
   const unit = String(state.attributes.unit_of_measurement ?? "");
-  if (unit && Number.isFinite(Number(state.state))) return `${state.state}${unit}`;
-  const deviceClass = String(state.attributes.device_class ?? "");
-  if (domainOf(entityId) === "binary_sensor") {
+  if (unit && Number.isFinite(Number(state.state))) return `${state.state}${unit === "%" || unit.startsWith("°") ? "" : " "}${unit}`;
+  const deviceClass = String(state.attributes.device_class ?? "").toLowerCase();
+  if (domain === "binary_sensor") {
     const on = state.state === "on";
     if (["motion", "occupancy", "presence"].includes(deviceClass)) return language === "it" ? (on ? "Presenza rilevata" : "Nessuna presenza") : (on ? "Presence detected" : "No presence");
     if (["door", "window", "opening"].includes(deviceClass)) return language === "it" ? (on ? "Aperto" : "Chiuso") : (on ? "Open" : "Closed");
   }
-  if (domainOf(entityId) === "cover") return `${Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0))}%`;
-  if (domainOf(entityId) === "light") return state.state === "on" ? `${Math.round((Number(state.attributes.brightness ?? 255) / 255) * 100)}%` : (language === "it" ? "Spenta" : "Off");
+  if (domain === "cover") return `${Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0))}%`;
+  if (domain === "light") return state.state === "on" ? `${Math.round((Number(state.attributes.brightness ?? 255) / 255) * 100)}%` : (language === "it" ? "Spenta" : "Off");
+  if (domain === "climate") {
+    const current = Number(state.attributes.current_temperature);
+    const target = Number(state.attributes.temperature);
+    if (Number.isFinite(current) && Number.isFinite(target)) return `${current.toFixed(1)}° → ${target.toFixed(target % 1 === 0 ? 0 : 1)}°`;
+    if (Number.isFinite(current)) return `${current.toFixed(1)}°`;
+  }
   const mapIt: Record<string, string> = { on: "Acceso", off: "Spento", open: "Aperto", closed: "Chiuso", playing: "In riproduzione", paused: "In pausa", heat: "Riscaldamento", cool: "Raffrescamento", unavailable: "Non disponibile" };
   return language === "it" ? (mapIt[state.state] ?? state.state) : state.state.replaceAll("_", " ");
 }
@@ -451,34 +501,113 @@ function iconForDomain(domain: string) {
   return <PowerIcon />;
 }
 
-function greetingForHour(hour: number, copy: typeof itCopy) { return hour < 12 ? copy.goodMorning : hour < 18 ? copy.goodAfternoon : copy.goodEvening; }
 function overlayTitle(kind: Exclude<Overlay, null>, copy: typeof itCopy) { const labels: Record<Exclude<Overlay, null>, string> = { routines: copy.routines, batteries: copy.batteries, climate: copy.climate, sensors: copy.sensors, cameras: copy.cameras, media: copy.media, vacuum: copy.vacuum, car: copy.car, cover: copy.covers }; return labels[kind]; }
 
-const itCopy = { goodMorning: "Buongiorno", goodAfternoon: "Buon pomeriggio", goodEvening: "Buonasera", sunny: "Sereno", armed: "Inserito", disarmed: "Disinserito", notifications: "Notifiche", houseSays: "La casa dice", allClear: "Tutto tranquillo", allClearDetail: "Nessuna anomalia rilevata", alarm: "Allarme", homeFree: "Casa libera", manage: "Gestisci", climate: "Clima", inside: "Interno", outside: "Esterno", zones: "Zone", status: "Stato", active: "Attivo", idle: "Inattivo", waste: "Rifiuti", today: "Oggi", residual: "Indifferenziato", collectionReady: "Raccolta pronta", routines: "Routine", batteries: "Batterie", sensors: "Sensori", cameras: "Telecamere", media: "Media", vacuum: "Aspirapolvere", car: "Auto", covers: "Tapparelle", roomControls: "Controlli stanza", turnOffAll: "Spegni tutto", close: "Chiudi", home: "Casa", noThermostat: "Nessun termostato", goodNight: "Buonanotte", guestMode: "Modalità ospiti", movieNight: "Serata film" };
-const enCopy: typeof itCopy = { goodMorning: "Good morning", goodAfternoon: "Good afternoon", goodEvening: "Good evening", sunny: "Sunny", armed: "Armed", disarmed: "Disarmed", notifications: "Notifications", houseSays: "Home says", allClear: "All clear", allClearDetail: "No issues detected", alarm: "Alarm", homeFree: "Home clear", manage: "Manage", climate: "Climate", inside: "Inside", outside: "Outside", zones: "Zones", status: "Status", active: "Active", idle: "Idle", waste: "Waste", today: "Today", residual: "Residual", collectionReady: "Collection ready", routines: "Routines", batteries: "Batteries", sensors: "Sensors", cameras: "Cameras", media: "Media", vacuum: "Vacuum", car: "Car", covers: "Covers", roomControls: "Room controls", turnOffAll: "Turn off all", close: "Close", home: "Home", noThermostat: "No thermostat", goodNight: "Good night", guestMode: "Guest mode", movieNight: "Movie night" };
+const itCopy = {
+  home: "Casa",
+  atAGlance: "A colpo d’occhio",
+  allClear: "Tutto tranquillo",
+  allClearDetail: "Nessuna anomalia rilevata",
+  lights: "Luci",
+  climate: "Clima",
+  security: "Sicurezza",
+  covers: "Tapparelle",
+  armed: "Inserito",
+  disarmed: "Disinserito",
+  routines: "Routine",
+  scenes: "Scene",
+  goodNight: "Buonanotte",
+  guestMode: "Ospiti",
+  movieNight: "Film",
+  rooms: "Stanze",
+  controls: "Controlli",
+  accessories: "Dispositivi",
+  status: "Stato",
+  sensorsAndStatus: "Sensori e stato",
+  details: "Dettagli",
+  turnOffRoom: "Spegni stanza",
+  noControllable: "Nessun dispositivo controllabile",
+  noSensors: "Nessun sensore",
+  temperature: "Temperatura",
+  inside: "Interno",
+  outside: "Esterno",
+  zones: "Zone",
+  active: "Attivo",
+  idle: "Inattivo",
+  services: "Servizi",
+  sensors: "Sensori",
+  cameras: "Telecamere",
+  media: "Media",
+  vacuum: "Aspirapolvere",
+  batteries: "Batterie",
+  roomControls: "Controlli stanza",
+  turnOffAll: "Spegni tutto",
+  close: "Chiudi",
+  noThermostat: "Nessun termostato",
+  car: "Auto",
+};
+
+const enCopy: typeof itCopy = {
+  home: "Home",
+  atAGlance: "At a glance",
+  allClear: "All clear",
+  allClearDetail: "No issues detected",
+  lights: "Lights",
+  climate: "Climate",
+  security: "Security",
+  covers: "Covers",
+  armed: "Armed",
+  disarmed: "Disarmed",
+  routines: "Routines",
+  scenes: "Scenes",
+  goodNight: "Good night",
+  guestMode: "Guests",
+  movieNight: "Movie",
+  rooms: "Rooms",
+  controls: "Controls",
+  accessories: "Accessories",
+  status: "Status",
+  sensorsAndStatus: "Sensors & status",
+  details: "Details",
+  turnOffRoom: "Turn room off",
+  noControllable: "No controllable devices",
+  noSensors: "No sensors",
+  temperature: "Temperature",
+  inside: "Inside",
+  outside: "Outside",
+  zones: "Zones",
+  active: "Active",
+  idle: "Idle",
+  services: "Services",
+  sensors: "Sensors",
+  cameras: "Cameras",
+  media: "Media",
+  vacuum: "Vacuum",
+  batteries: "Batteries",
+  roomControls: "Room controls",
+  turnOffAll: "Turn off all",
+  close: "Close",
+  noThermostat: "No thermostat",
+  car: "Car",
+};
 
 function Icon({ children }: { children: ReactNode }) { return <svg viewBox="0 0 24 24" aria-hidden="true">{children}</svg>; }
 function StrokeIcon({ children }: { children: ReactNode }) { return <Icon><g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{children}</g></Icon>; }
-function SunIcon() { return <StrokeIcon><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/></StrokeIcon>; }
 function ShieldIcon() { return <StrokeIcon><path d="M12 3.2 18.7 6v5c0 4.8-2.6 7.9-6.7 9.8C7.9 18.9 5.3 15.8 5.3 11V6Z"/><path d="m9.2 12 1.7 1.7 3.9-3.9"/></StrokeIcon>; }
-function BellIcon() { return <StrokeIcon><path d="M6.7 16.8h10.6l-1.4-2V10a3.9 3.9 0 0 0-7.8 0v4.8Z"/><path d="M10.2 19h3.6"/></StrokeIcon>; }
 function CheckIcon() { return <StrokeIcon><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12 2.2 2.2 4.8-4.8"/></StrokeIcon>; }
 function ThermometerIcon() { return <StrokeIcon><path d="M10 14.5V5.8a2 2 0 1 1 4 0v8.7a4 4 0 1 1-4 0Z"/><path d="M12 8v8"/></StrokeIcon>; }
-function RecycleIcon() { return <StrokeIcon><path d="m9 4 2-2 2 2M11 2l2.5 4.4M18.5 10l2.5.5-.5 2.5M21 10.5l-2.7 4.5M7 19l-2.5-.5.5-2.5M4.5 18.5 7 14"/></StrokeIcon>; }
-function TrashBinIcon() { return <StrokeIcon><path d="M7 8h10l-.7 11H7.7L7 8ZM9 5h6M10 11v5M14 11v5"/></StrokeIcon>; }
-function SparklesIcon() { return <StrokeIcon><path d="m12 2 1.3 3.7L17 7l-3.7 1.3L12 12l-1.3-3.7L7 7l3.7-1.3ZM18 13l.8 2.2L21 16l-2.2.8L18 19l-.8-2.2L15 16l2.2-.8Z"/></StrokeIcon>; }
 function BatteryIcon() { return <StrokeIcon><rect x="4" y="7" width="15" height="10" rx="2"/><path d="M19 10h2v4h-2M7 10h6v4H7z"/></StrokeIcon>; }
 function RadarIcon() { return <StrokeIcon><circle cx="12" cy="12" r="2"/><path d="M7.1 16.9a7 7 0 0 1 0-9.8M16.9 7.1a7 7 0 0 1 0 9.8M4.2 19.8a11 11 0 0 1 0-15.6M19.8 4.2a11 11 0 0 1 0 15.6"/></StrokeIcon>; }
 function ClimateIcon() { return <StrokeIcon><path d="M12 3v18M5 7l14 10M19 7 5 17"/></StrokeIcon>; }
 function CameraIcon() { return <StrokeIcon><rect x="3" y="7" width="18" height="12" rx="3"/><circle cx="12" cy="13" r="3"/><path d="m7 7 1.5-2h7L17 7"/></StrokeIcon>; }
 function MediaIcon() { return <StrokeIcon><rect x="4" y="5" width="16" height="14" rx="3"/><path d="m10 9 5 3-5 3Z"/></StrokeIcon>; }
 function VacuumIcon() { return <StrokeIcon><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v3M6 17l2-2"/></StrokeIcon>; }
-function CarIcon() { return <StrokeIcon><path d="m5 15 1-5h12l1 5M7 10l1.5-3h7L17 10M5 15v3h2v-2h10v2h2v-3Z"/><circle cx="8" cy="14" r="1"/><circle cx="16" cy="14" r="1"/></StrokeIcon>; }
 function CoverIcon() { return <StrokeIcon><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M7.5 7h9M7.5 10h9M7.5 13h9M7.5 16h9"/></StrokeIcon>; }
 function BulbIcon() { return <StrokeIcon><path d="M8.2 9.5a3.8 3.8 0 1 1 7.6 0c0 2-1.3 2.8-2 4H10c-.5-1.2-1.8-2-1.8-4Z"/><path d="M10 16h4M10.8 19h2.4"/></StrokeIcon>; }
 function PowerIcon() { return <StrokeIcon><path d="M12 3v8M7.1 6.6A7 7 0 1 0 17 6.6"/></StrokeIcon>; }
 function LockIcon() { return <StrokeIcon><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></StrokeIcon>; }
 function StarIcon() { return <StrokeIcon><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/></StrokeIcon>; }
+function SlidersIcon() { return <StrokeIcon><path d="M5 7h8m4 0h2M5 17h3m4 0h7M13 4v6M8 14v6"/></StrokeIcon>; }
 function ChevronIcon() { return <StrokeIcon><path d="m9 6 6 6-6 6"/></StrokeIcon>; }
 function CloseIcon() { return <StrokeIcon><path d="m7 7 10 10M17 7 7 17"/></StrokeIcon>; }
 function MoonIcon() { return <StrokeIcon><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5 7.5 7.5 0 1 0 19 14.5Z"/></StrokeIcon>; }
