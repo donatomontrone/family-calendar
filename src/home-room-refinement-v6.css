@@ -254,3 +254,91 @@
     font-weight: 520 !important;
   }
 }
+
+/* Active room-device cards use colour only in their upper band. The lower
+ * portion stays neutral so labels remain stable and the card does not become a
+ * large block of colour. Light cards preserve the real white-temperature accent
+ * already supplied by HomeView; other device classes use their native accent. */
+@media (min-width: 701px) {
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    --room-active-accent: #0a84ff;
+    overflow: hidden !important;
+    isolation: isolate;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light {
+    --room-active-accent: var(--room-device-accent, #ffd60a);
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-cover {
+    --room-active-accent: #64b5f6;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-switch,
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-lock {
+    --room-active-accent: #34c759;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-fan {
+    --room-active-accent: #5e5ce6;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-media_player {
+    --room-active-accent: #0a84ff;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-vacuum {
+    --room-active-accent: #af52de;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active,
+  .app-shell.day.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active:not(.domain-climate),
+  .app-shell.night.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active:not(.domain-climate) {
+    border-color: color-mix(in srgb, var(--room-active-accent) 30%, var(--lg-line-soft)) !important;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--room-active-accent) 42%, var(--lg-surface-strong)) 0,
+      color-mix(in srgb, var(--room-active-accent) 28%, var(--lg-surface-strong)) 45%,
+      rgba(118,118,128,.055) 45%,
+      rgba(118,118,128,.055) 100%
+    ) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4.active:not(.domain-climate) {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--room-active-accent) 40%, rgba(58,58,62,.92)) 0,
+      color-mix(in srgb, var(--room-active-accent) 25%, rgba(58,58,62,.92)) 45%,
+      rgba(118,118,128,.13) 45%,
+      rgba(118,118,128,.13) 100%
+    ) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active > span {
+    border-color: color-mix(in srgb, var(--room-active-accent) 32%, transparent) !important;
+    background: var(--room-active-accent) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-active-accent) 24%, transparent), inset 0 1px 0 rgba(255,255,255,.24) !important;
+  }
+
+  .app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active:hover {
+    border-color: color-mix(in srgb, var(--room-active-accent) 38%, var(--lg-line-soft)) !important;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--room-active-accent) 48%, var(--lg-surface-strong)) 0,
+      color-mix(in srgb, var(--room-active-accent) 32%, var(--lg-surface-strong)) 45%,
+      var(--lg-control-hover) 45%,
+      var(--lg-control-hover) 100%
+    ) !important;
+  }
+
+  .app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4.active:hover {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--room-active-accent) 44%, rgba(72,72,77,.95)) 0,
+      color-mix(in srgb, var(--room-active-accent) 28%, rgba(72,72,77,.95)) 45%,
+      rgba(84,84,90,.50) 45%,
+      rgba(84,84,90,.50) 100%
+    ) !important;
+  }
+}
