@@ -5,6 +5,7 @@ import type { Hass } from "./types";
 import { displayName, setCoverPosition, setLightBrightness, setLightColorTemperature } from "./ha";
 import { t, type Language } from "./i18n";
 import { getWhiteTemperature } from "./light-temperature";
+import "./control-polish-v17.css";
 
 type DeviceControlsProps = {
   hass: Hass;
