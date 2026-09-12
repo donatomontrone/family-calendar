@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 import "./ui-interactions";
-import "./calendar-header-home.css";
-import "./home-v4.css";
 import exactSharedStyles from "./shared-exact-v14.css?inline";
+import exactIsolationStyles from "./shared-exact-v15.css?inline";
 import type { Hass } from "./types";
 import type { Language } from "./i18n";
 
@@ -34,25 +33,30 @@ export default function SharedHeader({
   const copy = language === "it" ? itCopy : enCopy;
 
   return (
-    <header id="family-shared-header" className="reel-topbar shared-home-header casa-header-contract">
-      <style id="family-shared-exact-styles">{exactSharedStyles}</style>
-      <div className="reel-greeting">
-        <strong>{greetingForHour(now.getHours(), copy)}</strong>
-        <span>{now.toLocaleDateString(locale(language), { weekday: "long", day: "numeric", month: "long" })}</span>
-      </div>
-      <div className="reel-clock">{now.toLocaleTimeString(locale(language), { hour: "2-digit", minute: "2-digit" })}</div>
-      <div className="reel-top-actions">
-        <span className="weather-pill"><SunIcon /><strong>{outside.toFixed(1)}°</strong><small>{copy.sunny}</small></span>
-        <span className="avatar-stack"><i>G</i><i>A</i></span>
-        <button type="button" className="security-pill" onClick={onAlarm}><ShieldIcon /><span>{armed ? copy.armed : copy.disarmed}</span></button>
-        <button type="button" className="round-top" onClick={onNotifications} aria-label={copy.notifications}><BellIcon /></button>
-        {onThemeToggle && (
-          <button type="button" className="header-theme-switch" onClick={onThemeToggle} aria-label={themeLabel ?? copy.appearance}>
-            {isNight ? <SunIcon /> : <MoonIcon />}
-          </button>
-        )}
-      </div>
-    </header>
+    <div id="family-shared-header-host">
+      <style id="family-shared-exact-styles">{`${exactSharedStyles}\n${exactIsolationStyles}`}</style>
+      <header
+        id="family-shared-header"
+        className={`reel-topbar shared-home-header casa-header-contract ${isNight ? "night" : "day"}`}
+      >
+        <div className="reel-greeting">
+          <strong>{greetingForHour(now.getHours(), copy)}</strong>
+          <span>{now.toLocaleDateString(locale(language), { weekday: "long", day: "numeric", month: "long" })}</span>
+        </div>
+        <div className="reel-clock">{now.toLocaleTimeString(locale(language), { hour: "2-digit", minute: "2-digit" })}</div>
+        <div className="reel-top-actions">
+          <span className="weather-pill"><SunIcon /><strong>{outside.toFixed(1)}°</strong><small>{copy.sunny}</small></span>
+          <span className="avatar-stack"><i>G</i><i>A</i></span>
+          <button type="button" className="security-pill" onClick={onAlarm}><ShieldIcon /><span>{armed ? copy.armed : copy.disarmed}</span></button>
+          <button type="button" className="round-top" onClick={onNotifications} aria-label={copy.notifications}><BellIcon /></button>
+          {onThemeToggle && (
+            <button type="button" className="header-theme-switch" onClick={onThemeToggle} aria-label={themeLabel ?? copy.appearance}>
+              {isNight ? <SunIcon /> : <MoonIcon />}
+            </button>
+          )}
+        </div>
+      </header>
+    </div>
   );
 }
 
