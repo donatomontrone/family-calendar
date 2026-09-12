@@ -1,0 +1,336 @@
+/*
+ * V17 — final interaction/polish layer.
+ * High-specificity selectors intentionally outrank the historical runtime CSS
+ * that is re-appended to <head>. This file is imported from DeviceControls,
+ * which is always part of App.
+ */
+
+/* --------------------------------------------------------------------------
+ * CALENDARIO — room buttons and device tiles use the CASA visual language.
+ * -------------------------------------------------------------------------- */
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button {
+  position: relative !important;
+  border-right: 1px solid var(--line, rgba(60,60,67,.10)) !important;
+  border-bottom: 1px solid var(--line, rgba(60,60,67,.10)) !important;
+  border-left: 1px solid var(--line, rgba(60,60,67,.10)) !important;
+  background: rgba(118,118,128,.055) !important;
+  box-shadow: none !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:first-child {
+  --calendar-room-accent: #ffd84d;
+  border-top: 4px solid var(--calendar-room-accent) !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:nth-child(7n + 2) { --calendar-room-accent: #4f8cff; border-top: 4px solid var(--calendar-room-accent) !important; }
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:nth-child(7n + 3) { --calendar-room-accent: #34c759; border-top: 4px solid var(--calendar-room-accent) !important; }
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:nth-child(7n + 4) { --calendar-room-accent: #30b0c7; border-top: 4px solid var(--calendar-room-accent) !important; }
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:nth-child(7n + 5) { --calendar-room-accent: #ff9f0a; border-top: 4px solid var(--calendar-room-accent) !important; }
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:nth-child(7n + 6) { --calendar-room-accent: #8e7dff; border-top: 4px solid var(--calendar-room-accent) !important; }
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:nth-child(7n) { --calendar-room-accent: #ff6482; border-top: 4px solid var(--calendar-room-accent) !important; }
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button:nth-child(7n + 1):not(:first-child) { --calendar-room-accent: #32ade6; border-top: 4px solid var(--calendar-room-accent) !important; }
+
+main.app-shell.calendar-page-active .right-column .home-card .room-switcher.room-chip-strip > button.active {
+  border-right-color: color-mix(in srgb, var(--calendar-room-accent) 36%, var(--line, rgba(60,60,67,.10))) !important;
+  border-bottom-color: color-mix(in srgb, var(--calendar-room-accent) 36%, var(--line, rgba(60,60,67,.10))) !important;
+  border-left-color: color-mix(in srgb, var(--calendar-room-accent) 36%, var(--line, rgba(60,60,67,.10))) !important;
+  background: color-mix(in srgb, var(--calendar-room-accent) 16%, rgba(255,255,255,.94)) !important;
+  color: color-mix(in srgb, var(--calendar-room-accent) 74%, #1d1d1f) !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card { --calendar-scope-accent: #ffd84d; }
+main.app-shell.calendar-page-active .right-column .home-card:has(.room-switcher > button:nth-child(7n + 2).active) { --calendar-scope-accent: #4f8cff; }
+main.app-shell.calendar-page-active .right-column .home-card:has(.room-switcher > button:nth-child(7n + 3).active) { --calendar-scope-accent: #34c759; }
+main.app-shell.calendar-page-active .right-column .home-card:has(.room-switcher > button:nth-child(7n + 4).active) { --calendar-scope-accent: #30b0c7; }
+main.app-shell.calendar-page-active .right-column .home-card:has(.room-switcher > button:nth-child(7n + 5).active) { --calendar-scope-accent: #ff9f0a; }
+main.app-shell.calendar-page-active .right-column .home-card:has(.room-switcher > button:nth-child(7n + 6).active) { --calendar-scope-accent: #8e7dff; }
+main.app-shell.calendar-page-active .right-column .home-card:has(.room-switcher > button:nth-child(7n).active) { --calendar-scope-accent: #ff6482; }
+main.app-shell.calendar-page-active .right-column .home-card:has(.room-switcher > button:nth-child(7n + 1).active:not(:first-child)) { --calendar-scope-accent: #32ade6; }
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid {
+  gap: 7px !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--lg-line-soft, rgba(60,60,67,.10)) !important;
+  border-radius: 15px !important;
+  background: rgba(118,118,128,.055) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile > .entity-main {
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  padding: 7px 35px 7px 8px !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0,1fr) !important;
+  grid-template-rows: 1fr 1fr !important;
+  column-gap: 8px !important;
+  row-gap: 0 !important;
+  align-items: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  text-align: left !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile .entity-icon {
+  position: static !important;
+  grid-column: 1 !important;
+  grid-row: 1 / 3 !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid var(--calendar-scope-accent) !important;
+  border-radius: 11px !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 14%, rgba(255,255,255,.80)) !important;
+  color: var(--calendar-scope-accent) !important;
+  box-shadow: none !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile .entity-main strong {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-self: end !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 12px !important;
+  line-height: 1.05 !important;
+  font-weight: 670 !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile .entity-main small {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  align-self: start !important;
+  width: 100% !important;
+  margin-top: 3px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--lg-secondary, #86868b) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.active {
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 42%, rgba(60,60,67,.10)) !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 28%, rgba(255,255,255,.94)) !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.active .entity-icon {
+  border-color: var(--calendar-scope-accent) !important;
+  background: var(--calendar-scope-accent) !important;
+  color: #fff !important;
+}
+
+main.app-shell.night.calendar-page-active .right-column .home-card .entity-grid > .entity-tile {
+  background: rgba(118,118,128,.13) !important;
+}
+
+main.app-shell.night.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.active {
+  background: color-mix(in srgb, var(--calendar-scope-accent) 30%, rgba(58,58,62,.92)) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * SHARED CLIMATE POPUP — exact alignment and immediate chip feedback.
+ * -------------------------------------------------------------------------- */
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-target-row {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 36px minmax(0,1fr) 36px !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-step-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+  border-radius: 50% !important;
+  line-height: 0 !important;
+  transform: none !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-step-button svg {
+  width: 17px !important;
+  height: 17px !important;
+  margin: 0 !important;
+  display: block !important;
+  transform: none !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-target-value {
+  width: 100% !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  align-self: center !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-chip-row {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr)) !important;
+  gap: 6px !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-chip-row button {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 34px !important;
+  padding: 0 10px !important;
+  border-radius: 11px !important;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Keep the selected fan/profile visibly selected even while the pointer/focus
+ * remains on it. Older :hover/:focus rules made the new state appear only after
+ * clicking elsewhere. */
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-chip-row button.active,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-chip-row button.active:hover,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-chip-row button.active:focus,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-chip-row button.active:focus-visible,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-chip-row button.active:active {
+  border-color: var(--climate-accent) !important;
+  background: var(--climate-accent) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: none !important;
+}
+
+/* --------------------------------------------------------------------------
+ * CALENDARIO LIGHT POPUP — same range grammar as CASA.
+ * -------------------------------------------------------------------------- */
+body:has(main.calendar-page-active .home-card .room-switcher > button:first-child.active) #family-shared-device-overlay { --shared-device-accent: #ffd84d; }
+body:has(main.calendar-page-active .home-card .room-switcher > button:nth-child(7n + 2).active) #family-shared-device-overlay { --shared-device-accent: #4f8cff; }
+body:has(main.calendar-page-active .home-card .room-switcher > button:nth-child(7n + 3).active) #family-shared-device-overlay { --shared-device-accent: #34c759; }
+body:has(main.calendar-page-active .home-card .room-switcher > button:nth-child(7n + 4).active) #family-shared-device-overlay { --shared-device-accent: #30b0c7; }
+body:has(main.calendar-page-active .home-card .room-switcher > button:nth-child(7n + 5).active) #family-shared-device-overlay { --shared-device-accent: #ff9f0a; }
+body:has(main.calendar-page-active .home-card .room-switcher > button:nth-child(7n + 6).active) #family-shared-device-overlay { --shared-device-accent: #8e7dff; }
+body:has(main.calendar-page-active .home-card .room-switcher > button:nth-child(7n).active) #family-shared-device-overlay { --shared-device-accent: #ff6482; }
+body:has(main.calendar-page-active .home-card .room-switcher > button:nth-child(7n + 1).active:not(:first-child)) #family-shared-device-overlay { --shared-device-accent: #32ade6; }
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"],
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"] {
+  width: 100% !important;
+  min-width: 100% !important;
+  height: 22px !important;
+  margin: 6px 0 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  accent-color: var(--shared-device-accent, #4f8cff) !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-webkit-slider-runnable-track,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px !important;
+  border: 1px solid color-mix(in srgb, var(--shared-device-accent, #4f8cff) 24%, transparent) !important;
+  border-radius: 999px !important;
+  background: var(--shared-device-accent, #4f8cff) !important;
+  box-shadow: none !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-moz-range-track,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-moz-range-track {
+  height: 5px !important;
+  border: 1px solid color-mix(in srgb, var(--shared-device-accent, #4f8cff) 24%, transparent) !important;
+  border-radius: 999px !important;
+  background: var(--shared-device-accent, #4f8cff) !important;
+  box-shadow: none !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-webkit-slider-thumb,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-webkit-slider-thumb {
+  width: 18px !important;
+  height: 18px !important;
+  margin-top: -7px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 1px solid rgba(60,60,67,.14) !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.18) !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-moz-range-thumb,
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-moz-range-thumb {
+  width: 18px !important;
+  height: 18px !important;
+  border: 1px solid rgba(60,60,67,.14) !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.18) !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input.white-temperature-control[type="range"]::-webkit-slider-runnable-track {
+  border-color: rgba(60,60,67,.10) !important;
+  background: linear-gradient(90deg, #ffb347 0%, #ffd98a 34%, #fff0cb 55%, #dceeff 78%, #9fd3ff 100%) !important;
+}
+
+body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input.white-temperature-control[type="range"]::-moz-range-track {
+  border-color: rgba(60,60,67,.10) !important;
+  background: linear-gradient(90deg, #ffb347 0%, #ffd98a 34%, #fff0cb 55%, #dceeff 78%, #9fd3ff 100%) !important;
+}
+
+@media (max-width: 700px) {
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-target-row {
+    grid-template-columns: 40px minmax(0,1fr) 40px !important;
+    gap: 9px !important;
+  }
+
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-climate .climate-step-button {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-webkit-slider-runnable-track,
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-webkit-slider-runnable-track,
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-moz-range-track,
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-moz-range-track {
+    height: 6px !important;
+  }
+
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-webkit-slider-thumb,
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-webkit-slider-thumb {
+    width: 22px !important;
+    height: 22px !important;
+    margin-top: -9px !important;
+  }
+
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-light .control-row input[type="range"]::-moz-range-thumb,
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls-cover .control-row input[type="range"]::-moz-range-thumb {
+    width: 22px !important;
+    height: 22px !important;
+  }
+}
