@@ -6,6 +6,7 @@ import { displayName, setCoverPosition, setLightBrightness, setLightColorTempera
 import { t, type Language } from "./i18n";
 import { getWhiteTemperature } from "./light-temperature";
 import "./control-polish-v17.css";
+import "./calendar-device-scope-v18.css";
 
 type DeviceControlsProps = {
   hass: Hass;
