@@ -1,0 +1,74 @@
+/*
+ * V18 — Calendar device scope.
+ * Keep the CALENDARIO smart-home surface intentionally limited to the three
+ * controllable domains requested for now, and make covers inherit the room
+ * accent instead of the historical domain-blue accent.
+ */
+
+/* Only lights, covers and climate are visible in CALENDARIO. */
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile:not(.domain-light):not(.domain-cover):not(.domain-climate) {
+  display: none !important;
+}
+
+/* The old count still includes hidden registry entities, so do not show a
+ * misleading number until the list is filtered at the data-source level. */
+main.app-shell.calendar-page-active .right-column .home-card .device-heading > span {
+  display: none !important;
+}
+
+/* Covers must use exactly the selected room accent, never a domain-blue. */
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover {
+  --accessory-active: var(--calendar-scope-accent) !important;
+  --entity-accent: var(--calendar-scope-accent) !important;
+  --device-accent: var(--calendar-scope-accent) !important;
+  --active-accent: var(--calendar-scope-accent) !important;
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 24%, var(--lg-line-soft, rgba(60,60,67,.10))) !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover .entity-icon {
+  border-color: var(--calendar-scope-accent) !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 14%, rgba(255,255,255,.80)) !important;
+  color: var(--calendar-scope-accent) !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover.active {
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 44%, var(--lg-line-soft, rgba(60,60,67,.10))) !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 28%, rgba(255,255,255,.94)) !important;
+  box-shadow: none !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover.active .entity-main {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover.active .entity-icon {
+  border-color: var(--calendar-scope-accent) !important;
+  background: var(--calendar-scope-accent) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+main.app-shell.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover.selected {
+  border-color: var(--calendar-scope-accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--calendar-scope-accent) 16%, transparent) !important;
+}
+
+main.app-shell.night.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover {
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 22%, rgba(255,255,255,.08)) !important;
+  background: rgba(118,118,128,.13) !important;
+}
+
+main.app-shell.night.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover .entity-icon {
+  background: color-mix(in srgb, var(--calendar-scope-accent) 18%, rgba(44,44,46,.96)) !important;
+}
+
+main.app-shell.night.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover.active {
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 46%, rgba(255,255,255,.08)) !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 30%, rgba(58,58,62,.92)) !important;
+}
+
+main.app-shell.night.calendar-page-active .right-column .home-card .entity-grid > .entity-tile.domain-cover.active .entity-icon {
+  background: var(--calendar-scope-accent) !important;
+  color: #fff !important;
+}
