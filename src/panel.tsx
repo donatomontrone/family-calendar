@@ -27,6 +27,7 @@ import homeRoomSharedAccentStyles from "./home-room-shared-accent-v7.css?inline"
 import homeMobileV8Styles from "./home-mobile-v8.css?inline";
 import mobilePhoneFixesV9Styles from "./mobile-phone-fixes-v9.css?inline";
 import homePhoneRoomPolishV10Styles from "./home-phone-room-polish-v10.css?inline";
+import homeMobileUtilitiesV20Styles from "./home-mobile-utilities-v20.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -34,7 +35,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}\n${calendarV3Styles}\n${homeRoomSharedAccentStyles}\n${homeMobileV8Styles}\n${mobilePhoneFixesV9Styles}\n${homePhoneRoomPolishV10Styles}`;
+  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}\n${calendarV3Styles}\n${homeRoomSharedAccentStyles}\n${homeMobileV8Styles}\n${mobilePhoneFixesV9Styles}\n${homePhoneRoomPolishV10Styles}\n${homeMobileUtilitiesV20Styles}`;
   document.head.appendChild(style);
 }
 
