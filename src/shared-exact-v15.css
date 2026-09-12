@@ -72,8 +72,6 @@ main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
   border-color: rgba(255,255,255,.16) !important;
 }
 
-/* Remove browser/page defaults from the shared header controls so page-level
- * button rules cannot leave small computed-style differences behind. */
 #family-shared-header button,
 #family-shared-header .weather-pill,
 #family-shared-header .avatar-stack,
@@ -84,20 +82,25 @@ main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
   appearance: none !important;
 }
 
-/* CALENDARIO — reuse the exact CASA room-accent palette on room buttons.
- * Favorites stays separate. Every real room remains neutral except for the
- * same solid top accent used by its CASA card; the active room gets only a
- * restrained tint of that same colour. No gradients. */
-.calendar-page-active .home-card .room-switcher.room-chip-strip > button:not(:first-child) {
-  --calendar-room-accent: #4f8cff;
+/* CALENDARIO — exact CASA room-accent palette. */
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button {
   position: relative;
-  border-top: 4px solid var(--calendar-room-accent) !important;
   border-right: 1px solid var(--line, rgba(60,60,67,.10)) !important;
   border-bottom: 1px solid var(--line, rgba(60,60,67,.10)) !important;
   border-left: 1px solid var(--line, rgba(60,60,67,.10)) !important;
   background: rgba(118,118,128,.055) !important;
   color: var(--lg-label, #1d1d1f) !important;
   box-shadow: none !important;
+}
+
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button:first-child {
+  --calendar-room-accent: #ffd84d;
+  border-top: 4px solid var(--calendar-room-accent) !important;
+}
+
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button:not(:first-child) {
+  --calendar-room-accent: #4f8cff;
+  border-top: 4px solid var(--calendar-room-accent) !important;
 }
 
 /* Calendar has Favorites as child 1, so CASA room 1 starts at child 2. */
@@ -120,7 +123,11 @@ main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--calendar-room-accent) 13%, transparent) !important;
 }
 
-.calendar-page-active .home-card .room-switcher.room-chip-strip > button:not(:first-child).active {
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button:first-child svg {
+  color: #c99b00 !important;
+}
+
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button.active {
   border-top-color: var(--calendar-room-accent) !important;
   border-right-color: color-mix(in srgb, var(--calendar-room-accent) 34%, var(--line, rgba(60,60,67,.10))) !important;
   border-bottom-color: color-mix(in srgb, var(--calendar-room-accent) 34%, var(--line, rgba(60,60,67,.10))) !important;
@@ -130,12 +137,12 @@ main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--calendar-room-accent) 10%, transparent) !important;
 }
 
-.calendar-page-active .home-card .room-switcher.room-chip-strip > button:not(:first-child):hover {
+.calendar-page-active .home-card .room-switcher.room-chip-strip > button:hover {
   border-top-color: var(--calendar-room-accent) !important;
   background: color-mix(in srgb, var(--calendar-room-accent) 10%, rgba(255,255,255,.90)) !important;
 }
 
-.app-shell.night.calendar-page-active .home-card .room-switcher.room-chip-strip > button:not(:first-child) {
+.app-shell.night.calendar-page-active .home-card .room-switcher.room-chip-strip > button {
   border-right-color: rgba(255,255,255,.075) !important;
   border-bottom-color: rgba(255,255,255,.075) !important;
   border-left-color: rgba(255,255,255,.075) !important;
@@ -143,7 +150,7 @@ main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
   color: #f2f2f7 !important;
 }
 
-.app-shell.night.calendar-page-active .home-card .room-switcher.room-chip-strip > button:not(:first-child).active {
+.app-shell.night.calendar-page-active .home-card .room-switcher.room-chip-strip > button.active {
   border-top-color: var(--calendar-room-accent) !important;
   border-right-color: color-mix(in srgb, var(--calendar-room-accent) 30%, rgba(255,255,255,.08)) !important;
   border-bottom-color: color-mix(in srgb, var(--calendar-room-accent) 30%, rgba(255,255,255,.08)) !important;
@@ -152,8 +159,198 @@ main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
   color: #fff !important;
 }
 
-.app-shell.night.calendar-page-active .home-card .room-switcher.room-chip-strip > button:not(:first-child):hover {
+.app-shell.night.calendar-page-active .home-card .room-switcher.room-chip-strip > button:hover {
   background: color-mix(in srgb, var(--calendar-room-accent) 17%, rgba(58,58,62,.94)) !important;
+}
+
+/* The selected Calendar room owns the exact same accent as its CASA card.
+ * Favorites uses its semantic yellow accent. */
+.calendar-page-active .home-card { --calendar-scope-accent: #ffd84d; }
+.calendar-page-active .home-card:has(.room-switcher.room-chip-strip > button:nth-child(7n + 2).active) { --calendar-scope-accent: #4f8cff; }
+.calendar-page-active .home-card:has(.room-switcher.room-chip-strip > button:nth-child(7n + 3).active) { --calendar-scope-accent: #34c759; }
+.calendar-page-active .home-card:has(.room-switcher.room-chip-strip > button:nth-child(7n + 4).active) { --calendar-scope-accent: #30b0c7; }
+.calendar-page-active .home-card:has(.room-switcher.room-chip-strip > button:nth-child(7n + 5).active) { --calendar-scope-accent: #ff9f0a; }
+.calendar-page-active .home-card:has(.room-switcher.room-chip-strip > button:nth-child(7n + 6).active) { --calendar-scope-accent: #8e7dff; }
+.calendar-page-active .home-card:has(.room-switcher.room-chip-strip > button:nth-child(7n).active) { --calendar-scope-accent: #ff6482; }
+.calendar-page-active .home-card:has(.room-switcher.room-chip-strip > button:nth-child(7n + 1).active:not(:first-child)) { --calendar-scope-accent: #32ade6; }
+
+/* CALENDARIO device cards — same geometry/material/accent grammar as CASA. */
+.calendar-page-active .home-card .entity-grid {
+  gap: 7px !important;
+}
+
+.calendar-page-active .home-card .entity-tile {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  border: 1px solid var(--lg-line-soft, rgba(60,60,67,.10)) !important;
+  border-radius: 15px !important;
+  background: rgba(118,118,128,.055) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.calendar-page-active .home-card .entity-main,
+.calendar-page-active .home-card .entity-main-passive {
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  padding: 7px 35px 7px 8px !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  grid-template-rows: 1fr 1fr !important;
+  column-gap: 8px !important;
+  row-gap: 0 !important;
+  align-items: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  text-align: left !important;
+}
+
+.calendar-page-active .home-card .entity-icon {
+  grid-column: 1 !important;
+  grid-row: 1 / 3 !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid var(--calendar-scope-accent) !important;
+  border-radius: 11px !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 14%, var(--lg-control, rgba(255,255,255,.78))) !important;
+  color: var(--calendar-scope-accent) !important;
+  box-shadow: none !important;
+}
+
+.calendar-page-active .home-card .entity-icon svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: inherit !important;
+}
+
+.calendar-page-active .home-card .entity-main strong,
+.calendar-page-active .home-card .entity-main small,
+.calendar-page-active .home-card .entity-main-passive strong,
+.calendar-page-active .home-card .entity-main-passive small {
+  grid-column: 2 !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.calendar-page-active .home-card .entity-main strong,
+.calendar-page-active .home-card .entity-main-passive strong {
+  grid-row: 1 !important;
+  align-self: end !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  line-height: 1.05 !important;
+  font-weight: 670 !important;
+}
+
+.calendar-page-active .home-card .entity-main small,
+.calendar-page-active .home-card .entity-main-passive small {
+  grid-row: 2 !important;
+  align-self: start !important;
+  width: 100% !important;
+  margin-top: 3px !important;
+  color: var(--lg-secondary, #86868b) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 42%, var(--lg-line-soft, rgba(60,60,67,.10))) !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 28%, var(--lg-surface-strong, rgba(255,255,255,.94))) !important;
+}
+
+.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  border-color: var(--calendar-scope-accent) !important;
+  background: var(--calendar-scope-accent) !important;
+  color: #fff !important;
+}
+
+.calendar-page-active .home-card .entity-tile.selected {
+  border-color: var(--calendar-scope-accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--calendar-scope-accent) 16%, transparent) !important;
+}
+
+.calendar-page-active .home-card .entity-tile:hover {
+  transform: none !important;
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 44%, var(--lg-line-soft, rgba(60,60,67,.10))) !important;
+}
+
+.calendar-page-active .home-card .favorite-button,
+.calendar-page-active .home-card .control-button {
+  right: 6px !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid var(--lg-line-soft, rgba(60,60,67,.10)) !important;
+  border-radius: 50% !important;
+  background: var(--lg-control, rgba(255,255,255,.72)) !important;
+  color: var(--lg-secondary, #6e6e73) !important;
+  box-shadow: none !important;
+}
+
+.calendar-page-active .home-card .favorite-button { top: 5px !important; }
+.calendar-page-active .home-card .control-button { bottom: 5px !important; }
+
+.calendar-page-active .home-card .favorite-button svg,
+.calendar-page-active .home-card .control-button svg {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.calendar-page-active .home-card .favorite-button.selected {
+  border-color: rgba(201,155,0,.26) !important;
+  background: rgba(255,216,77,.24) !important;
+  color: #b88c00 !important;
+}
+
+.calendar-page-active .home-card .entity-tile.selected .control-button {
+  border-color: var(--calendar-scope-accent) !important;
+  background: var(--calendar-scope-accent) !important;
+  color: #fff !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile {
+  border-color: rgba(255,255,255,.075) !important;
+  background: rgba(118,118,128,.13) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-icon {
+  background: color-mix(in srgb, var(--calendar-scope-accent) 14%, rgba(58,58,62,.92)) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active {
+  border-color: color-mix(in srgb, var(--calendar-scope-accent) 42%, rgba(255,255,255,.075)) !important;
+  background: color-mix(in srgb, var(--calendar-scope-accent) 30%, rgba(58,58,62,.92)) !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .entity-tile.active .entity-icon {
+  background: var(--calendar-scope-accent) !important;
+  color: #fff !important;
+}
+
+.app-shell.night.calendar-page-active .home-card .favorite-button,
+.app-shell.night.calendar-page-active .home-card .control-button {
+  border-color: rgba(255,255,255,.075) !important;
+  background: rgba(58,58,62,.88) !important;
+  color: #d1d1d6 !important;
 }
 
 @media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
