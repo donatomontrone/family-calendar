@@ -1,0 +1,87 @@
+/*
+ * Shared Exact V15 — structural isolation for the UI that must be a photocopy.
+ *
+ * The header now lives inside #family-shared-header-host. Historical selectors
+ * that target `.app-shell.<page> > .reel-topbar` can no longer match it. The
+ * host itself is the first child of app-shell and therefore preserves the same
+ * layout slot on both pages.
+ */
+
+#family-shared-header-host {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 94px !important;
+  min-height: 94px !important;
+  max-height: 94px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  grid-column: 1 / -1 !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+  isolation: isolate !important;
+}
+
+#family-shared-header-host > #family-shared-header {
+  width: 100% !important;
+  height: 94px !important;
+  min-height: 94px !important;
+  max-height: 94px !important;
+  color: #1d1d1f !important;
+}
+
+#family-shared-header-host > #family-shared-header.night {
+  color: #f5f5f7 !important;
+}
+
+#family-shared-header.night .reel-greeting span,
+#family-shared-header.night .weather-pill small {
+  color: #aeaeb2 !important;
+}
+
+#family-shared-header.night .weather-pill,
+#family-shared-header.night .security-pill,
+#family-shared-header.night .round-top,
+#family-shared-header.night .header-theme-switch {
+  border-color: rgba(255,255,255,.05) !important;
+  background: rgba(44,44,46,.82) !important;
+  color: #f5f5f7 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 4px 14px rgba(0,0,0,.16) !important;
+}
+
+#family-shared-header.night .avatar-stack i {
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+/* Remove browser/page defaults from the shared header controls so page-level
+ * button rules cannot leave small computed-style differences behind. */
+#family-shared-header button,
+#family-shared-header .weather-pill,
+#family-shared-header .avatar-stack,
+#family-shared-header .avatar-stack i {
+  font-family: inherit !important;
+  text-decoration: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  #family-shared-header-host {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  #family-shared-header-host > #family-shared-header {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+}
