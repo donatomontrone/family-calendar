@@ -1,0 +1,496 @@
+/*
+ * CASA V20 — phone utility section rebuild.
+ * Owns everything below the room cards on phones. Loaded as the final runtime
+ * stylesheet so historical Home layers cannot reintroduce fixed rows/positions.
+ */
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  /* ---------------------------------------------------------------------- */
+  /* Utility feed: explicit areas + max-content rows.                        */
+  /* ---------------------------------------------------------------------- */
+  body main.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 14px 0 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "message message"
+      "alarm waste"
+      "climate climate"
+      "tools tools" !important;
+    grid-template-rows: none !important;
+    grid-auto-rows: max-content !important;
+    align-items: start !important;
+    align-content: start !important;
+    gap: 10px !important;
+    overflow: visible !important;
+    contain: none !important;
+  }
+
+  body main.app-shell.home-page-active .reel-side > .home-message-card { grid-area: message !important; }
+  body main.app-shell.home-page-active .reel-side > .alarm-row { grid-area: alarm !important; }
+  body main.app-shell.home-page-active .reel-side > .waste-card { grid-area: waste !important; }
+  body main.app-shell.home-page-active .reel-side > .thermostat-card-v4,
+  body main.app-shell.home-page-active .reel-side > .thermostat-card { grid-area: climate !important; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid { grid-area: tools !important; }
+
+  body main.app-shell.home-page-active .reel-side-card {
+    position: relative !important;
+    inset: auto !important;
+    float: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(60,60,67,.09) !important;
+    border-radius: 19px !important;
+    background: rgba(252,252,253,.97) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.76) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* House status — one compact horizontal status card.                      */
+  /* ---------------------------------------------------------------------- */
+  body main.app-shell.home-page-active .home-message-card {
+    min-height: 70px !important;
+    padding: 12px 14px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  body main.app-shell.home-page-active .home-message-card > .reel-kicker {
+    display: none !important;
+  }
+
+  body main.app-shell.home-page-active .home-message-card .house-message {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 11px !important;
+  }
+
+  body main.app-shell.home-page-active .home-message-card .house-message > svg {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    color: #22a887 !important;
+  }
+
+  body main.app-shell.home-page-active .home-message-card .house-message > div {
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 3px !important;
+  }
+
+  body main.app-shell.home-page-active .home-message-card .house-message strong {
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.08 !important;
+    font-weight: 690 !important;
+    letter-spacing: -.018em !important;
+  }
+
+  body main.app-shell.home-page-active .home-message-card .house-message span {
+    margin: 0 !important;
+    color: #8e8e93 !important;
+    font-size: 10.5px !important;
+    line-height: 1.18 !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Alarm + waste — matching compact tiles.                                */
+  /* ---------------------------------------------------------------------- */
+  body main.app-shell.home-page-active .alarm-row,
+  body main.app-shell.home-page-active .waste-card {
+    min-height: 76px !important;
+    height: 76px !important;
+    max-height: 76px !important;
+    padding: 10px 11px !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row {
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    grid-template-rows: 1fr !important;
+    align-items: center !important;
+    gap: 9px !important;
+    text-align: left !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row > b {
+    display: none !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row .side-icon,
+  body main.app-shell.home-page-active .waste-value .side-icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 12px !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row .side-icon svg,
+  body main.app-shell.home-page-active .waste-value .side-icon svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row > div,
+  body main.app-shell.home-page-active .waste-value > div {
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 3px !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row strong,
+  body main.app-shell.home-page-active .waste-value strong {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 12.5px !important;
+    line-height: 1.05 !important;
+    font-weight: 680 !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row small,
+  body main.app-shell.home-page-active .waste-value small {
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #8e8e93 !important;
+    font-size: 9.5px !important;
+    line-height: 1.1 !important;
+  }
+
+  body main.app-shell.home-page-active .waste-card .side-heading {
+    display: none !important;
+  }
+
+  body main.app-shell.home-page-active .waste-card .waste-value {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 9px !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Climate summary — full content, no clipping or inherited fixed height. */
+  /* ---------------------------------------------------------------------- */
+  body main.app-shell.home-page-active .thermostat-card-v4,
+  body main.app-shell.home-page-active .thermostat-card {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 154px !important;
+    max-height: none !important;
+    padding: 13px 14px 14px !important;
+    display: block !important;
+    overflow: visible !important;
+    text-align: left !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head {
+    width: 100% !important;
+    min-height: 24px !important;
+    margin: 0 0 10px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head > span {
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    color: #6e6e73 !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 710 !important;
+    letter-spacing: .055em !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head > span svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head > b {
+    flex: 0 0 auto !important;
+    color: #007aff !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 670 !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-body {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 13px !important;
+    overflow: visible !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-ring {
+    position: relative !important;
+    width: 86px !important;
+    height: 86px !important;
+    min-width: 86px !important;
+    min-height: 86px !important;
+    max-width: 86px !important;
+    max-height: 86px !important;
+    margin: 0 !important;
+    flex: 0 0 86px !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-ring > div strong {
+    font-size: 21px !important;
+    line-height: 1 !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-ring > div span {
+    margin-top: 2px !important;
+    font-size: 8.5px !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats {
+    min-width: 0 !important;
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: repeat(3, 28px) !important;
+    gap: 5px !important;
+    align-content: center !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats > span {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 28px !important;
+    height: 28px !important;
+    max-height: 28px !important;
+    padding: 4px 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(118,118,128,.09) !important;
+    border-radius: 10px !important;
+    background: rgba(118,118,128,.055) !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats small {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #8e8e93 !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats strong {
+    flex: 0 0 auto !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Tool grid — every item gets its own row/column; no legacy overlap.     */
+  /* ---------------------------------------------------------------------- */
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: none !important;
+    grid-auto-flow: row !important;
+    grid-auto-rows: 88px !important;
+    align-items: stretch !important;
+    align-content: start !important;
+    justify-items: stretch !important;
+    gap: 8px !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button {
+    --tool-accent: #007aff;
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    float: none !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    align-self: stretch !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 88px !important;
+    min-height: 88px !important;
+    max-height: 88px !important;
+    margin: 0 !important;
+    padding: 10px 6px 8px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 36px minmax(0, 1fr) !important;
+    place-items: center !important;
+    align-content: center !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(118,118,128,.10) !important;
+    border-radius: 17px !important;
+    background: rgba(118,118,128,.055) !important;
+    color: #1d1d1f !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.58) !important;
+    transform: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(1) { --tool-accent: #af52de; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(2) { --tool-accent: #34c759; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(3) { --tool-accent: #30b0c7; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(4) { --tool-accent: #ff9f0a; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(5) { --tool-accent: #007aff; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(6) { --tool-accent: #5856d6; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(7) { --tool-accent: #af52de; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(8) { --tool-accent: #30b0c7; }
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button:nth-child(9) { --tool-accent: #007aff; }
+
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button > svg {
+    grid-row: 1 !important;
+    grid-column: 1 !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+    border-radius: 11px !important;
+    background: color-mix(in srgb, var(--tool-accent) 14%, transparent) !important;
+    color: var(--tool-accent) !important;
+    transform: none !important;
+  }
+
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid > button > span {
+    grid-row: 2 !important;
+    grid-column: 1 !important;
+    align-self: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 2px !important;
+    overflow: hidden !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    white-space: normal !important;
+    text-overflow: ellipsis !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    line-height: 1.12 !important;
+    font-weight: 650 !important;
+  }
+
+  /* Keep the page ending tight to the tools while leaving room for the dock. */
+  body main.app-shell.home-page-active > .reel-home.home-refactor-v4 {
+    padding-bottom: max(112px, calc(90px + env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Night mode.                                                             */
+  /* ---------------------------------------------------------------------- */
+  body main.app-shell.night.home-page-active .reel-side-card,
+  body main.app-shell.night.home-page-active .reel-side > .reel-tools-grid > button {
+    border-color: rgba(255,255,255,.075) !important;
+    background: #242428 !important;
+    color: #f5f5f7 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+  }
+
+  body main.app-shell.night.home-page-active .home-message-card .house-message span,
+  body main.app-shell.night.home-page-active .alarm-row small,
+  body main.app-shell.night.home-page-active .waste-value small,
+  body main.app-shell.night.home-page-active .thermostat-v4-head > span,
+  body main.app-shell.night.home-page-active .thermostat-v4-stats small {
+    color: #aeb0b6 !important;
+  }
+
+  body main.app-shell.night.home-page-active .thermostat-v4-stats > span {
+    border-color: rgba(255,255,255,.06) !important;
+    background: #2d2d31 !important;
+  }
+
+  body main.app-shell.night.home-page-active .reel-side > .reel-tools-grid > button > svg {
+    background: color-mix(in srgb, var(--tool-accent) 18%, #242428) !important;
+    color: color-mix(in srgb, var(--tool-accent) 78%, #fff) !important;
+  }
+}
+
+@media (max-width: 330px) {
+  body main.app-shell.home-page-active .reel-side {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "message"
+      "alarm"
+      "waste"
+      "climate"
+      "tools" !important;
+  }
+
+  body main.app-shell.home-page-active .alarm-row,
+  body main.app-shell.home-page-active .waste-card {
+    height: 72px !important;
+    min-height: 72px !important;
+    max-height: 72px !important;
+  }
+
+  body main.app-shell.home-page-active .reel-side > .reel-tools-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
