@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Children, isValidElement, useEffect, useRef, useState, type ReactNode } from "react";
+import "./calendar-controls-v19.css";
 
 type ScrollRegionProps = {
   className: string;
@@ -8,9 +9,22 @@ type ScrollRegionProps = {
   children: ReactNode;
 };
 
+const CALENDAR_DEVICE_DOMAINS = ["domain-light", "domain-cover", "domain-climate"];
+
+function filterCalendarDeviceChildren(children: ReactNode) {
+  return Children.toArray(children).filter((child) => {
+    if (!isValidElement(child)) return true;
+    const props = child.props as { className?: string };
+    const childClassName = String(props.className ?? "");
+    if (!childClassName.includes("entity-tile")) return true;
+    return CALENDAR_DEVICE_DOMAINS.some((domainClass) => childClassName.includes(domainClass));
+  });
+}
+
 export default function ScrollRegion({ className, shellClassName, buttonLabel, resetKey, children }: ScrollRegionProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollDown, setCanScrollDown] = useState(false);
+  const renderedChildren = className === "entity-grid" ? filterCalendarDeviceChildren(children) : children;
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -51,7 +65,7 @@ export default function ScrollRegion({ className, shellClassName, buttonLabel, r
   return (
     <div className={shellClassName}>
       <div ref={scrollRef} className={className}>
-        {children}
+        {renderedChildren}
       </div>
       {canScrollDown && (
         <button
