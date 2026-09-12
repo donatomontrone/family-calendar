@@ -1,11 +1,23 @@
 /*
  * Shared Exact V15 — structural isolation for the UI that must be a photocopy.
  *
- * The header now lives inside #family-shared-header-host. Historical selectors
- * that target `.app-shell.<page> > .reel-topbar` can no longer match it. The
- * host itself is the first child of app-shell and therefore preserves the same
- * layout slot on both pages.
+ * The header lives inside #family-shared-header-host, so historical direct-child
+ * selectors for the old CASA/CALENDARIO headers cannot match it. The page frame
+ * itself is also locked here with ID-level specificity via :has(), because a
+ * different outer padding would still move an otherwise identical header.
  */
+
+main.app-shell.home-page-active:has(> #family-shared-header-host),
+main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 1980px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  padding-top: clamp(12px, 1.25vw, 24px) !important;
+  padding-right: clamp(12px, 1.25vw, 24px) !important;
+  padding-left: clamp(12px, 1.25vw, 24px) !important;
+}
 
 #family-shared-header-host {
   width: 100% !important;
@@ -73,6 +85,13 @@
 }
 
 @media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  main.app-shell.home-page-active:has(> #family-shared-header-host),
+  main.app-shell.calendar-page-active:has(> #family-shared-header-host) {
+    padding-top: max(10px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+  }
+
   #family-shared-header-host {
     height: auto !important;
     min-height: 0 !important;
