@@ -1,0 +1,588 @@
+/*
+ * CASA V21 — phone climate summary + coherent feature sheets.
+ * This layer intentionally uses high specificity so it remains authoritative
+ * even though the legacy runtime stylesheet is re-appended later.
+ */
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  /* ====================================================================== */
+  /* CLIMA CASA — compact summary, no dashboard/ring visual.                */
+  /* ====================================================================== */
+  body main.app-shell.home-page-active .reel-side > .thermostat-card-v4,
+  body main.app-shell.home-page-active .reel-side > .thermostat-card {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    display: block !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(60,60,67,.09) !important;
+    border-radius: 22px !important;
+    background: rgba(252,252,253,.97) !important;
+    color: #1d1d1f !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.78) !important;
+    text-align: left !important;
+    transform: none !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head {
+    width: 100% !important;
+    min-height: 34px !important;
+    margin: 0 0 10px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head > span {
+    min-width: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    color: #1d1d1f !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: -.012em !important;
+    text-transform: none !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head > span svg {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    padding: 7px !important;
+    box-sizing: border-box !important;
+    border-radius: 10px !important;
+    background: rgba(255,159,10,.12) !important;
+    color: #e88900 !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-head > b {
+    flex: 0 0 auto !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 11px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    background: rgba(0,122,255,.09) !important;
+    color: #007aff !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 690 !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-body {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: auto auto !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    overflow: visible !important;
+  }
+
+  /* Reuse the existing ring markup as a clean temperature hero tile. */
+  body main.app-shell.home-page-active .thermostat-v4-ring {
+    position: relative !important;
+    width: 100% !important;
+    height: 72px !important;
+    min-width: 0 !important;
+    min-height: 72px !important;
+    max-width: none !important;
+    max-height: 72px !important;
+    margin: 0 !important;
+    padding: 12px 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255,159,10,.14) !important;
+    border-radius: 16px !important;
+    background: rgba(255,159,10,.075) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-ring::before,
+  body main.app-shell.home-page-active .thermostat-v4-ring::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-ring > div {
+    position: static !important;
+    inset: auto !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-ring > div strong {
+    margin: 0 !important;
+    color: #1d1d1f !important;
+    font-size: 28px !important;
+    line-height: .95 !important;
+    font-weight: 520 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-ring > div span {
+    margin: 0 !important;
+    color: #8e8e93 !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 560 !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    grid-template-rows: 46px !important;
+    gap: 7px !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats > span {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    margin: 0 !important;
+    padding: 7px 5px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(118,118,128,.09) !important;
+    border-radius: 13px !important;
+    background: rgba(118,118,128,.05) !important;
+    text-align: center !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats small {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #8e8e93 !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    font-weight: 560 !important;
+  }
+
+  body main.app-shell.home-page-active .thermostat-v4-stats strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #1d1d1f !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+  }
+
+  /* ====================================================================== */
+  /* FEATURE POPUPS — one bottom-sheet contract for every final tool.       */
+  /* ====================================================================== */
+  body main.app-shell.home-page-active .reel-backdrop:has(> .feature-modal) {
+    position: fixed !important;
+    z-index: 4600 !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    margin: 0 !important;
+    padding: max(12px, env(safe-area-inset-top,0px)) max(10px, env(safe-area-inset-right,0px)) max(10px, env(safe-area-inset-bottom,0px)) max(10px, env(safe-area-inset-left,0px)) !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    background: rgba(12,12,16,.30) !important;
+    backdrop-filter: blur(14px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(115%) !important;
+  }
+
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal {
+    --feature-accent: #007aff;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 560px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: min(84dvh, 720px) !important;
+    margin: 0 !important;
+    padding: 8px 14px 16px !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    border: 1px solid rgba(255,255,255,.72) !important;
+    border-radius: 28px !important;
+    background: rgba(248,248,250,.97) !important;
+    color: #1d1d1f !important;
+    box-shadow: 0 28px 80px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.92) !important;
+    transform: none !important;
+  }
+
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal::before {
+    content: "" !important;
+    position: sticky !important;
+    z-index: 6 !important;
+    top: 0 !important;
+    left: 50% !important;
+    width: 36px !important;
+    height: 5px !important;
+    margin: 0 auto 5px !important;
+    display: block !important;
+    border-radius: 999px !important;
+    background: rgba(60,60,67,.22) !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal.routines-modal { --feature-accent: #af52de; }
+  body main.app-shell.home-page-active .feature-modal.batteries-modal { --feature-accent: #34c759; }
+  body main.app-shell.home-page-active .feature-modal.sensors-modal { --feature-accent: #30b0c7; }
+  body main.app-shell.home-page-active .feature-modal.climate-modal { --feature-accent: #ff9f0a; }
+  body main.app-shell.home-page-active .feature-modal.cameras-modal { --feature-accent: #007aff; }
+  body main.app-shell.home-page-active .feature-modal.media-modal { --feature-accent: #5856d6; }
+  body main.app-shell.home-page-active .feature-modal.vacuum-modal { --feature-accent: #af52de; }
+  body main.app-shell.home-page-active .feature-modal.car-modal { --feature-accent: #30b0c7; }
+  body main.app-shell.home-page-active .feature-modal.cover-modal { --feature-accent: #007aff; }
+
+  body main.app-shell.home-page-active .feature-modal > .modal-head {
+    position: sticky !important;
+    z-index: 5 !important;
+    top: -8px !important;
+    width: calc(100% + 0px) !important;
+    min-height: 58px !important;
+    margin: 0 0 12px !important;
+    padding: 8px 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    border-bottom: 1px solid rgba(60,60,67,.075) !important;
+    background: rgba(248,248,250,.97) !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal > .modal-head > div:first-child {
+    min-width: 0 !important;
+    display: block !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal > .modal-head .reel-kicker {
+    margin: 0 0 4px !important;
+    color: var(--feature-accent) !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    font-weight: 760 !important;
+    letter-spacing: .095em !important;
+    text-transform: uppercase !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal > .modal-head h2 {
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #1d1d1f !important;
+    font-size: 21px !important;
+    line-height: 1.08 !important;
+    font-weight: 720 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal > .modal-head .modal-close {
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid rgba(118,118,128,.08) !important;
+    border-radius: 50% !important;
+    background: rgba(118,118,128,.09) !important;
+    color: #6e6e73 !important;
+    box-shadow: none !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal > .modal-head .modal-close svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Routines use the same row geometry as every other feature. */
+  body main.app-shell.home-page-active .feature-modal .routine-list {
+    width: 100% !important;
+    display: grid !important;
+    gap: 8px !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .routine-list > button {
+    width: 100% !important;
+    min-height: 62px !important;
+    margin: 0 !important;
+    padding: 10px 12px !important;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0,1fr) 18px !important;
+    align-items: center !important;
+    gap: 10px !important;
+    border: 1px solid rgba(118,118,128,.09) !important;
+    border-radius: 17px !important;
+    background: rgba(118,118,128,.05) !important;
+    color: #1d1d1f !important;
+    text-align: left !important;
+    box-shadow: none !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .routine-list > button > span {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb, var(--feature-accent) 13%, transparent) !important;
+    color: var(--feature-accent) !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .routine-list > button > span svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .routine-list strong {
+    font-size: 13px !important;
+    line-height: 1.1 !important;
+    font-weight: 680 !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .routine-list > button > svg {
+    width: 16px !important;
+    height: 16px !important;
+    color: #8e8e93 !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .routine-list > .routine-all-off {
+    color: #d72d24 !important;
+    border-color: rgba(255,69,58,.12) !important;
+    background: rgba(255,69,58,.055) !important;
+  }
+
+  /* Generic feature contents: readable list cards rather than dense tiles. */
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 8px !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 > article {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 62px !important;
+    margin: 0 !important;
+    padding: 10px 12px !important;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(118,118,128,.09) !important;
+    border-radius: 17px !important;
+    background: rgba(118,118,128,.05) !important;
+    box-shadow: none !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 > article > span {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb, var(--feature-accent) 13%, transparent) !important;
+    color: var(--feature-accent) !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 > article > span svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 > article > div {
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 4px !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 strong,
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 small {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 strong {
+    color: #1d1d1f !important;
+    font-size: 12.5px !important;
+    line-height: 1.08 !important;
+    font-weight: 680 !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .home-generic-grid-v4 small {
+    color: #8e8e93 !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal .feature-empty {
+    width: 100% !important;
+    min-height: 150px !important;
+    padding: 22px !important;
+    display: grid !important;
+    place-items: center !important;
+    box-sizing: border-box !important;
+    border: 1px dashed color-mix(in srgb, var(--feature-accent) 26%, rgba(118,118,128,.15)) !important;
+    border-radius: 18px !important;
+    background: color-mix(in srgb, var(--feature-accent) 5%, transparent) !important;
+    color: #8e8e93 !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* All-zones climate popup: one column, same material as the other sheets. */
+  body main.app-shell.home-page-active .feature-modal.climate-modal .climate-grid,
+  body main.app-shell.home-page-active .feature-modal.climate-modal .home-climate-grid-v4 {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 9px !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal.climate-modal .climate-control,
+  body main.app-shell.home-page-active .feature-modal.climate-modal .climate-empty-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(118,118,128,.09) !important;
+    border-radius: 19px !important;
+    background: rgba(118,118,128,.045) !important;
+    box-shadow: none !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal.climate-modal .climate-empty-card {
+    min-height: 68px !important;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0,1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal.climate-modal .climate-empty-icon {
+    width: 38px !important;
+    height: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 12px !important;
+    background: rgba(255,159,10,.12) !important;
+    color: #e88900 !important;
+  }
+
+  body main.app-shell.home-page-active .feature-modal.climate-modal .climate-empty-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* Dark mode follows the same hierarchy, not a second visual system. */
+  body main.app-shell.night.home-page-active .reel-side > .thermostat-card-v4,
+  body main.app-shell.night.home-page-active .reel-side > .thermostat-card,
+  body main.app-shell.night.home-page-active .reel-backdrop > .feature-modal {
+    border-color: rgba(255,255,255,.075) !important;
+    background: #242428 !important;
+    color: #f5f5f7 !important;
+    box-shadow: 0 18px 54px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  }
+
+  body main.app-shell.night.home-page-active .thermostat-v4-head > span,
+  body main.app-shell.night.home-page-active .thermostat-v4-ring > div strong,
+  body main.app-shell.night.home-page-active .thermostat-v4-stats strong,
+  body main.app-shell.night.home-page-active .feature-modal > .modal-head h2,
+  body main.app-shell.night.home-page-active .feature-modal .home-generic-grid-v4 strong,
+  body main.app-shell.night.home-page-active .feature-modal .routine-list > button {
+    color: #f5f5f7 !important;
+  }
+
+  body main.app-shell.night.home-page-active .thermostat-v4-ring {
+    border-color: rgba(255,159,10,.16) !important;
+    background: rgba(255,159,10,.10) !important;
+  }
+
+  body main.app-shell.night.home-page-active .thermostat-v4-stats > span,
+  body main.app-shell.night.home-page-active .feature-modal .routine-list > button,
+  body main.app-shell.night.home-page-active .feature-modal .home-generic-grid-v4 > article,
+  body main.app-shell.night.home-page-active .feature-modal.climate-modal .climate-control,
+  body main.app-shell.night.home-page-active .feature-modal.climate-modal .climate-empty-card {
+    border-color: rgba(255,255,255,.06) !important;
+    background: #2d2d31 !important;
+  }
+
+  body main.app-shell.night.home-page-active .feature-modal > .modal-head {
+    border-bottom-color: rgba(255,255,255,.065) !important;
+    background: #242428 !important;
+  }
+
+  body main.app-shell.night.home-page-active .feature-modal > .modal-head .modal-close {
+    border-color: rgba(255,255,255,.06) !important;
+    background: rgba(255,255,255,.075) !important;
+    color: #d1d1d6 !important;
+  }
+}
