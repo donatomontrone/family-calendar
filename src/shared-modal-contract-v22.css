@@ -1,0 +1,249 @@
+/*
+ * Shared Modal Contract V22 — one popup language across the whole project.
+ * DeviceControls is the visual source of truth. Header actions and Home feature
+ * overlays now use the same centered material, spacing and close control.
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Backdrops: identical geometry/material.                                    */
+/* -------------------------------------------------------------------------- */
+body .fc-modal-backdrop,
+body main.app-shell.home-page-active .reel-backdrop:has(> .feature-modal) {
+  position: fixed !important;
+  z-index: 5000 !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 18px !important;
+  display: grid !important;
+  place-items: center !important;
+  align-items: center !important;
+  justify-items: center !important;
+  overflow: hidden !important;
+  background: rgba(16,16,20,.34) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+}
+
+body .fc-modal-backdrop.night,
+body main.app-shell.night.home-page-active .reel-backdrop:has(> .feature-modal) {
+  background: rgba(0,0,0,.58) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Surfaces: same shell as #family-shared-device-controls.                    */
+/* -------------------------------------------------------------------------- */
+body .fc-modal-backdrop > .fc-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: min(590px, calc(100vw - 36px)) !important;
+  min-width: 0 !important;
+  max-width: 590px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 36px) !important;
+  margin: 0 !important;
+  padding: 13px !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 1px solid rgba(255,255,255,.64) !important;
+  border-radius: 30px !important;
+  background: rgba(248,248,250,.92) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 30px 90px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  backdrop-filter: blur(38px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(38px) saturate(165%) !important;
+  transform: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+body .fc-modal-backdrop > .fc-modal::-webkit-scrollbar,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+body .fc-modal-backdrop.night > .fc-modal,
+body main.app-shell.night.home-page-active .reel-backdrop > .feature-modal {
+  border-color: rgba(255,255,255,.10) !important;
+  background: rgba(28,28,30,.94) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 30px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+/* V21 used a bottom-sheet grabber. It is intentionally removed. */
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal::before,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Modal headers: one compact hierarchy and one close button.                 */
+/* -------------------------------------------------------------------------- */
+body .fc-modal .fc-modal-head,
+body main.app-shell.home-page-active .feature-modal .modal-head {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-height: 40px !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body .fc-modal .fc-modal-head > div,
+body main.app-shell.home-page-active .feature-modal .modal-head > div:first-child {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+body .fc-modal .fc-modal-head > div > span,
+body main.app-shell.home-page-active .feature-modal .modal-head .reel-kicker {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #9a9aa0 !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 720 !important;
+  letter-spacing: .075em !important;
+  text-transform: uppercase !important;
+}
+
+body .fc-modal .fc-modal-head h2,
+body main.app-shell.home-page-active .feature-modal .modal-head h2 {
+  display: block !important;
+  max-width: 100% !important;
+  margin: 3px 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #1d1d1f !important;
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.028em !important;
+}
+
+body .fc-modal-backdrop.night .fc-modal-head h2,
+body main.app-shell.night.home-page-active .feature-modal .modal-head h2 {
+  color: #f5f5f7 !important;
+}
+
+body .fc-modal .fc-modal-close,
+body main.app-shell.home-page-active .feature-modal .modal-close {
+  position: static !important;
+  inset: auto !important;
+  flex: 0 0 27px !important;
+  width: 27px !important;
+  height: 27px !important;
+  min-width: 27px !important;
+  min-height: 27px !important;
+  max-width: 27px !important;
+  max-height: 27px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(118,118,128,.10) !important;
+  color: #6e6e73 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+body .fc-modal .fc-modal-close svg,
+body main.app-shell.home-page-active .feature-modal .modal-close svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+body .fc-modal-backdrop.night .fc-modal-close,
+body main.app-shell.night.home-page-active .feature-modal .modal-close {
+  background: rgba(255,255,255,.075) !important;
+  color: #f5f5f7 !important;
+}
+
+/* Inner feature rows retain their semantic accent but use the same neutral material. */
+body main.app-shell.home-page-active .feature-modal :is(
+  .routine-list > button,
+  .sensor-grid article,
+  .camera-grid article,
+  .media-list article,
+  .battery-item,
+  .climate-empty-card,
+  .climate-control,
+  .cover-panel > article,
+  .vacuum-panel,
+  .car-panel
+) {
+  border-color: rgba(60,60,67,.08) !important;
+  background-color: rgba(118,118,128,.055) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.42) !important;
+}
+
+body main.app-shell.night.home-page-active .feature-modal :is(
+  .routine-list > button,
+  .sensor-grid article,
+  .camera-grid article,
+  .media-list article,
+  .battery-item,
+  .climate-empty-card,
+  .climate-control,
+  .cover-panel > article,
+  .vacuum-panel,
+  .car-panel
+) {
+  border-color: rgba(255,255,255,.07) !important;
+  background-color: rgba(255,255,255,.055) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  body .fc-modal-backdrop,
+  body main.app-shell.home-page-active .reel-backdrop:has(> .feature-modal) {
+    padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)) !important;
+    display: grid !important;
+    place-items: center !important;
+    align-items: center !important;
+    justify-items: center !important;
+  }
+
+  body .fc-modal-backdrop > .fc-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal {
+    width: min(590px, calc(100vw - 20px)) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    padding: 13px !important;
+    border-radius: 24px !important;
+  }
+}
