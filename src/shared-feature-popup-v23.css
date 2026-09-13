@@ -1,0 +1,326 @@
+/*
+ * V23 — final Home feature-popup alignment.
+ *
+ * The DeviceControls popup is the project-wide reference.  The Home feature
+ * popups (Routine, Batteries, Sensors, Climate, Cameras, Media, Vacuum, Car,
+ * Covers) are forced onto the exact same outer geometry.  The aggregate
+ * Climate popup also uses the same control geometry/range language as the
+ * single-room climate popup.
+ */
+
+/* ========================================================================== */
+/* FEATURE POPUP SHELL — exact DeviceControls dimensions.                      */
+/* ========================================================================== */
+body main.app-shell.home-page-active .reel-backdrop:has(> .feature-modal.feature-modal) {
+  position: fixed !important;
+  z-index: 5000 !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 18px !important;
+  display: grid !important;
+  place-items: center !important;
+  align-items: center !important;
+  justify-items: center !important;
+  overflow: hidden !important;
+  background: rgba(16,16,20,.34) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+}
+
+body main.app-shell.night.home-page-active .reel-backdrop:has(> .feature-modal.feature-modal) {
+  background: rgba(0,0,0,.58) !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.feature-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.routines-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.batteries-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.sensors-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.cameras-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.media-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.vacuum-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.car-modal,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.cover-modal {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: min(590px, calc(100vw - 36px)) !important;
+  min-width: 0 !important;
+  max-width: 590px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 36px) !important;
+  margin: 0 !important;
+  padding: 13px !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 1px solid rgba(255,255,255,.64) !important;
+  border-radius: 30px !important;
+  background: rgba(248,248,250,.92) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 30px 90px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  backdrop-filter: blur(38px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(38px) saturate(165%) !important;
+  transform: none !important;
+  filter: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.feature-modal::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+body main.app-shell.night.home-page-active .reel-backdrop > .feature-modal.feature-modal {
+  border-color: rgba(255,255,255,.10) !important;
+  background: rgba(28,28,30,.94) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 30px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+/* Never allow the old mobile bottom-sheet contract to reappear. */
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.feature-modal::before,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.feature-modal::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* ========================================================================== */
+/* AGGREGATE CLIMATE — same card/control language as single climate popup.     */
+/* ========================================================================== */
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .home-climate-grid-v4 {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: stretch !important;
+}
+
+/* Full ClimateControl instances in this aggregate popup are deliberately made
+ * visually identical to the compact ClimateControl used by DeviceControls. */
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-control.climate-full,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-control {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 9px !important;
+  display: grid !important;
+  gap: 7px !important;
+  border: 1px solid rgba(60,60,67,.07) !important;
+  border-radius: 14px !important;
+  background: rgba(118,118,128,.035) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body main.app-shell.night.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-control {
+  border-color: rgba(255,255,255,.07) !important;
+  background: rgba(255,255,255,.055) !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-control-icon {
+  width: 25px !important;
+  height: 25px !important;
+  min-width: 25px !important;
+  min-height: 25px !important;
+  border-radius: 8px !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-current strong {
+  font-size: 16px !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-target-row {
+  width: 100% !important;
+  margin: 0 0 1px !important;
+  display: grid !important;
+  grid-template-columns: 36px minmax(0, 1fr) 36px !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-step-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+  border-radius: 50% !important;
+  line-height: 0 !important;
+  transform: none !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-step-button svg {
+  width: 17px !important;
+  height: 17px !important;
+  margin: 0 !important;
+  display: block !important;
+  transform: none !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-target-value {
+  width: 100% !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  align-self: center !important;
+}
+
+/* Exact same project range grammar used by the single climate popup. */
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-temperature-slider {
+  width: 100% !important;
+  min-width: 100% !important;
+  height: 28px !important;
+  margin: 9px 0 11px !important;
+  padding: 0 !important;
+  display: block !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  touch-action: pan-x !important;
+  accent-color: var(--climate-accent) !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-temperature-slider::-webkit-slider-runnable-track {
+  height: 6px !important;
+  border: 1px solid color-mix(in srgb, var(--climate-accent) 24%, transparent) !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--climate-accent) 72%, rgba(118,118,128,.16)) !important;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.07) !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-temperature-slider::-webkit-slider-thumb {
+  width: 22px !important;
+  height: 22px !important;
+  margin-top: -9px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 2px solid #fff !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 2px 7px rgba(0,0,0,.22) !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-temperature-slider::-moz-range-track {
+  height: 6px !important;
+  border: 1px solid color-mix(in srgb, var(--climate-accent) 24%, transparent) !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--climate-accent) 72%, rgba(118,118,128,.16)) !important;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.07) !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-temperature-slider::-moz-range-thumb {
+  width: 20px !important;
+  height: 20px !important;
+  border: 2px solid #fff !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 2px 7px rgba(0,0,0,.22) !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-temperature-slider + .climate-section-label {
+  margin-top: 2px !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-mode-grid {
+  gap: 5px !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-mode-button {
+  min-height: 40px !important;
+  border-radius: 9px !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-chip-row {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr)) !important;
+  gap: 6px !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-chip-row button {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 34px !important;
+  padding: 0 10px !important;
+  border-radius: 11px !important;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-chip-row button.active,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-chip-row button.active:hover,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-chip-row button.active:focus,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-chip-row button.active:focus-visible,
+body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-chip-row button.active:active {
+  border-color: var(--climate-accent) !important;
+  background: var(--climate-accent) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: none !important;
+}
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  body main.app-shell.home-page-active .reel-backdrop:has(> .feature-modal.feature-modal) {
+    padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.feature-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.routines-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.batteries-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.sensors-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.cameras-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.media-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.vacuum-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.car-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.cover-modal {
+    width: min(590px, calc(100vw - 20px)) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    padding: 13px !important;
+    border-radius: 24px !important;
+  }
+
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-target-row {
+    grid-template-columns: 40px minmax(0,1fr) 40px !important;
+    gap: 9px !important;
+  }
+
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal.climate-modal .climate-step-button {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+  }
+}
