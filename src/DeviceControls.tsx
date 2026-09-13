@@ -7,6 +7,7 @@ import { t, type Language } from "./i18n";
 import { getWhiteTemperature } from "./light-temperature";
 import "./control-polish-v17.css";
 import "./calendar-device-scope-v18.css";
+import "./shared-feature-popup-v23.css";
 
 type DeviceControlsProps = {
   hass: Hass;
