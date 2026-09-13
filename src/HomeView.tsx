@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import ClimateControl from "./ClimateControl";
 import DeviceControls from "./DeviceControls";
@@ -375,7 +376,53 @@ function InlineCoverControl({ hass, entityId, language }: { hass: Hass; entityId
 
 function FeatureOverlay({ kind, hass, language, rooms, onClose, onRunScene, onAllOff }: { kind: Exclude<Overlay, null>; hass: Hass; language: Language; rooms: RoomModel[]; onClose: () => void; onRunScene: (name: "night" | "guest" | "movie") => Promise<void>; onAllOff: () => void }) {
   const copy = language === "it" ? itCopy : enCopy;
-  return <div className="reel-backdrop" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}><section className={`reel-modal feature-modal ${kind}-modal`}><div className="modal-head"><div><span className="reel-kicker">{copy.home}</span><h2>{overlayTitle(kind, copy)}</h2></div><button className="modal-close" onClick={onClose} aria-label={copy.close}><CloseIcon /></button></div>{kind === "climate" && <div className="climate-grid home-climate-grid-v4">{rooms.map((room) => { const climate = room.controllableIds.find((id) => domainOf(id) === "climate"); return climate ? <ClimateControl key={room.area.area_id} hass={hass} entityId={climate} language={language} variant="full" /> : <article className="climate-empty-card" key={room.area.area_id}><span className="climate-empty-icon"><ThermometerIcon /></span><div><strong>{room.area.name}</strong><small>{copy.noThermostat}</small></div><b>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</b></article>; })}</div>}{kind === "routines" && <div className="routine-list"><RoutineRow icon={<MoonIcon />} title={copy.goodNight} onClick={() => void onRunScene("night")} /><RoutineRow icon={<UsersIcon />} title={copy.guestMode} onClick={() => void onRunScene("guest")} /><RoutineRow icon={<MediaIcon />} title={copy.movieNight} onClick={() => void onRunScene("movie")} /><button className="routine-all-off" onClick={onAllOff}><PowerIcon />{copy.turnOffAll}</button></div>}{kind !== "climate" && kind !== "routines" && <GenericFeaturePanel hass={hass} kind={kind} language={language} />}</section></div>;
+  const isNight = typeof document !== "undefined" && document.querySelector("main.app-shell")?.classList.contains("night");
+  const isClimate = kind === "climate";
+
+  const dialog = (
+    <div
+      id="family-shared-device-overlay"
+      className={`app-shell home-page-active shared-device-controls-overlay ${isNight ? "night" : "day"}`}
+      onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}
+    >
+      <section
+        id="family-shared-device-controls"
+        className={`device-controls device-controls-feature ${isClimate ? "device-controls-climate " : ""}feature-modal ${kind}-modal`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={overlayTitle(kind, copy)}
+      >
+        <div className="device-controls-heading">
+          <div><span className="section-kicker">{copy.home}</span><strong>{overlayTitle(kind, copy)}</strong></div>
+          <button onClick={onClose} aria-label={copy.close}><CloseIcon /></button>
+        </div>
+
+        {isClimate && (
+          <div className="climate-grid home-climate-grid-v4">
+            {rooms.map((room) => {
+              const climate = room.controllableIds.find((id) => domainOf(id) === "climate");
+              return climate
+                ? <ClimateControl key={room.area.area_id} hass={hass} entityId={climate} language={language} variant="compact" showName />
+                : <article className="climate-empty-card" key={room.area.area_id}><span className="climate-empty-icon"><ThermometerIcon /></span><div><strong>{room.area.name}</strong><small>{copy.noThermostat}</small></div><b>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</b></article>;
+            })}
+          </div>
+        )}
+
+        {kind === "routines" && (
+          <div className="routine-list">
+            <RoutineRow icon={<MoonIcon />} title={copy.goodNight} onClick={() => void onRunScene("night")} />
+            <RoutineRow icon={<UsersIcon />} title={copy.guestMode} onClick={() => void onRunScene("guest")} />
+            <RoutineRow icon={<MediaIcon />} title={copy.movieNight} onClick={() => void onRunScene("movie")} />
+            <button className="routine-all-off" onClick={onAllOff}><PowerIcon />{copy.turnOffAll}</button>
+          </div>
+        )}
+
+        {!isClimate && kind !== "routines" && <GenericFeaturePanel hass={hass} kind={kind} language={language} />}
+      </section>
+    </div>
+  );
+
+  return typeof document === "undefined" ? dialog : createPortal(dialog, document.body);
 }
 
 function GenericFeaturePanel({ hass, kind, language }: { hass: Hass; kind: Exclude<Overlay, null | "climate" | "routines">; language: Language }) {
