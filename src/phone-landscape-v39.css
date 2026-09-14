@@ -1,0 +1,731 @@
+/*
+ * Phone landscape V39 — dedicated short-viewport composition.
+ *
+ * IMPORTANT: this file must never affect portrait phone, tablet or desktop.
+ * The only supported target is a phone-sized landscape viewport.
+ */
+
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 940px) {
+  /* ---------------------------------------------------------------------- */
+  /* Shared canvas + header: one compact horizontal rail in landscape.       */
+  /* ---------------------------------------------------------------------- */
+  html:has(main.app-shell:is(.calendar-page-active, .home-page-active)),
+  body:has(main.app-shell:is(.calendar-page-active, .home-page-active)),
+  #root:has(main.app-shell:is(.calendar-page-active, .home-page-active)) {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding-top: max(6px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(68px, calc(58px + env(safe-area-inset-bottom, 0px))) !important;
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+    display: block !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    overscroll-behavior-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 0 7px !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header.shared-home-header.shared-home-header {
+    width: 100% !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+    margin: 0 !important;
+    padding: 4px 4px !important;
+    display: grid !important;
+    grid-template-areas: "greeting clock actions" !important;
+    grid-template-columns: minmax(150px, 1.05fr) auto minmax(300px, 1.8fr) !important;
+    grid-template-rows: 50px !important;
+    align-items: center !important;
+    column-gap: 12px !important;
+    row-gap: 0 !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: 2px !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .reel-greeting strong {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 17px !important;
+    line-height: 1 !important;
+    font-weight: 680 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .reel-greeting span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 9.5px !important;
+    line-height: 1.1 !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .reel-clock {
+    grid-area: clock !important;
+    min-width: max-content !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: center !important;
+    align-self: center !important;
+    font-size: 31px !important;
+    line-height: .94 !important;
+    font-weight: 445 !important;
+    letter-spacing: -.05em !important;
+    font-variant-numeric: tabular-nums !important;
+    white-space: nowrap !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .reel-top-actions {
+    grid-area: actions !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .weather-pill {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 70px !important;
+    max-width: 82px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin: 0 !important;
+    padding: 0 9px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    border-radius: 13px !important;
+    white-space: nowrap !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .weather-pill small {
+    display: none !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .weather-pill strong {
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .weather-pill svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .avatar-stack {
+    flex: 0 0 auto !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .avatar-stack i {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    font-size: 9px !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .avatar-stack i + i {
+    margin-left: -7px !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .security-pill,
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .round-top,
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .header-theme-switch {
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 13px !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .security-pill span {
+    display: none !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .security-pill svg,
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .round-top svg,
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) > #family-shared-header-host > #family-shared-header .header-theme-switch svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* CALENDARIO — wide month first, secondary content in two columns.        */
+  /* ---------------------------------------------------------------------- */
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-areas:
+      "calendar calendar"
+      "left right" !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: auto auto !important;
+    align-items: start !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    align-self: start !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .left-column {
+    grid-area: left !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .right-column {
+    grid-area: right !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .left-column,
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .right-column {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    display: grid !important;
+    align-content: start !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-toolbar {
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 7px 12px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-toolbar h1 {
+    margin-top: 2px !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-toolbar .section-kicker {
+    font-size: 8px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-actions {
+    gap: 4px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-actions button {
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-actions .today-button {
+    width: auto !important;
+    min-width: 44px !important;
+    padding: 0 8px !important;
+    font-size: 9.5px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .month-grid {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: 23px repeat(6, 41px) !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .weekday {
+    min-width: 0 !important;
+    padding: 6px 2px !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-day {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 41px !important;
+    padding: 3px 4px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .day-number {
+    margin-bottom: 2px !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .day-events {
+    gap: 1px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-event,
+  main.app-shell.app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+    min-height: 13px !important;
+    height: 13px !important;
+    padding: 1px 4px !important;
+    border-radius: 4px !important;
+    font-size: 7.8px !important;
+    line-height: 11px !important;
+    font-weight: 630 !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-card,
+  main.app-shell.app-shell.calendar-page-active .tasks-card,
+  main.app-shell.app-shell.calendar-page-active .home-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    border-radius: 18px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-card .card-heading,
+  main.app-shell.app-shell.calendar-page-active .tasks-card .card-heading,
+  main.app-shell.app-shell.calendar-page-active .home-card .card-heading {
+    padding: 12px 13px 9px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-list {
+    padding: 0 10px 10px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-day {
+    grid-template-columns: 70px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px 3px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card {
+    height: 252px !important;
+    min-height: 252px !important;
+    max-height: 252px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control {
+    min-height: 42px !important;
+    height: 42px !important;
+    margin-top: 4px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card > .segmented-control.task-segmented-control > button {
+    height: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card {
+    height: 346px !important;
+    min-height: 346px !important;
+    max-height: 346px !important;
+    display: grid !important;
+    grid-template-rows: auto 46px minmax(0, 1fr) !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip {
+    width: 100% !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    margin: 0 !important;
+    padding: 4px 10px 6px !important;
+    gap: 6px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button {
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    padding-inline: 10px !important;
+    font-size: 10px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card .entity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+    padding: 0 10px 4px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card .entity-tile,
+  main.app-shell.app-shell.calendar-page-active .home-card .entity-main {
+    min-height: 72px !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* CASA — preserve mobile card language, use landscape width efficiently.  */
+  /* ---------------------------------------------------------------------- */
+  main.app-shell.app-shell.home-page-active .desktop-room-workspace-v26 {
+    display: none !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 0 max(62px, calc(54px + env(safe-area-inset-bottom, 0px))) !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid.mobile-room-grid-v26 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: auto !important;
+    align-items: start !important;
+    align-content: start !important;
+    gap: 9px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid.mobile-room-grid-v26 > .reel-room.room-card-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 11px !important;
+    border-radius: 19px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 {
+    min-height: 42px !important;
+    gap: 9px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 > i {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 12px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-title-v4 strong {
+    font-size: 15px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-head-v4 > b,
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-temperature-button > b {
+    font-size: 22px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-section {
+    margin-top: 10px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
+    min-height: 58px !important;
+    padding: 7px !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    gap: 7px !important;
+    border-radius: 14px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light {
+    grid-template-columns: 34px minmax(0, 1fr) 28px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > span:not(.room-device-power-v37) {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    border-radius: 11px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > .room-device-power-v37 {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    border-radius: 9px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 strong {
+    font-size: 11px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 small {
+    font-size: 9px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
+    margin-top: 8px !important;
+    padding-top: 9px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-grid-v4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-device-v4 {
+    min-height: 42px !important;
+    padding: 6px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-detail-v4 {
+    min-height: 30px !important;
+    margin-top: 6px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-top: 9px !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "message alarm waste climate"
+      "tools tools tools tools" !important;
+    grid-auto-rows: auto !important;
+    gap: 7px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-side > .home-message-card { grid-area: message !important; }
+  main.app-shell.app-shell.home-page-active .reel-side > .alarm-row { grid-area: alarm !important; }
+  main.app-shell.app-shell.home-page-active .reel-side > .waste-card { grid-area: waste !important; }
+  main.app-shell.app-shell.home-page-active .reel-side > .thermostat-card,
+  main.app-shell.app-shell.home-page-active .reel-side > .thermostat-card-v4 { grid-area: climate !important; }
+  main.app-shell.app-shell.home-page-active .reel-side > .reel-tools-grid { grid-area: tools !important; }
+
+  main.app-shell.app-shell.home-page-active .reel-side > .home-message-card,
+  main.app-shell.app-shell.home-page-active .reel-side > .alarm-row,
+  main.app-shell.app-shell.home-page-active .reel-side > .waste-card,
+  main.app-shell.app-shell.home-page-active .reel-side > .thermostat-card,
+  main.app-shell.app-shell.home-page-active .reel-side > .thermostat-card-v4 {
+    width: 100% !important;
+    height: 76px !important;
+    min-height: 76px !important;
+    max-height: 76px !important;
+    margin: 0 !important;
+    padding: 9px !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .thermostat-v4-body {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .thermostat-v4-ring {
+    display: none !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .thermostat-v4-stats {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 3px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .thermostat-v4-stats > span:nth-child(n+2) {
+    display: none !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-tools-grid {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, 58px) !important;
+    grid-auto-rows: 58px !important;
+    gap: 6px !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button {
+    width: 100% !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+    padding: 5px 4px !important;
+    gap: 3px !important;
+    border-radius: 13px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button > svg {
+    width: 26px !important;
+    height: 26px !important;
+    padding: 5px !important;
+    border-radius: 9px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-tools-grid > button > span {
+    font-size: 8px !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Shared dialogs/popups: fit the short visual viewport, keep them scrollable. */
+  /* ---------------------------------------------------------------------- */
+  .fc-modal-backdrop {
+    padding-top: max(6px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(8px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: max(8px, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  .fc-modal-backdrop .fc-modal {
+    width: min(680px, 100%) !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - 12px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  #family-shared-device-overlay {
+    padding-top: max(6px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(8px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: max(8px, env(safe-area-inset-left, 0px)) !important;
+    overflow: hidden !important;
+  }
+
+  #family-shared-device-overlay #family-shared-device-controls.device-controls {
+    width: min(720px, calc(100vw - 20px)) !important;
+    max-width: 720px !important;
+    max-height: calc(100dvh - 12px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    border-radius: 22px !important;
+  }
+
+  #family-shared-device-overlay .device-controls-feature .home-generic-grid-v4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    max-height: none !important;
+  }
+
+  #family-shared-device-overlay .device-controls-feature > .home-generic-grid-v4,
+  #family-shared-device-overlay .device-controls-feature > .routine-list,
+  #family-shared-device-overlay .device-controls-feature > .home-climate-grid-v4 {
+    margin: 0 10px 10px !important;
+    padding: 9px !important;
+    border-radius: 18px !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Bottom page switch: keep it reachable without occupying landscape height. */
+  /* ---------------------------------------------------------------------- */
+  main.app-shell.app-shell .page-dock-shell {
+    width: min(330px, calc(100vw - 28px)) !important;
+    bottom: max(5px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  main.app-shell.app-shell .page-dock-shell > .segmented-control.page-switch-control {
+    min-height: 42px !important;
+    height: 42px !important;
+    padding: 4px !important;
+    border-radius: 17px !important;
+  }
+
+  main.app-shell.app-shell .page-dock-shell > .segmented-control.page-switch-control > button {
+    height: 32px !important;
+    min-height: 32px !important;
+    font-size: 11px !important;
+  }
+}
