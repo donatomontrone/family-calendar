@@ -1,7 +1,6 @@
-/* CASA V26 — desktop room strip + single-room workspace.
- * Desktop only. Phone keeps the already-approved multi-card layout.
- * This file intentionally uses strong selectors because it is the final desktop
- * contract and must beat the legacy V24 carousel rules. */
+/* CASA V26 — desktop room strip + selected-room workspace.
+ * Desktop only. Phone keeps the approved multi-card layout.
+ * This is the final desktop contract and intentionally beats older room/domain rules. */
 
 @media (min-width: 701px) {
   main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
@@ -29,6 +28,7 @@
   }
 
   main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+    --room-shared-accent: #4f8cff;
     grid-column: 1 !important;
     grid-row: 1 !important;
     width: 100% !important;
@@ -60,7 +60,7 @@
     display: none !important;
   }
 
-  /* Room selector: compact, horizontal and self-explanatory through the edge fade. */
+  /* Compact room selector. */
   main.app-shell.home-page-active .desktop-room-strip-v26 {
     width: 100% !important;
     min-width: 0 !important;
@@ -80,14 +80,8 @@
     -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 26px), transparent 100%) !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-strip-v26::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-strip-v26.is-horizontal-dragging {
-    cursor: grabbing !important;
-    scroll-behavior: auto !important;
-  }
+  main.app-shell.home-page-active .desktop-room-strip-v26::-webkit-scrollbar { display: none !important; }
+  main.app-shell.home-page-active .desktop-room-strip-v26.is-horizontal-dragging { cursor: grabbing !important; scroll-behavior: auto !important; }
 
   main.app-shell.home-page-active .desktop-room-strip-v26 > button {
     --room-tab-accent: #4f8cff;
@@ -107,7 +101,6 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,.54) !important;
     text-align: left !important;
     cursor: pointer !important;
-    transition: border-color .16s ease, background .16s ease, box-shadow .16s ease !important;
   }
 
   main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 1) { --room-tab-accent: #4f8cff; }
@@ -135,49 +128,15 @@
     color: var(--room-tab-accent) !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-tab-icon-v26 svg {
-    width: 15px !important;
-    height: 15px !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-tab-copy-v26 {
-    min-width: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 2px !important;
-  }
-
+  main.app-shell.home-page-active .desktop-room-tab-icon-v26 svg { width: 15px !important; height: 15px !important; }
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 { min-width: 0 !important; display: flex !important; flex-direction: column !important; gap: 2px !important; }
   main.app-shell.home-page-active .desktop-room-tab-copy-v26 strong,
-  main.app-shell.home-page-active .desktop-room-tab-copy-v26 small {
-    min-width: 0 !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 small { min-width: 0 !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 strong { font-size: 11px !important; line-height: 1.05 !important; font-weight: 680 !important; }
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 small { color: var(--home-secondary, #6e6e73) !important; font-size: 8.5px !important; line-height: 1.05 !important; font-weight: 540 !important; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button > b { margin: 0 !important; color: var(--home-secondary, #6e6e73) !important; font-size: 13px !important; line-height: 1 !important; font-weight: 600 !important; font-variant-numeric: tabular-nums !important; }
 
-  main.app-shell.home-page-active .desktop-room-tab-copy-v26 strong {
-    font-size: 11px !important;
-    line-height: 1.05 !important;
-    font-weight: 680 !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-tab-copy-v26 small {
-    color: var(--home-secondary, #6e6e73) !important;
-    font-size: 8.5px !important;
-    line-height: 1.05 !important;
-    font-weight: 540 !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-strip-v26 > button > b {
-    margin: 0 !important;
-    color: var(--home-secondary, #6e6e73) !important;
-    font-size: 13px !important;
-    line-height: 1 !important;
-    font-weight: 600 !important;
-    font-variant-numeric: tabular-nums !important;
-  }
-
-  /* The selected room becomes the single source of colour for the workspace. */
+  /* The active room is the ONLY accent source for the whole workspace. */
   main.app-shell.home-page-active .desktop-room-workspace-v26:has(.desktop-room-strip-v26 > button:nth-child(7n + 1).active) { --room-shared-accent: #4f8cff; }
   main.app-shell.home-page-active .desktop-room-workspace-v26:has(.desktop-room-strip-v26 > button:nth-child(7n + 2).active) { --room-shared-accent: #34c759; }
   main.app-shell.home-page-active .desktop-room-workspace-v26:has(.desktop-room-strip-v26 > button:nth-child(7n + 3).active) { --room-shared-accent: #30b0c7; }
@@ -186,13 +145,9 @@
   main.app-shell.home-page-active .desktop-room-workspace-v26:has(.desktop-room-strip-v26 > button:nth-child(7n + 6).active) { --room-shared-accent: #ff6482; }
   main.app-shell.home-page-active .desktop-room-workspace-v26:has(.desktop-room-strip-v26 > button:nth-child(7n).active) { --room-shared-accent: #32ade6; }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 {
-    min-width: 0 !important;
-    min-height: 0 !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
+  main.app-shell.home-page-active .desktop-room-stage-v26 { min-width: 0 !important; min-height: 0 !important; height: auto !important; overflow: visible !important; }
 
+  /* New layout: left column = controls + selected control detail; right column = status. */
   main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 > .desktop-room-stage-v26 > .reel-room.room-card-v4 {
     --room-active-accent: var(--room-shared-accent) !important;
     --room-device-accent: var(--room-shared-accent) !important;
@@ -205,11 +160,12 @@
     max-height: none !important;
     padding: 0 !important;
     display: grid !important;
-    grid-template-columns: minmax(0, 1.08fr) minmax(220px, .78fr) minmax(0, 1fr) !important;
-    grid-template-rows: 50px auto !important;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, .72fr) !important;
+    grid-template-rows: 50px auto auto !important;
     grid-template-areas:
-      "head head head"
-      "controls quick status" !important;
+      "head head"
+      "controls status"
+      "quick status" !important;
     gap: 12px !important;
     align-items: start !important;
     align-content: start !important;
@@ -224,10 +180,8 @@
   }
 
   main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 > .desktop-room-stage-v26 > .room-card-v4:not(:has(.room-quick-control-v4)) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    grid-template-areas:
-      "head head"
-      "controls status" !important;
+    grid-template-rows: 50px auto !important;
+    grid-template-areas: "head head" "controls status" !important;
   }
 
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-head-v4 {
@@ -245,83 +199,49 @@
     color: var(--room-shared-accent) !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.55) !important;
   }
-
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-title-v4 > i svg,
-  main.app-shell.home-page-active .desktop-room-stage-v26 .room-title-v4 > i svg * {
-    color: inherit !important;
-  }
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-title-v4 > i svg * { color: inherit !important; }
 
-  /* Controls are intentionally not wrapped in another large card. The device
-   * tiles are the visual objects, which avoids empty surfaces in sparse rooms. */
+  /* Controls become one calm list surface instead of a matrix of coloured cards. */
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section {
     grid-area: controls !important;
     min-width: 0 !important;
-    width: auto !important;
+    width: 100% !important;
     height: auto !important;
     margin: 0 !important;
-    padding: 2px 0 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    align-self: start !important;
-    overflow: visible !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section > .room-section-label {
-    margin: 0 0 8px 2px !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4,
-  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 {
-    min-width: 0 !important;
-    width: auto !important;
-    height: auto !important;
-    margin: 0 !important;
-    padding: 13px !important;
+    padding: 12px !important;
     border: 1px solid var(--home-border, rgba(60,60,67,.10)) !important;
     border-radius: 20px !important;
     background: var(--home-card, rgba(255,255,255,.82)) !important;
     box-shadow: 0 7px 24px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.62) !important;
     backdrop-filter: blur(22px) saturate(135%) !important;
     -webkit-backdrop-filter: blur(22px) saturate(135%) !important;
-    align-self: start !important;
     box-sizing: border-box !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4 {
-    grid-area: quick !important;
-    min-height: 112px !important;
-    max-height: none !important;
-    display: grid !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 {
-    grid-area: status !important;
-    min-height: 0 !important;
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section > .room-section-label {
     display: block !important;
+    margin: 0 2px 8px !important;
   }
 
-  /* Accessory matrix: three balanced columns on wide desktop, two on narrower
-   * desktop. Tiles stay compact but are large enough to read at a glance. */
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-grid-v4 {
     width: 100% !important;
     min-width: 0 !important;
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     grid-template-rows: none !important;
     grid-auto-flow: row !important;
-    grid-auto-rows: 60px !important;
-    gap: 8px !important;
-    justify-content: stretch !important;
-    align-items: stretch !important;
+    grid-auto-rows: 56px !important;
+    column-gap: 12px !important;
+    row-gap: 2px !important;
     overflow: visible !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 {
+  /* Explicitly neutralise every legacy per-domain colour, including the inline
+   * white-temperature accent still present on light buttons. */
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4,
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4[class*="domain-"] {
     --room-active-accent: var(--room-shared-accent) !important;
     --room-device-accent: var(--room-shared-accent) !important;
     --device-accent: var(--room-shared-accent) !important;
@@ -329,55 +249,68 @@
     --accessory-active: var(--room-shared-accent) !important;
     width: 100% !important;
     min-width: 0 !important;
-    height: 60px !important;
-    min-height: 60px !important;
-    max-height: 60px !important;
-    padding: 8px 10px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    padding: 7px 8px !important;
     display: grid !important;
-    grid-template-columns: 36px minmax(0, 1fr) !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
     grid-template-rows: 1fr !important;
     align-items: center !important;
     gap: 9px !important;
     overflow: hidden !important;
-    border: 1px solid var(--home-border-soft, rgba(60,60,67,.07)) !important;
-    border-radius: 16px !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 3%, var(--home-card, rgba(255,255,255,.82))) !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--home-border-soft, rgba(60,60,67,.07)) !important;
+    border-radius: 11px !important;
+    background: transparent !important;
+    background-image: none !important;
     color: var(--home-label, #1d1d1f) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.48) !important;
+    box-shadow: none !important;
     text-align: left !important;
     transform: none !important;
+    filter: none !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 > span {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4::before,
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4::after { content: none !important; display: none !important; }
+
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4 > span {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
     display: grid !important;
     place-items: center !important;
-    border: 1px solid color-mix(in srgb, var(--room-shared-accent) 44%, transparent) !important;
-    border-radius: 11px !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 13%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+    border: 1px solid color-mix(in srgb, var(--room-shared-accent) 46%, transparent) !important;
+    border-radius: 10px !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 12%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+    background-image: none !important;
     color: var(--room-shared-accent) !important;
     box-shadow: none !important;
+    filter: none !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 > span svg,
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 > span svg * {
-    width: 17px !important;
-    height: 17px !important;
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > span::before,
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > span::after { content: none !important; display: none !important; }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > span svg,
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > span svg * {
+    width: 16px !important;
+    height: 16px !important;
     color: inherit !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 > div {
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > div {
     min-width: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
-    gap: 4px !important;
+    gap: 3px !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 strong,
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 small {
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 strong,
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 small {
     min-width: 0 !important;
     max-width: 100% !important;
     overflow: hidden !important;
@@ -385,7 +318,7 @@
     white-space: nowrap !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 strong {
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 strong {
     color: var(--home-label, #1d1d1f) !important;
     font-size: 11px !important;
     line-height: 1.05 !important;
@@ -393,44 +326,80 @@
     letter-spacing: -.015em !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 small {
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 small {
     color: var(--home-secondary, #6e6e73) !important;
     font-size: 9px !important;
     line-height: 1 !important;
     font-weight: 560 !important;
   }
 
-  /* Active state always uses the room colour, never a domain-specific colour. */
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 42%, var(--home-border, rgba(60,60,67,.10))) !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 18%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.52) !important;
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4.active {
+    border-bottom-color: transparent !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 12%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+    background-image: none !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--room-shared-accent) 25%, transparent) !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active > span {
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4.active > span {
     border-color: var(--room-shared-accent) !important;
     background: var(--room-shared-accent) !important;
+    background-image: none !important;
     color: #fff !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active > span svg,
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active > span svg * {
-    color: #fff !important;
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.active > span svg,
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.active > span svg * { color: #fff !important; fill: currentColor !important; stroke: currentColor !important; }
+
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4.selected {
+    background: color-mix(in srgb, var(--room-shared-accent) 8%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+    box-shadow: inset 0 0 0 1.5px var(--room-shared-accent) !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.selected {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 68%, var(--home-border, rgba(60,60,67,.10))) !important;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 12%, transparent), inset 0 1px 0 rgba(255,255,255,.5) !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--room-shared-accent) 48%, var(--home-border, rgba(60,60,67,.10))) !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 9%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--room-shared-accent) 7%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+    background-image: none !important;
     transform: none !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--room-shared-accent) 22%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+  /* Selected accessory detail sits directly below Controls. */
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4 {
+    grid-area: quick !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 106px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 13px !important;
+    display: grid !important;
+    border: 1px solid var(--home-border, rgba(60,60,67,.10)) !important;
+    border-radius: 20px !important;
+    background: var(--home-card, rgba(255,255,255,.82)) !important;
+    box-shadow: 0 7px 24px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.62) !important;
+    backdrop-filter: blur(22px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(135%) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  /* Status is one quiet column spanning controls + detail. */
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 {
+    grid-area: status !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 13px !important;
+    display: block !important;
+    border: 1px solid var(--home-border, rgba(60,60,67,.10)) !important;
+    border-radius: 20px !important;
+    background: var(--home-card, rgba(255,255,255,.82)) !important;
+    box-shadow: 0 7px 24px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.62) !important;
+    backdrop-filter: blur(22px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(135%) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
   }
 
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 {
@@ -439,12 +408,11 @@
     height: auto !important;
     min-height: 0 !important;
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: 1fr !important;
     grid-template-rows: none !important;
-    grid-auto-rows: minmax(36px, auto) !important;
-    gap: 6px !important;
+    grid-auto-rows: minmax(42px, auto) !important;
+    gap: 4px !important;
     align-content: start !important;
-    align-items: stretch !important;
     overflow: visible !important;
   }
 
@@ -452,13 +420,13 @@
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 3),
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 5) {
     width: 100% !important;
-    min-height: 36px !important;
+    min-height: 42px !important;
     height: auto !important;
-    padding: 5px 7px !important;
+    padding: 6px 7px !important;
+    border-radius: 11px !important;
   }
 
-  /* Quick-control ranges inherit the room identity too. White-temperature keeps
-   * its intentional warm-to-cool gradient. */
+  /* Quick controls also inherit room colour; only white-temperature keeps its gradient. */
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4.domain-light input[type="range"]:not(.white-temperature-range),
   main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4.domain-cover input[type="range"] {
     accent-color: var(--room-shared-accent) !important;
@@ -471,46 +439,40 @@
     background: var(--room-shared-accent) !important;
   }
 
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 .room-device-active-section,
   main.app-shell.home-page-active.night .desktop-room-stage-v26 .room-quick-control-v4,
   main.app-shell.home-page-active.night .desktop-room-stage-v26 .room-passive-section-v4 {
     box-shadow: 0 9px 28px rgba(0,0,0,.19), inset 0 1px 0 rgba(255,255,255,.035) !important;
   }
 
-  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 {
-    background: color-mix(in srgb, var(--room-shared-accent) 4%, rgba(44,44,46,.90)) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4 {
+    background: transparent !important;
+    background-image: none !important;
   }
 
-  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4 > span {
-    background: color-mix(in srgb, var(--room-shared-accent) 16%, rgba(58,58,62,.94)) !important;
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4 > span {
+    background: color-mix(in srgb, var(--room-shared-accent) 15%, rgba(58,58,62,.94)) !important;
   }
 
-  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active {
-    background: color-mix(in srgb, var(--room-shared-accent) 24%, rgba(58,58,62,.94)) !important;
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4.active {
+    background: color-mix(in srgb, var(--room-shared-accent) 20%, rgba(58,58,62,.94)) !important;
   }
 
-  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active > span {
-    background: var(--room-shared-accent) !important;
-  }
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 button.room-device-button-v4.active > span { background: var(--room-shared-accent) !important; }
 }
 
-@media (min-width: 701px) and (max-width: 1280px) {
+@media (min-width: 701px) and (max-width: 1180px) {
   main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
     --desktop-side-width: 300px;
     gap: 12px !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-grid-v4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 > .desktop-room-stage-v26 > .reel-room.room-card-v4 {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, .72fr) !important;
   }
 }
 
 @media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
-  .app-shell.home-page-active .desktop-room-workspace-v26 {
-    display: none !important;
-  }
-
-  .app-shell.home-page-active .mobile-room-grid-v26 {
-    display: grid !important;
-  }
+  .app-shell.home-page-active .desktop-room-workspace-v26 { display: none !important; }
+  .app-shell.home-page-active .mobile-room-grid-v26 { display: grid !important; }
 }
