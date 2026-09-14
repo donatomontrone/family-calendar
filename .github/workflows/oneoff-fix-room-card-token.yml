@@ -1,0 +1,34 @@
+name: Fix room card token
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/oneoff-fix-room-card-token.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fix room card token typo
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('src/desktop-room-workspace-v26.css')
+          s = p.read_text().replace('--rooom-section-border', '--room-section-border')
+          p.write_text(s)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/desktop-room-workspace-v26.css
+          if ! git diff --cached --quiet; then
+            git commit -m 'fix coherent room card border token [skip ci]'
+            git push
+          fi
