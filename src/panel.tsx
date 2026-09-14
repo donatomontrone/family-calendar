@@ -32,6 +32,7 @@ import homeMobileUtilitiesV20Styles from "./home-mobile-utilities-v20.css?inline
 import homeMobileFeaturesV21Styles from "./home-mobile-features-v21.css?inline";
 import sharedModalContractV22Styles from "./shared-modal-contract-v22.css?inline";
 import homeDesktopRoomInfoV24Styles from "./home-desktop-room-info-v24.css?inline";
+import desktopRoomWorkspaceV26Styles from "./desktop-room-workspace-v26.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -39,7 +40,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}\n${calendarV3Styles}\n${homeRoomSharedAccentStyles}\n${homeMobileV8Styles}\n${mobilePhoneFixesV9Styles}\n${homePhoneRoomPolishV10Styles}\n${homeMobileUtilitiesV20Styles}\n${homeMobileFeaturesV21Styles}\n${sharedModalContractV22Styles}\n${homeDesktopRoomInfoV24Styles}`;
+  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}\n${calendarV3Styles}\n${homeRoomSharedAccentStyles}\n${homeMobileV8Styles}\n${mobilePhoneFixesV9Styles}\n${homePhoneRoomPolishV10Styles}\n${homeMobileUtilitiesV20Styles}\n${homeMobileFeaturesV21Styles}\n${sharedModalContractV22Styles}\n${homeDesktopRoomInfoV24Styles}\n${desktopRoomWorkspaceV26Styles}`;
   document.head.appendChild(style);
 }
 

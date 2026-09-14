@@ -40,6 +40,7 @@ type RoomModel = {
 
 export default function HomeView({ hass, areas, entities, now, demo, language }: HomeViewProps) {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+  const [desktopRoomId, setDesktopRoomId] = useState<string | null>(null);
   const [favorites, setFavoriteIds] = useState<string[]>([]);
   const [overlay, setOverlay] = useState<Overlay>(null);
   const [roomClimateEntityId, setRoomClimateEntityId] = useState<string | null>(null);
@@ -62,6 +63,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
   }), [areas, entities, hass]);
 
   const selected = selectedRoom ? rooms.find((room) => room.area.area_id === selectedRoom) ?? null : null;
+  const desktopRoom = rooms.find((room) => room.area.area_id === desktopRoomId) ?? rooms[0] ?? null;
   const allActionable = useMemo(() => rooms.flatMap((room) => room.controllableIds), [rooms]);
   const temperatures = rooms.map((room, index) => room.temperature ?? (demo ? 21.7 + index * 0.3 : undefined));
   const knownTemperatures = temperatures.filter((value): value is number => typeof value === "number");
@@ -88,7 +90,49 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
   return (
     <section className="reel-home home-refactor-v4">
       <div className="reel-dashboard">
-        <div className="reel-room-grid">
+        <div className="desktop-room-workspace-v26">
+          <div
+            className="desktop-room-strip-v26"
+            role="tablist"
+            aria-label={language === "it" ? "Seleziona stanza" : "Select room"}
+          >
+            {rooms.map((room) => {
+              const activeCount = room.controllableIds.filter((id) => isActive(hass, id)).length;
+              const isSelected = desktopRoom?.area.area_id === room.area.area_id;
+              return (
+                <button
+                  key={room.area.area_id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  className={isSelected ? "active" : ""}
+                  onClick={() => setDesktopRoomId(room.area.area_id)}
+                >
+                  <span className="desktop-room-tab-icon-v26">{roomIcon(room.area.name)}</span>
+                  <span className="desktop-room-tab-copy-v26">
+                    <strong>{room.area.name}</strong>
+                    <small>{activeCount > 0 ? `${activeCount} ${language === "it" ? "attivi" : "active"}` : (language === "it" ? "Tutto spento" : "All off")}</small>
+                  </span>
+                  <b>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</b>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="desktop-room-stage-v26">
+            {desktopRoom && (
+              <RoomCard
+                key={`desktop-${desktopRoom.area.area_id}`}
+                hass={hass}
+                room={desktopRoom}
+                language={language}
+                onClimate={(entityId) => setRoomClimateEntityId(entityId)}
+              />
+            )}
+          </div>
+        </div>
+
+        <div className="reel-room-grid mobile-room-grid-v26">
           {rooms.map((room) => (
             <RoomCard
               key={room.area.area_id}
