@@ -677,7 +677,7 @@
     --room-section-radius: 20px;
     --room-section-pad: 12px;
     --room-section-bg: var(--home-card, rgba(255,255,255,.82));
-    --rooom-section-border: var(--home-border, rgba(60,60,67,.10));
+    --room-section-border: var(--home-border, rgba(60,60,67,.10));
     --room-section-shadow: 0 7px 24px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.62);
     --room-item-bg: rgba(118,118,128,.045);
     --room-item-radius: 11px;
