@@ -6,6 +6,7 @@ import "./segmented-gestures";
 import "./ui-interactions";
 import "./room-card-accent";
 import "./exact-shared-ui";
+import "./home-desktop-room-carousel-v25";
 import baseStyles from "./styles.css?inline";
 import themeStyles from "./theme.css?inline";
 import homeStyles from "./home-view.css?inline";
