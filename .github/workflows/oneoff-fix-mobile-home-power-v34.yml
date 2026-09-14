@@ -1,0 +1,26 @@
+name: Fix mobile home power v34
+
+on:
+  push:
+    paths:
+      - 'scripts/fix-mobile-home-power-v34.mjs'
+      - '.github/workflows/oneoff-fix-mobile-home-power-v34.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Apply mobile Home fix
+        run: node scripts/fix-mobile-home-power-v34.mjs
+      - name: Commit fix
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'src/HomeView.tsx'
+          message: 'restore phone Home layout after power control'
+          default_author: github_actions
