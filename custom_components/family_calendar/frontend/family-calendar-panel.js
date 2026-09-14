@@ -21486,37 +21486,26 @@ function Ze({ hass: e, entityId: t, selected: n, onClick: r }) {
 	});
 }
 function Qe({ hass: e, entityId: t, language: n, lightMode: r, onLightMode: i }) {
-	let a = e.states[t], o = lt(t), s = o === "light" ? Re(a.attributes) : null, c = Math.round(Number(a.attributes.brightness ?? 180) / 255 * 100), l = Number(a.attributes.current_position ?? (a.state === "open" ? 100 : 0)), u = o === "cover" ? l : r === "brightness" ? c : s.currentKelvin, d = o === "cover" ? 0 : r === "brightness" ? 1 : s.minKelvin, f = o === "cover" || r === "brightness" ? 100 : s.maxKelvin, p = o === "light" && r === "temperature" ? 50 : 1, m = o === "cover" ? n === "it" ? "Posizione" : "Position" : r === "brightness" ? n === "it" ? "Luminosità" : "Brightness" : n === "it" ? "Temperatura bianco" : "White temperature", h = o === "light" && r === "temperature" ? `${Math.round(u)} K` : `${Math.round(u)}%`, g = o === "light" && a.state === "on";
+	let a = e.states[t], o = lt(t), s = o === "light" ? Re(a.attributes) : null, c = Math.round(Number(a.attributes.brightness ?? 180) / 255 * 100), l = Number(a.attributes.current_position ?? (a.state === "open" ? 100 : 0)), u = o === "cover" ? l : r === "brightness" ? c : s.currentKelvin, d = o === "cover" ? 0 : r === "brightness" ? 1 : s.minKelvin, f = o === "cover" || r === "brightness" ? 100 : s.maxKelvin, p = o === "light" && r === "temperature" ? 50 : 1, m = o === "cover" ? n === "it" ? "Posizione" : "Position" : r === "brightness" ? n === "it" ? "Luminosità" : "Brightness" : n === "it" ? "Temperatura bianco" : "White temperature", h = o === "light" && r === "temperature" ? `${Math.round(u)} K` : `${Math.round(u)}%`;
 	return /* @__PURE__ */ (0, k.jsxs)("div", {
 		className: `room-quick-control-v4 domain-${o}`,
 		children: [/* @__PURE__ */ (0, k.jsxs)("div", {
 			className: "room-quick-control-head",
 			children: [/* @__PURE__ */ (0, k.jsxs)("div", { children: [/* @__PURE__ */ (0, k.jsx)("small", { children: ue(e, t) }), /* @__PURE__ */ (0, k.jsxs)("strong", { children: [m, /* @__PURE__ */ (0, k.jsx)("b", { children: h })] })] }), o === "light" && /* @__PURE__ */ (0, k.jsxs)("div", {
 				className: "room-light-mode-v4",
-				children: [
-					/* @__PURE__ */ (0, k.jsx)("button", {
-						type: "button",
-						className: `room-power-toggle-v31 ${g ? "active" : ""}`,
-						onClick: () => void e.callService("light", g ? "turn_off" : "turn_on", { entity_id: t }),
-						"aria-label": n === "it" ? g ? "Spegni luce" : "Accendi luce" : g ? "Turn light off" : "Turn light on",
-						title: n === "it" ? g ? "Spegni" : "Accendi" : g ? "Turn off" : "Turn on",
-						children: /* @__PURE__ */ (0, k.jsx)(Bt, {})
-					}),
-					/* @__PURE__ */ (0, k.jsx)("button", {
-						type: "button",
-						className: r === "brightness" ? "active" : "",
-						onClick: () => i("brightness"),
-						"aria-label": n === "it" ? "Luminosità" : "Brightness",
-						children: /* @__PURE__ */ (0, k.jsx)(wt, {})
-					}),
-					/* @__PURE__ */ (0, k.jsx)("button", {
-						type: "button",
-						className: r === "temperature" ? "active" : "",
-						onClick: () => i("temperature"),
-						"aria-label": n === "it" ? "Temperatura bianco" : "White temperature",
-						children: /* @__PURE__ */ (0, k.jsx)(Dt, {})
-					})
-				]
+				children: [/* @__PURE__ */ (0, k.jsx)("button", {
+					type: "button",
+					className: r === "brightness" ? "active" : "",
+					onClick: () => i("brightness"),
+					"aria-label": n === "it" ? "Luminosità" : "Brightness",
+					children: /* @__PURE__ */ (0, k.jsx)(wt, {})
+				}), /* @__PURE__ */ (0, k.jsx)("button", {
+					type: "button",
+					className: r === "temperature" ? "active" : "",
+					onClick: () => i("temperature"),
+					"aria-label": n === "it" ? "Temperatura bianco" : "White temperature",
+					children: /* @__PURE__ */ (0, k.jsx)(Dt, {})
+				})]
 			})]
 		}), /* @__PURE__ */ (0, k.jsx)("input", {
 			className: o === "light" && r === "temperature" ? "white-temperature-range" : "",
