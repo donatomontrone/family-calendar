@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: master
-      - run: node scripts/apply-desktop-room-v32.mjs
+      - run: node scripts/apply-desktop-room-v32-fixed.mjs
       - uses: EndBug/add-and-commit@v9
         with:
           message: refactor desktop room workspace
           add: src/HomeView.tsx
 
-# migration trigger 2026-09-14
+# fixed migration trigger 2026-09-14
