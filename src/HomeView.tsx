@@ -180,7 +180,7 @@ function RoomCard({ hass, room, language, onClimate }: { hass: Hass; room: RoomM
   const editableIds = visibleControlIds.filter((id) => ["light", "cover"].includes(domainOf(id)));
   const climateId = room.controllableIds.find((id) => domainOf(id) === "climate");
   const climateActive = Boolean(climateId && isActive(hass, climateId));
-  const visiblePassiveIds = room.passiveIds.filter((id) => !isRoomTemperatureSensor(hass, id)).slice(0, climateActive ? 3 : 4);
+  const visiblePassiveIds = room.passiveIds.filter((id) => !isRoomTemperatureSensor(hass, id));
   const [selectedControl, setSelectedControl] = useState<string | null>(() => editableIds[0] ?? null);
   const [lightMode, setLightMode] = useState<LightControlMode>("brightness");
   const selectedState = selectedControl ? hass.states[selectedControl] : undefined;
@@ -198,7 +198,7 @@ function RoomCard({ hass, room, language, onClimate }: { hass: Hass; room: RoomM
   };
 
   return (
-    <article className="reel-room room-card-v4">
+    <article className={`reel-room room-card-v4 ${climateActive ? "climate-active" : ""}`}>
       <div className="reel-room-head room-head-v4">
         <span className="room-title-v4"><i>{roomIcon(room.area.name)}</i><strong>{room.area.name}</strong></span>
         <button
@@ -215,7 +215,7 @@ function RoomCard({ hass, room, language, onClimate }: { hass: Hass; room: RoomM
       <div className="room-device-section room-device-active-section">
         <span className="room-section-label">{language === "it" ? "Controlli" : "Controls"}</span>
         <div className="room-device-grid-v4">
-          {visibleControlIds.slice(0, 4).map((id) => (
+          {visibleControlIds.map((id) => (
             <RoomDeviceButton
               key={id}
               hass={hass}
