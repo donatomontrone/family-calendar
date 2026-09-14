@@ -502,14 +502,27 @@ function RoomDeviceButton({ hass, entityId, selected, onClick }: { hass: Hass; e
   const domain = domainOf(entityId);
   const active = isActive(hass, entityId);
   const unavailable = ["unavailable", "unknown"].includes(state?.state ?? "unknown");
+  const lightIsOn = domain === "light" && state?.state === "on";
   return (
     <button
       className={`room-device-button-v4 domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""}`}
-      onClick={onClick}
+      onClick={(event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        if (domain === "light" && target?.closest(".room-device-power-v37")) {
+          event.preventDefault();
+          event.stopPropagation();
+          void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId });
+          return;
+        }
+        onClick();
+      }}
       disabled={unavailable}
     >
       <span>{iconForEntity(hass, entityId)}</span>
       <div><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? "Non disponibile" : entityStatus(hass, entityId, "it")}</small></div>
+      {domain === "light" && (
+        <span className={`room-device-power-v37 ${lightIsOn ? "active" : ""}`} aria-hidden="true"><PowerIcon /></span>
+      )}
     </button>
   );
 }
@@ -530,7 +543,6 @@ function RoomQuickControl({ hass, entityId, language, lightMode, onLightMode }: 
       ? (language === "it" ? "Luminosità" : "Brightness")
       : (language === "it" ? "Temperatura bianco" : "White temperature");
   const formatted = domain === "light" && lightMode === "temperature" ? `${Math.round(value)} K` : `${Math.round(value)}%`;
-  const lightIsOn = domain === "light" && state.state === "on";
   return (
     <div className={`room-quick-control-v4 domain-${domain}`}>
       <div className="room-quick-control-head">
@@ -542,19 +554,6 @@ function RoomQuickControl({ hass, entityId, language, lightMode, onLightMode }: 
           </div>
         )}
       </div>
-      {domain === "light" && (
-        <button
-          type="button"
-          className={`room-mobile-power-v36 ${lightIsOn ? "active" : ""}`}
-          onClick={() => void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId })}
-          aria-label={language === "it" ? (lightIsOn ? "Spegni luce" : "Accendi luce") : (lightIsOn ? "Turn light off" : "Turn light on")}
-          aria-pressed={lightIsOn}
-        >
-          <span><PowerIcon /></span>
-          <strong>{language === "it" ? (lightIsOn ? "Spegni" : "Accendi") : (lightIsOn ? "Turn off" : "Turn on")}</strong>
-          <small>{language === "it" ? (lightIsOn ? "Luce accesa" : "Luce spenta") : (lightIsOn ? "Light on" : "Light off")}</small>
-        </button>
-      )}
       <input
         className={domain === "light" && lightMode === "temperature" ? "white-temperature-range" : ""}
         type="range"
