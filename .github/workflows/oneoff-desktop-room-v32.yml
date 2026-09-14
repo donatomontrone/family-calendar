@@ -20,3 +20,5 @@ jobs:
         with:
           message: refactor desktop room workspace
           add: src/HomeView.tsx
+
+# migration trigger 2026-09-14
