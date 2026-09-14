@@ -1,22 +1,10 @@
-name: Apply room parity build fix
+name: Archived room device parity
 
 on:
-  push:
-    paths:
-      - .github/workflows/oneoff-fix-room-card-token.yml
-
-permissions:
-  contents: write
+  workflow_dispatch:
 
 jobs:
-  apply:
+  noop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: master
-      - run: node scripts/fix-room-parity-build.mjs
-      - uses: EndBug/add-and-commit@v9
-        with:
-          message: fix room parity build and selected state
-          add: src/HomeView.tsx src/desktop-room-mobile-parity-v30.css
+      - run: echo "Room device parity already applied"
