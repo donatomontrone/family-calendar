@@ -23,14 +23,12 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
 
           path = Path('src/HomeView.tsx')
           text = path.read_text()
 
           start = text.index('function RoomDeviceButton(')
           end = text.index('\nfunction RoomQuickControl(', start)
-          old_button = text[start:end]
           new_button = '''function RoomDeviceButton({ hass, entityId, selected, onClick }: { hass: Hass; entityId: string; selected: boolean; onClick: () => void }) {
             const state = hass.states[entityId];
             const domain = domainOf(entityId);
@@ -66,14 +64,11 @@ jobs:
           qstart = text.index('function RoomQuickControl(')
           qend = text.index('\nfunction RoomSheet(', qstart)
           quick = text[qstart:qend]
-          quick = re.sub(r'\n\s*const lightIsOn = domain === "light" && state\.state === "on";', '', quick, count=1)
-          quick = re.sub(
-              r'''\n\s*\{domain === "light" && \(\n\s*<button\n\s*type="button"\n\s*className=\{`room-mobile-power-v36 \$\{lightIsOn \? "active" : ""\}`\}\n\s*onClick=\{\(\) => void hass\.callService\("light", lightIsOn \? "turn_off" : "turn_on", \{ entity_id: entityId \}\)\}\n\s*aria-label=\{language === "it" \? \(lightIsOn \? "Spegni luce" : "Accendi luce"\) : \(lightIsOn \? "Turn light off" : "Turn light on"\)\}\n\s*aria-pressed=\{lightIsOn\}\n\s*>\n\s*<span><PowerIcon /></span>\n\s*<strong>\{language === "it" \? \(lightIsOn \? "Spegni" : "Accendi"\) : \(lightIsOn \? "Turn off" : "Turn on"\)\}</strong>\n\s*<small>\{language === "it" \? \(lightIsOn \? "Luce accesa" : "Luce spenta"\) : \(lightIsOn \? "Light on" : "Light off"\)\}</small>\n\s*</button>\n\s*\)\}''',
-              '',
-              quick,
-              count=1,
-              flags=re.VERBOSE,
-          )
+          quick = quick.replace('\n  const lightIsOn = domain === "light" && state.state === "on";', '')
+          marker = '\n      {domain === "light" && (\n        <button\n          type="button"\n          className={`room-mobile-power-v36'
+          pstart = quick.index(marker)
+          pend = quick.index('\n      <input', pstart)
+          quick = quick[:pstart] + quick[pend:]
           if 'room-mobile-power-v36' in quick:
               raise SystemExit('Failed to remove mobile power from RoomQuickControl')
           text = text[:qstart] + quick + text[qend:]
