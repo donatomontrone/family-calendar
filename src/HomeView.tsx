@@ -536,22 +536,25 @@ function RoomQuickControl({ hass, entityId, language, lightMode, onLightMode }: 
       <div className="room-quick-control-head">
         <div><small>{displayName(hass, entityId)}</small><strong>{label}<b>{formatted}</b></strong></div>
         {domain === "light" && (
-          <div className="room-quick-actions-v35">
-            <button
-              type="button"
-              className={`room-mobile-power-v35 ${lightIsOn ? "active" : ""}`}
-              onClick={() => void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId })}
-              aria-label={language === "it" ? (lightIsOn ? "Spegni luce" : "Accendi luce") : (lightIsOn ? "Turn light off" : "Turn light on")}
-              aria-pressed={lightIsOn}
-              title={language === "it" ? (lightIsOn ? "Spegni" : "Accendi") : (lightIsOn ? "Turn off" : "Turn on")}
-            ><PowerIcon /></button>
-            <div className="room-light-mode-v4">
-              <button type="button" className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")} aria-label={language === "it" ? "Luminosità" : "Brightness"}><SunIcon /></button>
-              <button type="button" className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")} aria-label={language === "it" ? "Temperatura bianco" : "White temperature"}><ThermometerIcon /></button>
-            </div>
+          <div className="room-light-mode-v4">
+            <button type="button" className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")} aria-label={language === "it" ? "Luminosità" : "Brightness"}><SunIcon /></button>
+            <button type="button" className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")} aria-label={language === "it" ? "Temperatura bianco" : "White temperature"}><ThermometerIcon /></button>
           </div>
         )}
       </div>
+      {domain === "light" && (
+        <button
+          type="button"
+          className={`room-mobile-power-v36 ${lightIsOn ? "active" : ""}`}
+          onClick={() => void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId })}
+          aria-label={language === "it" ? (lightIsOn ? "Spegni luce" : "Accendi luce") : (lightIsOn ? "Turn light off" : "Turn light on")}
+          aria-pressed={lightIsOn}
+        >
+          <span><PowerIcon /></span>
+          <strong>{language === "it" ? (lightIsOn ? "Spegni" : "Accendi") : (lightIsOn ? "Turn off" : "Turn on")}</strong>
+          <small>{language === "it" ? (lightIsOn ? "Luce accesa" : "Luce spenta") : (lightIsOn ? "Light on" : "Light off")}</small>
+        </button>
+      )}
       <input
         className={domain === "light" && lightMode === "temperature" ? "white-temperature-range" : ""}
         type="range"

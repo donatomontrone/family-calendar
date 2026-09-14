@@ -1,90 +1,127 @@
-/* CASA V35 — phone light power control without changing the approved two-mode selector. */
+/* CASA V36 — explicit phone light power row; preserves the approved two-mode selector geometry. */
 @media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-control-head {
+    width: 100% !important;
     min-width: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
+    min-height: 38px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: end !important;
     gap: 10px !important;
   }
 
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-control-head > div:first-child {
     min-width: 0 !important;
-    flex: 1 1 auto !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-actions-v35 {
-    flex: 0 0 auto !important;
-    min-width: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    gap: 6px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v35 {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    min-height: 34px !important;
-    padding: 0 !important;
     display: grid !important;
-    place-items: center !important;
-    border: 1px solid rgba(60, 60, 67, .10) !important;
+    gap: 4px !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-light-mode-v4 {
+    width: auto !important;
+    min-width: 0 !important;
+    height: 34px !important;
+    margin: 0 !important;
+    padding: 2px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 30px) !important;
+    gap: 2px !important;
+    align-self: end !important;
     border-radius: 11px !important;
-    background: rgba(118, 118, 128, .08) !important;
-    color: var(--home-secondary, #6e6e73) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.62), 0 2px 7px rgba(0,0,0,.035) !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    margin: 8px 0 0 !important;
+    padding: 5px 8px !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border: 1px solid rgba(60, 60, 67, .10) !important;
+    border-radius: 12px !important;
+    background: rgba(118, 118, 128, .075) !important;
+    color: var(--home-primary, #1d1d1f) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.66) !important;
     -webkit-tap-highlight-color: transparent !important;
     cursor: pointer !important;
     transition: transform .14s cubic-bezier(.2,.8,.2,1), background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v35 svg,
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v35 svg * {
-    width: 15px !important;
-    height: 15px !important;
-    color: inherit !important;
-    stroke: currentColor !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > span {
+    width: 28px !important;
+    height: 28px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 9px !important;
+    background: rgba(118,118,128,.10) !important;
+    color: var(--home-secondary, #6e6e73) !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v35.active {
-    border-color: var(--room-shared-accent) !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > span svg,
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > span svg * {
+    width: 14px !important;
+    height: 14px !important;
+    stroke: currentColor !important;
+    color: inherit !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > strong {
+    min-width: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    text-align: left !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 680 !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > small {
+    display: block !important;
+    color: var(--home-secondary, #6e6e73) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 540 !important;
+    white-space: nowrap !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36.active {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 42%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 11%, rgba(255,255,255,.92)) !important;
+    box-shadow: inset 3px 0 0 var(--room-shared-accent), inset 0 1px 0 rgba(255,255,255,.68) !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36.active > span {
     background: var(--room-shared-accent) !important;
     color: #fff !important;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-shared-accent) 22%, transparent), inset 0 1px 0 rgba(255,255,255,.22) !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v35:active {
-    transform: scale(.94) !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36.active > small {
+    color: var(--room-shared-accent) !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-light-mode-v4 {
-    flex: 0 0 auto !important;
-    margin: 0 !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36:active {
+    transform: scale(.985) !important;
   }
 
-  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v35:not(.active) {
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 + input[type="range"] {
+    margin-top: 7px !important;
+  }
+
+  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 {
     border-color: rgba(255,255,255,.08) !important;
-    background: rgba(255,255,255,.07) !important;
-    color: #b8b8bd !important;
+    background: rgba(255,255,255,.055) !important;
+    color: #f2f2f7 !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
   }
-}
 
-@media (max-width: 360px) {
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-control-head {
-    gap: 7px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-actions-v35 {
-    gap: 4px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v35 {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
+  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36.active {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 55%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 16%, rgba(20,20,22,.94)) !important;
+    box-shadow: inset 3px 0 0 var(--room-shared-accent) !important;
   }
 }
