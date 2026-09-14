@@ -304,3 +304,16 @@
     box-shadow: 0 2px 8px rgba(0,0,0,.45) !important;
   }
 }
+
+
+/* V31 explicit selected-light power control */
+@media (min-width: 701px) {
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-light-mode-v4 > .room-power-toggle-v31 {
+    margin-right: 2px !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-light-mode-v4 > .room-power-toggle-v31 svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+}
