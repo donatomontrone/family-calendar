@@ -1,0 +1,24 @@
+name: Apply room mode segment v33
+
+on:
+  push:
+    paths:
+      - .github/workflows/oneoff-room-mode-segment-v33.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - run: node scripts/apply-room-mode-segment-v33.mjs
+      - uses: EndBug/add-and-commit@v9
+        with:
+          message: match room mode switch to page dock
+          add: |
+            src/segmented.css
+            src/segmented-gestures.ts
