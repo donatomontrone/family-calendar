@@ -1,0 +1,22 @@
+name: Apply room power control
+
+on:
+  push:
+    paths:
+      - .github/workflows/oneoff-room-power-control.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - run: node scripts/apply-room-power-control.mjs
+      - uses: EndBug/add-and-commit@v9
+        with:
+          message: add explicit selected light power control
+          add: src/HomeView.tsx src/desktop-room-mobile-parity-v30.css
