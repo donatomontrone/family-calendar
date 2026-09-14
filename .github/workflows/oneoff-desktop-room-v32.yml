@@ -1,0 +1,22 @@
+name: Apply desktop room v32
+
+on:
+  push:
+    paths:
+      - .github/workflows/oneoff-desktop-room-v32.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - run: node scripts/apply-desktop-room-v32.mjs
+      - uses: EndBug/add-and-commit@v9
+        with:
+          message: refactor desktop room workspace
+          add: src/HomeView.tsx
