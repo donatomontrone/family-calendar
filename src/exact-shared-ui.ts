@@ -1,3 +1,5 @@
+import phoneLandscapeV39Styles from "./phone-landscape-v39.css?inline";
+
 type ExactSharedWindow = Window & {
   __familyCalendarExactSharedUi?: boolean;
 };
@@ -28,6 +30,8 @@ main.app-shell.home-page-active .room-temperature-button > b {
   transition: none !important;
   transform: none !important;
 }
+
+${phoneLandscapeV39Styles}
 `;
 
 function ensureRuntimeStyles() {
