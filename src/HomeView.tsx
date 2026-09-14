@@ -530,21 +530,12 @@ function RoomQuickControl({ hass, entityId, language, lightMode, onLightMode }: 
       ? (language === "it" ? "Luminosità" : "Brightness")
       : (language === "it" ? "Temperatura bianco" : "White temperature");
   const formatted = domain === "light" && lightMode === "temperature" ? `${Math.round(value)} K` : `${Math.round(value)}%`;
-  const lightIsOn = domain === "light" && state.state === "on";
-
   return (
     <div className={`room-quick-control-v4 domain-${domain}`}>
       <div className="room-quick-control-head">
         <div><small>{displayName(hass, entityId)}</small><strong>{label}<b>{formatted}</b></strong></div>
         {domain === "light" && (
           <div className="room-light-mode-v4">
-            <button
-              type="button"
-              className={`room-power-toggle-v31 ${lightIsOn ? "active" : ""}`}
-              onClick={() => void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId })}
-              aria-label={language === "it" ? (lightIsOn ? "Spegni luce" : "Accendi luce") : (lightIsOn ? "Turn light off" : "Turn light on")}
-              title={language === "it" ? (lightIsOn ? "Spegni" : "Accendi") : (lightIsOn ? "Turn off" : "Turn on")}
-            ><PowerIcon /></button>
             <button type="button" className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")} aria-label={language === "it" ? "Luminosità" : "Brightness"}><SunIcon /></button>
             <button type="button" className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")} aria-label={language === "it" ? "Temperatura bianco" : "White temperature"}><ThermometerIcon /></button>
           </div>
