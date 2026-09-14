@@ -1,18 +1,35 @@
 /* CASA V26 — desktop room strip + single-room workspace.
- * Phone remains on the already-approved multi-card layout. */
+ * This file is intentionally very specific: it must beat the previous V24
+ * desktop carousel contract while leaving the approved phone UI untouched. */
 
 @media (min-width: 701px) {
   main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
     grid-template-columns: minmax(0, 1fr) clamp(300px, 22vw, 350px) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
     gap: 16px !important;
     align-items: start !important;
+    align-content: start !important;
+    overflow: hidden !important;
   }
 
-  .app-shell.home-page-active .mobile-room-grid-v26 {
+  /* V24 added carousel chevrons to the whole dashboard. They are obsolete in
+   * the workspace layout: navigation now lives exclusively in the room strip. */
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::before,
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* The old multi-room grid is a phone-only fallback. The full ancestry is
+   * deliberate so this beats V24's .reel-room-grid display:grid !important. */
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-room-grid.mobile-room-grid-v26 {
     display: none !important;
   }
 
-  .app-shell.home-page-active .desktop-room-workspace-v26 {
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
     min-width: 0 !important;
     height: auto !important;
     min-height: 0 !important;
@@ -20,17 +37,35 @@
     grid-template-rows: 62px auto !important;
     gap: 12px !important;
     align-content: start !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
-  .app-shell.home-page-active .desktop-room-strip-v26 {
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 190px) !important;
+    align-self: start !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-strip-v26 {
     width: 100% !important;
     min-width: 0 !important;
     height: 62px !important;
     display: flex !important;
     align-items: stretch !important;
     gap: 7px !important;
-    padding: 1px 16px 2px 1px !important;
+    padding: 1px 20px 2px 1px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     scrollbar-width: none !important;
@@ -38,20 +73,20 @@
     overscroll-behavior-x: contain !important;
     scroll-behavior: smooth !important;
     cursor: grab !important;
-    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 22px), transparent 100%) !important;
-    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 22px), transparent 100%) !important;
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 26px), transparent 100%) !important;
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 26px), transparent 100%) !important;
   }
 
-  .app-shell.home-page-active .desktop-room-strip-v26::-webkit-scrollbar {
+  main.app-shell.home-page-active .desktop-room-strip-v26::-webkit-scrollbar {
     display: none !important;
   }
 
-  .app-shell.home-page-active .desktop-room-strip-v26.is-horizontal-dragging {
+  main.app-shell.home-page-active .desktop-room-strip-v26.is-horizontal-dragging {
     cursor: grabbing !important;
     scroll-behavior: auto !important;
   }
 
-  .app-shell.home-page-active .desktop-room-strip-v26 > button {
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button {
     --room-tab-accent: #4f8cff;
     flex: 0 0 clamp(132px, 11vw, 154px) !important;
     min-width: 0 !important;
@@ -72,22 +107,22 @@
     transition: border-color .16s ease, background .16s ease, box-shadow .16s ease !important;
   }
 
-  .app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 1) { --room-tab-accent: #4f8cff; }
-  .app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 2) { --room-tab-accent: #34c759; }
-  .app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 3) { --room-tab-accent: #30b0c7; }
-  .app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 4) { --room-tab-accent: #ff9f0a; }
-  .app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 5) { --room-tab-accent: #8e7dff; }
-  .app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 6) { --room-tab-accent: #ff6482; }
-  .app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n) { --room-tab-accent: #32ade6; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 1) { --room-tab-accent: #4f8cff; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 2) { --room-tab-accent: #34c759; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 3) { --room-tab-accent: #30b0c7; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 4) { --room-tab-accent: #ff9f0a; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 5) { --room-tab-accent: #8e7dff; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n + 6) { --room-tab-accent: #ff6482; }
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button:nth-child(7n) { --room-tab-accent: #32ade6; }
 
-  .app-shell.home-page-active .desktop-room-strip-v26 > button.active {
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button.active {
     border-color: color-mix(in srgb, var(--room-tab-accent) 42%, var(--home-border, rgba(60,60,67,.10))) !important;
     border-top-color: var(--room-tab-accent) !important;
     background: color-mix(in srgb, var(--room-tab-accent) 13%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-tab-accent) 10%, transparent), inset 0 1px 0 rgba(255,255,255,.66) !important;
   }
 
-  .app-shell.home-page-active .desktop-room-tab-icon-v26 {
+  main.app-shell.home-page-active .desktop-room-tab-icon-v26 {
     width: 30px !important;
     height: 30px !important;
     display: grid !important;
@@ -97,40 +132,40 @@
     color: var(--room-tab-accent) !important;
   }
 
-  .app-shell.home-page-active .desktop-room-tab-icon-v26 svg {
+  main.app-shell.home-page-active .desktop-room-tab-icon-v26 svg {
     width: 15px !important;
     height: 15px !important;
   }
 
-  .app-shell.home-page-active .desktop-room-tab-copy-v26 {
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 {
     min-width: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 2px !important;
   }
 
-  .app-shell.home-page-active .desktop-room-tab-copy-v26 strong,
-  .app-shell.home-page-active .desktop-room-tab-copy-v26 small {
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 strong,
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 small {
     min-width: 0 !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
   }
 
-  .app-shell.home-page-active .desktop-room-tab-copy-v26 strong {
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 strong {
     font-size: 11px !important;
     line-height: 1.05 !important;
     font-weight: 680 !important;
   }
 
-  .app-shell.home-page-active .desktop-room-tab-copy-v26 small {
+  main.app-shell.home-page-active .desktop-room-tab-copy-v26 small {
     color: var(--home-secondary, #6e6e73) !important;
     font-size: 8.5px !important;
     line-height: 1.05 !important;
     font-weight: 540 !important;
   }
 
-  .app-shell.home-page-active .desktop-room-strip-v26 > button > b {
+  main.app-shell.home-page-active .desktop-room-strip-v26 > button > b {
     margin: 0 !important;
     color: var(--home-secondary, #6e6e73) !important;
     font-size: 13px !important;
@@ -139,28 +174,30 @@
     font-variant-numeric: tabular-nums !important;
   }
 
-  .app-shell.home-page-active .desktop-room-stage-v26 {
+  main.app-shell.home-page-active .desktop-room-stage-v26 {
     min-width: 0 !important;
     min-height: 0 !important;
     height: auto !important;
     overflow: visible !important;
   }
 
-  /* The room itself is a workspace, not another giant outer card. */
-  .app-shell.home-page-active .desktop-room-stage-v26 > .reel-room.room-card-v4 {
+  /* True desktop workspace. Full ancestry gives these declarations higher
+   * specificity than the V24 rule that turns every room back into flex. */
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 > .desktop-room-stage-v26 > .reel-room.room-card-v4 {
     width: 100% !important;
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
     padding: 0 !important;
     display: grid !important;
-    grid-template-columns: minmax(0, 1.08fr) minmax(230px, .82fr) minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(220px, .78fr) minmax(0, 1fr) !important;
     grid-template-rows: 50px auto !important;
     grid-template-areas:
       "head head head"
       "controls quick status" !important;
     gap: 12px !important;
     align-items: start !important;
+    align-content: start !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: transparent !important;
@@ -168,20 +205,31 @@
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     overflow: visible !important;
+    scroll-snap-align: none !important;
   }
 
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-head-v4 {
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 > .desktop-room-stage-v26 > .room-card-v4:not(:has(.room-quick-control-v4)) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-areas:
+      "head head"
+      "controls status" !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-head-v4 {
     grid-area: head !important;
     height: 50px !important;
     min-height: 50px !important;
+    margin: 0 !important;
     padding: 0 4px 8px !important;
     border-bottom: 1px solid var(--home-border-soft, rgba(60,60,67,.07)) !important;
   }
 
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section,
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4,
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4 {
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4 {
     min-width: 0 !important;
+    width: auto !important;
+    height: auto !important;
     margin: 0 !important;
     padding: 13px !important;
     border: 1px solid var(--home-border, rgba(60,60,67,.10)) !important;
@@ -190,48 +238,47 @@
     box-shadow: 0 7px 24px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.62) !important;
     backdrop-filter: blur(22px) saturate(135%) !important;
     -webkit-backdrop-filter: blur(22px) saturate(135%) !important;
-  }
-
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section {
-    grid-area: controls !important;
-    align-self: start !important;
-  }
-
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4 {
-    grid-area: quick !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 112px !important;
-    max-height: none !important;
     align-self: start !important;
     box-sizing: border-box !important;
-  }
-
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 {
-    grid-area: status !important;
-    height: auto !important;
-    min-height: 0 !important;
-    align-self: start !important;
-    display: block !important;
     overflow: visible !important;
   }
 
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-card-v4:not(:has(.room-quick-control-v4)) .room-passive-section-v4 {
-    grid-column: 2 / -1 !important;
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section {
+    grid-area: controls !important;
   }
 
-  /* Keep device tiles compact: the new workspace must not stretch them. */
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-device-grid-v4 {
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4 {
+    grid-area: quick !important;
+    min-height: 112px !important;
+    max-height: none !important;
+    display: grid !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 {
+    grid-area: status !important;
+    min-height: 0 !important;
+    display: block !important;
+  }
+
+  /* Compact accessories keep roughly the same horizontal footprint as before;
+   * free workspace width is not used to stretch them. */
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-grid-v4 {
     width: 100% !important;
+    min-width: 0 !important;
     display: grid !important;
     grid-template-columns: repeat(auto-fill, minmax(118px, 132px)) !important;
+    grid-template-rows: none !important;
+    grid-auto-flow: row !important;
     grid-auto-rows: 48px !important;
     justify-content: start !important;
+    align-items: stretch !important;
     gap: 6px !important;
+    overflow: visible !important;
   }
 
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-device-button-v4 {
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-button-v4 {
     width: 100% !important;
+    min-width: 0 !important;
     height: 48px !important;
     min-height: 48px !important;
     max-height: 48px !important;
@@ -240,48 +287,58 @@
     gap: 6px !important;
   }
 
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 {
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 {
     width: 100% !important;
+    min-width: 0 !important;
     height: auto !important;
+    min-height: 0 !important;
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     grid-template-rows: none !important;
     grid-auto-rows: minmax(36px, auto) !important;
     gap: 6px !important;
     align-content: start !important;
+    align-items: stretch !important;
     overflow: visible !important;
   }
 
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4,
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 3),
-  .app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 5) {
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 3),
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 5) {
     width: 100% !important;
     min-height: 36px !important;
     height: auto !important;
     padding: 5px 7px !important;
   }
 
-  .app-shell.home-page-active .reel-side {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    align-self: start !important;
-    overflow: visible !important;
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 .room-device-active-section,
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 .room-passive-section-v4,
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 .room-quick-control-v4 {
+    box-shadow: 0 9px 28px rgba(0,0,0,.19), inset 0 1px 0 rgba(255,255,255,.035) !important;
   }
 
-  .app-shell.home-page-active.night .desktop-room-stage-v26 .room-device-active-section,
-  .app-shell.home-page-active.night .desktop-room-stage-v26 .room-passive-section-v4,
-  .app-shell.home-page-active.night .desktop-room-stage-v26 .room-quick-control-v4 {
-    box-shadow: 0 9px 28px rgba(0,0,0,.19), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  @media (max-width: 1180px) {
+    main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 > .desktop-room-stage-v26 > .reel-room.room-card-v4 {
+      grid-template-columns: minmax(0, 1fr) minmax(220px, .9fr) !important;
+      grid-template-rows: 50px auto auto !important;
+      grid-template-areas:
+        "head head"
+        "controls quick"
+        "status status" !important;
+    }
+
+    main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
   }
 }
 
 @media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
-  .app-shell.home-page-active .desktop-room-workspace-v26 {
+  main.app-shell.home-page-active .desktop-room-workspace-v26 {
     display: none !important;
   }
 
-  .app-shell.home-page-active .mobile-room-grid-v26 {
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid.mobile-room-grid-v26 {
     display: grid !important;
   }
 }
