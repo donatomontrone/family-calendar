@@ -1,135 +1,79 @@
-/* CASA/CALENDARIO mobile polish.
- * Restore the approved compact room quick-control composition while keeping
- * an explicit light power action, and make CALENDARIO light/climate icons use
- * the same visual treatment as covers.
+/*
+ * Mobile light power + CALENDARIO icon parity.
+ *
+ * CASA: the original mobile Luminosità / Temperatura quick-control is left
+ * completely untouched. Power belongs to the light tile itself.
+ * CALENDARIO: light, cover and climate icons share the cover visual language.
  */
 
 @media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
   /* ---------------------------------------------------------------------- */
-  /* CASA — keep the original Luminosità/Temperatura composition.           */
-  /* The power action is a compact header control, not a new full-width row. */
+  /* CASA — Power is part of the light device tile, not the quick control.   */
   /* ---------------------------------------------------------------------- */
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light {
-    position: relative !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light {
+    grid-template-columns: 38px minmax(0, 1fr) 30px !important;
+    gap: 8px !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-control-head {
-    width: 100% !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > div {
     min-width: 0 !important;
-    min-height: 38px !important;
-    padding-right: 40px !important;
-    box-sizing: border-box !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
-    align-items: end !important;
-    gap: 10px !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-control-head > div:first-child {
-    min-width: 0 !important;
-    display: grid !important;
-    gap: 4px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-light-mode-v4 {
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    height: 34px !important;
-    margin: 0 !important;
-    padding: 2px !important;
-    display: grid !important;
-    grid-template-columns: repeat(2, 30px) !important;
-    gap: 2px !important;
-    align-self: end !important;
-    border-radius: 11px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 {
-    position: absolute !important;
-    z-index: 3 !important;
-    top: 10px !important;
-    right: 0 !important;
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    max-width: 32px !important;
-    max-height: 32px !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37 {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
     margin: 0 !important;
     padding: 0 !important;
     display: grid !important;
     place-items: center !important;
-    overflow: hidden !important;
-    border: 1px solid rgba(60, 60, 67, .10) !important;
-    border-radius: 11px !important;
+    justify-self: end !important;
+    align-self: center !important;
+    border: 1px solid rgba(60,60,67,.10) !important;
+    border-radius: 10px !important;
     background: rgba(118,118,128,.075) !important;
     color: var(--home-secondary, #6e6e73) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.68), 0 2px 7px rgba(0,0,0,.035) !important;
-    -webkit-tap-highlight-color: transparent !important;
-    cursor: pointer !important;
-    transition:
-      transform .14s cubic-bezier(.2,.8,.2,1),
-      background-color .2s ease,
-      border-color .2s ease,
-      color .2s ease,
-      box-shadow .2s ease !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.66) !important;
+    transition: transform .14s cubic-bezier(.2,.8,.2,1), background-color .18s ease, border-color .18s ease, color .18s ease !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > strong,
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > small {
-    display: none !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 > span {
-    width: 100% !important;
-    height: 100% !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: grid !important;
-    place-items: center !important;
-    border: 0 !important;
-    border-radius: inherit !important;
-    background: transparent !important;
-    color: inherit !important;
-    box-shadow: none !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 svg,
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 svg * {
-    width: 15px !important;
-    height: 15px !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37 svg,
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37 svg * {
+    width: 14px !important;
+    height: 14px !important;
     color: inherit !important;
     stroke: currentColor !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36.active {
-    border-color: var(--room-shared-accent) !important;
-    background: var(--room-shared-accent) !important;
-    color: #fff !important;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--room-shared-accent) 22%, transparent), inset 0 1px 0 rgba(255,255,255,.22) !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37.active {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 55%, rgba(60,60,67,.10)) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 14%, #fff) !important;
+    color: var(--room-shared-accent) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7) !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36:active {
-    transform: scale(.93) !important;
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37:active {
+    transform: scale(.90) !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 + input[type="range"] {
-    margin-top: 5px !important;
-  }
-
-  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36:not(.active) {
+  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37 {
     border-color: rgba(255,255,255,.08) !important;
-    background: rgba(255,255,255,.07) !important;
+    background: rgba(255,255,255,.065) !important;
     color: #b8b8bd !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
   }
 
+  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37.active {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 56%, rgba(255,255,255,.08)) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 18%, rgba(44,44,46,.96)) !important;
+    color: var(--room-shared-accent) !important;
+  }
+
   /* ---------------------------------------------------------------------- */
-  /* CALENDARIO — light/climate icons must look exactly like cover icons.    */
-  /* Ignore domain-specific and white-temperature accent backgrounds.        */
+  /* CALENDARIO — light/climate icons look exactly like cover icons.         */
   /* ---------------------------------------------------------------------- */
   main.app-shell.calendar-page-active .right-column .home-card .entity-grid > article.entity-tile.domain-light,
   main.app-shell.calendar-page-active .right-column .home-card .entity-grid > article.entity-tile.domain-cover,
@@ -175,22 +119,5 @@
   main.app-shell.night.calendar-page-active .right-column .home-card .entity-grid > article.entity-tile.domain-climate.active .entity-icon {
     background: var(--calendar-scope-accent, #4f8cff) !important;
     color: #fff !important;
-  }
-}
-
-@media (max-width: 360px) {
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-quick-control-head {
-    padding-right: 37px !important;
-    gap: 7px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4.domain-light .room-mobile-power-v36 {
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-    max-width: 30px !important;
-    max-height: 30px !important;
-    border-radius: 10px !important;
   }
 }
