@@ -1,0 +1,90 @@
+name: Apply mobile device power V37
+
+on:
+  push:
+    paths:
+      - .github/workflows/mobile-power-v37.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Refactor mobile light power into device tile
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('src/HomeView.tsx')
+          text = path.read_text()
+
+          start = text.index('function RoomDeviceButton(')
+          end = text.index('\nfunction RoomQuickControl(', start)
+          old_button = text[start:end]
+          new_button = '''function RoomDeviceButton({ hass, entityId, selected, onClick }: { hass: Hass; entityId: string; selected: boolean; onClick: () => void }) {
+            const state = hass.states[entityId];
+            const domain = domainOf(entityId);
+            const active = isActive(hass, entityId);
+            const unavailable = ["unavailable", "unknown"].includes(state?.state ?? "unknown");
+            const lightIsOn = domain === "light" && state?.state === "on";
+            return (
+              <button
+                className={`room-device-button-v4 domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""}`}
+                onClick={(event) => {
+                  const target = event.target instanceof Element ? event.target : null;
+                  if (domain === "light" && target?.closest(".room-device-power-v37")) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId });
+                    return;
+                  }
+                  onClick();
+                }}
+                disabled={unavailable}
+              >
+                <span>{iconForEntity(hass, entityId)}</span>
+                <div><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? "Non disponibile" : entityStatus(hass, entityId, "it")}</small></div>
+                {domain === "light" && (
+                  <span className={`room-device-power-v37 ${lightIsOn ? "active" : ""}`} aria-hidden="true"><PowerIcon /></span>
+                )}
+              </button>
+            );
+          }
+          '''
+          text = text[:start] + new_button + text[end:]
+
+          qstart = text.index('function RoomQuickControl(')
+          qend = text.index('\nfunction RoomSheet(', qstart)
+          quick = text[qstart:qend]
+          quick = re.sub(r'\n\s*const lightIsOn = domain === "light" && state\.state === "on";', '', quick, count=1)
+          quick = re.sub(
+              r'''\n\s*\{domain === "light" && \(\n\s*<button\n\s*type="button"\n\s*className=\{`room-mobile-power-v36 \$\{lightIsOn \? "active" : ""\}`\}\n\s*onClick=\{\(\) => void hass\.callService\("light", lightIsOn \? "turn_off" : "turn_on", \{ entity_id: entityId \}\)\}\n\s*aria-label=\{language === "it" \? \(lightIsOn \? "Spegni luce" : "Accendi luce"\) : \(lightIsOn \? "Turn light off" : "Turn light on"\)\}\n\s*aria-pressed=\{lightIsOn\}\n\s*>\n\s*<span><PowerIcon /></span>\n\s*<strong>\{language === "it" \? \(lightIsOn \? "Spegni" : "Accendi"\) : \(lightIsOn \? "Turn off" : "Turn on"\)\}</strong>\n\s*<small>\{language === "it" \? \(lightIsOn \? "Luce accesa" : "Luce spenta"\) : \(lightIsOn \? "Light on" : "Light off"\)\}</small>\n\s*</button>\n\s*\)\}''',
+              '',
+              quick,
+              count=1,
+              flags=re.VERBOSE,
+          )
+          if 'room-mobile-power-v36' in quick:
+              raise SystemExit('Failed to remove mobile power from RoomQuickControl')
+          text = text[:qstart] + quick + text[qend:]
+
+          path.write_text(text)
+          PY
+      - name: Commit refactor
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/HomeView.tsx
+          git diff --cached --quiet && exit 0
+          git commit -m "refactor: integrate mobile light power into device tile [skip ci]"
+          git push origin HEAD:master
