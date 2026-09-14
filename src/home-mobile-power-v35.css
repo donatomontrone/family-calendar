@@ -19,6 +19,38 @@
     min-width: 0 !important;
   }
 
+  /* Selection is independent from the on/off state. The previous mobile rule
+   * only made active.selected obvious, so selecting an off light looked like
+   * nothing happened. Keep the normal active treatment, but give every
+   * selected accessory a clear room-colour outline and leading rail. */
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.selected {
+    border-color: var(--room-shared-accent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 9%, #fff) !important;
+    box-shadow:
+      inset 3px 0 0 var(--room-shared-accent),
+      0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 16%, transparent) !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.active.selected {
+    border-color: var(--room-shared-accent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 22%, #fff) !important;
+    box-shadow:
+      inset 3px 0 0 var(--room-shared-accent),
+      0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 18%, transparent) !important;
+  }
+
+  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4.selected {
+    border-color: var(--room-shared-accent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 13%, rgba(44,44,46,.96)) !important;
+    box-shadow:
+      inset 3px 0 0 var(--room-shared-accent),
+      0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 20%, transparent) !important;
+  }
+
+  main.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-device-button-v4.active.selected {
+    background: color-mix(in srgb, var(--room-shared-accent) 21%, rgba(44,44,46,.96)) !important;
+  }
+
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light > .room-device-power-v37 {
     width: 30px !important;
     height: 30px !important;
