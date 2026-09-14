@@ -2,7 +2,6 @@ import { createPortal } from "react-dom";
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import ClimateControl from "./ClimateControl";
 import DeviceControls from "./DeviceControls";
-import "./desktop-room-mobile-parity-v30.css";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
