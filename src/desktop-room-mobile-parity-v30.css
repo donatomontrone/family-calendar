@@ -129,7 +129,7 @@
     stroke: currentColor !important;
   }
 
-  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.selected {
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4.active.selected {
     border-color: var(--room-shared-accent) !important;
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 14%, transparent) !important;
   }

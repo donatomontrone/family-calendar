@@ -13,7 +13,7 @@ import {
   setLightBrightness,
   setLightColorTemperature,
 } from "./ha";
-import { getWhiteTemperature } from "./light-temperature";
+import { getWhiteTemperature, whiteTemperatureAccent } from "./light-temperature";
 import type { Language } from "./i18n";
 
 const CONTROL_DOMAINS = new Set(["light", "switch", "cover", "climate", "fan", "media_player", "lock", "vacuum"]);
