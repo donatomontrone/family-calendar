@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import ClimateControl from "./ClimateControl";
 import DeviceControls from "./DeviceControls";
+import "./desktop-room-mobile-parity-v30.css";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
 import {
   activateEntity,
@@ -13,7 +14,7 @@ import {
   setLightBrightness,
   setLightColorTemperature,
 } from "./ha";
-import { getWhiteTemperature, whiteTemperatureAccent } from "./light-temperature";
+import { getWhiteTemperature } from "./light-temperature";
 import type { Language } from "./i18n";
 
 const CONTROL_DOMAINS = new Set(["light", "switch", "cover", "climate", "fan", "media_player", "lock", "vacuum"]);
@@ -236,8 +237,11 @@ function RoomCard({ hass, room, language, onClimate }: { hass: Hass; room: RoomM
   }, [room.area.area_id, editableIds.join("|"), selectedControl]);
 
   const runEntity = (entityId: string) => {
-    if (editableIds.includes(entityId)) setSelectedControl(entityId);
-    if (domainOf(entityId) === "cover") return;
+    const domain = domainOf(entityId);
+    if (domain === "light" || domain === "cover") {
+      setSelectedControl(entityId);
+      return;
+    }
     void activateEntity(hass, entityId);
   };
 
@@ -309,11 +313,9 @@ function RoomDeviceButton({ hass, entityId, selected, onClick }: { hass: Hass; e
   const domain = domainOf(entityId);
   const active = isActive(hass, entityId);
   const unavailable = ["unavailable", "unknown"].includes(state?.state ?? "unknown");
-  const style = domain === "light" ? ({ "--room-device-accent": whiteTemperatureAccent(getWhiteTemperature(state.attributes)) } as CSSProperties) : undefined;
   return (
     <button
       className={`room-device-button-v4 domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""}`}
-      style={style}
       onClick={onClick}
       disabled={unavailable}
     >
