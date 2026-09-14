@@ -668,3 +668,255 @@
     background: color-mix(in srgb, var(--room-shared-accent) 8%, rgba(118,118,128,.10)) !important;
   }
 }
+
+
+/* CASA V29 — coherent room surfaces */
+@media (min-width: 701px) {
+  /* One visual contract for every card inside the selected room. */
+  main.app-shell.home-page-active .desktop-room-stage-v26 {
+    --room-section-radius: 20px;
+    --room-section-pad: 12px;
+    --room-section-bg: var(--home-card, rgba(255,255,255,.82));
+    --rooom-section-border: var(--home-border, rgba(60,60,67,.10));
+    --room-section-shadow: 0 7px 24px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.62);
+    --room-item-bg: rgba(118,118,128,.045);
+    --room-item-radius: 11px;
+    --room-item-height: 52px;
+  }
+
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 > .desktop-room-stage-v26 > .reel-room.room-card-v4 {
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, .70fr) !important;
+    grid-template-rows: 50px auto auto !important;
+    grid-template-areas:
+      "head head"
+      "controls status"
+      "quick status" !important;
+    column-gap: 12px !important;
+    row-gap: 12px !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: var(--room-section-pad) !important;
+    border: 1px solid var(--room-section-border) !important;
+    border-radius: var(--room-section-radius) !important;
+    background: var(--room-section-bg) !important;
+    box-shadow: var(--room-section-shadow) !important;
+    backdrop-filter: blur(22px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(135%) !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-active-section {
+    grid-area: controls !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-v4 {
+    grid-area: quick !important;
+    min-height: 94px !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 {
+    grid-area: status !important;
+    min-height: 0 !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-section > .room-section-label,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-section-v4 > .room-section-label {
+    display: block !important;
+    margin: 0 2px 9px !important;
+    color: var(--home-secondary, #6e6e73) !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+    letter-spacing: .09em !important;
+    text-transform: uppercase !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-device-grid-v4,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: var(--room-item-height) !important;
+    column-gap: 10px !important;
+    row-gap: 8px !important;
+    align-items: stretch !important;
+    overflow: visible !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.room-device-button-v4,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 3),
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-grid-v4 > .room-passive-device-v4:nth-child(n + 5) {
+    box-sizing: border-box !important;
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--room-item-height) !important;
+    min-height: var(--room-item-height) !important;
+    max-height: var(--room-item-height) !important;
+    margin: 0 !important;
+    padding: 7px 9px !important;
+    display: grid !important;
+    grid-template-columns: 32px minmax(0, 1fr) !important;
+    grid-template-rows: 1fr !important;
+    align-items: center !important;
+    gap: 9px !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--room-item-radius) !important;
+    background: var(--room-item-bg) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    color: var(--home-label, #1d1d1f) !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > span,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-device-v4 > span {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 11%, var(--home-card-strong, rgba(255,255,255,.94))) !important;
+    background-image: none !important;
+    color: var(--room-shared-accent) !important;
+    box-shadow: none !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > span svg,
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > span svg *,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-device-v4 > span svg,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-device-v4 > span svg * {
+    width: 15px !important;
+    height: 15px !important;
+    color: inherit !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 > div,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-device-v4 > div {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 2px !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 strong,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-device-v4 strong {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: var(--home-label, #1d1d1f) !important;
+    font-size: 10.5px !important;
+    line-height: 1.05 !important;
+    font-weight: 660 !important;
+    letter-spacing: -.012em !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4 small,
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-passive-device-v4 small {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: var(--home-secondary, #6e6e73) !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    font-weight: 540 !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.active,
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.selected {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 22%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 7%, var(--room-item-bg)) !important;
+    box-shadow: inset 3px 0 0 var(--room-shared-accent) !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4.active > span {
+    background: var(--room-shared-accent) !important;
+    color: #fff !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 button.room-device-button-v4:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 14%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 4%, rgba(118,118,128,.055)) !important;
+    transform: none !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-head {
+    min-height: 30px !important;
+    margin: 0 0 9px !important;
+    padding: 0 !important;
+    align-items: center !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-head > div > small {
+    display: none !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-head > div > strong {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+    color: var(--home-label, #1d1d1f) !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 660 !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-quick-control-head > div > strong > b {
+    margin-left: 0 !important;
+    color: var(--room-shared-accent) !important;
+    font-size: 13px !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-light-mode-v4 > button {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid var(--room-section-border) !important;
+    border-radius: 9px !important;
+    background: var(--room-item-bg) !important;
+    color: var(--home-secondary, #6e6e73) !important;
+    box-shadow: none !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-light-mode-v4 > button.active {
+    border-color: color-mix(in srgb, var(--room-shared-accent) 30%, transparent) !important;
+    background: color-mix(in srgb, var(--room-shared-accent) 10%, var(--room-item-bg)) !important;
+    color: var(--room-shared-accent) !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-stage-v26 .room-empty-v4 {
+    color: var(--home-secondary, #6e6e73) !important;
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+    font-weight: 560 !important;
+  }
+
+  main.app-shell.home-page-active.night .desktop-room-stage-v26 {
+    --room-section-bg: rgba(38,38,40,.82);
+    --room-section-border: rgba(255,255,255,.075);
+    --room-section-shadow: 0 9px 28px rgba(0,0,0,.19), inset 0 1px 0 rgba(255,255,255,.035);
+    --room-item-bg: rgba(118,118,128,.085);
+  }
+}
