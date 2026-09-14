@@ -27,7 +27,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
   const controlFromTarget = (target: EventTarget | null) => {
     if (!(target instanceof Element)) return null;
-    return target.closest<HTMLElement>(".segmented-control, .page-dock");
+    return target.closest<HTMLElement>(".segmented-control, .page-dock, .desktop-room-mode-v32");
   };
 
   const buttonFromTarget = (target: EventTarget | null, control: HTMLElement) => {
