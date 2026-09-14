@@ -1,22 +1,10 @@
-name: Apply runtime room style
+name: Archived room device parity
 
 on:
-  push:
-    paths:
-      - .github/workflows/oneoff-fix-room-card-token.yml
-
-permissions:
-  contents: write
+  workflow_dispatch:
 
 jobs:
-  apply:
+  noop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: master
-      - run: node scripts/apply-room-style-runtime.mjs
-      - uses: EndBug/add-and-commit@v9
-        with:
-          message: load desktop room parity as final runtime layer
-          add: src/HomeView.tsx src/ui-interactions.ts
+      - run: echo "Room device parity already applied"
