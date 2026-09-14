@@ -1,15 +1,13 @@
 /*
  * CASA desktop room layout — fixed viewport + horizontal room pages.
  *
- * Desktop keeps the approved horizontal geometry of room/device cards. Instead
- * of growing the page vertically, the room grid becomes a paged horizontal
- * surface: two room cards keep their original width and use the full available
- * height. Phone behaviour remains unchanged.
+ * Desktop keeps the approved horizontal geometry of room/device cards. The
+ * room strip stays horizontally paged, while each room card now follows its
+ * real content height instead of stretching through the whole viewport.
+ * Phone behaviour remains unchanged.
  */
 
 @media (min-width: 701px) {
-  /* Restore the shared fixed-height Home contract. The shared header owns the
-   * first 94px row; CASA stays inside the remaining row with no page scrollbar. */
   main.app-shell.home-page-active {
     height: 100dvh !important;
     min-height: 100dvh !important;
@@ -28,17 +26,52 @@
   }
 
   main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+    --desktop-side-width: clamp(300px, 22vw, 350px);
     width: 100% !important;
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
+    position: relative !important;
+    grid-template-columns: minmax(0, 1fr) var(--desktop-side-width) !important;
     align-items: stretch !important;
     overflow: hidden !important;
   }
 
-  /* Two room cards remain visible side-by-side. Their width is exactly the same
-   * as the previous two-column layout; additional rooms live on horizontal
-   * pages instead of extending the document vertically. */
+  /* Subtle carousel affordance. No label, dots or visible scrollbar: the edge
+   * chevrons and grab cursor are enough to communicate lateral navigation. */
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::before,
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::after {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 18 !important;
+    top: 50% !important;
+    width: 11px !important;
+    height: 11px !important;
+    pointer-events: none !important;
+    opacity: .46 !important;
+    border-top: 2px solid color-mix(in srgb, var(--lg-label, #1d1d1f) 62%, transparent) !important;
+    border-right: 2px solid color-mix(in srgb, var(--lg-label, #1d1d1f) 62%, transparent) !important;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,.12)) !important;
+  }
+
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::before {
+    left: 9px !important;
+    transform: translateY(-50%) rotate(-135deg) !important;
+  }
+
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::after {
+    right: calc(var(--desktop-side-width) + 16px + 9px) !important;
+    transform: translateY(-50%) rotate(45deg) !important;
+  }
+
+  main.app-shell.night.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::before,
+  main.app-shell.night.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::after {
+    opacity: .58 !important;
+    border-color: rgba(255,255,255,.62) !important;
+  }
+
+  /* Two room cards remain visible side-by-side. Their horizontal size is left
+   * unchanged. Additional rooms continue on horizontal pages. */
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid {
     --desktop-room-gap: clamp(10px, .8vw, 14px);
     width: 100% !important;
@@ -47,12 +80,12 @@
     min-height: 0 !important;
     display: grid !important;
     grid-template-columns: none !important;
-    grid-template-rows: minmax(0, 1fr) !important;
+    grid-template-rows: 1fr !important;
     grid-auto-flow: column !important;
     grid-auto-columns: calc((100% - var(--desktop-room-gap)) / 2) !important;
     gap: var(--desktop-room-gap) !important;
-    align-items: stretch !important;
-    align-content: stretch !important;
+    align-items: start !important;
+    align-content: start !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     overscroll-behavior-x: contain !important;
@@ -70,27 +103,33 @@
     height: 0 !important;
   }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid.is-dragging-v25 {
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid.is-dragging-v25,
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room-grid:active {
     cursor: grabbing !important;
     scroll-snap-type: none !important;
     scroll-behavior: auto !important;
   }
 
+  /* The room card is content-sized again. This removes the large artificial
+   * empty area that appeared when V25 stretched every card to the viewport. */
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-room.room-card-v4 {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
     min-width: 0 !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    align-self: stretch !important;
+    min-height: 210px !important;
+    max-height: calc(100% - 4px) !important;
+    padding: 12px 13px !important;
+    align-self: start !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 7px !important;
     overflow: hidden !important;
     scroll-snap-align: start !important;
     scroll-snap-stop: always !important;
   }
 
-  /* Restore the device geometry from before the vertical-scroll change.
-   * Four equal columns means every device keeps the exact horizontal footprint
-   * it had in the approved desktop layout. */
+  /* Restore the exact compact device footprint. Four equal columns preserve
+   * the approved horizontal size of every accessory. */
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-grid-v4 {
     min-width: 0 !important;
     display: grid !important;
@@ -138,16 +177,16 @@
     line-height: 1.05 !important;
   }
 
-  /* With a full-height room card there is enough vertical space to show every
-   * status row without introducing a nested vertical scrollbar. */
+  /* Statuses follow controls immediately instead of being pushed to the bottom
+   * of a full-height card. All rows remain visible. */
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-passive-section-v4 {
     min-height: 0 !important;
     height: auto !important;
-    margin-top: auto !important;
+    margin-top: 2px !important;
     align-self: stretch !important;
     display: grid !important;
     grid-template-rows: auto auto !important;
-    align-content: end !important;
+    align-content: start !important;
     overflow: visible !important;
   }
 
@@ -159,7 +198,7 @@
     grid-template-rows: none !important;
     grid-auto-rows: minmax(36px, auto) !important;
     gap: 7px !important;
-    align-content: end !important;
+    align-content: start !important;
     align-items: stretch !important;
     overflow: visible !important;
   }
@@ -206,6 +245,16 @@
     max-height: 100% !important;
     align-self: stretch !important;
     overflow: hidden !important;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1280px) {
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+    --desktop-side-width: 300px;
+  }
+
+  main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard::after {
+    right: calc(var(--desktop-side-width) + 12px + 9px) !important;
   }
 }
 
