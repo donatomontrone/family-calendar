@@ -1,0 +1,70 @@
+/* Demo-wide device status color contract.
+ * All accessory state text uses one secondary color. Cover percentages are not
+ * allowed to inherit room/device accent colors in any view or quick control.
+ */
+:root {
+  --fc-device-status: #6e6e73;
+  --fc-device-status-night: #b8b8bd;
+}
+
+main.app-shell.day .home-card .entity-main small,
+main.app-shell.day.home-page-active .room-device-button-v4 small,
+main.app-shell.day.home-page-active .desktop-room-device-v32 small,
+main.app-shell.day.home-page-active .apple-accessory-copy small,
+main.app-shell.day.home-page-active .room-passive-device-v4 small,
+main.app-shell.day.home-page-active .desktop-room-status-row-v32 small,
+main.app-shell.day.home-page-active .home-generic-grid-v4 small {
+  color: var(--fc-device-status) !important;
+  -webkit-text-fill-color: var(--fc-device-status) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
+
+main.app-shell.night .home-card .entity-main small,
+main.app-shell.night.home-page-active .room-device-button-v4 small,
+main.app-shell.night.home-page-active .desktop-room-device-v32 small,
+main.app-shell.night.home-page-active .apple-accessory-copy small,
+main.app-shell.night.home-page-active .room-passive-device-v4 small,
+main.app-shell.night.home-page-active .desktop-room-status-row-v32 small,
+main.app-shell.night.home-page-active .home-generic-grid-v4 small {
+  color: var(--fc-device-status-night) !important;
+  -webkit-text-fill-color: var(--fc-device-status-night) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
+
+/* Explicit cover-value protection. These selectors cover the Calendar Smart
+ * Home card, mobile/desktop Home room cards, accessory sheets and quick
+ * controls. The declaration is deliberately repeated with high specificity so
+ * active/selected/accent rules cannot recolor the percentage. */
+main.app-shell.day.calendar-page-active .home-card .entity-tile.domain-cover .entity-main small,
+main.app-shell.day.home-page-active button.room-device-button-v4.domain-cover small,
+main.app-shell.day.home-page-active button.desktop-room-device-v32.domain-cover small,
+main.app-shell.day.home-page-active .apple-accessory-tile.domain-cover .apple-accessory-copy small,
+main.app-shell.day.home-page-active .room-quick-control-v4.domain-cover .room-quick-control-head b,
+main.app-shell.day.home-page-active .home-inline-cover-v4 b {
+  color: var(--fc-device-status) !important;
+  -webkit-text-fill-color: var(--fc-device-status) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
+
+main.app-shell.night.calendar-page-active .home-card .entity-tile.domain-cover .entity-main small,
+main.app-shell.night.home-page-active button.room-device-button-v4.domain-cover small,
+main.app-shell.night.home-page-active button.desktop-room-device-v32.domain-cover small,
+main.app-shell.night.home-page-active .apple-accessory-tile.domain-cover .apple-accessory-copy small,
+main.app-shell.night.home-page-active .room-quick-control-v4.domain-cover .room-quick-control-head b,
+main.app-shell.night.home-page-active .home-inline-cover-v4 b {
+  color: var(--fc-device-status-night) !important;
+  -webkit-text-fill-color: var(--fc-device-status-night) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
