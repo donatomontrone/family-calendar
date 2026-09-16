@@ -1,0 +1,259 @@
+/* DEMO ONLY — phone landscape header + Home tools refinement.
+ * Presentation only. Keeps the same App, handlers and state.
+ */
+
+/* ---------- Header: lightweight system bar, not a card ---------- */
+html.demo-phone-landscape-final main.app-shell {
+  grid-template-rows: 33px minmax(0, 1fr) !important;
+  gap: 5px !important;
+  padding-top: max(4px, env(safe-area-inset-top, 0px)) !important;
+}
+
+html.demo-phone-landscape-final main.app-shell > #family-shared-header-host,
+html.demo-phone-landscape-final main.app-shell > #family-shared-header-host > #family-shared-header,
+html.demo-phone-landscape-final main.app-shell > #family-shared-header.shared-home-header,
+html.demo-phone-landscape-final main.app-shell #family-shared-header {
+  height: 33px !important;
+  min-height: 33px !important;
+  max-height: 33px !important;
+}
+
+html.demo-phone-landscape-final main.app-shell #family-shared-header {
+  box-sizing: border-box !important;
+  grid-template-columns: minmax(88px, 1fr) auto minmax(88px, 1fr) !important;
+  grid-template-rows: 33px !important;
+  padding: 0 2px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.demo-phone-landscape-final main.app-shell #family-shared-header::before {
+  align-self: center !important;
+  justify-self: start !important;
+  padding-left: 2px !important;
+  color: var(--pls-text) !important;
+  font-size: 12.5px !important;
+  line-height: 1 !important;
+  font-weight: 720 !important;
+  letter-spacing: -.025em !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .reel-clock {
+  align-self: center !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  font-weight: 570 !important;
+  letter-spacing: -.035em !important;
+  opacity: .92 !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .reel-top-actions {
+  height: 28px !important;
+  min-height: 28px !important;
+  gap: 4px !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header :is(.security-pill, .round-top, .header-theme-switch) {
+  width: 28px !important;
+  min-width: 28px !important;
+  max-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 0 !important;
+  border: 1px solid color-mix(in srgb, var(--pls-line) 82%, transparent) !important;
+  border-radius: 50% !important;
+  background: color-mix(in srgb, var(--pls-fill-strong) 82%, transparent) !important;
+  box-shadow: 0 2px 8px rgba(20,24,32,.045), inset 0 1px 0 rgba(255,255,255,.35) !important;
+  backdrop-filter: blur(14px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(135%) !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header :is(.security-pill, .round-top, .header-theme-switch):active {
+  transform: scale(.94) !important;
+  background: var(--pls-soft) !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header :is(.security-pill, .round-top, .header-theme-switch) svg {
+  width: 13.5px !important;
+  height: 13.5px !important;
+}
+
+/* ---------- Home: remove right-side keypad; use a bottom utility strip ---------- */
+html.demo-phone-landscape-final main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) 36px !important;
+  gap: 5px !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  overflow: hidden !important;
+}
+
+html.demo-phone-landscape-final .reel-side > .reel-tools-grid {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 1px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 5px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  overscroll-behavior-x: contain !important;
+  scroll-snap-type: x proximity !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.demo-phone-landscape-final .reel-side > .reel-tools-grid::-webkit-scrollbar {
+  display: none !important;
+}
+
+html.demo-phone-landscape-final .reel-tools-grid > button {
+  box-sizing: border-box !important;
+  flex: 0 0 82px !important;
+  width: 82px !important;
+  min-width: 82px !important;
+  max-width: 82px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  scroll-snap-align: start !important;
+  overflow: hidden !important;
+  border: 1px solid var(--pls-line) !important;
+  border-radius: 11px !important;
+  background: var(--pls-fill) !important;
+  color: var(--pls-text) !important;
+  box-shadow: 0 3px 10px rgba(20,24,32,.035), inset 0 1px 0 rgba(255,255,255,.32) !important;
+  backdrop-filter: blur(14px) saturate(130%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
+}
+
+html.demo-phone-landscape-final .reel-tools-grid > button:active {
+  transform: scale(.97) !important;
+  background: var(--pls-soft) !important;
+}
+
+html.demo-phone-landscape-final .reel-tools-grid > button svg {
+  flex: 0 0 auto !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html.demo-phone-landscape-final .reel-tools-grid > button > span {
+  min-width: 0 !important;
+  display: block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 8.75px !important;
+  line-height: 1 !important;
+  font-weight: 620 !important;
+  text-align: left !important;
+}
+
+/* Reclaimed width goes to the room workspace rather than oversized chrome. */
+html.demo-phone-landscape-final main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+  grid-template-columns: 104px minmax(0, 1fr) !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.home-page-active .desktop-room-strip-v26 {
+  width: 104px !important;
+  min-width: 104px !important;
+  max-width: 104px !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.home-page-active .desktop-room-content-v32 {
+  grid-template-columns: minmax(0, 1fr) 146px !important;
+  gap: 7px !important;
+}
+
+html.demo-phone-landscape-final .desktop-room-controls-body-v32 {
+  grid-template-columns: minmax(0, 1fr) 128px !important;
+  gap: 7px !important;
+}
+
+/* ---------- Extra-short phones ---------- */
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell {
+  grid-template-rows: 31px minmax(0, 1fr) !important;
+  gap: 4px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell > #family-shared-header-host,
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell > #family-shared-header-host > #family-shared-header,
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell > #family-shared-header.shared-home-header,
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell #family-shared-header {
+  height: 31px !important;
+  min-height: 31px !important;
+  max-height: 31px !important;
+  grid-template-rows: 31px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  grid-template-rows: minmax(0, 1fr) 33px !important;
+  gap: 4px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side,
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .reel-side > .reel-tools-grid {
+  height: 33px !important;
+  min-height: 33px !important;
+  max-height: 33px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .reel-tools-grid > button {
+  flex-basis: 76px !important;
+  width: 76px !important;
+  min-width: 76px !important;
+  max-width: 76px !important;
+  height: 31px !important;
+  min-height: 31px !important;
+  max-height: 31px !important;
+  padding-inline: 7px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .reel-tools-grid > button > span {
+  font-size: 8.25px !important;
+}
