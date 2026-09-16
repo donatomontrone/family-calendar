@@ -1,0 +1,335 @@
+/* Demo-only landscape V42.
+ * Hardens layout flow after the V41 visual pass: direct grid parents stay in
+ * normal flow, card surfaces cannot escape their cells, and each dense region
+ * owns its own scroll container. This file must be injected last at runtime.
+ */
+
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 1024px) {
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active) {
+    overflow: hidden !important;
+  }
+
+  /* Never allow content cards to retain positioning/translation from older
+     responsive layers. Modals and the bottom dock are intentionally excluded. */
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active)
+    :is(.dashboard-grid, .left-column, .right-column, .calendar-card, .agenda-card, .tasks-card, .home-card,
+        .reel-home, .reel-dashboard, .reel-room-grid, .reel-room, .reel-side, .reel-side-card, .reel-tools-grid) {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  main.app-shell.app-shell:is(.calendar-page-active, .home-page-active)
+    :is(.left-column, .right-column, .calendar-card, .agenda-card, .tasks-card, .home-card,
+        .reel-home, .reel-dashboard, .reel-room-grid, .reel-room, .reel-side, .reel-side-card, .reel-tools-grid) {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    translate: none !important;
+    transform: none !important;
+    float: none !important;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* CALENDAR — three real columns. No display:contents flattening.      */
+  /* ------------------------------------------------------------------ */
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns:
+      clamp(142px, 20.5vw, 188px)
+      minmax(0, 1fr)
+      clamp(164px, 23vw, 216px) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    grid-template-areas: "left calendar right" !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .left-column {
+    grid-area: left !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, .92fr) minmax(0, 1.08fr) !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    align-self: stretch !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .right-column {
+    grid-area: right !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    display: block !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .left-column > .agenda-card,
+  main.app-shell.app-shell.calendar-page-active .left-column > .tasks-card,
+  main.app-shell.app-shell.calendar-page-active .right-column > .home-card {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-card {
+    display: grid !important;
+    grid-template-rows: 31px minmax(0, 1fr) !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-list {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card {
+    display: flex !important;
+    flex-direction: column !important;
+    padding-bottom: 0 !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card .tasks-heading {
+    flex: 0 0 31px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card .task-composer {
+    flex: 0 0 auto !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card .task-list-scroll-shell {
+    flex: 1 1 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card .task-list {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .tasks-card > .task-segmented-control {
+    flex: 0 0 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    margin-top: 4px !important;
+    margin-bottom: 5px !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card {
+    display: grid !important;
+    grid-template-rows: auto 34px auto minmax(0, 1fr) !important;
+    padding-bottom: 0 !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-wrap: nowrap !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .home-card .entity-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .calendar-card {
+    display: grid !important;
+    grid-template-rows: 38px minmax(0, 1fr) !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .month-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* HOME — one scrollable room surface + one independent utility rail. */
+  /* ------------------------------------------------------------------ */
+  main.app-shell.app-shell.home-page-active .desktop-room-workspace-v26 {
+    display: none !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) clamp(178px, 25vw, 238px) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: stretch !important;
+    gap: 7px !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 2px 2px 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: max-content !important;
+    align-content: start !important;
+    gap: 7px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 > .reel-room.room-card-v4 {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    align-self: start !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-side {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 2px 2px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-side > * {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-side > .reel-tools-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 48px !important;
+    gap: 4px !important;
+  }
+
+  /* Dock remains fixed, but its reserved shell padding keeps it away from cards. */
+  main.app-shell.app-shell .page-dock-shell {
+    z-index: 40 !important;
+  }
+}
+
+/* Narrow landscape phones: keep the same flow and drop the room surface to a
+   single column rather than squeezing two cards into each other. */
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 760px) {
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid {
+    grid-template-columns: 128px minmax(0, 1fr) 148px !important;
+    gap: 5px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .reel-dashboard {
+    grid-template-columns: minmax(0, 1fr) 166px !important;
+    gap: 5px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+}
+
+/* Very short landscape: preserve flow first, density second. */
+@media (orientation: landscape) and (max-height: 370px) and (max-width: 900px) {
+  main.app-shell.app-shell.calendar-page-active .dashboard-grid > .left-column {
+    grid-template-rows: minmax(0, .78fr) minmax(0, 1.22fr) !important;
+  }
+
+  main.app-shell.app-shell.calendar-page-active .agenda-day:nth-child(n + 3) {
+    display: none !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-side > .home-message-card {
+    display: none !important;
+  }
+}
