@@ -1,8 +1,9 @@
 import phoneLandscapeFinalStyles from "./demo-phone-landscape-final.css?inline";
+import phoneLandscapePolishV2Styles from "./demo-phone-landscape-polish-v2.css?inline";
 import statusConsistencyStyles from "./demo-status-consistency-v45.css?inline";
 
 const STYLE_ID = "family-calendar-demo-phone-landscape-final";
-const css = `${statusConsistencyStyles}\n${phoneLandscapeFinalStyles}`;
+const css = `${statusConsistencyStyles}\n${phoneLandscapeFinalStyles}\n${phoneLandscapePolishV2Styles}`;
 
 let style = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
 if (!style) {
