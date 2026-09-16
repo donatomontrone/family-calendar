@@ -1,0 +1,19 @@
+/* Demo-wide status color consistency.
+ * Cover position percentages use the same secondary text color as every other
+ * accessory status in all responsive states and both themes.
+ */
+main.app-shell.calendar-page-active .home-card .entity-tile.domain-cover .entity-main small,
+main.app-shell.home-page-active .room-device-button-v4.domain-cover small,
+main.app-shell.home-page-active .desktop-room-device-v32.domain-cover small {
+  color: var(--fc-secondary, #6e6e73) !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
+}
+
+main.app-shell.night.calendar-page-active .home-card .entity-tile.domain-cover .entity-main small,
+main.app-shell.night.home-page-active .room-device-button-v4.domain-cover small,
+main.app-shell.night.home-page-active .desktop-room-device-v32.domain-cover small {
+  color: #b8b8bd !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
+}
