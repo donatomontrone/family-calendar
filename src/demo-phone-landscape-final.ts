@@ -3,10 +3,11 @@ import phoneLandscapePolishV2Styles from "./demo-phone-landscape-polish-v2.css?i
 import phoneLandscapeStructuralV3Styles from "./demo-phone-landscape-structural-v3.css?inline";
 import phoneLandscapePolishV4Styles from "./demo-phone-landscape-polish-v4.css?inline";
 import phoneLandscapeHeaderToolsV5Styles from "./demo-phone-landscape-header-tools-v5.css?inline";
+import phoneLandscapeToolsAlignmentV6Styles from "./demo-phone-landscape-tools-alignment-v6.css?inline";
 import statusConsistencyStyles from "./demo-status-consistency-v45.css?inline";
 
 const STYLE_ID = "family-calendar-demo-phone-landscape-final";
-const css = `${statusConsistencyStyles}\n${phoneLandscapeFinalStyles}\n${phoneLandscapePolishV2Styles}\n${phoneLandscapeStructuralV3Styles}\n${phoneLandscapePolishV4Styles}\n${phoneLandscapeHeaderToolsV5Styles}`;
+const css = `${statusConsistencyStyles}\n${phoneLandscapeFinalStyles}\n${phoneLandscapePolishV2Styles}\n${phoneLandscapeStructuralV3Styles}\n${phoneLandscapePolishV4Styles}\n${phoneLandscapeHeaderToolsV5Styles}\n${phoneLandscapeToolsAlignmentV6Styles}`;
 
 let style = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
 if (!style) {
