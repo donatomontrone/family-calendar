@@ -1,9 +1,10 @@
 import phoneLandscapeFinalStyles from "./demo-phone-landscape-final.css?inline";
 import phoneLandscapePolishV2Styles from "./demo-phone-landscape-polish-v2.css?inline";
+import phoneLandscapeStructuralV3Styles from "./demo-phone-landscape-structural-v3.css?inline";
 import statusConsistencyStyles from "./demo-status-consistency-v45.css?inline";
 
 const STYLE_ID = "family-calendar-demo-phone-landscape-final";
-const css = `${statusConsistencyStyles}\n${phoneLandscapeFinalStyles}\n${phoneLandscapePolishV2Styles}`;
+const css = `${statusConsistencyStyles}\n${phoneLandscapeFinalStyles}\n${phoneLandscapePolishV2Styles}\n${phoneLandscapeStructuralV3Styles}`;
 
 let style = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
 if (!style) {
@@ -25,10 +26,15 @@ function viewportSize() {
 
 function syncPhoneLandscapeLayout() {
   const { width, height } = viewportSize();
-  const active = width > height && width <= 1100 && height <= 560;
+  const landscape = width > height;
+  const touchLike = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+  const screenMin = Math.min(window.screen.width || width, window.screen.height || height);
+  const phoneScreen = touchLike && screenMin <= 600 && width <= 1400 && height <= 800;
+  const compactViewport = width <= 1100 && height <= 560;
+  const active = landscape && (phoneScreen || compactViewport);
 
   root.classList.toggle("demo-phone-landscape-final", active);
-  root.classList.toggle("demo-phone-landscape-final-narrow", active && width <= 700);
+  root.classList.toggle("demo-phone-landscape-final-narrow", active && width <= 740);
   root.classList.toggle("demo-phone-landscape-final-short", active && height <= 390);
 }
 
