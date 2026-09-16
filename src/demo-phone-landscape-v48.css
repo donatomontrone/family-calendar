@@ -1,0 +1,439 @@
+/* DEMO ONLY — phone landscape V48
+ * Focused polish over V47: a guaranteed visible header and coherent Apple-like
+ * Home controls. No portrait/tablet/desktop selectors live in this file.
+ */
+
+/* --------------------------------------------------------------------------
+ * HEADER — reserve real space, override the shared 74px internal row and keep
+ * the header above every page surface.
+ * -------------------------------------------------------------------------- */
+html.demo-phone-landscape main.app-shell {
+  grid-template-rows: 34px minmax(0, 1fr) !important;
+  gap: 5px !important;
+}
+
+html.demo-phone-landscape main.app-shell > #family-shared-header-host {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  position: relative !important;
+  inset: auto !important;
+  z-index: 300 !important;
+  width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+html.demo-phone-landscape main.app-shell #family-shared-header.shared-home-header {
+  position: relative !important;
+  z-index: 301 !important;
+  width: 100% !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  margin: 0 !important;
+  padding: 3px 5px !important;
+  display: grid !important;
+  grid-template-columns: minmax(34px, 1fr) auto minmax(96px, 1fr) !important;
+  grid-template-rows: 26px !important;
+  grid-template-areas: ". clock actions" !important;
+  align-items: center !important;
+  gap: 5px !important;
+  overflow: visible !important;
+  border: 1px solid rgba(255,255,255,.62) !important;
+  border-radius: 13px !important;
+  background: rgba(248,248,250,.76) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.84), 0 4px 14px rgba(0,0,0,.045) !important;
+  backdrop-filter: blur(22px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
+}
+
+html.demo-phone-landscape main.app-shell.night #family-shared-header.shared-home-header {
+  border-color: rgba(255,255,255,.07) !important;
+  background: rgba(36,36,38,.78) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 5px 16px rgba(0,0,0,.20) !important;
+}
+
+html.demo-phone-landscape main.app-shell #family-shared-header .reel-clock {
+  grid-area: clock !important;
+  justify-self: center !important;
+  align-self: center !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.025em !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html.demo-phone-landscape main.app-shell #family-shared-header .reel-top-actions {
+  grid-area: actions !important;
+  justify-self: end !important;
+  align-self: center !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  width: auto !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html.demo-phone-landscape main.app-shell #family-shared-header :is(.security-pill, .round-top, .header-theme-switch) {
+  flex: 0 0 24px !important;
+  width: 24px !important;
+  min-width: 24px !important;
+  max-width: 24px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(60,60,67,.08) !important;
+  border-radius: 8px !important;
+  background: rgba(255,255,255,.70) !important;
+  box-shadow: none !important;
+}
+
+html.demo-phone-landscape main.app-shell.night #family-shared-header :is(.security-pill, .round-top, .header-theme-switch) {
+  border-color: rgba(255,255,255,.06) !important;
+  background: rgba(255,255,255,.07) !important;
+}
+
+html.demo-phone-landscape main.app-shell #family-shared-header :is(.security-pill, .round-top, .header-theme-switch) svg {
+  width: 12px !important;
+  height: 12px !important;
+  min-width: 12px !important;
+  min-height: 12px !important;
+}
+
+/* Explicitly keep page content in the second grid row. */
+html.demo-phone-landscape main.app-shell.calendar-page-active > .dashboard-grid,
+html.demo-phone-landscape main.app-shell.home-page-active > .reel-home.home-refactor-v4 {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* --------------------------------------------------------------------------
+ * HOME — calm accessory tiles instead of chunky dashboard buttons.
+ * -------------------------------------------------------------------------- */
+html.demo-phone-landscape main.app-shell.home-page-active .reel-room.room-card-v4 {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,.60) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-head-v4 {
+  min-height: 34px !important;
+  height: 34px !important;
+  padding-bottom: 5px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-title-v4 > i {
+  width: 27px !important;
+  height: 27px !important;
+  min-width: 27px !important;
+  border-radius: 9px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-title-v4 > i svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-title-v4 strong {
+  font-size: 11px !important;
+  line-height: 1.05 !important;
+  font-weight: 680 !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-temperature-button {
+  width: auto !important;
+  min-width: 42px !important;
+  height: 27px !important;
+  min-height: 27px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: rgba(118,118,128,.08) !important;
+  box-shadow: none !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-temperature-button > b {
+  font-size: 11px !important;
+  font-weight: 620 !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-device-grid-v4 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-auto-rows: minmax(44px, auto) !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4 {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  padding: 5px 7px !important;
+  display: grid !important;
+  grid-template-columns: 28px minmax(0, 1fr) auto !important;
+  grid-template-rows: 1fr !important;
+  align-items: center !important;
+  gap: 7px !important;
+  border: 1px solid rgba(60,60,67,.09) !important;
+  border-radius: 13px !important;
+  background: rgba(255,255,255,.68) !important;
+  color: inherit !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.68) !important;
+  text-align: left !important;
+  overflow: hidden !important;
+}
+
+html.demo-phone-landscape main.app-shell.night button.room-device-button-v4 {
+  border-color: rgba(255,255,255,.065) !important;
+  background: rgba(255,255,255,.055) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4.active {
+  border-color: color-mix(in srgb, var(--room-active-accent, #4f8cff) 24%, rgba(60,60,67,.10)) !important;
+  background: color-mix(in srgb, var(--room-active-accent, #4f8cff) 9%, rgba(255,255,255,.82)) !important;
+}
+
+html.demo-phone-landscape main.app-shell.night.home-page-active button.room-device-button-v4.active {
+  background: color-mix(in srgb, var(--room-active-accent, #4f8cff) 14%, rgba(44,44,46,.84)) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4.selected {
+  border-color: color-mix(in srgb, var(--room-active-accent, #4f8cff) 44%, rgba(60,60,67,.10)) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--room-active-accent, #4f8cff) 8%, transparent), inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4 > span:first-child {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 9px !important;
+  background: rgba(118,118,128,.08) !important;
+  color: var(--room-active-accent, #4f8cff) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4 > span:first-child svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4 > div {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 2px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4 strong {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 9.5px !important;
+  line-height: 1.05 !important;
+  font-weight: 650 !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active button.room-device-button-v4 small {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  font-weight: 520 !important;
+}
+
+html.demo-phone-landscape main.app-shell.night.home-page-active button.room-device-button-v4 small {
+  color: #aeaeb2 !important;
+  -webkit-text-fill-color: #aeaeb2 !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-device-power-v37 {
+  position: static !important;
+  inset: auto !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 8px !important;
+  background: rgba(118,118,128,.08) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-device-power-v37 svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* Quick control reads as one secondary control surface. */
+html.demo-phone-landscape main.app-shell.home-page-active .room-quick-control-v4 {
+  padding: 7px 9px !important;
+  border: 1px solid rgba(60,60,67,.08) !important;
+  border-radius: 13px !important;
+  background: rgba(118,118,128,.055) !important;
+  box-shadow: none !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-quick-control-head small {
+  font-size: 7.5px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .room-quick-control-head strong {
+  font-size: 9px !important;
+}
+
+/* --------------------------------------------------------------------------
+ * HOME utility rail — labelled compact rows instead of anonymous icon squares.
+ * -------------------------------------------------------------------------- */
+html.demo-phone-landscape main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  grid-template-columns: minmax(0, 1fr) 112px !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  width: 112px !important;
+  min-width: 112px !important;
+  max-width: 112px !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side::-webkit-scrollbar {
+  display: none !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .reel-tools-grid {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  padding: 4px !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-auto-rows: 29px !important;
+  align-content: start !important;
+  gap: 4px !important;
+  overflow: visible !important;
+  border: 1px solid rgba(60,60,67,.07) !important;
+  border-radius: 15px !important;
+  background: rgba(255,255,255,.48) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55) !important;
+}
+
+html.demo-phone-landscape main.app-shell.night.home-page-active .reel-tools-grid {
+  border-color: rgba(255,255,255,.055) !important;
+  background: rgba(255,255,255,.035) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .reel-tools-grid > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 29px !important;
+  min-height: 29px !important;
+  max-height: 29px !important;
+  margin: 0 !important;
+  padding: 0 7px !important;
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-items: start !important;
+  gap: 6px !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: rgba(118,118,128,.065) !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .reel-tools-grid > button:active {
+  background: rgba(118,118,128,.13) !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .reel-tools-grid > button svg {
+  width: 13px !important;
+  height: 13px !important;
+  justify-self: center !important;
+}
+
+html.demo-phone-landscape main.app-shell.home-page-active .reel-tools-grid > button > span {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  font-weight: 590 !important;
+}
+
+/* Narrow landscape: preserve labels but reduce the rail slightly. */
+html.demo-phone-landscape.demo-phone-landscape-narrow main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  grid-template-columns: minmax(0, 1fr) 98px !important;
+}
+
+html.demo-phone-landscape.demo-phone-landscape-narrow main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  width: 98px !important;
+  min-width: 98px !important;
+  max-width: 98px !important;
+}
+
+html.demo-phone-landscape.demo-phone-landscape-narrow main.app-shell.home-page-active .reel-tools-grid > button {
+  padding-inline: 5px !important;
+  grid-template-columns: 16px minmax(0, 1fr) !important;
+  gap: 4px !important;
+}
+
+html.demo-phone-landscape.demo-phone-landscape-short main.app-shell.home-page-active .reel-tools-grid {
+  grid-auto-rows: 27px !important;
+}
+
+html.demo-phone-landscape.demo-phone-landscape-short main.app-shell.home-page-active .reel-tools-grid > button {
+  height: 27px !important;
+  min-height: 27px !important;
+  max-height: 27px !important;
+}
