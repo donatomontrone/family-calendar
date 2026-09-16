@@ -1,10 +1,8 @@
-import phoneLandscapeV44Styles from "./demo-phone-landscape-v44.css?inline";
-import phoneLandscapeV45Styles from "./demo-phone-landscape-v45.css?inline";
-import phoneLandscapeV46Styles from "./demo-phone-landscape-v46.css?inline";
+import phoneLandscapeV47Styles from "./demo-phone-landscape-v47.css?inline";
 import statusConsistencyV45Styles from "./demo-status-consistency-v45.css?inline";
 
 const STYLE_ID = "family-calendar-demo-landscape-runtime";
-const css = `${phoneLandscapeV44Styles}\n${phoneLandscapeV45Styles}\n${phoneLandscapeV46Styles}\n${statusConsistencyV45Styles}`;
+const css = `${phoneLandscapeV47Styles}\n${statusConsistencyV45Styles}`;
 
 let style = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
 if (!style) {
