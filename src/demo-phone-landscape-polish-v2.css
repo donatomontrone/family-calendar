@@ -1,0 +1,745 @@
+/* DEMO ONLY — visual polish for the single-state phone landscape UI.
+ * This layer changes presentation only. It deliberately leaves the existing
+ * React tree, handlers and Home Assistant calls untouched.
+ */
+
+html.demo-phone-landscape-final {
+  --pl-card-radius: 18px;
+  --pl-inner-radius: 12px;
+  --pl-gap: 8px;
+  --pl-line: rgba(60, 60, 67, .10);
+  --pl-soft: rgba(118, 118, 128, .095);
+  --pl-soft-strong: rgba(118, 118, 128, .145);
+  --pl-panel: rgba(255, 255, 255, .79);
+  --pl-panel-strong: rgba(255, 255, 255, .91);
+  --pl-shadow: 0 10px 28px rgba(35, 39, 47, .075), inset 0 1px 0 rgba(255, 255, 255, .68);
+}
+
+html.demo-phone-landscape-final main.app-shell.night {
+  --pl-line: rgba(255, 255, 255, .075);
+  --pl-soft: rgba(255, 255, 255, .07);
+  --pl-soft-strong: rgba(255, 255, 255, .11);
+  --pl-panel: rgba(31, 32, 35, .82);
+  --pl-panel-strong: rgba(39, 40, 44, .94);
+  --pl-shadow: 0 12px 30px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .035);
+}
+
+html.demo-phone-landscape-final main.app-shell {
+  padding-top: max(5px, env(safe-area-inset-top, 0px)) !important;
+  padding-right: max(8px, env(safe-area-inset-right, 0px)) !important;
+  padding-bottom: max(46px, calc(41px + env(safe-area-inset-bottom, 0px))) !important;
+  padding-left: max(8px, env(safe-area-inset-left, 0px)) !important;
+  grid-template-rows: 46px minmax(0, 1fr) !important;
+  gap: var(--pl-gap) !important;
+}
+
+html.demo-phone-landscape-final main.app-shell :is(.card, .reel-room.room-card-v4, .reel-side-card, .reel-tools-grid > button) {
+  border-color: var(--pl-line) !important;
+  box-shadow: var(--pl-shadow) !important;
+  backdrop-filter: blur(24px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(145%) !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.day :is(.card, .reel-room.room-card-v4, .reel-side-card, .reel-tools-grid > button) {
+  background: var(--pl-panel) !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.night :is(.card, .reel-room.room-card-v4, .reel-side-card, .reel-tools-grid > button) {
+  background: var(--pl-panel) !important;
+}
+
+/* Header: fewer tiny elements, stronger hierarchy. */
+html.demo-phone-landscape-final main.app-shell > #family-shared-header-host,
+html.demo-phone-landscape-final main.app-shell > #family-shared-header-host > #family-shared-header,
+html.demo-phone-landscape-final main.app-shell > #family-shared-header.shared-home-header {
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+}
+
+html.demo-phone-landscape-final main.app-shell #family-shared-header {
+  grid-template-columns: minmax(142px, 1fr) auto minmax(190px, 1fr) !important;
+  grid-template-rows: 46px !important;
+  gap: 10px !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .reel-greeting strong {
+  font-size: 13.5px !important;
+  line-height: 1.06 !important;
+  font-weight: 700 !important;
+  letter-spacing: -.02em !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .reel-greeting span {
+  margin-top: 2px !important;
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .reel-clock {
+  font-size: 20px !important;
+  font-weight: 540 !important;
+  letter-spacing: -.04em !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .reel-top-actions {
+  height: 32px !important;
+  min-height: 32px !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header :is(.weather-pill, .security-pill, .round-top, .header-theme-switch) {
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  border-radius: 11px !important;
+  border-color: var(--pl-line) !important;
+  background: var(--pl-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .weather-pill {
+  padding: 0 9px !important;
+  gap: 5px !important;
+  font-size: 9.5px !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .weather-pill :is(strong, small) {
+  font-size: 9px !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header .security-pill,
+html.demo-phone-landscape-final #family-shared-header :is(.round-top, .header-theme-switch) {
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  flex-basis: 32px !important;
+}
+
+html.demo-phone-landscape-final #family-shared-header :is(.weather-pill, .security-pill, .round-top, .header-theme-switch) svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* Calendar: readable month first, useful secondary rail second. */
+html.demo-phone-landscape-final main.app-shell.calendar-page-active > .dashboard-grid {
+  grid-template-columns: minmax(0, 1fr) clamp(218px, 28vw, 248px) !important;
+  gap: var(--pl-gap) !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+  grid-template-rows: 40px minmax(0, 1fr) !important;
+  border-radius: var(--pl-card-radius) !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+  grid-template-rows: 112px minmax(0, 1fr) !important;
+  gap: var(--pl-gap) !important;
+}
+
+html.demo-phone-landscape-final .calendar-toolbar {
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 5px 8px 5px 11px !important;
+}
+
+html.demo-phone-landscape-final .calendar-toolbar h1 {
+  font-size: 15px !important;
+  font-weight: 720 !important;
+  letter-spacing: -.025em !important;
+}
+
+html.demo-phone-landscape-final .calendar-actions {
+  gap: 4px !important;
+}
+
+html.demo-phone-landscape-final .calendar-actions button {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  border-radius: 9px !important;
+  background: var(--pl-soft) !important;
+}
+
+html.demo-phone-landscape-final .calendar-actions button:active {
+  background: var(--pl-soft-strong) !important;
+}
+
+html.demo-phone-landscape-final .calendar-actions .today-button {
+  width: auto !important;
+  min-width: 45px !important;
+  padding: 0 8px !important;
+  font-size: 8.5px !important;
+  font-weight: 650 !important;
+}
+
+html.demo-phone-landscape-final .month-grid {
+  grid-template-rows: 20px repeat(6, minmax(0, 1fr)) !important;
+}
+
+html.demo-phone-landscape-final .weekday {
+  padding: 6px 2px 3px !important;
+  font-size: 8.5px !important;
+  font-weight: 720 !important;
+  letter-spacing: .04em !important;
+}
+
+html.demo-phone-landscape-final .calendar-day {
+  padding: 4px 5px 3px !important;
+}
+
+html.demo-phone-landscape-final .day-number {
+  min-height: 13px !important;
+  margin-bottom: 2px !important;
+  font-size: 10.5px !important;
+  font-weight: 680 !important;
+}
+
+html.demo-phone-landscape-final .day-number i {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+html.demo-phone-landscape-final .day-events {
+  gap: 2px !important;
+}
+
+/* Do not turn events into anonymous colour lines: titles are part of the UI. */
+html.demo-phone-landscape-final .calendar-event {
+  width: 100% !important;
+  height: 12px !important;
+  min-height: 12px !important;
+  max-height: 12px !important;
+  padding: 0 4px !important;
+  display: block !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  color: inherit !important;
+  font-size: 7.6px !important;
+  line-height: 12px !important;
+  font-weight: 590 !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+html.demo-phone-landscape-final .calendar-event * {
+  display: inline !important;
+  font: inherit !important;
+  line-height: inherit !important;
+}
+
+html.demo-phone-landscape-final .calendar-event > span:first-child:not(.continuation) {
+  margin-right: 3px !important;
+  font-weight: 680 !important;
+}
+
+html.demo-phone-landscape-final .calendar-event:nth-child(n + 3) {
+  display: none !important;
+}
+
+html.demo-phone-landscape-final .agenda-card,
+html.demo-phone-landscape-final .tasks-card {
+  border-radius: 16px !important;
+}
+
+html.demo-phone-landscape-final .agenda-card .card-heading {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 7px 9px 4px !important;
+}
+
+html.demo-phone-landscape-final .agenda-card .card-heading h2,
+html.demo-phone-landscape-final .tasks-card .card-heading h2 {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+html.demo-phone-landscape-final .agenda-list {
+  height: calc(100% - 30px) !important;
+  padding: 0 7px 7px !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape-final .agenda-day {
+  padding: 5px 6px !important;
+  border-radius: 10px !important;
+  background: var(--pl-soft) !important;
+}
+
+html.demo-phone-landscape-final .agenda-date strong {
+  font-size: 8.5px !important;
+  font-weight: 690 !important;
+}
+
+html.demo-phone-landscape-final .agenda-date span,
+html.demo-phone-landscape-final .agenda-events small {
+  font-size: 7.5px !important;
+}
+
+html.demo-phone-landscape-final .agenda-events {
+  margin-top: 4px !important;
+  gap: 3px !important;
+}
+
+html.demo-phone-landscape-final .agenda-event {
+  gap: 4px !important;
+  font-size: 8px !important;
+  line-height: 1.1 !important;
+}
+
+html.demo-phone-landscape-final .tasks-card .card-heading {
+  flex-basis: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 6px 8px 4px !important;
+}
+
+html.demo-phone-landscape-final .task-add-button {
+  width: 25px !important;
+  min-width: 25px !important;
+  height: 25px !important;
+  min-height: 25px !important;
+  border-radius: 9px !important;
+}
+
+html.demo-phone-landscape-final .task-composer {
+  flex-basis: 33px !important;
+  min-height: 33px !important;
+  margin: 0 7px 5px !important;
+  padding: 4px 5px !important;
+}
+
+html.demo-phone-landscape-final .task-composer input {
+  height: 24px !important;
+  font-size: 9px !important;
+}
+
+html.demo-phone-landscape-final .task-list {
+  width: calc(100% - 12px) !important;
+  margin: 0 6px !important;
+}
+
+html.demo-phone-landscape-final .task-row {
+  min-height: 34px !important;
+  padding: 5px !important;
+  border-radius: 9px !important;
+}
+
+html.demo-phone-landscape-final .task-row label {
+  grid-template-columns: 19px minmax(0, 1fr) !important;
+  gap: 6px !important;
+  font-size: 9.5px !important;
+  line-height: 1.15 !important;
+}
+
+html.demo-phone-landscape-final .task-check-indicator {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+html.demo-phone-landscape-final .task-delete-button {
+  width: 25px !important;
+  min-width: 25px !important;
+  height: 25px !important;
+  min-height: 25px !important;
+}
+
+html.demo-phone-landscape-final .tasks-card > .task-segmented-control {
+  flex-basis: 30px !important;
+  width: calc(100% - 12px) !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  margin: 5px 6px 6px !important;
+  padding: 2px !important;
+  border-radius: 10px !important;
+}
+
+html.demo-phone-landscape-final .tasks-card > .task-segmented-control > button {
+  height: 25px !important;
+  min-height: 25px !important;
+  font-size: 8.8px !important;
+  border-radius: 8px !important;
+}
+
+/* Home: smaller Apple-Home-like room surfaces with the next room visible.
+ * The card remains the real RoomCard, so all existing handlers stay wired. */
+html.demo-phone-landscape-final main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  grid-template-columns: minmax(0, 1fr) clamp(178px, 21vw, 198px) !important;
+  gap: var(--pl-gap) !important;
+}
+
+html.demo-phone-landscape-final main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-room-grid.mobile-room-grid-v26 {
+  padding: 0 28px 0 0 !important;
+  gap: 9px !important;
+  scroll-padding-inline: 0 !important;
+}
+
+html.demo-phone-landscape-final .reel-room-grid.mobile-room-grid-v26 > .reel-room.room-card-v4 {
+  flex: 0 0 76% !important;
+  width: 76% !important;
+  min-width: 76% !important;
+  max-width: 76% !important;
+  padding: 9px !important;
+  grid-template-columns: minmax(0, 1.28fr) minmax(148px, .72fr) !important;
+  grid-template-rows: 34px minmax(0, 1fr) auto !important;
+  gap: 7px !important;
+  border-radius: var(--pl-card-radius) !important;
+}
+
+html.demo-phone-landscape-final .room-card-v4 > .room-head-v4 {
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 2px 5px !important;
+}
+
+html.demo-phone-landscape-final .room-title-v4 {
+  gap: 7px !important;
+}
+
+html.demo-phone-landscape-final .room-title-v4 i {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  border-radius: 9px !important;
+}
+
+html.demo-phone-landscape-final .room-title-v4 i svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+html.demo-phone-landscape-final .room-title-v4 strong {
+  font-size: 14px !important;
+  font-weight: 720 !important;
+  letter-spacing: -.025em !important;
+}
+
+html.demo-phone-landscape-final .room-temperature-button {
+  min-width: 50px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 8px !important;
+  border-radius: 10px !important;
+}
+
+html.demo-phone-landscape-final .room-temperature-button > b {
+  font-size: 11.5px !important;
+}
+
+html.demo-phone-landscape-final .room-section-label {
+  flex-basis: 15px !important;
+  min-height: 15px !important;
+  margin-bottom: 4px !important;
+  font-size: 7.8px !important;
+  letter-spacing: .065em !important;
+}
+
+html.demo-phone-landscape-final .room-device-grid-v4 {
+  grid-auto-rows: 50px !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape-final button.room-device-button-v4 {
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  padding: 6px 31px 6px 7px !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  gap: 7px !important;
+  border-radius: 12px !important;
+  background: color-mix(in srgb, var(--pl-panel-strong) 72%, transparent) !important;
+}
+
+html.demo-phone-landscape-final button.room-device-button-v4 > span:first-child {
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  border-radius: 9px !important;
+}
+
+html.demo-phone-landscape-final button.room-device-button-v4 strong {
+  font-size: 10px !important;
+  font-weight: 670 !important;
+}
+
+html.demo-phone-landscape-final button.room-device-button-v4 small {
+  margin-top: 1px !important;
+  font-size: 8.3px !important;
+}
+
+html.demo-phone-landscape-final .room-device-power-v37 {
+  right: 6px !important;
+  width: 23px !important;
+  min-width: 23px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+}
+
+html.demo-phone-landscape-final .room-card-v4 > .room-quick-control-v4 {
+  min-height: 57px !important;
+  padding: 7px 8px !important;
+  border-radius: 12px !important;
+  background: var(--pl-soft) !important;
+}
+
+html.demo-phone-landscape-final .room-quick-control-head {
+  min-height: 19px !important;
+  margin-bottom: 5px !important;
+}
+
+html.demo-phone-landscape-final .room-quick-control-head strong,
+html.demo-phone-landscape-final .room-quick-control-head strong b {
+  font-size: 8.8px !important;
+}
+
+html.demo-phone-landscape-final .room-light-mode-v4 button {
+  width: 23px !important;
+  min-width: 23px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+  border-radius: 8px !important;
+}
+
+html.demo-phone-landscape-final .room-passive-grid-v4 {
+  grid-auto-rows: 42px !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape-final .room-passive-device-v4 {
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 5px 6px !important;
+  grid-template-columns: 28px minmax(0, 1fr) !important;
+  gap: 6px !important;
+  border-radius: 11px !important;
+  background: var(--pl-soft) !important;
+}
+
+html.demo-phone-landscape-final .room-passive-device-v4 > span {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  border-radius: 9px !important;
+}
+
+html.demo-phone-landscape-final .room-passive-device-v4 strong {
+  font-size: 8.8px !important;
+}
+
+html.demo-phone-landscape-final .room-passive-device-v4 small {
+  font-size: 7.8px !important;
+}
+
+/* Utility rail: 2 columns instead of a 3x3 postage-stamp grid. */
+html.demo-phone-landscape-final main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  grid-template-rows: 42px 56px minmax(0, 1fr) !important;
+  gap: 6px !important;
+}
+
+html.demo-phone-landscape-final .reel-side > .alarm-row {
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 6px 8px !important;
+  grid-template-columns: 29px minmax(0, 1fr) auto !important;
+  gap: 7px !important;
+  border-radius: 13px !important;
+}
+
+html.demo-phone-landscape-final .alarm-row .side-icon {
+  width: 29px !important;
+  min-width: 29px !important;
+  height: 29px !important;
+  min-height: 29px !important;
+  border-radius: 9px !important;
+}
+
+html.demo-phone-landscape-final .alarm-row strong {
+  font-size: 9.5px !important;
+}
+
+html.demo-phone-landscape-final .alarm-row > b {
+  font-size: 7.8px !important;
+}
+
+html.demo-phone-landscape-final .reel-side > .thermostat-card-v4 {
+  height: 56px !important;
+  min-height: 56px !important;
+  padding: 8px 9px !important;
+  border-radius: 13px !important;
+}
+
+html.demo-phone-landscape-final .thermostat-v4-head span {
+  gap: 6px !important;
+  font-size: 9.8px !important;
+  font-weight: 650 !important;
+}
+
+html.demo-phone-landscape-final .thermostat-v4-head b {
+  font-size: 8px !important;
+}
+
+html.demo-phone-landscape-final .reel-side > .reel-tools-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-rows: none !important;
+  grid-auto-rows: minmax(40px, 1fr) !important;
+  gap: 5px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  padding-right: 1px !important;
+}
+
+html.demo-phone-landscape-final .reel-side > .reel-tools-grid::-webkit-scrollbar {
+  display: none !important;
+}
+
+html.demo-phone-landscape-final .reel-tools-grid > button {
+  min-height: 40px !important;
+  padding: 5px 4px !important;
+  gap: 4px !important;
+  border-radius: 12px !important;
+  background: var(--pl-panel) !important;
+}
+
+html.demo-phone-landscape-final .reel-tools-grid > button svg {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+}
+
+html.demo-phone-landscape-final .reel-tools-grid > button > span {
+  font-size: 8px !important;
+  font-weight: 610 !important;
+}
+
+/* Dock: still discreet, but no longer toy-sized. */
+html.demo-phone-landscape-final .page-dock-shell {
+  bottom: max(5px, env(safe-area-inset-bottom, 0px)) !important;
+  width: 224px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+}
+
+html.demo-phone-landscape-final .page-switch-control {
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 3px !important;
+  border-radius: 13px !important;
+  box-shadow: 0 8px 24px rgba(31,35,41,.12), inset 0 1px 0 rgba(255,255,255,.42) !important;
+  backdrop-filter: blur(24px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
+}
+
+html.demo-phone-landscape-final .page-switch-control > button {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 13px !important;
+  border-radius: 10px !important;
+  font-size: 9px !important;
+  font-weight: 640 !important;
+}
+
+/* Dialogs: more breathing room while staying inside short landscape viewports. */
+html.demo-phone-landscape-final #family-shared-device-controls,
+html.demo-phone-landscape-final .feature-modal,
+html.demo-phone-landscape-final .device-controls {
+  width: min(610px, calc(100vw - 20px)) !important;
+  max-width: 610px !important;
+  max-height: calc(100dvh - 20px) !important;
+  border-radius: 20px !important;
+}
+
+/* Narrow landscape phones keep the same hierarchy; only widths compress. */
+html.demo-phone-landscape-final.demo-phone-landscape-final-narrow main.app-shell #family-shared-header {
+  grid-template-columns: minmax(104px, 1fr) auto minmax(140px, 1fr) !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-narrow main.app-shell.calendar-page-active > .dashboard-grid {
+  grid-template-columns: minmax(0, 1fr) 202px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-narrow main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  grid-template-columns: minmax(0, 1fr) 158px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-narrow .reel-room-grid.mobile-room-grid-v26 > .reel-room.room-card-v4 {
+  flex-basis: 86% !important;
+  width: 86% !important;
+  min-width: 86% !important;
+  max-width: 86% !important;
+  grid-template-columns: minmax(0, 1.18fr) minmax(118px, .82fr) !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-narrow .room-device-grid-v4 {
+  grid-template-columns: 1fr !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-narrow .calendar-event {
+  font-size: 7.2px !important;
+}
+
+/* Extremely short viewports simplify density rather than shrinking text. */
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell {
+  grid-template-rows: 40px minmax(0, 1fr) !important;
+  gap: 5px !important;
+  padding-bottom: max(40px, calc(36px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell > #family-shared-header-host,
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell #family-shared-header {
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  grid-template-rows: 40px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short #family-shared-header .reel-greeting span {
+  display: none !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+  grid-template-rows: 88px minmax(0, 1fr) !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .calendar-event:nth-child(n + 2) {
+  display: none !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  grid-template-rows: 44px minmax(0, 1fr) !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .reel-side > .thermostat-card-v4 {
+  display: none !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .room-device-grid-v4 {
+  grid-auto-rows: 46px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short button.room-device-button-v4 {
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .room-card-v4 > .room-quick-control-v4 {
+  min-height: 47px !important;
+  padding: 5px 7px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .page-dock-shell,
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .page-switch-control {
+  height: 31px !important;
+  min-height: 31px !important;
+}
+
+html.demo-phone-landscape-final.demo-phone-landscape-final-short .page-switch-control > button {
+  height: 25px !important;
+  min-height: 25px !important;
+}
