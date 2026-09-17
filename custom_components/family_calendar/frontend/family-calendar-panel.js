@@ -21761,6 +21761,9 @@ function it({ hass: e, kind: t, language: n }) {
 }
 function at({ icon: e, label: t, onClick: n }) {
 	return /* @__PURE__ */ (0, k.jsxs)("button", {
+		type: "button",
+		"aria-label": t,
+		title: t,
 		onClick: n,
 		children: [e, /* @__PURE__ */ (0, k.jsx)("span", { children: t })]
 	});
