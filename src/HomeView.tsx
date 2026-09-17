@@ -680,7 +680,7 @@ function GenericFeaturePanel({ hass, kind, language }: { hass: Hass; kind: Exclu
   return <div className="home-generic-grid-v4">{items.map((state) => <article key={state.entity_id}><span>{iconForEntity(hass, state.entity_id)}</span><div><strong>{displayName(hass, state.entity_id)}</strong><small>{entityStatus(hass, state.entity_id, language)}</small></div></article>)}</div>;
 }
 
-function ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) { return <button onClick={onClick}>{icon}<span>{label}</span></button>; }
+function ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) { return <button type="button" aria-label={label} title={label} onClick={onClick}>{icon}<span>{label}</span></button>; }
 function RoutineRow({ icon, title, onClick }: { icon: ReactNode; title: string; onClick: () => void }) { return <button className="routine-row" onClick={onClick}><span>{icon}</span><div><strong>{title}</strong></div><ChevronIcon /></button>; }
 
 function isPassive(hass: Hass, entityId: string) {
