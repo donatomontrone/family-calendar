@@ -244,6 +244,7 @@ html:is(
   align-items: start !important;
   align-content: start !important;
   gap: 14px !important;
+  max-height: none !important;
   overflow: visible !important;
 }
 
@@ -257,6 +258,7 @@ html:is(
   display: grid !important;
   align-items: start !important;
   gap: 14px !important;
+  max-height: none !important;
   overflow: visible !important;
 }
 
@@ -269,6 +271,7 @@ html:is(
   min-width: 0 !important;
   min-height: 0 !important;
   height: auto !important;
+  max-height: none !important;
   align-self: start !important;
   overflow: hidden !important;
   border-radius: 24px !important;
@@ -303,6 +306,8 @@ html:is(
   width: 100% !important;
   min-width: 0 !important;
   height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
   grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
 }
 
@@ -322,7 +327,7 @@ html:is(
   [data-demo-viewport="tablet"]
 ) main.app-shell.calendar-page-active .calendar-day {
   min-width: 0 !important;
-  min-height: clamp(74px, 7.4vw, 108px) !important;
+  min-height: 0 !important;
   height: auto !important;
   padding: 7px !important;
   overflow: hidden !important;
@@ -452,6 +457,14 @@ html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active .entity-g
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
+html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active .month-grid {
+  grid-template-rows: 34px repeat(6, minmax(90px, auto)) !important;
+}
+
+html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active .calendar-day {
+  min-height: 90px !important;
+}
+
 /* Compact 1100-1439: calendar first, secondary content below. */
 html[data-demo-viewport="compact"] #family-shared-header {
   grid-template-columns: minmax(150px, 1fr) auto minmax(300px, 1fr) !important;
@@ -481,6 +494,14 @@ html[data-demo-viewport="compact"] main.app-shell.calendar-page-active > .dashbo
 
 html[data-demo-viewport="compact"] main.app-shell.calendar-page-active .entity-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+html[data-demo-viewport="compact"] main.app-shell.calendar-page-active .month-grid {
+  grid-template-rows: 34px repeat(6, minmax(82px, auto)) !important;
+}
+
+html[data-demo-viewport="compact"] main.app-shell.calendar-page-active .calendar-day {
+  min-height: 82px !important;
 }
 
 /* Tablet 768-1099: one readable flow, no forced horizontal calendar. */
@@ -546,8 +567,12 @@ html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active .calendar-
   padding: 11px 13px !important;
 }
 
+html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active .month-grid {
+  grid-template-rows: 34px repeat(6, minmax(70px, auto)) !important;
+}
+
 html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active .calendar-day {
-  min-height: 68px !important;
+  min-height: 70px !important;
   padding: 6px !important;
 }
 
@@ -581,6 +606,7 @@ html:is(
   height: auto !important;
   align-items: start !important;
   align-content: start !important;
+  max-height: none !important;
   overflow: visible !important;
 }
 
@@ -718,7 +744,14 @@ html[data-demo-viewport="compact"] main.app-shell.home-page-active > .reel-home.
   gap: 14px !important;
 }
 
+html[data-demo-viewport="compact"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+
 html[data-demo-viewport="compact"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
   width: 100% !important;
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
@@ -753,6 +786,8 @@ html[data-demo-viewport="tablet"] main.app-shell.home-page-active > .reel-home.h
 }
 
 html[data-demo-viewport="tablet"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-room-grid.mobile-room-grid-v26 {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
   width: 100% !important;
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -774,6 +809,8 @@ html[data-demo-viewport="tablet"] main.app-shell.home-page-active .room-device-g
 }
 
 html[data-demo-viewport="tablet"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
   width: 100% !important;
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
