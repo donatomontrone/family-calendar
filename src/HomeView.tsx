@@ -339,17 +339,36 @@ function DesktopRoomDeviceButton({ hass, entityId, language, selected, onClick }
   const active = isActive(hass, entityId);
   const selectable = domain === "light" || domain === "cover";
   const unavailable = ["unavailable", "unknown"].includes(state?.state ?? "unknown");
+  const isLight = domain === "light";
+
   return (
-    <button
-      type="button"
-      className={`desktop-room-device-v32 domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""}`}
-      onClick={onClick}
-      disabled={unavailable}
-      aria-pressed={selectable ? selected : active}
+    <div
+      className={`desktop-room-device-v32 domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""} ${unavailable ? "unavailable" : ""}`}
     >
-      <span className="desktop-room-device-icon-v32">{iconForEntity(hass, entityId)}</span>
-      <span className="desktop-room-device-copy-v32"><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small></span>
-    </button>
+      <button
+        type="button"
+        className="desktop-room-device-main-v40"
+        onClick={onClick}
+        disabled={unavailable}
+        aria-pressed={selectable ? selected : active}
+      >
+        <span className="desktop-room-device-icon-v32">{iconForEntity(hass, entityId)}</span>
+        <span className="desktop-room-device-copy-v32"><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small></span>
+      </button>
+
+      {isLight && (
+        <button
+          type="button"
+          className={`desktop-room-device-power-v40 ${active ? "active" : ""}`}
+          disabled={unavailable}
+          aria-label={language === "it" ? (active ? `Spegni ${displayName(hass, entityId)}` : `Accendi ${displayName(hass, entityId)}`) : (active ? `Turn off ${displayName(hass, entityId)}` : `Turn on ${displayName(hass, entityId)}`)}
+          title={language === "it" ? (active ? "Spegni" : "Accendi") : (active ? "Turn off" : "Turn on")}
+          onClick={() => void hass.callService("light", active ? "turn_off" : "turn_on", { entity_id: entityId })}
+        >
+          <PowerIcon />
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -365,19 +384,12 @@ function DesktopRoomQuickControl({ hass, entityId, language, lightMode, onLightM
   const step = domain === "light" && lightMode === "temperature" ? 50 : 1;
   const label = domain === "cover" ? (language === "it" ? "Posizione" : "Position") : lightMode === "brightness" ? (language === "it" ? "Luminosità" : "Brightness") : (language === "it" ? "Temperatura bianco" : "White temperature");
   const formatted = domain === "light" && lightMode === "temperature" ? `${Math.round(value)} K` : `${Math.round(value)}%`;
-  const lightIsOn = domain === "light" && state.state === "on";
 
   return (
     <div className={`desktop-room-detail-v32 domain-${domain}`}>
       <div className="desktop-room-detail-head-v32">
         <div><small>{language === "it" ? "Selezionato" : "Selected"}</small><strong>{displayName(hass, entityId)}</strong><span>{entityStatus(hass, entityId, language)}</span></div>
-        {domain === "light" && (
-          <button
-            type="button"
-            className={`desktop-room-power-v32 ${lightIsOn ? "active" : ""}`}
-            onClick={() => void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId })}
-          ><PowerIcon /><span>{language === "it" ? (lightIsOn ? "Spegni" : "Accendi") : (lightIsOn ? "Turn off" : "Turn on")}</span></button>
-        )}
+
       </div>
 
       {domain === "light" && (
