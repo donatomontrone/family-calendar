@@ -524,24 +524,22 @@ html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) 
 html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root main.app-shell.home-page-active .reel-tools-grid > button {
   box-sizing: border-box !important;
   min-width: 0 !important;
-  min-height: 64px !important;
-  height: 64px !important;
-  padding: 6px 5px !important;
-  gap: 4px !important;
-  flex-shrink: 0 !important;
+  min-height: 58px !important;
+  padding: 7px 5px !important;
+  gap: 5px !important;
 }
 
 html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root main.app-shell.home-page-active .reel-tools-grid > button > svg {
   box-sizing: border-box !important;
-  flex: 0 0 28px !important;
-  width: 28px !important;
-  min-width: 28px !important;
-  max-width: 28px !important;
-  height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
+  flex: 0 0 30px !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
   margin: 0 auto !important;
-  padding: 5px !important;
+  padding: 6px !important;
   display: block !important;
   border: 1px solid rgba(60,60,67,.08) !important;
   border-radius: 10px !important;
@@ -553,16 +551,13 @@ html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"],[
   display: block !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 11px !important;
-  min-height: 11px !important;
-  flex: 0 0 11px !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   font-size: 9.5px !important;
-  line-height: 11px !important;
+  line-height: 1.05 !important;
   text-align: center !important;
 }
 
@@ -1149,7 +1144,7 @@ html[data-demo-viewport="wide"] body #root main.app-shell.home-page-active .reel
 
 html[data-demo-viewport="wide"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
   min-width: 0 !important;
-  min-height: 64px !important;
+  min-height: 54px !important;
 }
 
 /* DESKTOP: workspace first, summary and tools below in a deliberate matrix. */
@@ -1192,7 +1187,7 @@ html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active .r
 
 html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
   min-width: 0 !important;
-  min-height: 64px !important;
+  min-height: 52px !important;
 }
 
 /* TABLET LANDSCAPE: selected room remains primary, summaries become 2x2. */
@@ -1226,7 +1221,7 @@ html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-
 
 html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
   min-width: 0 !important;
-  min-height: 64px !important;
+  min-height: 52px !important;
 }
 
 /* TABLET PORTRAIT: derive from the working phone portrait room-card language. */
@@ -1296,7 +1291,7 @@ html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-a
 }
 
 html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
-  min-height: 64px !important;
+  min-height: 54px !important;
 }
 
 
@@ -1415,13 +1410,13 @@ html[data-demo-viewport="phone-landscape"] body #root > main.app-shell {
   min-height: 0 !important;
   max-height: 100dvh !important;
   margin: 0 !important;
-  padding-top: max(2px,env(safe-area-inset-top,0px)) !important;
-  padding-right: max(3px,env(safe-area-inset-right,0px)) !important;
-  padding-bottom: max(39px,calc(35px + env(safe-area-inset-bottom,0px))) !important;
-  padding-left: max(3px,env(safe-area-inset-left,0px)) !important;
+  padding-top: max(4px,env(safe-area-inset-top,0px)) !important;
+  padding-right: max(6px,env(safe-area-inset-right,0px)) !important;
+  padding-bottom: max(41px,calc(36px + env(safe-area-inset-bottom,0px))) !important;
+  padding-left: max(6px,env(safe-area-inset-left,0px)) !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
-  grid-template-rows: 29px minmax(0,1fr) !important;
+  grid-template-rows: 31px minmax(0,1fr) !important;
   gap: var(--pl-gap) !important;
   overflow: hidden !important;
   font-family: var(--fc-ui-font) !important;
@@ -1433,9 +1428,9 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell > #family-s
   grid-row: 1 !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 29px !important;
-  min-height: 29px !important;
-  max-height: 29px !important;
+  height: 31px !important;
+  min-height: 31px !important;
+  max-height: 31px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -1444,14 +1439,14 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-sha
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 29px !important;
-  min-height: 29px !important;
-  max-height: 29px !important;
+  height: 31px !important;
+  min-height: 31px !important;
+  max-height: 31px !important;
   margin: 0 !important;
   padding: 0 2px !important;
   display: grid !important;
   grid-template-columns: auto minmax(0,1fr) !important;
-  grid-template-rows: 29px !important;
+  grid-template-rows: 31px !important;
   align-items: center !important;
   gap: 8px !important;
   border: 0 !important;
@@ -1823,37 +1818,13 @@ html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmen
   min-height: 29px !important;
   margin: 4px 5px 5px !important;
   padding: 2px !important;
-  display: grid !important;
-  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
-  gap: 2px !important;
-  overflow: hidden !important;
   border-radius: 9px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control::before {
-  top: 2px !important;
-  bottom: 2px !important;
-  left: 2px !important;
-  width: calc((100% - 6px) / 2) !important;
-  border-radius: 7px !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control:has(> button:nth-of-type(2).active)::before {
-  transform: translate3d(calc(100% + 2px),0,0) !important;
-}
-
 html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control > button {
-  box-sizing: border-box !important;
-  width: auto !important;
-  min-width: 0 !important;
   height: 24px !important;
   min-height: 24px !important;
-  max-height: 24px !important;
-  margin: 0 !important;
-  padding: 0 4px !important;
-  border-radius: 7px !important;
   font-size: 8px !important;
-  line-height: 1 !important;
 }
 
 /* Home landscape: horizontal room strip, selected room, centered tool bar. */
@@ -2448,26 +2419,6 @@ html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-s
   border-radius: 11px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control > button {
-  box-sizing: border-box !important;
-  width: auto !important;
-  min-width: 0 !important;
-  height: 22px !important;
-  min-height: 22px !important;
-  max-height: 22px !important;
-  margin: 0 !important;
-  padding: 0 8px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 4px !important;
-  border-radius: 8px !important;
-  font-size: 9.5px !important;
-  line-height: 1 !important;
-  font-weight: 680 !important;
-}
-
-
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control::before {
   top: 3px !important;
   bottom: 3px !important;
@@ -2495,8 +2446,6 @@ html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control > button {
   border-radius: 8px !important;
 }
-
-
 
 /* -------------------------------------------------------------------------- */
 /* PHONE PORTRAIT — visual parity with the adaptive control language          */
