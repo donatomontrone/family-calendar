@@ -1477,37 +1477,40 @@ html[data-demo-viewport="phone-landscape"] body #root > main.app-shell {
   padding-left: max(6px,env(safe-area-inset-left,0px)) !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
-  grid-template-rows: 31px minmax(0,1fr) !important;
+  grid-template-rows: 46px minmax(0,1fr) !important;
   gap: var(--pl-gap) !important;
   overflow: hidden !important;
   font-family: var(--fc-ui-font) !important;
 }
 
-/* Header: clock + essential actions only. */
+/* Header: same information hierarchy as phone portrait, recomposed horizontally. */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell > #family-shared-header-host {
   grid-column: 1 !important;
   grid-row: 1 !important;
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 31px !important;
-  min-height: 31px !important;
-  max-height: 31px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
   margin: 0 !important;
   padding: 0 !important;
+  overflow: visible !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header {
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 31px !important;
-  min-height: 31px !important;
-  max-height: 31px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
   margin: 0 !important;
-  padding: 0 2px !important;
+  padding: 2px 2px !important;
   display: grid !important;
-  grid-template-columns: auto minmax(0,1fr) !important;
-  grid-template-rows: 31px !important;
+  grid-template-columns: minmax(132px,1fr) auto minmax(292px,1.35fr) !important;
+  grid-template-rows: 42px !important;
+  grid-template-areas: "greeting clock actions" !important;
   align-items: center !important;
   gap: 8px !important;
   border: 0 !important;
@@ -1518,61 +1521,263 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-sha
 }
 
 html[data-demo-viewport="phone-landscape"] #family-shared-header::before,
-html[data-demo-viewport="phone-landscape"] #family-shared-header::after,
-html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.reel-greeting,.weather-pill,.avatar-stack),
-html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill span {
+html[data-demo-viewport="phone-landscape"] #family-shared-header::after {
   display: none !important;
   content: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-clock {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
+/* Left: exactly the information shown in portrait — greeting + full date. */
+html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-greeting {
+  grid-area: greeting !important;
   align-self: center !important;
   justify-self: start !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
   margin: 0 !important;
-  padding-left: 2px !important;
-  font-size: 15px !important;
-  line-height: 1 !important;
-  font-weight: 620 !important;
-  letter-spacing: -.035em !important;
+  padding: 0 0 0 2px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  overflow: hidden !important;
+  color: var(--pl-text) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-greeting strong {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 10.5px !important;
+  line-height: 1.05 !important;
+  font-weight: 700 !important;
+  letter-spacing: -.015em !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-greeting > span {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-secondary) !important;
+  font-size: 8px !important;
+  line-height: 1.05 !important;
+  font-weight: 540 !important;
+}
+
+/* Centre: clock keeps the same visual role as portrait. */
+html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-clock {
+  grid-area: clock !important;
+  align-self: center !important;
+  justify-self: center !important;
+  position: static !important;
+  inset: auto !important;
+  min-width: 56px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: var(--pl-text) !important;
+  font-size: 20px !important;
+  line-height: .95 !important;
+  font-weight: 500 !important;
+  letter-spacing: -.05em !important;
+  font-variant-numeric: tabular-nums !important;
   transform: none !important;
 }
 
+/* Right: weather, people, alarm state, notifications and appearance. */
 html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-top-actions {
-  grid-column: 2 !important;
+  grid-area: actions !important;
+  align-self: center !important;
   justify-self: end !important;
+  box-sizing: border-box !important;
   width: auto !important;
-  height: 27px !important;
-  min-height: 27px !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .weather-pill {
+  box-sizing: border-box !important;
+  flex: 0 0 82px !important;
+  width: 82px !important;
+  min-width: 82px !important;
+  max-width: 82px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  margin: 0 !important;
+  padding: 4px 7px !important;
+  display: grid !important;
+  grid-template-columns: 16px minmax(0,1fr) !important;
+  grid-template-rows: 1fr 1fr !important;
+  grid-template-areas:
+    "weather-icon weather-temp"
+    "weather-icon weather-state" !important;
+  align-items: center !important;
+  column-gap: 5px !important;
+  row-gap: 0 !important;
+  overflow: hidden !important;
+  border-radius: 11px !important;
+  white-space: nowrap !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .weather-pill > svg {
+  grid-area: weather-icon !important;
+  place-self: center !important;
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .weather-pill > strong {
+  grid-area: weather-temp !important;
+  align-self: end !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .weather-pill > small {
+  grid-area: weather-state !important;
+  align-self: start !important;
+  display: block !important;
+  min-width: 0 !important;
+  margin: 1px 0 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 7px !important;
+  line-height: 1 !important;
+  font-weight: 560 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .avatar-stack {
+  box-sizing: border-box !important;
+  flex: 0 0 42px !important;
+  width: 42px !important;
+  min-width: 42px !important;
+  max-width: 42px !important;
+  height: 30px !important;
+  min-height: 30px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  justify-content: flex-end !important;
+  overflow: visible !important;
 }
 
-html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.security-pill,.round-top,.header-theme-switch) {
+html[data-demo-viewport="phone-landscape"] #family-shared-header .avatar-stack > i {
   box-sizing: border-box !important;
-  flex: 0 0 27px !important;
-  width: 27px !important;
-  min-width: 27px !important;
-  max-width: 27px !important;
-  height: 27px !important;
-  min-height: 27px !important;
-  max-height: 27px !important;
+  flex: 0 0 26px !important;
+  width: 26px !important;
+  min-width: 26px !important;
+  max-width: 26px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  max-height: 26px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .avatar-stack > i + i {
+  margin-left: -9px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill {
+  box-sizing: border-box !important;
+  flex: 0 1 88px !important;
+  width: auto !important;
+  min-width: 68px !important;
+  max-width: 88px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  overflow: hidden !important;
+  border-radius: 11px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill > svg {
+  flex: 0 0 13px !important;
+  width: 13px !important;
+  min-width: 13px !important;
+  height: 13px !important;
+  min-height: 13px !important;
+  margin: 0 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill > span {
+  display: inline-block !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.round-top,.header-theme-switch) {
+  box-sizing: border-box !important;
+  flex: 0 0 30px !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: grid !important;
   place-items: center !important;
-  border-radius: 50% !important;
+  border-radius: 10px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.security-pill,.round-top,.header-theme-switch) svg {
+html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.round-top,.header-theme-switch) svg {
+  display: block !important;
   width: 13px !important;
   height: 13px !important;
   margin: 0 !important;
   transform: none !important;
+}
+
+/* Very narrow landscape keeps every information group, but trims widths. */
+html[data-demo-viewport="phone-landscape"] body[style*=""] #family-shared-header {
+  min-width: 0 !important;
 }
 
 /* Calendar: month + one switchable companion panel. */
