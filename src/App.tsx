@@ -304,9 +304,9 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                 ))}
               </ScrollRegion>
 
-              <div className="segmented-control task-segmented-control">
-                <button className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
-                <button className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
+              <div className="segmented-control task-segmented-control" role="tablist" aria-label={t("lists", language)}>
+                <button type="button" role="tab" aria-selected={mode === "todo"} className={mode === "todo" ? "active" : ""} onClick={() => setMode("todo")}>{t("todo", language)}</button>
+                <button type="button" role="tab" aria-selected={mode === "shopping"} className={mode === "shopping" ? "active" : ""} onClick={() => setMode("shopping")}>{t("shopping", language)}</button>
               </div>
             </section>
           </aside>
@@ -432,9 +432,9 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
 function PageDock({ page, language, onChange }: { page: Page; language: Language; onChange: (page: Page) => void }) {
   return (
     <nav className="page-dock-shell" aria-label={t("views", language)}>
-      <div className="segmented-control page-switch-control">
-        <button className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><span>{t("calendar", language)}</span></button>
-        <button className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><span>{t("home", language)}</span></button>
+      <div className="segmented-control page-switch-control" role="tablist" aria-label={t("views", language)}>
+        <button type="button" role="tab" aria-selected={page === "calendar"} aria-current={page === "calendar" ? "page" : undefined} className={page === "calendar" ? "active" : ""} onClick={() => onChange("calendar")}><span>{t("calendar", language)}</span></button>
+        <button type="button" role="tab" aria-selected={page === "home"} aria-current={page === "home" ? "page" : undefined} className={page === "home" ? "active" : ""} onClick={() => onChange("home")}><span>{t("home", language)}</span></button>
       </div>
     </nav>
   );
