@@ -1042,6 +1042,49 @@ html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-a
   min-height: 54px !important;
 }
 
+
+/* Explicit child placement prevents legacy grid coordinates from creating
+ * implicit columns in the tablet contracts. */
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-room-grid.mobile-room-grid-v26 {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  grid-auto-flow: row !important;
+  grid-auto-columns: auto !important;
+}
+
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 > .room-card-v4 {
+  grid-column: auto !important;
+  grid-row: auto !important;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+}
+
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root main.app-shell.home-page-active .reel-side > :is(.home-message-card,.alarm-row,.thermostat-card,.waste-card) {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root main.app-shell.home-page-active .reel-tools-grid > button {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
 /* Make utility labels deterministic outside phone landscape. */
 html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button {
   box-sizing: border-box !important;
@@ -1171,6 +1214,8 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill 
 
 html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-clock {
   grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
   justify-self: start !important;
   margin: 0 !important;
   padding-left: 2px !important;
