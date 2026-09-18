@@ -996,8 +996,16 @@ html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-a
 html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 {
   width: 100% !important;
   min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
   display: grid !important;
   grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-template-rows: none !important;
+  grid-auto-rows: max-content !important;
+  grid-auto-flow: row !important;
+  align-items: start !important;
+  align-content: start !important;
   gap: 12px !important;
   overflow: visible !important;
 }
@@ -1009,6 +1017,8 @@ html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-a
   max-width: none !important;
   min-height: 0 !important;
   height: auto !important;
+  max-height: none !important;
+  align-self: start !important;
   margin: 0 !important;
   overflow: hidden !important;
 }
