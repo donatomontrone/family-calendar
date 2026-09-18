@@ -58,6 +58,17 @@ function ensureFinalStyles() {
   }
   if (style.textContent !== finalStyles) style.textContent = finalStyles;
 
+  const demoResponsiveStyle = document.getElementById("family-calendar-demo-responsive-system");
+  if (demoResponsiveStyle?.parentElement === document.head) {
+    // In the standalone demo the responsive contract is intentionally the
+    // final cascade layer. Keep this legacy aggregate immediately before it;
+    // resize/mutation syncs must never move legacy CSS above the responsive UI.
+    if (style.parentElement !== document.head || style.nextElementSibling !== demoResponsiveStyle) {
+      document.head.insertBefore(style, demoResponsiveStyle);
+    }
+    return;
+  }
+
   if (style.parentElement !== document.head || style !== document.head.lastElementChild) {
     document.head.appendChild(style);
   }
