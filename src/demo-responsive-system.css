@@ -1775,11 +1775,6 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.round-top,
   transform: none !important;
 }
 
-/* Very narrow landscape keeps every information group, but trims widths. */
-html[data-demo-viewport="phone-landscape"] body[style*=""] #family-shared-header {
-  min-width: 0 !important;
-}
-
 /* Calendar: month + one switchable companion panel. */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
   grid-column: 1 !important;
