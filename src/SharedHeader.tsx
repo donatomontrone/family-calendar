@@ -14,6 +14,7 @@ type SharedHeaderProps = {
   onThemeToggle?: () => void;
   isNight?: boolean;
   themeLabel?: string;
+  demo?: boolean;
 };
 
 export default function SharedHeader({
@@ -25,6 +26,7 @@ export default function SharedHeader({
   onThemeToggle,
   isNight = false,
   themeLabel,
+  demo = false,
 }: SharedHeaderProps) {
   const weather = Object.values(hass.states).find((state) => state.entity_id.startsWith("weather."));
   const alarm = Object.values(hass.states).find((state) => state.entity_id.startsWith("alarm_control_panel."));
@@ -34,7 +36,7 @@ export default function SharedHeader({
 
   return (
     <div id="family-shared-header-host">
-      <style id="family-shared-exact-styles">{`${exactSharedStyles}\n${exactIsolationStyles}`}</style>
+      {!demo && <style id="family-shared-exact-styles">{`${exactSharedStyles}\n${exactIsolationStyles}`}</style>}
       <header
         id="family-shared-header"
         className={`reel-topbar shared-home-header casa-header-contract ${isNight ? "night" : "day"}`}
