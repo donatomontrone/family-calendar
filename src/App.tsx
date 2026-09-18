@@ -21,6 +21,7 @@ import { getWhiteTemperature, whiteTemperatureAccent } from "./light-temperature
 type Mode = "todo" | "shopping";
 type Page = "calendar" | "home";
 type ThemeOverride = "auto" | "day" | "night";
+type CompactCalendarPanel = "agenda" | "lists";
 type Task = { id: number; label: string; done: boolean };
 type DemoEvent = {
   startDate: string;
@@ -100,6 +101,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const [favorites, setFavoriteIds] = useState<string[]>([]);
   const [room, setRoom] = useState("__favorites");
   const [mode, setMode] = useState<Mode>("todo");
+  const [compactCalendarPanel, setCompactCalendarPanel] = useState<CompactCalendarPanel>("agenda");
   const [now, setNow] = useState(new Date());
   const [visibleMonth, setVisibleMonth] = useState(() => new Date(new Date().getFullYear(), new Date().getMonth(), 1));
   const [selectedEntity, setSelectedEntity] = useState<string | null>(null);
@@ -224,7 +226,25 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
 
       {page === "calendar" ? (
         <section className="dashboard-grid">
-          <aside className="left-column">
+          <aside className={`left-column ${demo ? `compact-calendar-panel-${compactCalendarPanel}` : ""}`}>
+            {demo && (
+              <div className="responsive-calendar-panel-switch segmented-control" role="tablist" aria-label={language === "it" ? "Pannello secondario calendario" : "Calendar secondary panel"}>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={compactCalendarPanel === "agenda"}
+                  className={compactCalendarPanel === "agenda" ? "active" : ""}
+                  onClick={() => setCompactCalendarPanel("agenda")}
+                >{t("agenda", language)}</button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={compactCalendarPanel === "lists"}
+                  className={compactCalendarPanel === "lists" ? "active" : ""}
+                  onClick={() => setCompactCalendarPanel("lists")}
+                >{t("lists", language)}</button>
+              </div>
+            )}
             <AgendaPanel now={now} events={events} language={language} />
             <section className="card tasks-card">
               <div className="card-heading split tasks-heading">
