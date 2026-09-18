@@ -219,6 +219,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
         onThemeToggle={toggleTheme}
         isNight={isNight}
         themeLabel={themeLabel}
+        demo={demo}
       />
 
       {page === "calendar" ? (
