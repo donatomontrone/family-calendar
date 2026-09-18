@@ -23340,11 +23340,19 @@ function Or({ hass: e, demo: t = !1 }) {
 									}),
 									/* @__PURE__ */ (0, O.jsxs)("div", {
 										className: "segmented-control task-segmented-control",
+										role: "tablist",
+										"aria-label": j("lists", n),
 										children: [/* @__PURE__ */ (0, O.jsx)("button", {
+											type: "button",
+											role: "tab",
+											"aria-selected": p === "todo",
 											className: p === "todo" ? "active" : "",
 											onClick: () => m("todo"),
 											children: j("todo", n)
 										}), /* @__PURE__ */ (0, O.jsx)("button", {
+											type: "button",
+											role: "tab",
+											"aria-selected": p === "shopping",
 											className: p === "shopping" ? "active" : "",
 											onClick: () => m("shopping"),
 											children: j("shopping", n)
@@ -23500,11 +23508,21 @@ function kr({ page: e, language: t, onChange: n }) {
 		"aria-label": j("views", t),
 		children: /* @__PURE__ */ (0, O.jsxs)("div", {
 			className: "segmented-control page-switch-control",
+			role: "tablist",
+			"aria-label": j("views", t),
 			children: [/* @__PURE__ */ (0, O.jsx)("button", {
+				type: "button",
+				role: "tab",
+				"aria-selected": e === "calendar",
+				"aria-current": e === "calendar" ? "page" : void 0,
 				className: e === "calendar" ? "active" : "",
 				onClick: () => n("calendar"),
 				children: /* @__PURE__ */ (0, O.jsx)("span", { children: j("calendar", t) })
 			}), /* @__PURE__ */ (0, O.jsx)("button", {
+				type: "button",
+				role: "tab",
+				"aria-selected": e === "home",
+				"aria-current": e === "home" ? "page" : void 0,
 				className: e === "home" ? "active" : "",
 				onClick: () => n("home"),
 				children: /* @__PURE__ */ (0, O.jsx)("span", { children: j("home", t) })
