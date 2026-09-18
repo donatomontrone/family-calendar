@@ -16,7 +16,9 @@ type Gesture = {
   horizontal: boolean;
 };
 
-const REVEAL_WIDTH = 72;
+const DEFAULT_REVEAL_WIDTH = 72;
+const ADAPTIVE_REVEAL_WIDTH = 54;
+const revealWidth = () => document.documentElement.dataset.demoAdaptive === "adaptive" ? ADAPTIVE_REVEAL_WIDTH : DEFAULT_REVEAL_WIDTH;
 const START_THRESHOLD = 6;
 const DELETE_RATIO = 0.52;
 const OPEN_EVENT = "family-calendar-task-swipe-open";
@@ -37,7 +39,8 @@ export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: 
     row.style.setProperty("--task-swipe-x", `${value}px`);
     row.style.setProperty("--task-swipe-reveal", `${reveal}px`);
     row.style.setProperty("--task-delete-opacity", String(Math.min(1, reveal / 34)));
-    row.classList.toggle("delete-commit-ready", reveal >= Math.max(REVEAL_WIDTH * 1.7, row.clientWidth * DELETE_RATIO));
+    const currentRevealWidth = revealWidth();
+    row.classList.toggle("delete-commit-ready", reveal >= Math.max(currentRevealWidth * 1.7, row.clientWidth * DELETE_RATIO));
   };
 
   const setOffset = (value: number, immediate = false) => {
@@ -155,8 +158,9 @@ export default function SwipeTaskRow({ item, deleteLabel, onToggle, onDelete }: 
       return;
     }
 
-    if (distance >= REVEAL_WIDTH * 0.48) {
-      settle(-REVEAL_WIDTH);
+    const currentRevealWidth = revealWidth();
+    if (distance >= currentRevealWidth * 0.48) {
+      settle(-currentRevealWidth);
       document.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: instanceIdRef.current }));
       return;
     }
