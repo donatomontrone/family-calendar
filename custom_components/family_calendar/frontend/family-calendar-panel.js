@@ -21322,39 +21322,45 @@ function Je({ hass: e, room: t, language: n, accent: r, onClimate: i }) {
 	});
 }
 function Ye({ hass: e, entityId: t, language: n, selected: r, onClick: i }) {
-	let a = e.states[t], o = ut(t), s = lt(e, t), c = o === "light" || o === "cover", l = ["unavailable", "unknown"].includes(a?.state ?? "unknown");
-	return /* @__PURE__ */ (0, O.jsxs)("button", {
-		type: "button",
-		className: `desktop-room-device-v32 domain-${o} ${s ? "active" : ""} ${r ? "selected" : ""}`,
-		onClick: i,
-		disabled: l,
-		"aria-pressed": c ? r : s,
-		children: [/* @__PURE__ */ (0, O.jsx)("span", {
-			className: "desktop-room-device-icon-v32",
-			children: yt(e, t)
-		}), /* @__PURE__ */ (0, O.jsxs)("span", {
-			className: "desktop-room-device-copy-v32",
-			children: [/* @__PURE__ */ (0, O.jsx)("strong", { children: de(e, t) }), /* @__PURE__ */ (0, O.jsx)("small", { children: l ? n === "it" ? "Non disponibile" : "Unavailable" : _t(e, t, n) })]
+	let a = e.states[t], o = ut(t), s = lt(e, t), c = o === "light" || o === "cover", l = ["unavailable", "unknown"].includes(a?.state ?? "unknown"), u = o === "light";
+	return /* @__PURE__ */ (0, O.jsxs)("div", {
+		className: `desktop-room-device-v32 domain-${o} ${s ? "active" : ""} ${r ? "selected" : ""} ${l ? "unavailable" : ""}`,
+		children: [/* @__PURE__ */ (0, O.jsxs)("button", {
+			type: "button",
+			className: "desktop-room-device-main-v40",
+			onClick: i,
+			disabled: l,
+			"aria-pressed": c ? r : s,
+			children: [/* @__PURE__ */ (0, O.jsx)("span", {
+				className: "desktop-room-device-icon-v32",
+				children: yt(e, t)
+			}), /* @__PURE__ */ (0, O.jsxs)("span", {
+				className: "desktop-room-device-copy-v32",
+				children: [/* @__PURE__ */ (0, O.jsx)("strong", { children: de(e, t) }), /* @__PURE__ */ (0, O.jsx)("small", { children: l ? n === "it" ? "Non disponibile" : "Unavailable" : _t(e, t, n) })]
+			})]
+		}), u && /* @__PURE__ */ (0, O.jsx)("button", {
+			type: "button",
+			className: `desktop-room-device-power-v40 ${s ? "active" : ""}`,
+			disabled: l,
+			"aria-label": n === "it" ? s ? `Spegni ${de(e, t)}` : `Accendi ${de(e, t)}` : s ? `Turn off ${de(e, t)}` : `Turn on ${de(e, t)}`,
+			title: n === "it" ? s ? "Spegni" : "Accendi" : s ? "Turn off" : "Turn on",
+			onClick: () => void e.callService("light", s ? "turn_off" : "turn_on", { entity_id: t }),
+			children: /* @__PURE__ */ (0, O.jsx)(Vt, {})
 		})]
 	});
 }
 function Xe({ hass: e, entityId: t, language: n, lightMode: r, onLightMode: i }) {
-	let a = e.states[t], o = ut(t), s = o === "light" ? ze(a.attributes) : null, c = Math.round(Number(a.attributes.brightness ?? 180) / 255 * 100), l = Number(a.attributes.current_position ?? (a.state === "open" ? 100 : 0)), u = o === "cover" ? l : r === "brightness" ? c : s.currentKelvin, d = o === "cover" ? 0 : r === "brightness" ? 1 : s.minKelvin, f = o === "cover" || r === "brightness" ? 100 : s.maxKelvin, p = o === "light" && r === "temperature" ? 50 : 1, m = o === "cover" ? n === "it" ? "Posizione" : "Position" : r === "brightness" ? n === "it" ? "Luminosità" : "Brightness" : n === "it" ? "Temperatura bianco" : "White temperature", h = o === "light" && r === "temperature" ? `${Math.round(u)} K` : `${Math.round(u)}%`, g = o === "light" && a.state === "on";
+	let a = e.states[t], o = ut(t), s = o === "light" ? ze(a.attributes) : null, c = Math.round(Number(a.attributes.brightness ?? 180) / 255 * 100), l = Number(a.attributes.current_position ?? (a.state === "open" ? 100 : 0)), u = o === "cover" ? l : r === "brightness" ? c : s.currentKelvin, d = o === "cover" ? 0 : r === "brightness" ? 1 : s.minKelvin, f = o === "cover" || r === "brightness" ? 100 : s.maxKelvin, p = o === "light" && r === "temperature" ? 50 : 1, m = o === "cover" ? n === "it" ? "Posizione" : "Position" : r === "brightness" ? n === "it" ? "Luminosità" : "Brightness" : n === "it" ? "Temperatura bianco" : "White temperature", h = o === "light" && r === "temperature" ? `${Math.round(u)} K` : `${Math.round(u)}%`;
 	return /* @__PURE__ */ (0, O.jsxs)("div", {
 		className: `desktop-room-detail-v32 domain-${o}`,
 		children: [
-			/* @__PURE__ */ (0, O.jsxs)("div", {
+			/* @__PURE__ */ (0, O.jsx)("div", {
 				className: "desktop-room-detail-head-v32",
-				children: [/* @__PURE__ */ (0, O.jsxs)("div", { children: [
+				children: /* @__PURE__ */ (0, O.jsxs)("div", { children: [
 					/* @__PURE__ */ (0, O.jsx)("small", { children: n === "it" ? "Selezionato" : "Selected" }),
 					/* @__PURE__ */ (0, O.jsx)("strong", { children: de(e, t) }),
 					/* @__PURE__ */ (0, O.jsx)("span", { children: _t(e, t, n) })
-				] }), o === "light" && /* @__PURE__ */ (0, O.jsxs)("button", {
-					type: "button",
-					className: `desktop-room-power-v32 ${g ? "active" : ""}`,
-					onClick: () => void e.callService("light", g ? "turn_off" : "turn_on", { entity_id: t }),
-					children: [/* @__PURE__ */ (0, O.jsx)(Vt, {}), /* @__PURE__ */ (0, O.jsx)("span", { children: n === "it" ? g ? "Spegni" : "Accendi" : g ? "Turn off" : "Turn on" })]
-				})]
+				] })
 			}),
 			o === "light" && /* @__PURE__ */ (0, O.jsxs)("div", {
 				className: "desktop-room-mode-v32",
