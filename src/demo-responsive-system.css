@@ -1,646 +1,802 @@
-/* DEMO responsive contract.
- * One exclusive viewport mode is set by demo-responsive-system.ts.
- * This file loads last and owns responsive presentation for the demo.
- * The phone portrait contract is intentionally left to the existing approved mobile CSS.
+/*
+ * FAMILY CALENDAR DEMO — adaptive UI contract
+ *
+ * The two proven reference layouts are intentionally untouched:
+ *   - data-demo-viewport="xl"
+ *   - data-demo-viewport="phone-portrait"
+ *
+ * Every intermediate viewport is mutually exclusive and derives from one of
+ * those references. No @media rules live here: demo-responsive-system.ts owns
+ * classification and this file owns presentation.
  */
 
 html {
   --fc-ui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
-    "Segoe UI", Roboto, Helvetica, Arial, system-ui, sans-serif;
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+}
+
+/* Demo-only helper. It becomes visible only in phone landscape. */
+.responsive-calendar-panel-switch {
+  display: none !important;
 }
 
 /* -------------------------------------------------------------------------- */
-/* Shared normalization for non-phone-portrait demo modes                     */
+/* Adaptive design tokens                                                     */
 /* -------------------------------------------------------------------------- */
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"],
-  [data-demo-viewport="phone-landscape"]
-) main.app-shell {
+html[data-demo-viewport="wide"] {
+  --ad-shell-pad: 18px;
+  --ad-gap: 14px;
+  --ad-header-h: 70px;
+  --ad-clock-size: 38px;
+  --ad-calendar-h: 660px;
+  --ad-calendar-toolbar: 66px;
+  --ad-radius: 24px;
+}
+
+html[data-demo-viewport="desktop"] {
+  --ad-shell-pad: 16px;
+  --ad-gap: 12px;
+  --ad-header-h: 64px;
+  --ad-clock-size: 32px;
+  --ad-calendar-h: 600px;
+  --ad-calendar-toolbar: 62px;
+  --ad-radius: 22px;
+}
+
+html[data-demo-viewport="tablet-landscape"] {
+  --ad-shell-pad: 12px;
+  --ad-gap: 10px;
+  --ad-header-h: 58px;
+  --ad-clock-size: 27px;
+  --ad-calendar-h: 555px;
+  --ad-calendar-toolbar: 58px;
+  --ad-radius: 20px;
+}
+
+html[data-demo-viewport="tablet-portrait"] {
+  --ad-shell-pad: 14px;
+  --ad-gap: 12px;
+  --ad-header-h: 62px;
+  --ad-clock-size: 29px;
+  --ad-calendar-h: 600px;
+  --ad-calendar-toolbar: 60px;
+  --ad-radius: 22px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Shared adaptive normalization: wide -> tablet                              */
+/* -------------------------------------------------------------------------- */
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]),
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body,
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #root {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 100% !important;
+  overflow-x: hidden !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root > main.app-shell {
+  box-sizing: border-box !important;
   width: 100% !important;
   max-width: none !important;
+  min-height: 100dvh !important;
+  height: auto !important;
+  max-height: none !important;
   margin: 0 !important;
-  box-sizing: border-box !important;
+  padding: var(--ad-shell-pad) !important;
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
   font-family: var(--fc-ui-font) !important;
   font-synthesis: none !important;
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell {
-  min-height: 100dvh !important;
-  height: auto !important;
-  overflow-x: hidden !important;
-  overflow-y: visible !important;
-  padding: clamp(14px, 1.15vw, 22px) !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell :is(
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell :is(
   .dashboard-grid,
   .left-column,
   .right-column,
   .calendar-card,
+  .agenda-card,
+  .tasks-card,
+  .home-card,
   .reel-home,
   .reel-dashboard,
   .desktop-room-workspace-v26,
+  .desktop-room-strip-v26,
   .desktop-room-stage-v26,
   .desktop-room-panel-v32,
   .desktop-room-content-v32,
+  .desktop-room-controls-card-v32,
+  .desktop-room-status-card-v32,
   .desktop-room-controls-body-v32,
+  .desktop-room-accessory-grid-v32,
+  .reel-room-grid,
+  .reel-room,
   .reel-side,
-  .reel-room-grid
+  .reel-tools-grid
 ) {
+  box-sizing: border-box !important;
   min-width: 0 !important;
   min-height: 0 !important;
-  box-sizing: border-box !important;
 }
 
-/* Consistent typography. Avoid tiny desktop/tablet text. */
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell :is(button, input, select, textarea) {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell :is(button,input,select,textarea) {
   font-family: inherit !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell :is(
+/* Secondary type never collapses into unreadable 7–8px desktop text. */
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell :is(
   .section-kicker,
-  .demo-copy,
   .agenda-date span,
   .agenda-events > small,
   .entity-main small,
   .desktop-room-tab-copy-v26 small,
   .desktop-room-section-head-v32 small,
-  .desktop-room-device-v32 small,
+  .desktop-room-device-copy-v32 small,
   .desktop-room-status-row-v32 small,
   .room-device-button-v4 small,
   .room-passive-device-v4 small,
   .reel-kicker,
   .alarm-row small,
   .waste-value small,
-  .reel-tools-grid span
+  .reel-tools-grid > button > span
 ) {
-  font-size: max(10.5px, .68rem) !important;
-  line-height: 1.25 !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) .page-dock-shell {
-  z-index: 80 !important;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Shared header for desktop -> tablet                                        */
-/* -------------------------------------------------------------------------- */
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header-host {
-  width: 100% !important;
-  min-width: 0 !important;
-  margin: 0 0 12px !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: auto !important;
-  min-height: 64px !important;
-  max-height: none !important;
-  padding: 8px 10px !important;
-  display: grid !important;
-  grid-template-columns: minmax(150px, 1fr) auto minmax(330px, 1fr) !important;
-  align-items: center !important;
-  gap: 12px !important;
-  overflow: visible !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header .reel-greeting {
-  min-width: 0 !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header .reel-greeting strong {
-  font-size: 15px !important;
-  line-height: 1.1 !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header .reel-greeting span {
-  margin-top: 3px !important;
   font-size: 10.5px !important;
   line-height: 1.2 !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header .reel-clock {
-  margin: 0 !important;
-  font-size: clamp(24px, 2.2vw, 34px) !important;
-  line-height: 1 !important;
-  font-weight: 560 !important;
-  font-variant-numeric: tabular-nums !important;
+/* -------------------------------------------------------------------------- */
+/* Header — scaled from the working max-size reference                        */
+/* -------------------------------------------------------------------------- */
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell > #family-shared-header-host {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--ad-header-h) !important;
+  min-height: var(--ad-header-h) !important;
+  max-height: var(--ad-header-h) !important;
+  margin: 0 0 var(--ad-gap) !important;
+  padding: 0 !important;
+  overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header .reel-top-actions {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell #family-shared-header {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--ad-header-h) !important;
+  min-height: var(--ad-header-h) !important;
+  max-height: var(--ad-header-h) !important;
+  margin: 0 !important;
+  padding: 5px 4px !important;
+  display: grid !important;
+  grid-template-columns: minmax(145px,1fr) auto minmax(300px,1fr) !important;
+  grid-template-rows: 1fr !important;
+  align-items: center !important;
+  gap: 12px !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header .reel-greeting {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 2px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header .reel-greeting strong {
+  font-size: 16px !important;
+  line-height: 1.05 !important;
+  font-weight: 680 !important;
+  letter-spacing: -.02em !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header .reel-greeting span {
+  font-size: 10.5px !important;
+  line-height: 1.15 !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header .reel-clock {
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-self: center !important;
+  font-size: var(--ad-clock-size) !important;
+  line-height: .96 !important;
+  font-weight: 500 !important;
+  letter-spacing: -.05em !important;
+  font-variant-numeric: tabular-nums !important;
+  transform: none !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header .reel-top-actions {
   min-width: 0 !important;
   width: auto !important;
+  height: 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-self: end !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-end !important;
   flex-wrap: nowrap !important;
   gap: 6px !important;
+  overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header :is(.weather-pill, .security-pill, .round-top, .header-theme-switch) {
-  height: 34px !important;
-  min-height: 34px !important;
-  border-radius: 17px !important;
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header :is(
+  .weather-pill,.security-pill,.round-top,.header-theme-switch
+) {
+  box-sizing: border-box !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  margin: 0 !important;
+  border-radius: 18px !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header :is(.round-top, .header-theme-switch) {
-  width: 34px !important;
-  min-width: 34px !important;
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header :is(.round-top,.header-theme-switch) {
+  flex: 0 0 36px !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  padding: 0 !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header :is(.weather-pill, .security-pill) {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header :is(.weather-pill,.security-pill) {
+  min-width: 0 !important;
   padding-inline: 10px !important;
   font-size: 10.5px !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) #family-shared-header :is(.weather-pill, .security-pill, .round-top, .header-theme-switch) svg {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) #family-shared-header :is(
+  .weather-pill,.security-pill,.round-top,.header-theme-switch
+) svg {
   width: 14px !important;
   height: 14px !important;
 }
 
+html[data-demo-viewport="tablet-landscape"] #family-shared-header .avatar-stack,
+html[data-demo-viewport="tablet-portrait"] #family-shared-header .avatar-stack {
+  display: none !important;
+}
+
+html[data-demo-viewport="tablet-landscape"] #family-shared-header .weather-pill small,
+html[data-demo-viewport="tablet-portrait"] #family-shared-header .weather-pill small,
+html[data-demo-viewport="tablet-landscape"] #family-shared-header .security-pill span,
+html[data-demo-viewport="tablet-portrait"] #family-shared-header .security-pill span {
+  display: none !important;
+}
+
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root main.app-shell #family-shared-header {
+  grid-template-columns: minmax(128px,1fr) auto minmax(190px,1fr) !important;
+  gap: 8px !important;
+}
+
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+}
+
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) #family-shared-header :is(.round-top,.header-theme-switch,.security-pill) {
+  flex-basis: 32px !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  padding: 0 !important;
+}
+
 /* -------------------------------------------------------------------------- */
-/* Calendar shared rules for responsive desktop/tablet modes                  */
+/* Persistent dock — reserve room for it instead of covering page content     */
 /* -------------------------------------------------------------------------- */
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active > .dashboard-grid {
-  width: 100% !important;
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .page-dock-shell {
+  position: fixed !important;
+  z-index: 120 !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+  width: 244px !important;
+  max-width: calc(100vw - 32px) !important;
   margin: 0 !important;
-  display: grid !important;
-  align-items: start !important;
-  align-content: start !important;
-  gap: 14px !important;
-  max-height: none !important;
-  overflow: visible !important;
+  transform: translateX(-50%) !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active :is(.left-column, .right-column) {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .page-dock-shell > .page-switch-control {
   width: 100% !important;
-  margin: 0 !important;
-  display: grid !important;
-  align-items: start !important;
-  gap: 14px !important;
-  max-height: none !important;
-  overflow: visible !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 4px !important;
+  border-radius: 16px !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .calendar-card {
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  height: auto !important;
-  max-height: none !important;
-  align-self: start !important;
-  overflow: hidden !important;
-  border-radius: 24px !important;
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root .page-dock-shell {
+  width: 220px !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .calendar-toolbar {
+/* -------------------------------------------------------------------------- */
+/* Calendar — common adaptive geometry                                        */
+/* -------------------------------------------------------------------------- */
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active > .dashboard-grid {
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  min-height: 70px !important;
-  padding: 14px 16px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  gap: var(--ad-gap) !important;
+  align-items: start !important;
+  align-content: start !important;
+  overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .calendar-toolbar h1 {
-  font-size: clamp(23px, 2.05vw, 31px) !important;
-  line-height: 1.05 !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .month-grid {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active :is(.left-column,.right-column) {
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
-  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  gap: var(--ad-gap) !important;
+  align-items: start !important;
+  align-content: start !important;
+  overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .weekday {
-  padding: 8px 5px !important;
-  font-size: 10.5px !important;
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-card {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--ad-calendar-h) !important;
+  min-height: var(--ad-calendar-h) !important;
+  max-height: var(--ad-calendar-h) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-rows: var(--ad-calendar-toolbar) minmax(0,1fr) !important;
+  align-self: start !important;
+  overflow: hidden !important;
+  border-radius: var(--ad-radius) !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-toolbar {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: var(--ad-calendar-toolbar) !important;
+  min-height: var(--ad-calendar-toolbar) !important;
+  margin: 0 !important;
+  padding: 12px 14px 10px 18px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-toolbar h1 {
+  margin: 2px 0 0 !important;
+  font-size: clamp(24px,2vw,31px) !important;
   line-height: 1 !important;
+  font-weight: 720 !important;
+  letter-spacing: -.035em !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .calendar-day {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-actions {
+  gap: 5px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-actions button {
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  border-radius: 12px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-actions .today-button {
+  width: auto !important;
+  min-width: 56px !important;
+  padding-inline: 10px !important;
+  font-size: 10px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .month-grid {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: grid !important;
+  grid-template-columns: repeat(7,minmax(0,1fr)) !important;
+  grid-template-rows: 30px repeat(6,minmax(0,1fr)) !important;
+  overflow: hidden !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .weekday {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 9px 4px 5px !important;
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: .04em !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-day {
+  box-sizing: border-box !important;
   min-width: 0 !important;
   min-height: 0 !important;
   height: auto !important;
-  padding: 7px !important;
+  padding: 6px 7px 5px !important;
   overflow: hidden !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .day-number {
-  margin-bottom: 5px !important;
-  font-size: 12px !important;
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .day-number {
+  min-height: 14px !important;
+  margin: 0 0 5px !important;
+  font-size: 11px !important;
   line-height: 1 !important;
+  font-weight: 670 !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .calendar-event {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .day-events {
   min-width: 0 !important;
-  min-height: 21px !important;
-  height: auto !important;
-  padding: 4px 6px !important;
-  border-radius: 7px !important;
+  gap: 3px !important;
   overflow: hidden !important;
-  font-size: 10.5px !important;
-  line-height: 1.15 !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active :is(.task-list-scroll-shell, .task-list) {
-  max-height: none !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .task-list {
-  overflow-y: visible !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .task-row {
-  min-height: 46px !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .task-row label {
-  font-size: 12px !important;
-  line-height: 1.25 !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .room-switcher.room-chip-strip {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .calendar-event {
+  box-sizing: border-box !important;
+  width: 100% !important;
   min-width: 0 !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 5px !important;
+  overflow: hidden !important;
+  border-radius: 6px !important;
+  font-size: 9.5px !important;
+  line-height: 20px !important;
+  font-weight: 590 !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active :is(.agenda-card,.tasks-card,.home-card) {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: var(--ad-radius) !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active :is(.agenda-card,.tasks-card) .card-heading {
+  padding: 13px 14px 9px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active :is(.agenda-card,.tasks-card) h2 {
+  margin-top: 3px !important;
+  font-size: 18px !important;
+  line-height: 1.05 !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .agenda-list {
+  box-sizing: border-box !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 12px 12px !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .agenda-day {
+  grid-template-columns: 68px minmax(0,1fr) !important;
+  gap: 7px !important;
+  padding: 9px 3px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .agenda-date strong {
+  font-size: 10.5px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .agenda-event {
+  font-size: 10.5px !important;
+  line-height: 1.2 !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .task-list-scroll-shell {
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .task-list {
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 10px !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .task-row {
+  min-height: 44px !important;
+  padding: 7px !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .task-row label {
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card > .task-segmented-control {
+  width: calc(100% - 20px) !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  margin: 8px 10px 10px !important;
+  padding: 3px !important;
+  border-radius: 12px !important;
+}
+
+/* Calendar Smart Home can be a rail (wide) or a compact horizontal section. */
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .home-card {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding-bottom: 12px !important;
+  align-content: start !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  height: auto !important;
+  padding-inline: 10px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
   scrollbar-width: none !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .entity-grid {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+  width: 100% !important;
   min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .entity-main strong {
-  font-size: 11px !important;
-  line-height: 1.15 !important;
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .home-card .entity-grid {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 8px 10px 2px !important;
+  overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.calendar-page-active .entity-main small {
-  font-size: 10px !important;
-  line-height: 1.15 !important;
+/* -------------------------------------------------------------------------- */
+/* Calendar mode: WIDE 1440–1799 — same three-column language as max-size    */
+/* -------------------------------------------------------------------------- */
+
+html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active > .dashboard-grid {
+  grid-template-columns: 250px minmax(0,1fr) 290px !important;
+  grid-template-rows: var(--ad-calendar-h) !important;
+  grid-template-areas: "left calendar right" !important;
 }
 
-/* Desktop 1440-1799: calendar + information rail. */
-html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active > .dashboard-grid {
-  grid-template-columns: minmax(0, 1fr) 330px !important;
-  grid-template-rows: auto auto !important;
-  grid-template-areas:
-    "calendar left"
-    "calendar right" !important;
+html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+  grid-area: left !important;
+  height: var(--ad-calendar-h) !important;
+  max-height: var(--ad-calendar-h) !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: 214px minmax(0,1fr) !important;
 }
 
-html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
   grid-area: calendar !important;
 }
 
-html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
-  grid-area: left !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-}
-
-html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
   grid-area: right !important;
-  grid-template-columns: minmax(0, 1fr) !important;
+  height: var(--ad-calendar-h) !important;
+  max-height: var(--ad-calendar-h) !important;
+  grid-template-columns: minmax(0,1fr) !important;
 }
 
-html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active .entity-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+html[data-demo-viewport="wide"] body #root main.app-shell.calendar-page-active .right-column > .home-card {
+  height: 100% !important;
+  min-height: 100% !important;
+  display: grid !important;
+  grid-template-rows: auto auto auto minmax(0,1fr) !important;
+  overflow: hidden !important;
 }
 
-html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active .month-grid {
-  grid-template-rows: 34px repeat(6, minmax(90px, auto)) !important;
+html[data-demo-viewport="wide"] body #root main.app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
 }
 
-html[data-demo-viewport="desktop"] main.app-shell.calendar-page-active .calendar-day {
-  min-height: 90px !important;
+html[data-demo-viewport="wide"] body #root main.app-shell.calendar-page-active .home-card .entity-grid {
+  height: 100% !important;
+  min-height: 0 !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  align-content: start !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
 }
 
-/* Compact 1100-1439: calendar first, secondary content below. */
-html[data-demo-viewport="compact"] #family-shared-header {
-  grid-template-columns: minmax(150px, 1fr) auto minmax(300px, 1fr) !important;
-}
+/* -------------------------------------------------------------------------- */
+/* Calendar mode: DESKTOP 1180–1439 — rail + dominant calendar, Casa below   */
+/* -------------------------------------------------------------------------- */
 
-html[data-demo-viewport="compact"] main.app-shell.calendar-page-active > .dashboard-grid {
-  grid-template-columns: minmax(0, 1fr) minmax(320px, .46fr) !important;
-  grid-template-rows: auto auto !important;
+html[data-demo-viewport="desktop"] body #root > main.app-shell.calendar-page-active > .dashboard-grid {
+  grid-template-columns: 258px minmax(0,1fr) !important;
+  grid-template-rows: var(--ad-calendar-h) auto !important;
   grid-template-areas:
-    "calendar calendar"
-    "left right" !important;
+    "left calendar"
+    "right right" !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+html[data-demo-viewport="desktop"] body #root > main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+  grid-area: left !important;
+  height: var(--ad-calendar-h) !important;
+  max-height: var(--ad-calendar-h) !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: 205px minmax(0,1fr) !important;
+}
+
+html[data-demo-viewport="desktop"] body #root > main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
   grid-area: calendar !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
-  grid-area: left !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-}
-
-html[data-demo-viewport="compact"] main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+html[data-demo-viewport="desktop"] body #root > main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
   grid-area: right !important;
-  grid-template-columns: minmax(0, 1fr) !important;
+  height: auto !important;
+  max-height: none !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.calendar-page-active .entity-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+html[data-demo-viewport="desktop"] body #root main.app-shell.calendar-page-active .right-column > .home-card {
+  min-height: 218px !important;
+  display: grid !important;
+  grid-template-rows: auto auto auto auto !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.calendar-page-active .month-grid {
-  grid-template-rows: 34px repeat(6, minmax(82px, auto)) !important;
+html[data-demo-viewport="desktop"] body #root main.app-shell.calendar-page-active .home-card .entity-grid {
+  grid-template-columns: repeat(4,minmax(0,1fr)) !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.calendar-page-active .calendar-day {
-  min-height: 82px !important;
-}
+/* -------------------------------------------------------------------------- */
+/* Calendar modes: TABLET — phone-portrait hierarchy, adapted to wider canvas */
+/* -------------------------------------------------------------------------- */
 
-/* Tablet 768-1099: one readable flow, no forced horizontal calendar. */
-html[data-demo-viewport="tablet"] main.app-shell {
-  padding: 12px !important;
-}
-
-html[data-demo-viewport="tablet"] #family-shared-header {
-  grid-template-columns: minmax(120px, 1fr) auto minmax(300px, 1fr) !important;
-  min-height: 58px !important;
-  padding: 7px 8px !important;
-  gap: 8px !important;
-}
-
-html[data-demo-viewport="tablet"] #family-shared-header .reel-clock {
-  font-size: 23px !important;
-}
-
-html[data-demo-viewport="tablet"] #family-shared-header :is(.weather-pill, .security-pill, .round-top, .header-theme-switch) {
-  height: 31px !important;
-  min-height: 31px !important;
-}
-
-html[data-demo-viewport="tablet"] #family-shared-header :is(.round-top, .header-theme-switch) {
-  width: 31px !important;
-  min-width: 31px !important;
-}
-
-html[data-demo-viewport="tablet"] #family-shared-header .avatar-stack i {
-  width: 27px !important;
-  height: 27px !important;
-  font-size: 9px !important;
-}
-
-html[data-demo-viewport="tablet"] #family-shared-header .weather-pill small {
-  display: none !important;
-}
-
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active > .dashboard-grid {
-  grid-template-columns: minmax(0, 1fr) !important;
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root > main.app-shell.calendar-page-active > .dashboard-grid {
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: auto auto auto !important;
   grid-template-areas:
     "calendar"
     "left"
     "right" !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root > main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
   grid-area: calendar !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root > main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
   grid-area: left !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-template-rows: auto !important;
+  align-items: stretch !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root > main.app-shell.calendar-page-active > .dashboard-grid > .left-column > :is(.agenda-card,.tasks-card) {
+  height: 318px !important;
+  min-height: 318px !important;
+  max-height: 318px !important;
+}
+
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root > main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
   grid-area: right !important;
-  grid-template-columns: minmax(0, 1fr) !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active .calendar-toolbar {
-  min-height: 62px !important;
-  padding: 11px 13px !important;
-}
-
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active .month-grid {
-  grid-template-rows: 34px repeat(6, minmax(70px, auto)) !important;
-}
-
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active .calendar-day {
-  min-height: 70px !important;
-  padding: 6px !important;
-}
-
-html[data-demo-viewport="tablet"] main.app-shell.calendar-page-active .entity-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Home shared rules for desktop -> tablet                                    */
-/* -------------------------------------------------------------------------- */
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.home-page-active > .reel-home.home-refactor-v4 {
-  width: 100% !important;
-  min-height: 0 !important;
-  height: auto !important;
-  padding-bottom: 84px !important;
-  overflow: visible !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
-  width: 100% !important;
-  min-height: 0 !important;
-  height: auto !important;
-  align-items: start !important;
-  align-content: start !important;
-  max-height: none !important;
-  overflow: visible !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) body #root main.app-shell.calendar-page-active .right-column > .home-card {
+  min-height: 220px !important;
   display: grid !important;
+  grid-template-rows: auto auto auto auto !important;
+}
+
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-grid {
+  grid-template-columns: repeat(4,minmax(0,1fr)) !important;
+}
+
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active .home-card .entity-grid {
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Home — common adaptive geometry                                            */
+/* -------------------------------------------------------------------------- */
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 {
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: auto !important;
   min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: var(--ad-gap) !important;
+  align-items: start !important;
+  align-content: start !important;
+  overflow: visible !important;
+}
+
+/* Selected-room workspace used from wide through tablet landscape. */
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .desktop-room-workspace-v26 {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) !important;
   grid-template-rows: auto auto !important;
   gap: 10px !important;
   overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-room-grid.mobile-room-grid-v26 {
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 {
   display: none !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active .desktop-room-strip-v26 {
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .desktop-room-strip-v26 {
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: auto !important;
+  height: 58px !important;
   min-height: 58px !important;
-  padding: 1px 18px 2px 1px !important;
+  margin: 0 !important;
+  padding: 1px 16px 1px 1px !important;
   display: flex !important;
+  flex-direction: row !important;
   align-items: stretch !important;
   gap: 7px !important;
   overflow-x: auto !important;
@@ -648,204 +804,297 @@ html:is(
   scrollbar-width: none !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active .desktop-room-strip-v26 > button {
-  flex: 0 0 clamp(128px, 11vw, 154px) !important;
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .desktop-room-strip-v26 > button {
+  box-sizing: border-box !important;
+  flex: 0 0 clamp(132px,11vw,156px) !important;
+  width: auto !important;
   min-width: 0 !important;
   height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active .desktop-room-stage-v26 {
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .desktop-room-stage-v26,
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 {
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: auto !important;
   min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
   overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active .desktop-room-panel-v32 {
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .desktop-room-content-v32 {
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: auto !important;
   min-height: 0 !important;
-  overflow: visible !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active .desktop-room-content-v32 {
-  width: 100% !important;
-  min-width: 0 !important;
   height: auto !important;
-  min-height: 0 !important;
+  margin-top: 10px !important;
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(230px, 30%) !important;
+  grid-template-columns: minmax(0,1fr) minmax(240px,29%) !important;
   gap: 12px !important;
   align-items: start !important;
   overflow: visible !important;
 }
 
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active .desktop-room-controls-body-v32 {
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active :is(.desktop-room-controls-card-v32,.desktop-room-status-card-v32) {
   min-width: 0 !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(190px, 31%) !important;
-  gap: 10px !important;
-  align-items: start !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"]
-) main.app-shell.home-page-active .desktop-room-accessory-grid-v32 {
-  min-width: 0 !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-}
-
-html:is(
-  [data-demo-viewport="desktop"],
-  [data-demo-viewport="compact"],
-  [data-demo-viewport="tablet"]
-) main.app-shell.home-page-active .reel-side {
-  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
   max-height: none !important;
+  align-self: start !important;
   overflow: visible !important;
 }
 
-/* Desktop 1440-1799: workspace + compact information rail. */
-html[data-demo-viewport="desktop"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"]) body #root main.app-shell.home-page-active .desktop-room-controls-body-v32 {
+  min-width: 0 !important;
+  min-height: 0 !important;
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 300px !important;
-  gap: 14px !important;
+  grid-template-columns: minmax(0,1fr) minmax(220px,270px) !important;
+  gap: 12px !important;
+  align-items: start !important;
+  overflow: visible !important;
 }
 
-html[data-demo-viewport="desktop"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
-  width: 100% !important;
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active .desktop-room-controls-body-v32 {
+  min-width: 0 !important;
+  min-height: 0 !important;
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: auto auto !important;
   gap: 10px !important;
+  align-items: start !important;
+  overflow: visible !important;
 }
 
-/* Compact 1100-1439: full-width workspace, utilities below. */
-html[data-demo-viewport="compact"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .desktop-room-accessory-grid-v32 {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  grid-template-columns: repeat(auto-fit,minmax(145px,1fr)) !important;
+  grid-auto-rows: 56px !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+/* WIDE: preserve max-size workspace + information rail composition. */
+html[data-demo-viewport="wide"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 14px !important;
+  grid-template-columns: minmax(0,1fr) 280px !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+html[data-demo-viewport="wide"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  gap: 10px !important;
+  align-content: start !important;
+  overflow: visible !important;
+}
+
+html[data-demo-viewport="wide"] body #root main.app-shell.home-page-active .reel-tools-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+  gap: 7px !important;
+}
+
+html[data-demo-viewport="wide"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
+  min-width: 0 !important;
+  min-height: 54px !important;
+}
+
+/* DESKTOP: workspace first, summary and tools below in a deliberate matrix. */
+html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: auto auto !important;
+}
+
+html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
   grid-column: 1 !important;
   grid-row: 1 !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
   grid-column: 1 !important;
   grid-row: 2 !important;
   width: 100% !important;
+  min-width: 0 !important;
   display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(4,minmax(0,1fr)) !important;
   gap: 10px !important;
+  align-items: stretch !important;
+  overflow: visible !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.home-page-active .reel-side > .thermostat-card {
-  grid-column: span 2 !important;
+html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active .reel-side > :is(.home-message-card,.alarm-row,.thermostat-card,.waste-card) {
+  grid-column: auto !important;
+  min-width: 0 !important;
+  min-height: 112px !important;
+  height: auto !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.home-page-active .reel-side > .reel-tools-grid {
+html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active .reel-side > .reel-tools-grid {
   grid-column: 1 / -1 !important;
   display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(9,minmax(0,1fr)) !important;
   gap: 8px !important;
 }
 
-html[data-demo-viewport="compact"] main.app-shell.home-page-active .reel-tools-grid > button {
+html[data-demo-viewport="desktop"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
   min-width: 0 !important;
   min-height: 52px !important;
 }
 
-/* Tablet 768-1099: use the mobile room cards, two columns, utilities below. */
-html[data-demo-viewport="tablet"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+/* TABLET LANDSCAPE: selected room remains primary, summaries become 2x2. */
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 12px !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: auto auto !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  gap: 10px !important;
+  overflow: visible !important;
+}
+
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active .reel-side > :is(.home-message-card,.alarm-row,.thermostat-card,.waste-card) {
+  grid-column: auto !important;
+  min-height: 112px !important;
+  height: auto !important;
+}
+
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active .reel-side > .reel-tools-grid {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: repeat(5,minmax(0,1fr)) !important;
+  gap: 8px !important;
+}
+
+html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
+  min-width: 0 !important;
+  min-height: 52px !important;
+}
+
+/* TABLET PORTRAIT: derive from the working phone portrait room-card language. */
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: auto auto !important;
+}
+
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .desktop-room-workspace-v26 {
   display: none !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-room-grid.mobile-room-grid-v26 {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 {
   width: 100% !important;
+  min-width: 0 !important;
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
   gap: 12px !important;
   overflow: visible !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.home-page-active .room-card-v4 {
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .room-card-v4 {
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
   max-width: none !important;
   min-height: 0 !important;
   height: auto !important;
+  margin: 0 !important;
   overflow: hidden !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.home-page-active .room-device-grid-v4 {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .room-device-grid-v4 {
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
-  grid-column: 1 !important;
-  grid-row: 2 !important;
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
   width: 100% !important;
+  min-width: 0 !important;
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
   gap: 10px !important;
+  overflow: visible !important;
 }
 
-html[data-demo-viewport="tablet"] main.app-shell.home-page-active .reel-side > .reel-tools-grid {
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-side > :is(.home-message-card,.alarm-row,.thermostat-card,.waste-card) {
+  min-height: 112px !important;
+  height: auto !important;
+}
+
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-side > .reel-tools-grid {
   grid-column: 1 / -1 !important;
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
   gap: 8px !important;
 }
 
+html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-tools-grid > button {
+  min-height: 54px !important;
+}
+
+/* Make utility labels deterministic outside phone landscape. */
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  padding: 8px 7px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  text-align: center !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button > svg {
+  flex: 0 0 auto !important;
+  width: 17px !important;
+  height: 17px !important;
+  margin: 0 !important;
+  position: static !important;
+  transform: none !important;
+}
+
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button > span {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+}
+
 /* -------------------------------------------------------------------------- */
-/* Phone landscape: exclusive composition, not a shrunken desktop             */
+/* PHONE LANDSCAPE — dedicated low-height composition                         */
 /* -------------------------------------------------------------------------- */
 
 html[data-demo-viewport="phone-landscape"] {
-  --pls-gap: 6px;
-  --pls-radius: 13px;
-  --pls-line: rgba(60,60,67,.10);
-  --pls-fill: rgba(255,255,255,.84);
-  --pls-fill-strong: rgba(255,255,255,.95);
-  --pls-soft: rgba(118,118,128,.075);
-  --pls-text: #1d1d1f;
-  --pls-secondary: #6e6e73;
+  --pl-gap: 5px;
+  --pl-radius: 13px;
+  --pl-line: rgba(60,60,67,.10);
+  --pl-fill: rgba(255,255,255,.86);
+  --pl-soft: rgba(118,118,128,.075);
+  --pl-text: #1d1d1f;
+  --pl-secondary: #6e6e73;
 }
 
 html[data-demo-viewport="phone-landscape"] main.app-shell.night {
-  --pls-line: rgba(255,255,255,.09);
-  --pls-fill: rgba(31,32,35,.86);
-  --pls-fill-strong: rgba(42,43,47,.96);
-  --pls-soft: rgba(255,255,255,.07);
-  --pls-text: #f5f5f7;
-  --pls-secondary: #a1a1a6;
+  --pl-line: rgba(255,255,255,.09);
+  --pl-fill: rgba(31,32,35,.88);
+  --pl-soft: rgba(255,255,255,.07);
+  --pl-text: #f5f5f7;
+  --pl-secondary: #a1a1a6;
 }
 
 html[data-demo-viewport="phone-landscape"],
@@ -858,27 +1107,27 @@ html[data-demo-viewport="phone-landscape"] #root {
   overflow: hidden !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell {
+html[data-demo-viewport="phone-landscape"] body #root > main.app-shell {
+  box-sizing: border-box !important;
   width: 100vw !important;
   height: 100dvh !important;
   min-width: 0 !important;
   min-height: 0 !important;
   max-height: 100dvh !important;
   margin: 0 !important;
-  padding-top: max(4px, env(safe-area-inset-top, 0px)) !important;
-  padding-right: max(6px, env(safe-area-inset-right, 0px)) !important;
-  padding-bottom: max(42px, calc(37px + env(safe-area-inset-bottom, 0px))) !important;
-  padding-left: max(6px, env(safe-area-inset-left, 0px)) !important;
+  padding-top: max(4px,env(safe-area-inset-top,0px)) !important;
+  padding-right: max(6px,env(safe-area-inset-right,0px)) !important;
+  padding-bottom: max(41px,calc(36px + env(safe-area-inset-bottom,0px))) !important;
+  padding-left: max(6px,env(safe-area-inset-left,0px)) !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
   grid-template-rows: 31px minmax(0,1fr) !important;
-  gap: 5px !important;
+  gap: var(--pl-gap) !important;
   overflow: hidden !important;
   font-family: var(--fc-ui-font) !important;
-  box-sizing: border-box !important;
 }
 
-/* Header: one quiet system row. Context lives in the page content. */
+/* Header: clock + essential actions only. */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell > #family-shared-header-host {
   grid-column: 1 !important;
   grid-row: 1 !important;
@@ -889,10 +1138,10 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell > #family-s
   max-height: 31px !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: visible !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header {
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
   height: 31px !important;
@@ -905,64 +1154,47 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-sha
   grid-template-rows: 31px !important;
   align-items: center !important;
   gap: 8px !important;
-  overflow: visible !important;
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  overflow: visible !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header::before,
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header::after,
-html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.reel-greeting,.weather-pill,.avatar-stack) {
+html[data-demo-viewport="phone-landscape"] #family-shared-header::before,
+html[data-demo-viewport="phone-landscape"] #family-shared-header::after,
+html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.reel-greeting,.weather-pill,.avatar-stack),
+html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill span {
   display: none !important;
   content: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header .reel-clock {
+html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-clock {
   grid-column: 1 !important;
-  grid-row: 1 !important;
   justify-self: start !important;
-  align-self: center !important;
-  position: static !important;
-  inset: auto !important;
   margin: 0 !important;
-  padding: 0 0 0 2px !important;
-  color: var(--pls-text) !important;
+  padding-left: 2px !important;
   font-size: 15px !important;
   line-height: 1 !important;
   font-weight: 620 !important;
   letter-spacing: -.035em !important;
-  font-variant-numeric: tabular-nums !important;
   transform: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header .reel-top-actions {
+html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-top-actions {
   grid-column: 2 !important;
-  grid-row: 1 !important;
   justify-self: end !important;
-  align-self: center !important;
   width: auto !important;
-  min-width: 0 !important;
   height: 27px !important;
   min-height: 27px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-end !important;
   gap: 5px !important;
-  overflow: visible !important;
-  transform: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill span {
-  display: none !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header :is(.security-pill,.round-top,.header-theme-switch) {
+html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.security-pill,.round-top,.header-theme-switch) {
   box-sizing: border-box !important;
   flex: 0 0 27px !important;
   width: 27px !important;
@@ -976,21 +1208,20 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-sha
   display: grid !important;
   place-items: center !important;
   border-radius: 50% !important;
-  transform: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-shared-header :is(.security-pill,.round-top,.header-theme-switch) svg {
-  display: block !important;
+html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.security-pill,.round-top,.header-theme-switch) svg {
   width: 13px !important;
   height: 13px !important;
   margin: 0 !important;
   transform: none !important;
 }
 
-/* Calendar: month is primary; Lists is the only companion surface. */
+/* Calendar: month + one switchable companion panel. */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
   grid-column: 1 !important;
   grid-row: 2 !important;
+  box-sizing: border-box !important;
   width: 100% !important;
   height: 100% !important;
   min-width: 0 !important;
@@ -998,46 +1229,15 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
   margin: 0 !important;
   padding: 0 !important;
   display: grid !important;
-  grid-template-columns: minmax(0,1fr) clamp(178px,23vw,196px) !important;
+  grid-template-columns: minmax(0,1fr) clamp(174px,23vw,196px) !important;
   grid-template-rows: minmax(0,1fr) !important;
-  grid-template-areas: "calendar lists" !important;
-  gap: var(--pls-gap) !important;
-  align-items: stretch !important;
+  grid-template-areas: "calendar companion" !important;
+  gap: 6px !important;
   overflow: hidden !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
   grid-area: calendar !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: grid !important;
-  grid-template-rows: 36px minmax(0,1fr) !important;
-  overflow: hidden !important;
-  border-radius: var(--pls-radius) !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
-  grid-area: lists !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block !important;
-  overflow: hidden !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column > .agenda-card,
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
-  display: none !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column > .tasks-card {
   box-sizing: border-box !important;
   width: 100% !important;
   height: 100% !important;
@@ -1045,23 +1245,88 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
   min-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
+  display: grid !important;
+  grid-template-rows: 35px minmax(0,1fr) !important;
+  overflow: hidden !important;
+  border-radius: var(--pl-radius) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+  grid-area: companion !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: 29px minmax(0,1fr) !important;
+  gap: 5px !important;
+  overflow: hidden !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel-switch {
+  box-sizing: border-box !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  height: 29px !important;
+  min-height: 29px !important;
+  margin: 0 !important;
+  padding: 2px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 2px !important;
+  border-radius: 9px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel-switch > button {
+  min-width: 0 !important;
+  height: 25px !important;
+  min-height: 25px !important;
+  padding: 0 4px !important;
+  border-radius: 7px !important;
+  font-size: 8.5px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .left-column > :is(.agenda-card,.tasks-card) {
+  grid-row: 2 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: var(--pl-radius) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root .left-column.compact-calendar-panel-agenda > .tasks-card,
+html[data-demo-viewport="phone-landscape"] body #root .left-column.compact-calendar-panel-lists > .agenda-card {
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root .left-column.compact-calendar-panel-agenda > .agenda-card,
+html[data-demo-viewport="phone-landscape"] body #root .left-column.compact-calendar-panel-lists > .tasks-card {
   display: flex !important;
   flex-direction: column !important;
-  overflow: hidden !important;
-  border-radius: var(--pls-radius) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .calendar-toolbar {
   box-sizing: border-box !important;
   width: 100% !important;
-  min-width: 0 !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  padding: 4px 7px 4px 10px !important;
+  height: 35px !important;
+  min-height: 35px !important;
+  padding: 4px 7px 4px 9px !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) auto !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .calendar-toolbar .section-kicker {
@@ -1074,10 +1339,9 @@ html[data-demo-viewport="phone-landscape"] body #root .calendar-toolbar h1 {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  font-size: 14px !important;
+  font-size: 13.5px !important;
   line-height: 1 !important;
-  font-weight: 720 !important;
-  letter-spacing: -.025em !important;
+  font-weight: 710 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .calendar-actions {
@@ -1085,24 +1349,19 @@ html[data-demo-viewport="phone-landscape"] body #root .calendar-actions {
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .calendar-actions button {
-  width: 26px !important;
-  min-width: 26px !important;
-  height: 26px !important;
-  min-height: 26px !important;
+  width: 25px !important;
+  min-width: 25px !important;
+  height: 25px !important;
+  min-height: 25px !important;
   padding: 0 !important;
   border-radius: 8px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .calendar-actions button svg {
-  width: 13px !important;
-  height: 13px !important;
-}
-
 html[data-demo-viewport="phone-landscape"] body #root .calendar-actions .today-button {
   width: auto !important;
-  min-width: 40px !important;
+  min-width: 39px !important;
   padding-inline: 6px !important;
-  font-size: 8.5px !important;
+  font-size: 8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .month-grid {
@@ -1118,35 +1377,23 @@ html[data-demo-viewport="phone-landscape"] body #root .month-grid {
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .weekday {
-  min-width: 0 !important;
-  padding: 4px 2px 2px !important;
-  font-size: 8px !important;
+  padding: 4px 1px 2px !important;
+  font-size: 7.8px !important;
   line-height: 1 !important;
-  font-weight: 700 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .calendar-day {
   min-width: 0 !important;
   min-height: 0 !important;
   height: auto !important;
-  padding: 3px 4px 2px !important;
+  padding: 3px !important;
   overflow: hidden !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .day-number {
-  min-height: 10px !important;
   margin: 0 0 2px !important;
   font-size: 9px !important;
   line-height: 1 !important;
-  font-weight: 660 !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root .day-events {
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 1px !important;
-  overflow: hidden !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .calendar-event {
@@ -1158,67 +1405,58 @@ html[data-demo-viewport="phone-landscape"] body #root .calendar-event {
   max-height: 10px !important;
   margin: 0 !important;
   padding: 0 3px !important;
-  display: block !important;
   overflow: hidden !important;
   border-radius: 4px !important;
-  font-size: 7.4px !important;
+  font-size: 7.2px !important;
   line-height: 10px !important;
-  font-weight: 590 !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root .calendar-event * {
-  display: inline !important;
-  font: inherit !important;
-  line-height: inherit !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .calendar-event:nth-child(n + 3) {
   display: none !important;
 }
 
-/* Lists rail */
-html[data-demo-viewport="phone-landscape"] body #root .tasks-card .card-heading {
+html[data-demo-viewport="phone-landscape"] body #root :is(.agenda-card,.tasks-card) .card-heading {
   box-sizing: border-box !important;
-  flex: 0 0 35px !important;
-  height: 35px !important;
-  min-height: 35px !important;
-  padding: 6px 7px 4px !important;
+  flex: 0 0 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 5px 7px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .tasks-card .section-kicker {
+html[data-demo-viewport="phone-landscape"] body #root :is(.agenda-card,.tasks-card) .section-kicker {
   display: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .tasks-card .card-heading h2 {
+html[data-demo-viewport="phone-landscape"] body #root :is(.agenda-card,.tasks-card) h2 {
   margin: 0 !important;
-  font-size: 11px !important;
+  font-size: 10px !important;
   line-height: 1 !important;
-  font-weight: 700 !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .task-add-button {
-  width: 26px !important;
-  min-width: 26px !important;
-  height: 26px !important;
-  min-height: 26px !important;
-  padding: 0 !important;
-  border-radius: 9px !important;
+html[data-demo-viewport="phone-landscape"] body #root .agenda-list {
+  box-sizing: border-box !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  padding: 0 6px 6px !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .task-composer {
-  flex: 0 0 34px !important;
-  min-height: 34px !important;
-  margin: 0 5px 4px !important;
-  padding: 4px !important;
-  border-radius: 9px !important;
+html[data-demo-viewport="phone-landscape"] body #root .agenda-day {
+  grid-template-columns: 42px minmax(0,1fr) !important;
+  gap: 4px !important;
+  padding: 5px 2px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .task-composer input {
-  height: 24px !important;
-  min-height: 24px !important;
-  font-size: 9px !important;
+html[data-demo-viewport="phone-landscape"] body #root .agenda-date strong {
+  font-size: 8px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root :is(.agenda-date span,.agenda-event,.agenda-events > small) {
+  font-size: 7.5px !important;
+  line-height: 1.15 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .task-list-scroll-shell {
@@ -1235,40 +1473,37 @@ html[data-demo-viewport="phone-landscape"] body #root .task-list {
   margin: 0 5px !important;
   padding: 0 !important;
   overflow-y: auto !important;
-  overflow-x: hidden !important;
   scrollbar-width: none !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .task-row {
-  min-height: 34px !important;
+  min-height: 33px !important;
   padding: 4px !important;
-  border-radius: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .task-row label {
-  gap: 5px !important;
-  font-size: 9.5px !important;
-  line-height: 1.15 !important;
+  font-size: 9px !important;
+  line-height: 1.1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control {
   box-sizing: border-box !important;
-  flex: 0 0 30px !important;
+  flex: 0 0 29px !important;
   width: calc(100% - 10px) !important;
-  height: 30px !important;
-  min-height: 30px !important;
+  height: 29px !important;
+  min-height: 29px !important;
   margin: 4px 5px 5px !important;
   padding: 2px !important;
-  border-radius: 10px !important;
+  border-radius: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control > button {
-  height: 25px !important;
-  min-height: 25px !important;
-  font-size: 8.5px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  font-size: 8px !important;
 }
 
-/* Home: rooms rail + selected-room workspace + icon utility bar. */
+/* Home landscape: horizontal room strip, selected room, centered tool bar. */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 {
   grid-column: 1 !important;
   grid-row: 2 !important;
@@ -1276,6 +1511,7 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   height: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
+  margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
 }
@@ -1287,45 +1523,47 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   min-height: 0 !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
-  grid-template-rows: minmax(0,1fr) 38px !important;
+  grid-template-rows: minmax(0,1fr) 37px !important;
   gap: 5px !important;
   overflow: hidden !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-room-grid.mobile-room-grid-v26 {
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .reel-room-grid.mobile-room-grid-v26 {
   display: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .desktop-room-workspace-v26 {
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-workspace-v26 {
   grid-column: 1 !important;
   grid-row: 1 !important;
   width: 100% !important;
   height: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   display: grid !important;
-  grid-template-columns: clamp(102px,14vw,116px) minmax(0,1fr) !important;
-  grid-template-rows: minmax(0,1fr) !important;
-  gap: 6px !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: 42px minmax(0,1fr) !important;
+  gap: 5px !important;
   overflow: hidden !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-strip-v26 {
   grid-column: 1 !important;
   grid-row: 1 !important;
-  width: clamp(102px,14vw,116px) !important;
-  min-width: clamp(102px,14vw,116px) !important;
-  max-width: clamp(102px,14vw,116px) !important;
-  height: 100% !important;
-  min-height: 0 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 42px !important;
+  min-height: 42px !important;
   margin: 0 !important;
-  padding: 0 1px 0 0 !important;
+  padding: 0 2px !important;
   display: flex !important;
-  flex-direction: column !important;
+  flex-direction: row !important;
   align-items: stretch !important;
-  gap: 4px !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  gap: 5px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
   scrollbar-width: none !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
@@ -1333,16 +1571,15 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-strip-v26 > button {
   box-sizing: border-box !important;
-  flex: 0 0 40px !important;
-  width: 100% !important;
-  min-width: 0 !important;
+  flex: 0 0 clamp(104px,17vw,128px) !important;
+  width: auto !important;
+  min-width: 104px !important;
   height: 40px !important;
   min-height: 40px !important;
   margin: 0 !important;
-  padding: 4px 5px !important;
+  padding: 4px 6px !important;
   display: grid !important;
   grid-template-columns: 24px minmax(0,1fr) !important;
-  align-items: center !important;
   gap: 5px !important;
   border-radius: 10px !important;
   overflow: hidden !important;
@@ -1355,14 +1592,9 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-tab-icon-v26
   border-radius: 8px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-tab-icon-v26 svg {
-  width: 13px !important;
-  height: 13px !important;
-}
-
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-tab-copy-v26 strong {
   font-size: 8.5px !important;
-  line-height: 1.05 !important;
+  line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-tab-copy-v26 small,
@@ -1371,8 +1603,8 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-strip-v26 > 
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-stage-v26 {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
+  grid-column: 1 !important;
+  grid-row: 2 !important;
   width: 100% !important;
   height: 100% !important;
   min-width: 0 !important;
@@ -1389,74 +1621,73 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   margin: 0 !important;
   padding: 6px !important;
   display: grid !important;
-  grid-template-rows: 34px minmax(0,1fr) !important;
-  gap: 5px !important;
+  grid-template-rows: 32px minmax(0,1fr) !important;
+  gap: 4px !important;
   overflow: hidden !important;
-  border-radius: var(--pls-radius) !important;
+  border-radius: var(--pl-radius) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-header-v32 {
   box-sizing: border-box !important;
-  min-height: 34px !important;
-  height: 34px !important;
+  min-height: 32px !important;
+  height: 32px !important;
   margin: 0 !important;
-  padding: 0 2px 6px !important;
+  padding: 0 2px 5px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-title-v32 {
-  gap: 7px !important;
+  gap: 6px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-title-v32 > span {
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  border-radius: 9px !important;
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  border-radius: 8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-title-v32 strong {
-  font-size: 11px !important;
+  font-size: 10.5px !important;
   line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-title-v32 small {
-  font-size: 8px !important;
+  font-size: 7.8px !important;
+  line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-temperature-v32 {
-  min-width: 44px !important;
-  height: 28px !important;
-  padding: 0 7px !important;
-  font-size: 13px !important;
+  min-width: 42px !important;
+  height: 27px !important;
+  padding: 0 6px !important;
+  font-size: 12px !important;
   border-radius: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-content-v32 {
+  box-sizing: border-box !important;
   width: 100% !important;
   height: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
   margin: 0 !important;
   display: grid !important;
-  grid-template-columns: minmax(0,1fr) clamp(132px,19vw,150px) !important;
+  grid-template-columns: minmax(0,1fr) clamp(138px,21vw,162px) !important;
   gap: 6px !important;
-  align-items: start !important;
+  align-items: stretch !important;
   overflow: hidden !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-controls-card-v32,
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-card-v32 {
+html[data-demo-viewport="phone-landscape"] body #root :is(.desktop-room-controls-card-v32,.desktop-room-status-card-v32) {
   box-sizing: border-box !important;
+  width: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
-  height: auto !important;
-  max-height: 100% !important;
-  align-self: start !important;
+  height: 100% !important;
   margin: 0 !important;
   padding: 6px !important;
-  overflow: auto !important;
-  border-radius: 11px !important;
-  scrollbar-width: none !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-controls-card-v32 {
@@ -1466,9 +1697,9 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-controls-car
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-section-head-v32 {
   box-sizing: border-box !important;
-  flex: 0 0 23px !important;
-  min-height: 23px !important;
-  height: 23px !important;
+  flex: 0 0 22px !important;
+  min-height: 22px !important;
+  height: 22px !important;
   margin: 0 0 4px !important;
   padding: 0 1px !important;
 }
@@ -1484,14 +1715,14 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-section-head
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-controls-body-v32 {
-  flex: 0 1 auto !important;
+  flex: 1 1 auto !important;
   width: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
   grid-template-rows: auto auto !important;
-  gap: 6px !important;
+  gap: 5px !important;
   align-content: start !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
@@ -1502,8 +1733,8 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-accessory-gr
   min-width: 0 !important;
   min-height: 0 !important;
   display: grid !important;
-  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
-  grid-auto-rows: 40px !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-auto-rows: 39px !important;
   gap: 4px !important;
   align-content: start !important;
   overflow: visible !important;
@@ -1513,77 +1744,66 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-device-v32 {
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 40px !important;
-  min-height: 40px !important;
-  max-height: 40px !important;
+  height: 39px !important;
+  min-height: 39px !important;
+  max-height: 39px !important;
   margin: 0 !important;
   padding: 4px 5px !important;
   display: grid !important;
-  grid-template-columns: 25px minmax(0,1fr) !important;
+  grid-template-columns: 24px minmax(0,1fr) !important;
   gap: 5px !important;
-  border-radius: 10px !important;
+  border-radius: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-device-icon-v32 {
-  width: 25px !important;
-  height: 25px !important;
-  min-width: 25px !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
   border-radius: 8px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-device-icon-v32 svg {
-  width: 13px !important;
-  height: 13px !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-device-copy-v32 {
-  gap: 2px !important;
-}
-
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-device-copy-v32 strong {
-  font-size: 8.5px !important;
+  font-size: 8px !important;
   line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-device-copy-v32 small {
-  font-size: 7.5px !important;
+  font-size: 7.4px !important;
   line-height: 1 !important;
 }
 
-/* Quick control is a second row, not a third visual column. */
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-v32,
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-empty-v32 {
+html[data-demo-viewport="phone-landscape"] body #root :is(.desktop-room-detail-v32,.desktop-room-detail-empty-v32) {
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
   margin: 0 !important;
   padding: 6px !important;
-  border-radius: 10px !important;
+  border-radius: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-v32 {
   display: grid !important;
-  grid-template-columns: minmax(0,1fr) 116px !important;
+  grid-template-columns: minmax(0,1fr) 112px !important;
   grid-template-rows: auto auto !important;
   grid-template-areas:
-    "detail-head detail-mode"
-    "detail-range detail-range" !important;
-  gap: 5px 7px !important;
+    "quick-head quick-mode"
+    "quick-range quick-range" !important;
+  gap: 4px 6px !important;
   align-items: center !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-v32.domain-cover {
   grid-template-columns: minmax(0,1fr) !important;
   grid-template-areas:
-    "detail-head"
-    "detail-range" !important;
+    "quick-head"
+    "quick-range" !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-head-v32 {
-  grid-area: detail-head !important;
+  grid-area: quick-head !important;
   min-width: 0 !important;
-  gap: 5px !important;
+  gap: 4px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-head-v32 small {
@@ -1592,92 +1812,81 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-head-
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-head-v32 strong {
   max-width: none !important;
-  font-size: 9px !important;
+  font-size: 8.5px !important;
   line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-head-v32 > div > span {
-  font-size: 7.5px !important;
+  font-size: 7px !important;
   line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-power-v32 {
-  flex: 0 0 27px !important;
-  width: 27px !important;
-  min-width: 27px !important;
-  max-width: 27px !important;
-  height: 27px !important;
-  min-height: 27px !important;
+  flex: 0 0 26px !important;
+  width: 26px !important;
+  min-width: 26px !important;
+  max-width: 26px !important;
+  height: 26px !important;
+  min-height: 26px !important;
   padding: 0 !important;
-  border-radius: 9px !important;
+  border-radius: 8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-power-v32 span {
   display: none !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-power-v32 svg {
-  width: 12px !important;
-  height: 12px !important;
-}
-
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32 {
-  grid-area: detail-mode !important;
-  width: 116px !important;
-  min-width: 0 !important;
-  height: 27px !important;
+  grid-area: quick-mode !important;
+  width: 112px !important;
+  height: 26px !important;
+  min-height: 26px !important;
   margin: 0 !important;
   padding: 2px !important;
   gap: 2px !important;
-  border-radius: 9px !important;
+  border-radius: 8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32 > button {
-  height: 23px !important;
-  min-height: 23px !important;
-  padding: 0 4px !important;
-  gap: 3px !important;
-  border-radius: 7px !important;
-  font-size: 7px !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  padding: 0 3px !important;
+  gap: 2px !important;
+  border-radius: 6px !important;
+  font-size: 6.8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32 > button svg {
-  width: 10px !important;
-  height: 10px !important;
+  width: 9px !important;
+  height: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 {
-  grid-area: detail-range !important;
+  grid-area: quick-range !important;
   margin: 0 !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 > div {
-  margin: 0 !important;
-  font-size: 8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 > div :is(span,b) {
-  font-size: 8px !important;
+  font-size: 7.8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 input[type="range"] {
-  height: 22px !important;
-  margin: 2px 0 0 !important;
+  height: 20px !important;
+  margin: 1px 0 0 !important;
 }
 
-/* Status stays readable and independently scrollable. */
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-card-v32 {
   display: flex !important;
   flex-direction: column !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-grid-v32 {
-  flex: 0 1 auto !important;
+  flex: 1 1 auto !important;
   min-width: 0 !important;
   min-height: 0 !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
-  grid-auto-rows: 38px !important;
+  grid-auto-rows: 36px !important;
   gap: 4px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
@@ -1687,26 +1896,22 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-grid-
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-row-v32 {
   box-sizing: border-box !important;
   min-width: 0 !important;
-  min-height: 38px !important;
-  height: 38px !important;
+  min-height: 36px !important;
+  height: 36px !important;
   padding: 4px 5px !important;
-  grid-template-columns: 25px minmax(0,1fr) !important;
+  grid-template-columns: 24px minmax(0,1fr) !important;
   gap: 5px !important;
   border-radius: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-icon-v32 {
-  width: 25px !important;
-  height: 25px !important;
+  width: 24px !important;
+  height: 24px !important;
   border-radius: 8px !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-icon-v32 svg {
-  width: 12px !important;
-  height: 12px !important;
-}
-
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-row-v32 > div {
+  min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
@@ -1716,27 +1921,28 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-row-v
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-row-v32 strong {
   width: 100% !important;
-  font-size: 8px !important;
+  font-size: 7.8px !important;
   line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-row-v32 small {
   width: 100% !important;
   margin: 0 !important;
-  font-size: 7.5px !important;
+  font-size: 7.2px !important;
   line-height: 1 !important;
   text-align: left !important;
 }
 
-/* Utility bar: icon-only, fixed optical centre, same real handlers. */
+/* Only tools remain in the landscape secondary bar. */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 > .reel-dashboard > .reel-side {
   grid-column: 1 !important;
   grid-row: 2 !important;
+  box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
+  height: 37px !important;
+  min-height: 37px !important;
+  max-height: 37px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
@@ -1753,11 +1959,12 @@ html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-g
   box-sizing: border-box !important;
   width: auto !important;
   max-width: 100% !important;
-  height: 38px !important;
-  min-height: 38px !important;
+  height: 37px !important;
+  min-height: 37px !important;
   margin: 0 auto !important;
   padding: 0 2px !important;
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 5px !important;
@@ -1770,20 +1977,20 @@ html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-g
 
 html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-grid > button {
   box-sizing: border-box !important;
-  flex: 0 0 35px !important;
-  width: 35px !important;
-  min-width: 35px !important;
-  max-width: 35px !important;
-  height: 35px !important;
-  min-height: 35px !important;
-  max-height: 35px !important;
+  flex: 0 0 34px !important;
+  width: 34px !important;
+  min-width: 34px !important;
+  max-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: grid !important;
+  grid-template-columns: 34px !important;
+  grid-template-rows: 34px !important;
   place-items: center !important;
-  grid-template-columns: 35px !important;
-  grid-template-rows: 35px !important;
-  border-radius: 11px !important;
+  border-radius: 10px !important;
   overflow: hidden !important;
 }
 
@@ -1794,12 +2001,8 @@ html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-g
   position: static !important;
   inset: auto !important;
   display: block !important;
-  width: 16px !important;
-  min-width: 16px !important;
-  max-width: 16px !important;
-  height: 16px !important;
-  min-height: 16px !important;
-  max-height: 16px !important;
+  width: 15px !important;
+  height: 15px !important;
   margin: 0 !important;
   padding: 0 !important;
   transform: none !important;
@@ -1810,19 +2013,22 @@ html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-g
   display: none !important;
 }
 
-/* Dock: isolated from content and safe-area aware. */
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell {
-  z-index: 100 !important;
-  bottom: max(4px, env(safe-area-inset-bottom, 0px)) !important;
+  position: fixed !important;
+  z-index: 120 !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(4px,env(safe-area-inset-bottom,0px)) !important;
+  width: 190px !important;
+  max-width: calc(100vw - 24px) !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control,
-html[data-demo-viewport="phone-landscape"] body #root .page-dock {
-  min-height: 30px !important;
+html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control {
+  width: 100% !important;
   height: 30px !important;
+  min-height: 30px !important;
   padding: 3px !important;
+  border-radius: 11px !important;
 }
-
-/* -------------------------------------------------------------------------- */
-/* XL desktop and phone portrait intentionally use the established contracts. */
-/* -------------------------------------------------------------------------- */
