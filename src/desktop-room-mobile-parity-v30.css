@@ -178,11 +178,11 @@
     min-height: 58px !important;
     max-height: 58px !important;
     margin: 0 !important;
-    padding: 8px !important;
+    padding: 6px !important;
     display: grid !important;
-    grid-template-columns: 36px minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
     align-items: center !important;
-    gap: 9px !important;
+    gap: 6px !important;
     border: 1px solid var(--lg-line-soft, rgba(60,60,67,.08)) !important;
     border-radius: 15px !important;
     background: rgba(118,118,128,.05) !important;
@@ -193,9 +193,89 @@
     transform: none !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-device-v32:hover:not(:disabled) {
+  main.app-shell.home-page-active .desktop-room-device-v32:hover:not(.unavailable) {
     border-color: color-mix(in srgb, var(--desktop-room-accent) 30%, var(--lg-line-soft, rgba(60,60,67,.08))) !important;
     background: color-mix(in srgb, var(--desktop-room-accent) 6%, rgba(118,118,128,.05)) !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-device-main-v40 {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 2px !important;
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 9px !important;
+    border: 0 !important;
+    border-radius: 11px !important;
+    background: transparent !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    text-align: left !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-device-main-v40:disabled {
+    cursor: default !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-device-power-v40 {
+    box-sizing: border-box !important;
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid rgba(60,60,67,.10) !important;
+    border-radius: 10px !important;
+    background: rgba(118,118,128,.075) !important;
+    color: var(--home-secondary, #6e6e73) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.64) !important;
+    cursor: pointer !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-device-power-v40 svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-device-power-v40.active {
+    border-color: color-mix(in srgb, var(--desktop-room-accent) 46%, rgba(60,60,67,.10)) !important;
+    background: var(--desktop-room-accent) !important;
+    color: #fff !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.24) !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-device-power-v40:active:not(:disabled) {
+    transform: scale(.92) !important;
+  }
+
+  main.app-shell.home-page-active.night .desktop-room-device-power-v40 {
+    border-color: rgba(255,255,255,.08) !important;
+    background: rgba(255,255,255,.065) !important;
+    color: #b8b8bd !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+  }
+
+  main.app-shell.home-page-active.night .desktop-room-device-power-v40.active {
+    border-color: var(--desktop-room-accent) !important;
+    background: var(--desktop-room-accent) !important;
+    color: #fff !important;
+  }
+
+  main.app-shell.home-page-active .desktop-room-device-v32.unavailable {
+    opacity: .52 !important;
   }
 
   main.app-shell.home-page-active .desktop-room-device-v32.active {
