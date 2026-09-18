@@ -1669,6 +1669,8 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel-switch {
+  position: relative !important;
+  isolation: isolate !important;
   box-sizing: border-box !important;
   grid-row: 1 !important;
   width: 100% !important;
@@ -1677,18 +1679,26 @@ html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel
   margin: 0 !important;
   padding: 2px !important;
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
   gap: 2px !important;
-  border-radius: 9px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel-switch > button {
+  position: relative !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
   min-width: 0 !important;
-  height: 25px !important;
-  min-height: 25px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
   padding: 0 4px !important;
-  border-radius: 7px !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
   font-size: 8.5px !important;
+  line-height: 1 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .left-column > :is(.agenda-card,.tasks-card) {
@@ -1911,6 +1921,8 @@ html[data-demo-viewport="phone-landscape"] body #root .tasks-card .swipe-delete-
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control {
+  position: relative !important;
+  isolation: isolate !important;
   box-sizing: border-box !important;
   flex: 0 0 29px !important;
   width: calc(100% - 10px) !important;
@@ -1918,13 +1930,40 @@ html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmen
   min-height: 29px !important;
   margin: 4px 5px 5px !important;
   padding: 2px !important;
-  border-radius: 9px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  gap: 2px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control::before {
+  top: 2px !important;
+  bottom: 2px !important;
+  left: 2px !important;
+  width: calc((100% - 6px) / 2) !important;
+  border-radius: 999px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control:has(> button:nth-of-type(2).active)::before {
+  transform: translate3d(calc(100% + 2px),0,0) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmented-control > button {
-  height: 24px !important;
-  min-height: 24px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 4px !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
   font-size: 8px !important;
+  line-height: 1 !important;
 }
 
 /* Home landscape: horizontal room strip, selected room, centered tool bar. */
@@ -2295,7 +2334,7 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32 {
   grid-template-columns: repeat(2,minmax(0,1fr)) !important;
   gap: 2px !important;
   overflow: hidden !important;
-  border-radius: 9px !important;
+  border-radius: 999px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32::before {
@@ -2306,7 +2345,7 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32::be
   bottom: 2px !important;
   left: 2px !important;
   width: calc((100% - 6px) / 2) !important;
-  border-radius: 7px !important;
+  border-radius: 999px !important;
   background: rgba(255,255,255,.96) !important;
   box-shadow: 0 1px 4px rgba(0,0,0,.07) !important;
   transform: translate3d(0,0,0) !important;
@@ -2331,7 +2370,7 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32 > b
   align-items: center !important;
   justify-content: center !important;
   gap: 3px !important;
-  border-radius: 7px !important;
+  border-radius: 999px !important;
   background: transparent !important;
   box-shadow: none !important;
   font-size: 7.4px !important;
@@ -2470,8 +2509,12 @@ html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-g
   grid-template-columns: minmax(0,1fr) !important;
   grid-template-rows: minmax(0,1fr) !important;
   place-items: center !important;
-  border-radius: 10px !important;
   overflow: hidden !important;
+  border: 1px solid var(--pl-line) !important;
+  border-radius: 10px !important;
+  background: var(--pl-fill) !important;
+  color: var(--pl-secondary) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.46) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-grid > button > svg {
@@ -2482,13 +2525,14 @@ html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-g
   inset: auto !important;
   display: block !important;
   box-sizing: border-box !important;
-  width: 28px !important;
-  min-width: 28px !important;
-  height: 28px !important;
-  min-height: 28px !important;
+  width: 17px !important;
+  min-width: 17px !important;
+  height: 17px !important;
+  min-height: 17px !important;
   margin: 0 !important;
-  padding: 6px !important;
-  border-radius: 9px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
   transform: none !important;
   translate: none !important;
 }
@@ -2510,13 +2554,19 @@ html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell {
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control {
+  position: relative !important;
+  isolation: isolate !important;
+  box-sizing: border-box !important;
   width: 100% !important;
   height: 30px !important;
   min-height: 30px !important;
   margin: 0 !important;
   padding: 3px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
   gap: 3px !important;
-  border-radius: 11px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control::before {
@@ -2524,7 +2574,7 @@ html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-s
   bottom: 3px !important;
   left: 3px !important;
   width: calc((100% - 9px) / 2) !important;
-  border-radius: 8px !important;
+  border-radius: 999px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control:has(> button:nth-of-type(2).active)::before {
@@ -2544,7 +2594,23 @@ html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-switch-control > button {
-  border-radius: 8px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
 }
 
 /* -------------------------------------------------------------------------- */
