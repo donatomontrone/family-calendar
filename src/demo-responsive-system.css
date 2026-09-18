@@ -1087,40 +1087,6 @@ html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-port
   grid-row: auto !important;
 }
 
-/* Make utility labels deterministic outside phone landscape. */
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button {
-  box-sizing: border-box !important;
-  min-width: 0 !important;
-  padding: 8px 7px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 5px !important;
-  text-align: center !important;
-}
-
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button > svg {
-  flex: 0 0 auto !important;
-  width: 17px !important;
-  height: 17px !important;
-  margin: 0 !important;
-  position: static !important;
-  transform: none !important;
-}
-
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button > span {
-  display: block !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  text-align: center !important;
-}
-
-/* -------------------------------------------------------------------------- */
 /* Adaptive controls — component-specific contracts, shared visual language       */
 /* -------------------------------------------------------------------------- */
 
@@ -1216,7 +1182,7 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
 }
 
 /* Lists selector: compact but still finger-friendly. */
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .tasks-card > .task-segmented-control {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card > .task-segmented-control {
   position: relative !important;
   isolation: isolate !important;
   box-sizing: border-box !important;
@@ -1235,7 +1201,7 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
   box-shadow: inset 0 1px 2px rgba(0,0,0,.025) !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .tasks-card > .task-segmented-control::before {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card > .task-segmented-control::before {
   content: "" !important;
   position: absolute !important;
   z-index: 0 !important;
@@ -1251,16 +1217,16 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
   pointer-events: none !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .tasks-card > .task-segmented-control:has(> button:nth-of-type(2).active)::before {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card > .task-segmented-control:has(> button:nth-of-type(2).active)::before {
   transform: translate3d(calc(100% + 3px),0,0) !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .tasks-card > .task-segmented-control.segment-dragging::before {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card > .task-segmented-control.segment-dragging::before {
   transform: translate3d(var(--segment-drag-offset,0px),0,0) !important;
   transition: none !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .tasks-card > .task-segmented-control > button {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card > .task-segmented-control > button {
   position: relative !important;
   z-index: 1 !important;
   box-sizing: border-box !important;
@@ -1280,12 +1246,12 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
   font-weight: 650 !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .tasks-card > .task-segmented-control > button.active {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card > .task-segmented-control > button.active {
   color: var(--ad-seg-active) !important;
 }
 
 /* Selected-light mode: wider than the old compact capsule so both labels fit. */
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .desktop-room-mode-v32 {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32 {
   position: relative !important;
   isolation: isolate !important;
   box-sizing: border-box !important;
@@ -1304,7 +1270,7 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
   box-shadow: inset 0 1px 2px rgba(0,0,0,.025) !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .desktop-room-mode-v32::before {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32::before {
   content: "" !important;
   position: absolute !important;
   z-index: 0 !important;
@@ -1320,16 +1286,16 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
   pointer-events: none !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .desktop-room-mode-v32:has(> button:nth-of-type(2).active)::before {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32:has(> button:nth-of-type(2).active)::before {
   transform: translate3d(calc(100% + 3px),0,0) !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .desktop-room-mode-v32.segment-dragging::before {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32.segment-dragging::before {
   transform: translate3d(var(--segment-drag-offset,0px),0,0) !important;
   transition: none !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .desktop-room-mode-v32 > button {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32 > button {
   position: relative !important;
   z-index: 1 !important;
   box-sizing: border-box !important;
@@ -1355,11 +1321,11 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
   white-space: nowrap !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .desktop-room-mode-v32 > button.active {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32 > button.active {
   color: var(--ad-seg-active) !important;
 }
 
-html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root .desktop-room-mode-v32 > button svg {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32 > button svg {
   flex: 0 0 auto !important;
   width: 13px !important;
   height: 13px !important;
@@ -1396,7 +1362,7 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
 }
 
 /* Utility row: explicit rows keep icon and label visible and optically centred. */
-html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .reel-side > .reel-tools-grid {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 .reel-side > .reel-tools-grid {
   width: 100% !important;
   max-width: none !important;
   display: grid !important;
@@ -1404,7 +1370,7 @@ html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) 
   gap: 6px !important;
 }
 
-html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 .reel-tools-grid > button {
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
@@ -1422,7 +1388,7 @@ html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) 
   border-radius: 13px !important;
 }
 
-html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button > svg {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 .reel-tools-grid > button > svg {
   grid-row: 1 !important;
   place-self: center !important;
   box-sizing: border-box !important;
@@ -1439,7 +1405,7 @@ html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) 
   transform: none !important;
 }
 
-html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active .reel-tools-grid > button > span {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active > .reel-home.home-refactor-v4 .reel-tools-grid > button > span {
   grid-row: 2 !important;
   align-self: center !important;
   display: block !important;
@@ -1458,15 +1424,9 @@ html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) 
   text-align: center !important;
 }
 
-html:is([data-demo-viewport="desktop"],[data-demo-viewport="tablet-landscape"]) body #root main.app-shell.home-page-active.night .reel-tools-grid > button > svg {
+html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active.night > .reel-home.home-refactor-v4 .reel-tools-grid > button > svg {
   border-color: rgba(255,255,255,.07) !important;
   background: rgba(255,255,255,.065) !important;
-}
-
-/* Tablet portrait keeps its 3-column mobile-derived utility matrix. */
-html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.home-page-active .reel-tools-grid > button > svg {
-  margin-inline: auto !important;
-  transform: none !important;
 }
 
 /* -------------------------------------------------------------------------- */
