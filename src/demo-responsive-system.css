@@ -1855,6 +1855,43 @@ html[data-demo-viewport="phone-landscape"] body #root .task-row label {
 }
 
 
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .tasks-card :is(.swipe-task-row,.task-row.swipe-task-row) {
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  border-radius: 9px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .tasks-card .swipe-delete-action {
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  border-radius: 9px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .tasks-card .task-row-content {
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  padding: 0 5px !important;
+  border-radius: 9px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .tasks-card .task-row-content > label {
+  height: 36px !important;
+  min-height: 36px !important;
+  grid-template-columns: 18px minmax(0,1fr) !important;
+  gap: 6px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .tasks-card .task-check-indicator {
+  width: 17px !important;
+  min-width: 17px !important;
+  height: 17px !important;
+  min-height: 17px !important;
+}
+
+
 html[data-demo-viewport="phone-landscape"] body #root .tasks-card .task-add-button {
   box-sizing: border-box !important;
   width: 24px !important;
@@ -2144,24 +2181,26 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-controls-bod
   min-width: 0 !important;
   min-height: 0 !important;
   display: grid !important;
-  grid-template-columns: minmax(0,1fr) !important;
-  grid-template-rows: auto auto !important;
-  gap: 5px !important;
-  align-content: start !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  scrollbar-width: none !important;
+  grid-template-columns: minmax(180px, .82fr) minmax(230px, 1.18fr) !important;
+  grid-template-rows: minmax(0,1fr) !important;
+  gap: 6px !important;
+  align-items: stretch !important;
+  align-content: stretch !important;
+  overflow: hidden !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-accessory-grid-v32 {
   min-width: 0 !important;
   min-height: 0 !important;
+  height: 100% !important;
   display: grid !important;
-  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-template-columns: minmax(0,1fr) !important;
   grid-auto-rows: 39px !important;
   gap: 4px !important;
   align-content: start !important;
-  overflow: visible !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-device-v32 {
@@ -2237,34 +2276,32 @@ html[data-demo-viewport="phone-landscape"] body #root :is(.desktop-room-detail-v
   width: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
+  height: 100% !important;
   margin: 0 !important;
-  padding: 6px !important;
+  padding: 5px 6px !important;
+  overflow: hidden !important;
   border-radius: 9px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-v32 {
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
-  grid-template-rows: auto auto auto !important;
+  grid-template-rows: 28px minmax(0,1fr) !important;
   grid-template-areas:
-    "quick-head"
     "quick-mode"
     "quick-range" !important;
-  gap: 4px !important;
-  align-items: center !important;
+  gap: 3px !important;
+  align-items: stretch !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-v32.domain-cover {
   grid-template-columns: minmax(0,1fr) !important;
-  grid-template-areas:
-    "quick-head"
-    "quick-range" !important;
+  grid-template-rows: minmax(0,1fr) !important;
+  grid-template-areas: "quick-range" !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-head-v32 {
-  grid-area: quick-head !important;
-  min-width: 0 !important;
-  gap: 4px !important;
+  display: none !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-detail-head-v32 small {
@@ -2286,7 +2323,8 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32 {
   grid-area: quick-mode !important;
   position: relative !important;
   isolation: isolate !important;
-  width: min(100%, 190px) !important;
+  width: 100% !important;
+  max-width: none !important;
   height: 28px !important;
   min-height: 28px !important;
   margin: 0 !important;
@@ -2347,7 +2385,10 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-mode-v32 > b
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 {
   grid-area: quick-range !important;
+  min-height: 0 !important;
   margin: 0 !important;
+  align-self: stretch !important;
+  overflow: hidden !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 > div :is(span,b) {
@@ -2355,8 +2396,8 @@ html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 > 
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-range-v32 input[type="range"] {
-  height: 20px !important;
-  margin: 1px 0 0 !important;
+  height: 18px !important;
+  margin: 0 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root .desktop-room-status-card-v32 {
