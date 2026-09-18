@@ -418,31 +418,6 @@
     line-height: 1 !important;
   }
 
-  main.app-shell.home-page-active .desktop-room-power-v32 {
-    flex: 0 0 auto !important;
-    min-width: 76px !important;
-    height: 34px !important;
-    padding: 0 10px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    border: 1px solid var(--home-border-soft, rgba(60,60,67,.08)) !important;
-    border-radius: 11px !important;
-    background: rgba(118,118,128,.06) !important;
-    color: var(--home-secondary, #6e6e73) !important;
-    font-size: 9.5px !important;
-    font-weight: 650 !important;
-  }
-
-  main.app-shell.home-page-active .desktop-room-power-v32 svg { width: 14px !important; height: 14px !important; }
-
-  main.app-shell.home-page-active .desktop-room-power-v32.active {
-    border-color: var(--desktop-room-accent) !important;
-    background: var(--desktop-room-accent) !important;
-    color: #fff !important;
-  }
-
   main.app-shell.home-page-active .desktop-room-mode-v32 {
     margin-top: 14px !important;
     padding: 3px !important;
