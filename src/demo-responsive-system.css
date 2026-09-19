@@ -3874,7 +3874,7 @@ html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-s
 /* PHONE LANDSCAPE V46 — exact room accents, light-mode motion and spacing */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-workspace-v26 {
   box-sizing: border-box !important;
-  padding-top: 3px !important;
+  padding-top: 6px !important;
   grid-template-rows: 39px minmax(0, 1fr) !important;
 }
 
