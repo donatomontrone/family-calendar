@@ -1787,9 +1787,11 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
   margin: 0 !important;
   padding: 0 !important;
   display: grid !important;
-  grid-template-columns: minmax(0,1fr) clamp(174px,23vw,196px) !important;
-  grid-template-rows: minmax(0,1fr) !important;
-  grid-template-areas: "calendar companion" !important;
+  grid-template-columns: minmax(0,1fr) clamp(184px,24vw,204px) !important;
+  grid-template-rows: minmax(0,1fr) 94px !important;
+  grid-template-areas:
+    "calendar companion"
+    "calendar devices" !important;
   gap: 6px !important;
   overflow: hidden !important;
 }
@@ -1826,10 +1828,24 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
-  display: none !important;
+  grid-area: devices !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 94px !important;
+  min-width: 0 !important;
+  min-height: 94px !important;
+  max-height: 94px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  overflow: hidden !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel-switch {
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .responsive-calendar-panel-switch {
+  --calendar-switch-bg: rgba(118,118,128,.10);
+  --calendar-switch-thumb: rgba(255,255,255,.96);
+  --calendar-switch-text: #77777d;
+  --calendar-switch-active: #1d1d1f;
   position: relative !important;
   isolation: isolate !important;
   box-sizing: border-box !important;
@@ -1843,10 +1859,40 @@ html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel
   grid-template-columns: repeat(2,minmax(0,1fr)) !important;
   gap: 2px !important;
   overflow: hidden !important;
+  border: 1px solid var(--pl-line) !important;
   border-radius: 999px !important;
+  background: var(--calendar-switch-bg) !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.025) !important;
+  backdrop-filter: blur(16px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel-switch > button {
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .responsive-calendar-panel-switch::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  top: 2px !important;
+  bottom: 2px !important;
+  left: 2px !important;
+  width: calc((100% - 6px) / 2) !important;
+  border-radius: 999px !important;
+  background: var(--calendar-switch-thumb) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.075), inset 0 1px 0 rgba(255,255,255,.84) !important;
+  transform: translate3d(0,0,0) !important;
+  transition: transform .28s cubic-bezier(.22,.86,.28,1), background-color .18s ease !important;
+  pointer-events: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .responsive-calendar-panel-switch:has(> button:nth-of-type(2).active)::before {
+  transform: translate3d(calc(100% + 2px),0,0) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .responsive-calendar-panel-switch.segment-dragging::before {
+  transform: translate3d(var(--segment-drag-offset,0px),0,0) !important;
+  transition: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .responsive-calendar-panel-switch > button {
   position: relative !important;
   z-index: 1 !important;
   box-sizing: border-box !important;
@@ -1854,12 +1900,35 @@ html[data-demo-viewport="phone-landscape"] body #root .responsive-calendar-panel
   height: auto !important;
   min-height: 0 !important;
   margin: 0 !important;
-  padding: 0 4px !important;
+  padding: 0 5px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
   border-radius: 999px !important;
   background: transparent !important;
   box-shadow: none !important;
+  color: var(--calendar-switch-text) !important;
   font-size: 8.5px !important;
   line-height: 1 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.01em !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .responsive-calendar-panel-switch > button.active {
+  color: var(--calendar-switch-active) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.night.calendar-page-active .responsive-calendar-panel-switch {
+  --calendar-switch-bg: rgba(255,255,255,.075);
+  --calendar-switch-thumb: rgba(84,84,89,.94);
+  --calendar-switch-text: #9a9aa0;
+  --calendar-switch-active: #fff;
+  border-color: rgba(255,255,255,.07) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.night.calendar-page-active .responsive-calendar-panel-switch::before {
+  box-shadow: 0 1px 4px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.045) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .left-column > :is(.agenda-card,.tasks-card) {
@@ -2162,6 +2231,289 @@ html[data-demo-viewport="phone-landscape"] body #root .tasks-card > .task-segmen
   box-shadow: none !important;
   font-size: 8px !important;
   line-height: 1 !important;
+}
+
+
+/* Calendar landscape devices: persistent compact Home surface in the right rail. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .right-column > .home-card {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 94px !important;
+  min-width: 0 !important;
+  min-height: 94px !important;
+  max-height: 94px !important;
+  margin: 0 !important;
+  padding: 5px !important;
+  display: block !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  border-radius: var(--pl-radius) !important;
+  scroll-behavior: smooth !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .right-column > .home-card::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .home-heading {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  margin: 0 0 3px !important;
+  padding: 0 1px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .home-heading .section-kicker {
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .home-heading h2 {
+  margin: 0 !important;
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: -.018em !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .power-all {
+  box-sizing: border-box !important;
+  flex: 0 0 20px !important;
+  width: 20px !important;
+  min-width: 20px !important;
+  max-width: 20px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 7px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .power-all svg {
+  width: 10px !important;
+  height: 10px !important;
+  margin: 0 !important;
+}
+
+/* Room choices wrap inside the same scrollable card, so the card is the only
+ * scroll container introduced by this compact Home surface. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 0 4px !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 3px !important;
+  overflow: visible !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button {
+  box-sizing: border-box !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  border-radius: 999px !important;
+  font-size: 7.2px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .room-switcher.room-chip-strip > button svg {
+  width: 9px !important;
+  height: 9px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .room-chip-dot {
+  width: 5px !important;
+  height: 5px !important;
+  min-width: 5px !important;
+  border-radius: 50% !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .device-heading {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 18px !important;
+  min-height: 18px !important;
+  margin: 0 0 3px !important;
+  padding: 0 1px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 5px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .device-heading h3 {
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  font-weight: 680 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .device-heading > span {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  font-size: 6.8px !important;
+  line-height: 1 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-grid {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-auto-rows: 38px !important;
+  gap: 4px !important;
+  overflow: visible !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-tile {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  margin: 0 !important;
+  padding: 3px !important;
+  overflow: hidden !important;
+  border-radius: 9px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-main {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  margin: 0 !important;
+  padding: 2px 19px 2px 3px !important;
+  display: grid !important;
+  grid-template-columns: 20px minmax(0,1fr) !important;
+  grid-template-rows: 1fr 1fr !important;
+  grid-template-areas:
+    "entity-icon entity-name"
+    "entity-icon entity-status" !important;
+  align-items: center !important;
+  column-gap: 4px !important;
+  row-gap: 0 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-icon {
+  grid-area: entity-icon !important;
+  place-self: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  margin: 0 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-icon svg {
+  width: 11px !important;
+  height: 11px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-main strong {
+  grid-area: entity-name !important;
+  align-self: end !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 7.2px !important;
+  line-height: 1 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-main small {
+  grid-area: entity-status !important;
+  align-self: start !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 1px 0 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 6.4px !important;
+  line-height: 1 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .favorite-button {
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .control-button {
+  right: 3px !important;
+  bottom: 10px !important;
+  width: 16px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 5px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .control-button svg {
+  width: 9px !important;
+  height: 9px !important;
+}
+
+/* ScrollRegion's extra affordance is not useful here because the card itself
+ * owns scrolling in this compact composition. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .scroll-bottom-button {
+  display: none !important;
 }
 
 /* Home landscape: horizontal room strip, selected room, centered tool bar. */
