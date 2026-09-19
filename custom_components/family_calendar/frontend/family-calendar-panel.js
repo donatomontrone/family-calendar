@@ -23378,16 +23378,34 @@ function Or({ hass: e, demo: t = !1 }) {
 							children: [
 								/* @__PURE__ */ (0, O.jsxs)("div", {
 									className: "card-heading split home-heading",
-									children: [/* @__PURE__ */ (0, O.jsxs)("div", { children: [/* @__PURE__ */ (0, O.jsx)("span", {
-										className: "section-kicker",
-										children: j("smartHome", n)
-									}), /* @__PURE__ */ (0, O.jsx)("h2", { children: j("home", n) })] }), /* @__PURE__ */ (0, O.jsx)("button", {
-										className: "power-all",
-										onClick: () => void Ee(),
-										"aria-label": j("turnOffAll", n),
-										title: j("turnOffAll", n),
-										children: /* @__PURE__ */ (0, O.jsx)(zr, {})
-									})]
+									children: [
+										/* @__PURE__ */ (0, O.jsxs)("div", { children: [/* @__PURE__ */ (0, O.jsx)("span", {
+											className: "section-kicker",
+											children: j("smartHome", n)
+										}), /* @__PURE__ */ (0, O.jsx)("h2", { children: j("home", n) })] }),
+										t && /* @__PURE__ */ (0, O.jsxs)("select", {
+											className: "calendar-landscape-room-select",
+											"aria-label": j("room", n),
+											value: d,
+											onChange: (e) => {
+												f(e.target.value), te(null);
+											},
+											children: [/* @__PURE__ */ (0, O.jsx)("option", {
+												value: "__favorites",
+												children: j("favorites", n)
+											}), a.map((e) => /* @__PURE__ */ (0, O.jsx)("option", {
+												value: e.area_id,
+												children: e.name
+											}, e.area_id))]
+										}),
+										/* @__PURE__ */ (0, O.jsx)("button", {
+											className: "power-all",
+											onClick: () => void Ee(),
+											"aria-label": j("turnOffAll", n),
+											title: j("turnOffAll", n),
+											children: /* @__PURE__ */ (0, O.jsx)(zr, {})
+										})
+									]
 								}),
 								/* @__PURE__ */ (0, O.jsxs)("div", {
 									className: "room-switcher room-chip-strip",
