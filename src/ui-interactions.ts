@@ -310,7 +310,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
 
   const roomStripFromTarget = (target: EventTarget | null) => {
     if (!(target instanceof Element)) return null;
-    return target.closest<HTMLElement>(".room-chip-strip, .desktop-room-strip-v26");
+    return target.closest<HTMLElement>(".room-chip-strip, .desktop-room-strip-v26, .calendar-page-active .home-card .entity-grid");
   };
 
   const syncSegmentWidth = () => {
