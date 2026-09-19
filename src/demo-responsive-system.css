@@ -1328,8 +1328,8 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
 
 html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32 > button svg {
   flex: 0 0 auto !important;
-  width: 13px !important;
-  height: 13px !important;
+  width: 14px !important;
+  height: 14px !important;
   margin: 0 !important;
   padding: 0 !important;
   transform: none !important;
@@ -1338,12 +1338,12 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
 /* Lists actions stay visually subordinate to their content. */
 html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) body #root main.app-shell.calendar-page-active .tasks-card .task-add-button {
   box-sizing: border-box !important;
-  width: 28px !important;
-  min-width: 28px !important;
-  max-width: 28px !important;
-  height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 18px !important;
+  min-height: 18px !important;
+  max-height: 30px !important;
   padding: 0 !important;
   border-radius: 9px !important;
 }
@@ -1393,10 +1393,10 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
   grid-row: 1 !important;
   place-self: center !important;
   box-sizing: border-box !important;
-  width: 28px !important;
-  min-width: 28px !important;
-  height: 28px !important;
-  min-height: 28px !important;
+  width: 26px !important;
+  min-width: 26px !important;
+  height: 26px !important;
+  min-height: 26px !important;
   margin: 0 !important;
   padding: 5px !important;
   display: block !important;
@@ -1644,8 +1644,9 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .weather-pill >
   grid-area: weather-icon !important;
   place-self: center !important;
   display: block !important;
-  width: 14px !important;
-  height: 14px !important;
+  flex: 0 0 auto !important;
+  width: 11px !important;
+  height: 11px !important;
   margin: 0 !important;
 }
 
@@ -3233,11 +3234,16 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   .desktop-room-controls-card-v32,
   .desktop-room-status-card-v32
 ) {
-  padding: 7px !important;
-  border: 1px solid var(--pl-line) !important;
-  border-radius: 15px !important;
-  background: color-mix(in srgb, var(--pl-panel) 96%, var(--desktop-room-accent) 4%) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.48) !important;
+  padding: 5px 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-card-v32 {
+  padding-left: 10px !important;
+  border-left: 1px solid var(--pl-line) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-section-head-v32 {
@@ -3329,7 +3335,7 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   margin: 0 !important;
   padding: 0 !important;
   display: grid !important;
-  grid-template-columns: 32px minmax(0,1fr) !important;
+  grid-template-columns: 34px minmax(0,1fr) !important;
   align-items: center !important;
   gap: 7px !important;
   overflow: hidden !important;
@@ -3343,10 +3349,10 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-icon-v32 {
   box-sizing: border-box !important;
-  width: 32px !important;
-  min-width: 32px !important;
-  height: 32px !important;
-  min-height: 32px !important;
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
   margin: 0 !important;
   display: grid !important;
   place-items: center !important;
@@ -3358,8 +3364,8 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-icon-v32 svg,
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-icon-v32 svg * {
-  width: 15px !important;
-  height: 15px !important;
+  width: 16px !important;
+  height: 16px !important;
   color: inherit !important;
   stroke: currentColor !important;
 }
@@ -3466,32 +3472,23 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-v32 {
   display: grid !important;
-  grid-template-columns: minmax(0,1fr) auto !important;
-  grid-template-rows: 24px 34px minmax(0,1fr) !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: 32px minmax(0,1fr) !important;
   grid-template-areas:
-    "quick-head quick-head"
-    "quick-label quick-mode"
-    "quick-range quick-range" !important;
-  align-items: center !important;
-  gap: 4px 7px !important;
+    "quick-mode"
+    "quick-range" !important;
+  align-items: stretch !important;
+  gap: 3px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-v32.domain-cover {
   grid-template-columns: minmax(0,1fr) !important;
-  grid-template-rows: 24px minmax(0,1fr) !important;
-  grid-template-areas:
-    "quick-head"
-    "quick-range" !important;
+  grid-template-rows: minmax(0,1fr) !important;
+  grid-template-areas: "quick-range" !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-head-v32 {
-  grid-area: quick-head !important;
-  min-width: 0 !important;
-  display: flex !important;
-  align-items: baseline !important;
-  justify-content: space-between !important;
-  gap: 6px !important;
-  overflow: hidden !important;
+  display: none !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-head-v32 > div {
@@ -3536,18 +3533,18 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   position: relative !important;
   isolation: auto !important;
   box-sizing: border-box !important;
-  width: 68px !important;
-  min-width: 68px !important;
-  max-width: 68px !important;
-  height: 34px !important;
-  min-height: 34px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 32px !important;
+  min-height: 32px !important;
   margin: 0 !important;
-  padding: 2px !important;
+  padding: 3px !important;
   display: grid !important;
-  grid-template-columns: repeat(2,30px) !important;
-  gap: 2px !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  gap: 3px !important;
   overflow: hidden !important;
-  border: 0 !important;
+  border: 1px solid rgba(118,118,128,.12) !important;
   border-radius: 11px !important;
   background: rgba(118,118,128,.10) !important;
   box-shadow: none !important;
@@ -3560,32 +3557,42 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button {
   box-sizing: border-box !important;
-  width: 30px !important;
-  min-width: 30px !important;
-  max-width: 30px !important;
-  height: 30px !important;
-  min-height: 30px !important;
-  max-height: 30px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
   margin: 0 !important;
-  padding: 0 !important;
-  display: grid !important;
-  place-items: center !important;
+  padding: 0 5px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
   overflow: hidden !important;
   border: 0 !important;
-  border-radius: 9px !important;
+  border-radius: 8px !important;
   background: transparent !important;
   color: var(--pl-secondary) !important;
   box-shadow: none !important;
+  font-size: 7.2px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button.active {
-  background: var(--pl-panel) !important;
-  color: var(--desktop-room-accent) !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.52) !important;
+  background: var(--desktop-room-accent) !important;
+  color: #fff !important;
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--desktop-room-accent) 24%, transparent) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button span {
-  display: none !important;
+  display: inline-block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button svg {
@@ -3603,9 +3610,9 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   margin: 0 !important;
   padding: 0 !important;
   display: grid !important;
-  grid-template-rows: 18px 30px !important;
+  grid-template-rows: 10px 18px !important;
   align-content: start !important;
-  gap: 2px !important;
+  gap: 1px !important;
   overflow: visible !important;
 }
 
@@ -3623,7 +3630,7 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   color: var(--pl-secondary) !important;
-  font-size: 8.5px !important;
+  font-size: 7.4px !important;
   line-height: 1 !important;
   font-weight: 590 !important;
 }
@@ -3631,7 +3638,7 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 > div b {
   flex: 0 0 auto !important;
   color: var(--pl-text) !important;
-  font-size: 9.5px !important;
+  font-size: 8.4px !important;
   line-height: 1 !important;
   font-weight: 720 !important;
   font-variant-numeric: tabular-nums !important;
@@ -3656,24 +3663,24 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-webkit-slider-runnable-track {
-  height: 5px !important;
+  height: 4px !important;
   border-radius: 999px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-webkit-slider-thumb {
-  width: 20px !important;
-  height: 20px !important;
-  margin-top: -7.5px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin-top: -6px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-moz-range-track {
-  height: 5px !important;
+  height: 4px !important;
   border-radius: 999px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-moz-range-thumb {
-  width: 20px !important;
-  height: 20px !important;
+  width: 16px !important;
+  height: 16px !important;
 }
 
 /* Passive status rows follow the portrait 44/28 layout at a compact scale. */
@@ -3689,14 +3696,14 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
   min-height: 40px !important;
   height: 40px !important;
   max-height: 40px !important;
-  padding: 5px 7px !important;
+  padding: 4px 2px !important;
   display: grid !important;
-  grid-template-columns: 28px minmax(0,1fr) !important;
+  grid-template-columns: 26px minmax(0,1fr) !important;
   align-items: center !important;
-  gap: 7px !important;
-  border: 1px solid var(--pl-line) !important;
-  border-radius: 12px !important;
-  background: rgba(118,118,128,.045) !important;
+  gap: 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-icon-v32 {
