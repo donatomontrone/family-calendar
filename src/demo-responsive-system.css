@@ -2377,7 +2377,10 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
   overflow-x: auto !important;
   overflow-y: hidden !important;
   overscroll-behavior-inline: contain !important;
+  overscroll-behavior-block: none !important;
   scroll-snap-type: x proximity !important;
+  touch-action: pan-x pinch-zoom !important;
+  -webkit-overflow-scrolling: touch !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
