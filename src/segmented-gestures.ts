@@ -27,6 +27,15 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
   const controlFromTarget = (target: EventTarget | null) => {
     if (!(target instanceof Element)) return null;
+
+    const roomLightMode = target.closest<HTMLElement>(".room-light-mode-v4");
+    if (
+      roomLightMode &&
+      window.matchMedia("(orientation: landscape) and (max-height: 560px) and (max-width: 1024px)").matches
+    ) {
+      return roomLightMode;
+    }
+
     return target.closest<HTMLElement>(".segmented-control, .page-dock, .desktop-room-mode-v32");
   };
 
