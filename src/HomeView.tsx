@@ -321,7 +321,7 @@ function DesktopRoomPanel({ hass, room, language, accent, onClimate }: { hass: H
             ))}
             {climateActive && climateId && (
               <div className="desktop-room-status-row-v32 climate-active">
-                <span className="desktop-room-status-icon-v32"><ClimateIcon /></span>
+                <span className="desktop-room-status-icon-v32"><CalendarAccessoryClimateIcon /></span>
                 <div><strong>{language === "it" ? "Clima acceso" : "Climate on"}</strong><small>{climateTargetLabel(hass, climateId, language)}</small></div>
               </div>
             )}
@@ -393,7 +393,7 @@ function DesktopRoomQuickControl({ hass, entityId, language, lightMode, onLightM
       </div>
 
       {domain === "light" && (
-        <div className="desktop-room-mode-v32">
+        <div className={`desktop-room-mode-v32 ${lightMode === "temperature" ? "temperature-active" : "brightness-active"}`}>
           <button type="button" className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")}><SunIcon /><span>{language === "it" ? "Luminosità" : "Brightness"}</span></button>
           <button type="button" className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")}><ThermometerIcon /><span>{language === "it" ? "Temperatura" : "Temperature"}</span></button>
         </div>
@@ -766,13 +766,47 @@ function roomIcon(name: string) {
 
 function iconForEntity(hass: Hass, entityId: string) {
   const domain = domainOf(entityId);
-  const deviceClass = String(hass.states[entityId]?.attributes.device_class ?? "");
-  if (domain === "sensor" && deviceClass === "temperature") return <ThermometerIcon />;
-  if (domain === "sensor" && deviceClass === "humidity") return <DropIcon />;
-  if (domain === "binary_sensor" && ["motion", "occupancy", "presence"].includes(deviceClass)) return <RadarIcon />;
-  if (domain === "binary_sensor" && ["door", "window", "opening"].includes(deviceClass)) return <DoorIcon />;
-  if (domain === "camera") return <CameraIcon />;
-  return iconForDomain(domain);
+  if (domain === "light") return <CalendarAccessoryBulbIcon />;
+  if (domain === "cover") return <CalendarAccessoryCoverIcon />;
+  if (domain === "climate") return <CalendarAccessoryClimateIcon />;
+  if (domain === "sensor") {
+    const deviceClass = String(hass.states[entityId]?.attributes.device_class ?? "");
+    if (deviceClass === "temperature") return <CalendarAccessoryClimateIcon />;
+    if (deviceClass === "humidity") return <CalendarAccessoryDropletIcon />;
+    return <CalendarAccessorySensorIcon />;
+  }
+  if (domain === "binary_sensor") return <CalendarAccessoryPresenceIcon />;
+  if (domain === "media_player") return <CalendarAccessorySpeakerIcon />;
+  if (domain === "camera") return <CalendarAccessoryCameraIcon />;
+  return <CalendarAccessoryPowerIcon />;
+}
+
+function CalendarAccessoryBulbIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5.5 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+}
+function CalendarAccessoryCoverIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.7" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M5 9h14M8 12h8M8 15h8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>;
+}
+function CalendarAccessoryClimateIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.4 14.8V5.6a2.4 2.4 0 0 0-4.8 0v9.2a4.4 4.4 0 1 0 4.8 0Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><path d="M12 8v8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>;
+}
+function CalendarAccessoryDropletIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.7c3.1 4.1 5.2 6.8 5.2 9.8a5.2 5.2 0 0 1-10.4 0c0-3 2.1-5.7 5.2-9.8Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/><path d="M9.5 14.2a2.8 2.8 0 0 0 2.7 2.1" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>;
+}
+function CalendarAccessorySensorIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M7.7 7.7a6.1 6.1 0 0 0 0 8.6M16.3 7.7a6.1 6.1 0 0 1 0 8.6M5 5a9.9 9.9 0 0 0 0 14M19 5a9.9 9.9 0 0 1 0 14" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>;
+}
+function CalendarAccessoryPresenceIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M7.7 19c.45-3.4 1.9-5.6 4.3-5.6s3.85 2.2 4.3 5.6M5 9.4a8.1 8.1 0 0 0 0 5.2M19 9.4a8.1 8.1 0 0 1 0 5.2" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>;
+}
+function CalendarAccessorySpeakerIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 10h3.2l4.5-3.7v11.4L8.4 14H5.2Z" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinejoin="round"/><path d="M16 9.1a4.3 4.3 0 0 1 0 5.8M18.4 6.8a7.5 7.5 0 0 1 0 10.4" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round"/></svg>;
+}
+function CalendarAccessoryCameraIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6.5" width="11.5" height="11" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="m16 10 4-2.1v8.2L16 14Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>;
+}
+function CalendarAccessoryPowerIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6v7.9" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/><path d="M7.65 6.55a7.35 7.35 0 1 0 8.7 0" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/></svg>;
 }
 
 function iconForDomain(domain: string) {
