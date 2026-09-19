@@ -22403,7 +22403,7 @@ else {
 	}), document.addEventListener("wheel", u, {
 		capture: !0,
 		passive: !1
-	}), window.addEventListener("resize", d, { passive: !0 }), window.visualViewport?.addEventListener("resize", d, { passive: !0 }), document.addEventListener("click", (e) => {
+	}), window.addEventListener("resize", d, { passive: !0 }), window.visualViewport?.addEventListener("resize", d, { passive: !0 }), document.addEventListener("family-calendar-responsive-sync", d), document.addEventListener("click", (e) => {
 		!e.isTrusted || performance.now() > t || a(e.target) && (e.preventDefault(), e.stopImmediatePropagation());
 	}, !0), d();
 }
