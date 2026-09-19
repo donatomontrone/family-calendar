@@ -283,9 +283,9 @@ html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-port
 }
 
 html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
-  height: 32px !important;
-  min-height: 32px !important;
-  max-height: 32px !important;
+  height: 29px !important;
+  min-height: 29px !important;
+  max-height: 29px !important;
 }
 
 html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"]) #family-shared-header :is(.round-top,.header-theme-switch,.security-pill) {
@@ -1436,7 +1436,7 @@ html[data-demo-adaptive="adaptive"]:not([data-demo-viewport="phone-landscape"]) 
 /* -------------------------------------------------------------------------- */
 
 html[data-demo-viewport="phone-landscape"] {
-  --pl-gap: 5px;
+  --pl-gap: 3px;
   --pl-radius: 13px;
   --pl-line: rgba(60,60,67,.10);
   --pl-fill: rgba(255,255,255,.86);
@@ -1477,7 +1477,7 @@ html[data-demo-viewport="phone-landscape"] body #root > main.app-shell {
   padding-left: max(6px,env(safe-area-inset-left,0px)) !important;
   display: grid !important;
   grid-template-columns: minmax(0,1fr) !important;
-  grid-template-rows: 46px minmax(0,1fr) !important;
+  grid-template-rows: 40px minmax(0,1fr) !important;
   gap: var(--pl-gap) !important;
   overflow: hidden !important;
   font-family: var(--fc-ui-font) !important;
@@ -1490,9 +1490,9 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell > #family-s
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 46px !important;
-  min-height: 46px !important;
-  max-height: 46px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: visible !important;
@@ -1502,14 +1502,14 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-sha
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 46px !important;
-  min-height: 46px !important;
-  max-height: 46px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
   margin: 0 !important;
-  padding: 2px 2px !important;
+  padding: 1px 2px !important;
   display: grid !important;
   grid-template-columns: minmax(132px,1fr) auto minmax(292px,1.35fr) !important;
-  grid-template-rows: 42px !important;
+  grid-template-rows: 38px !important;
   grid-template-areas: "greeting clock actions" !important;
   align-items: center !important;
   gap: 8px !important;
@@ -1601,8 +1601,8 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-top-actio
   box-sizing: border-box !important;
   width: auto !important;
   min-width: 0 !important;
-  height: 34px !important;
-  min-height: 34px !important;
+  height: 27px !important;
+  min-height: 27px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
@@ -1620,11 +1620,11 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .weather-pill {
   width: 82px !important;
   min-width: 82px !important;
   max-width: 82px !important;
-  height: 32px !important;
-  min-height: 32px !important;
-  max-height: 32px !important;
+  height: 29px !important;
+  min-height: 29px !important;
+  max-height: 29px !important;
   margin: 0 !important;
-  padding: 4px 7px !important;
+  padding: 3px 7px !important;
   display: grid !important;
   grid-template-columns: 16px minmax(0,1fr) !important;
   grid-template-rows: 1fr 1fr !important;
@@ -1690,13 +1690,13 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .avatar-stack {
 
 html[data-demo-viewport="phone-landscape"] #family-shared-header .avatar-stack > i {
   box-sizing: border-box !important;
-  flex: 0 0 26px !important;
-  width: 26px !important;
-  min-width: 26px !important;
-  max-width: 26px !important;
-  height: 26px !important;
-  min-height: 26px !important;
-  max-height: 26px !important;
+  flex: 0 0 23px !important;
+  width: 23px !important;
+  min-width: 23px !important;
+  max-width: 23px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+  max-height: 23px !important;
   margin: 0 !important;
   display: grid !important;
   place-items: center !important;
@@ -1753,13 +1753,13 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill 
 
 html[data-demo-viewport="phone-landscape"] #family-shared-header :is(.round-top,.header-theme-switch) {
   box-sizing: border-box !important;
-  flex: 0 0 30px !important;
-  width: 30px !important;
-  min-width: 30px !important;
-  max-width: 30px !important;
-  height: 30px !important;
-  min-height: 30px !important;
-  max-height: 30px !important;
+  flex: 0 0 28px !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  max-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: grid !important;
