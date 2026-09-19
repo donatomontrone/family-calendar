@@ -560,7 +560,7 @@ function RoomQuickControl({ hass, entityId, language, lightMode, onLightMode }: 
       <div className="room-quick-control-head">
         <div><small>{displayName(hass, entityId)}</small><strong>{label}<b>{formatted}</b></strong></div>
         {domain === "light" && (
-          <div className="room-light-mode-v4">
+          <div className={`room-light-mode-v4 ${lightMode === "temperature" ? "temperature-active" : "brightness-active"}`}>
             <button type="button" className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")} aria-label={language === "it" ? "Luminosità" : "Brightness"}><SunIcon /></button>
             <button type="button" className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")} aria-label={language === "it" ? "Temperatura bianco" : "White temperature"}><ThermometerIcon /></button>
           </div>
