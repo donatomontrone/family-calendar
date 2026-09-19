@@ -84,6 +84,8 @@ function classifyViewport(width: number, height: number): DemoViewport {
   return "tablet-portrait";
 }
 
+let lastResponsiveSignature = "";
+
 function syncResponsiveMode() {
   ensureResponsiveStyle();
 
@@ -106,6 +108,14 @@ function syncResponsiveMode() {
     "demo-phone-landscape-final-short",
   );
 }
+
+  const signature = `${mode}:${width}x${height}`;
+  if (signature !== lastResponsiveSignature) {
+    lastResponsiveSignature = signature;
+    requestAnimationFrame(() => {
+      document.dispatchEvent(new CustomEvent("family-calendar-responsive-sync"));
+    });
+  }
 
 syncResponsiveMode();
 window.addEventListener("resize", syncResponsiveMode, { passive: true });
