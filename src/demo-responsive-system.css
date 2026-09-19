@@ -3113,6 +3113,696 @@ html[data-demo-viewport="phone-landscape"] body #root .reel-side > .reel-tools-g
   display: none !important;
 }
 
+
+/* -------------------------------------------------------------------------- */
+/* HOME PHONE LANDSCAPE — portrait component parity                           */
+/* Keep the efficient selected-room composition; reuse the approved portrait  */
+/* material, icon, state and control language.                                 */
+/* -------------------------------------------------------------------------- */
+
+/* Room strip: compact portrait-like room identity, not generic tabs. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-strip-v26 > button {
+  --desktop-room-tab-accent: var(--desktop-room-accent, #4f8cff);
+  padding: 5px 7px !important;
+  grid-template-columns: 28px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 7px !important;
+  border: 1px solid var(--pl-line) !important;
+  border-radius: 13px !important;
+  background: var(--pl-fill) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.52) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-strip-v26 > button.active {
+  border-color: color-mix(in srgb, var(--desktop-room-accent) 42%, var(--pl-line)) !important;
+  background: color-mix(in srgb, var(--desktop-room-accent) 9%, var(--pl-panel)) !important;
+  box-shadow:
+    inset 3px 0 0 var(--desktop-room-accent),
+    inset 0 1px 0 rgba(255,255,255,.58) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-tab-icon-v26 {
+  box-sizing: border-box !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid color-mix(in srgb, var(--desktop-room-accent) 48%, transparent) !important;
+  border-radius: 9px !important;
+  background: color-mix(in srgb, var(--desktop-room-accent) 12%, var(--pl-panel)) !important;
+  color: var(--desktop-room-accent) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-strip-v26 > button.active .desktop-room-tab-icon-v26 {
+  border-color: var(--desktop-room-accent) !important;
+  background: var(--desktop-room-accent) !important;
+  color: #fff !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-tab-icon-v26 svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-tab-copy-v26 strong {
+  font-size: 9px !important;
+  line-height: 1.05 !important;
+  font-weight: 680 !important;
+  letter-spacing: -.012em !important;
+}
+
+/* Selected room shell keeps the same quiet surface / accent hierarchy. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-panel-v32 {
+  border: 1px solid var(--pl-line) !important;
+  border-top: 3px solid var(--desktop-room-accent) !important;
+  border-radius: 16px !important;
+  background: var(--pl-panel) !important;
+  box-shadow: 0 5px 16px rgba(0,0,0,.035), inset 0 1px 0 rgba(255,255,255,.54) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-title-v32 > span {
+  box-sizing: border-box !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid color-mix(in srgb, var(--desktop-room-accent) 46%, transparent) !important;
+  border-radius: 9px !important;
+  background: color-mix(in srgb, var(--desktop-room-accent) 12%, var(--pl-panel)) !important;
+  color: var(--desktop-room-accent) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-title-v32 > span svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-title-v32 strong {
+  font-size: 11px !important;
+  line-height: 1.05 !important;
+  font-weight: 700 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-title-v32 small {
+  margin-top: 2px !important;
+  color: var(--pl-secondary) !important;
+  font-size: 7.8px !important;
+  line-height: 1 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-temperature-v32 {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 7px !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+  color: var(--pl-text) !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+  font-weight: 520 !important;
+  letter-spacing: -.035em !important;
+}
+
+/* Controls and status become the same family of soft room surfaces. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active :is(
+  .desktop-room-controls-card-v32,
+  .desktop-room-status-card-v32
+) {
+  padding: 7px !important;
+  border: 1px solid var(--pl-line) !important;
+  border-radius: 15px !important;
+  background: color-mix(in srgb, var(--pl-panel) 96%, var(--desktop-room-accent) 4%) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.48) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-section-head-v32 {
+  flex-basis: 24px !important;
+  min-height: 24px !important;
+  height: 24px !important;
+  margin-bottom: 5px !important;
+  padding: 0 2px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-section-head-v32 span {
+  color: var(--pl-text) !important;
+  font-size: 8.6px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-section-head-v32 small {
+  color: var(--pl-secondary) !important;
+  font-size: 7.4px !important;
+  line-height: 1 !important;
+  font-weight: 520 !important;
+}
+
+/* Device list scales the portrait 64/38/30 geometry down without changing it. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-accessory-grid-v32 {
+  grid-template-columns: repeat(auto-fit,minmax(142px,1fr)) !important;
+  grid-auto-rows: 50px !important;
+  gap: 5px !important;
+  padding: 1px 2px 2px 1px !important;
+  align-content: start !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-accessory-grid-v32::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-v32 {
+  --device-accent: var(--desktop-room-accent);
+  box-sizing: border-box !important;
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  margin: 0 !important;
+  padding: 5px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: center !important;
+  gap: 5px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--pl-line) !important;
+  border-radius: 14px !important;
+  background: rgba(118,118,128,.055) !important;
+  color: var(--pl-text) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.46) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-v32.active {
+  border-color: color-mix(in srgb, var(--device-accent) 40%, var(--pl-line)) !important;
+  background: color-mix(in srgb, var(--device-accent) 22%, var(--pl-panel)) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-v32.selected {
+  border-color: var(--device-accent) !important;
+  background: color-mix(in srgb, var(--device-accent) 9%, var(--pl-panel)) !important;
+  box-shadow:
+    inset 3px 0 0 var(--device-accent),
+    0 0 0 2px color-mix(in srgb, var(--device-accent) 16%, transparent) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-v32.active.selected {
+  background: color-mix(in srgb, var(--device-accent) 22%, var(--pl-panel)) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-main-v40 {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: 32px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 7px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-icon-v32 {
+  box-sizing: border-box !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid color-mix(in srgb, var(--device-accent) 55%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--device-accent) 12%, var(--pl-panel)) !important;
+  color: var(--device-accent) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-icon-v32 svg,
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-icon-v32 svg * {
+  width: 15px !important;
+  height: 15px !important;
+  color: inherit !important;
+  stroke: currentColor !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-v32.active .desktop-room-device-icon-v32 {
+  border-color: var(--device-accent) !important;
+  background: var(--device-accent) !important;
+  color: #fff !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-copy-v32 {
+  min-width: 0 !important;
+  display: block !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-copy-v32 strong {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-text) !important;
+  font-size: 9.6px !important;
+  line-height: 1.05 !important;
+  font-weight: 670 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-copy-v32 small {
+  display: block !important;
+  min-width: 0 !important;
+  margin-top: 3px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-secondary) !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  font-weight: 520 !important;
+}
+
+/* Light power mirrors the portrait soft trailing control instead of a solid CTA. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-power-v40 {
+  box-sizing: border-box !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  max-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(60,60,67,.10) !important;
+  border-radius: 9px !important;
+  background: rgba(118,118,128,.075) !important;
+  color: var(--pl-secondary) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.64) !important;
+  transition:
+    transform .14s cubic-bezier(.2,.8,.2,1),
+    background-color .18s ease,
+    border-color .18s ease,
+    color .18s ease !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-power-v40 svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-power-v40.active {
+  border-color: color-mix(in srgb, var(--device-accent) 55%, rgba(60,60,67,.10)) !important;
+  background: color-mix(in srgb, var(--device-accent) 14%, var(--pl-panel)) !important;
+  color: var(--device-accent) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-device-power-v40:active:not(:disabled) {
+  transform: scale(.90) !important;
+}
+
+/* Quick control reads like the portrait inline control, not a second nested card. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-controls-body-v32 {
+  grid-template-columns: minmax(178px,.92fr) minmax(196px,1.08fr) !important;
+  gap: 8px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active :is(
+  .desktop-room-detail-v32,
+  .desktop-room-detail-empty-v32
+) {
+  box-sizing: border-box !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 4px 3px 4px 10px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-left: 1px solid var(--pl-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-v32 {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  grid-template-rows: 24px 34px minmax(0,1fr) !important;
+  grid-template-areas:
+    "quick-head quick-head"
+    "quick-label quick-mode"
+    "quick-range quick-range" !important;
+  align-items: center !important;
+  gap: 4px 7px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-v32.domain-cover {
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: 24px minmax(0,1fr) !important;
+  grid-template-areas:
+    "quick-head"
+    "quick-range" !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-head-v32 {
+  grid-area: quick-head !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  overflow: hidden !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-head-v32 > div {
+  min-width: 0 !important;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: baseline !important;
+  gap: 6px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-head-v32 small {
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-head-v32 strong {
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-text) !important;
+  font-size: 9.2px !important;
+  line-height: 1 !important;
+  font-weight: 670 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-detail-head-v32 > div > span {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-secondary) !important;
+  font-size: 7.5px !important;
+  line-height: 1 !important;
+  font-weight: 520 !important;
+}
+
+/* Portrait uses a small two-icon mode switch. Mirror it exactly in spirit. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 {
+  grid-area: quick-mode !important;
+  position: relative !important;
+  isolation: auto !important;
+  box-sizing: border-box !important;
+  width: 68px !important;
+  min-width: 68px !important;
+  max-width: 68px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 2px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,30px) !important;
+  gap: 2px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  background: rgba(118,118,128,.10) !important;
+  box-shadow: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32::before {
+  display: none !important;
+  content: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button {
+  box-sizing: border-box !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+  color: var(--pl-secondary) !important;
+  box-shadow: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button.active {
+  background: var(--pl-panel) !important;
+  color: var(--desktop-room-accent) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.52) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button span {
+  display: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-mode-v32 > button svg {
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 !important;
+}
+
+/* Range label/value are the second portrait row; slider sits beneath. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 {
+  grid-area: quick-range !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-rows: 18px 30px !important;
+  align-content: start !important;
+  gap: 2px !important;
+  overflow: visible !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 > div {
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 > div span {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-secondary) !important;
+  font-size: 8.5px !important;
+  line-height: 1 !important;
+  font-weight: 590 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 > div b {
+  flex: 0 0 auto !important;
+  color: var(--pl-text) !important;
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+  font-weight: 720 !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"] {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  accent-color: var(--desktop-room-accent) !important;
+  touch-action: pan-x !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input.white-temperature-range {
+  accent-color: #8aaed4 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px !important;
+  border-radius: 999px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-webkit-slider-thumb {
+  width: 20px !important;
+  height: 20px !important;
+  margin-top: -7.5px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-moz-range-track {
+  height: 5px !important;
+  border-radius: 999px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-range-v32 input[type="range"]::-moz-range-thumb {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Passive status rows follow the portrait 44/28 layout at a compact scale. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-grid-v32 {
+  grid-auto-rows: 40px !important;
+  gap: 5px !important;
+  align-content: start !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-row-v32 {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  height: 40px !important;
+  max-height: 40px !important;
+  padding: 5px 7px !important;
+  display: grid !important;
+  grid-template-columns: 28px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 7px !important;
+  border: 1px solid var(--pl-line) !important;
+  border-radius: 12px !important;
+  background: rgba(118,118,128,.045) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-icon-v32 {
+  box-sizing: border-box !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: rgba(118,118,128,.09) !important;
+  color: var(--pl-secondary) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-icon-v32 svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-row-v32 > div {
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: baseline !important;
+  gap: 6px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-row-v32 strong {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-secondary) !important;
+  font-size: 8.4px !important;
+  line-height: 1 !important;
+  font-weight: 590 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-status-row-v32 small {
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--pl-text) !important;
+  font-size: 8.4px !important;
+  line-height: 1 !important;
+  font-weight: 680 !important;
+  text-align: right !important;
+}
+
+/* Night material mirrors portrait without changing the portrait selectors. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night :is(
+  .desktop-room-panel-v32,
+  .desktop-room-controls-card-v32,
+  .desktop-room-status-card-v32
+) {
+  border-color: rgba(255,255,255,.07) !important;
+  background: rgba(38,38,42,.97) !important;
+  box-shadow: 0 5px 16px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-device-v32 {
+  border-color: rgba(255,255,255,.07) !important;
+  background: rgba(118,118,128,.10) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-device-v32.active {
+  border-color: color-mix(in srgb, var(--device-accent) 42%, rgba(255,255,255,.08)) !important;
+  background: color-mix(in srgb, var(--device-accent) 26%, rgba(44,44,46,.96)) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-device-v32.selected {
+  background: color-mix(in srgb, var(--device-accent) 13%, rgba(44,44,46,.96)) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-device-icon-v32 {
+  background: color-mix(in srgb, var(--device-accent) 18%, rgba(44,44,46,.96)) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-device-v32.active .desktop-room-device-icon-v32 {
+  background: var(--device-accent) !important;
+  color: #fff !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-device-power-v40 {
+  border-color: rgba(255,255,255,.08) !important;
+  background: rgba(255,255,255,.065) !important;
+  color: #b8b8bd !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-device-power-v40.active {
+  border-color: color-mix(in srgb, var(--device-accent) 56%, rgba(255,255,255,.08)) !important;
+  background: color-mix(in srgb, var(--device-accent) 18%, rgba(44,44,46,.96)) !important;
+  color: var(--device-accent) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active.night .desktop-room-status-row-v32 {
+  border-color: rgba(255,255,255,.06) !important;
+  background: rgba(255,255,255,.04) !important;
+}
+
 html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell {
   position: fixed !important;
   z-index: 120 !important;
