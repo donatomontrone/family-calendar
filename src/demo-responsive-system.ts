@@ -107,7 +107,6 @@ function syncResponsiveMode() {
     "demo-phone-landscape-final-narrow",
     "demo-phone-landscape-final-short",
   );
-}
 
   const signature = `${mode}:${width}x${height}`;
   if (signature !== lastResponsiveSignature) {
@@ -116,6 +115,7 @@ function syncResponsiveMode() {
       document.dispatchEvent(new CustomEvent("family-calendar-responsive-sync"));
     });
   }
+}
 
 syncResponsiveMode();
 window.addEventListener("resize", syncResponsiveMode, { passive: true });
