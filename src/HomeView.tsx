@@ -782,7 +782,7 @@ function iconForEntity(hass: Hass, entityId: string) {
 }
 
 function CalendarAccessoryBulbIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5.5 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 17.3h5.4M10.2 20h3.6M12 3.2a6.3 6.3 0 0 0-3.7 11.4c.7.5 1 1.3 1 2.2h5.4c0-.9.3-1.7 1-2.2A6.3 6.3 0 0 0 12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 }
 function CalendarAccessoryCoverIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.7" fill="none" stroke="currentColor" strokeWidth="1.55"/><path d="M5 9h14M8 12h8M8 15h8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>;
