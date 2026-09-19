@@ -1999,7 +1999,7 @@ html[data-demo-viewport="phone-landscape"] body #root .day-number {
   line-height: 1 !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .calendar-event {
+html[data-demo-viewport="phone-landscape"] body #root .day-events > .calendar-event {
   box-sizing: border-box !important;
   width: 100% !important;
   min-width: 0 !important;
@@ -2016,7 +2016,36 @@ html[data-demo-viewport="phone-landscape"] body #root .calendar-event {
   text-overflow: ellipsis !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root .calendar-event:nth-child(n + 3) {
+/* Multi-day bridge must keep the measured inline width from ui-interactions.ts.
+ * Only its visual height/typography are normalised to the 10px day-event row. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 10px !important;
+  min-height: 10px !important;
+  max-height: 10px !important;
+  margin: 0 !important;
+  padding: 0 3px !important;
+  overflow: hidden !important;
+  border-radius: 4px !important;
+  font-size: 7.2px !important;
+  line-height: 10px !important;
+  font-weight: 620 !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .month-grid .calendar-event-bridge.bridge-continues-before {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .month-grid .calendar-event-bridge.bridge-continues-after {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root .day-events > .calendar-event:nth-child(n + 3) {
   display: none !important;
 }
 
@@ -2347,17 +2376,17 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-tile {
   box-sizing: border-box !important;
   position: relative !important;
-  flex: 0 0 84px !important;
-  width: 84px !important;
-  min-width: 84px !important;
-  max-width: 84px !important;
+  flex: 0 0 92px !important;
+  width: 92px !important;
+  min-width: 92px !important;
+  max-width: 92px !important;
   height: 58px !important;
   min-height: 58px !important;
   max-height: 58px !important;
   margin: 0 !important;
   padding: 4px !important;
   overflow: hidden !important;
-  border-radius: 10px !important;
+  border-radius: 13px !important;
   scroll-snap-align: start !important;
 }
 
@@ -2368,58 +2397,59 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
   height: 50px !important;
   min-height: 50px !important;
   margin: 0 !important;
-  padding: 3px 17px 3px 3px !important;
-  display: grid !important;
-  grid-template-columns: 22px minmax(0,1fr) !important;
-  grid-template-rows: 1fr 1fr !important;
-  grid-template-areas:
-    "entity-icon entity-name"
-    "entity-icon entity-status" !important;
-  align-items: center !important;
-  column-gap: 4px !important;
-  row-gap: 0 !important;
+  padding: 3px 18px 3px 4px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  border-radius: 9px !important;
+  text-align: left !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-icon {
-  grid-area: entity-icon !important;
-  place-self: center !important;
-  width: 22px !important;
-  min-width: 22px !important;
-  height: 22px !important;
-  min-height: 22px !important;
-  margin: 0 !important;
+  flex: 0 0 23px !important;
+  width: 23px !important;
+  min-width: 23px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+  margin: 0 0 3px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 8px !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-icon svg {
   width: 12px !important;
   height: 12px !important;
+  margin: 0 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-main strong {
-  grid-area: entity-name !important;
-  align-self: end !important;
+  display: block !important;
   width: 100% !important;
   min-width: 0 !important;
   margin: 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  font-size: 7.3px !important;
-  line-height: 1 !important;
-  font-weight: 650 !important;
+  font-size: 8px !important;
+  line-height: 9px !important;
+  font-weight: 680 !important;
+  letter-spacing: -.012em !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .entity-main small {
-  grid-area: entity-status !important;
-  align-self: start !important;
+  display: block !important;
   width: 100% !important;
   min-width: 0 !important;
-  margin: 2px 0 0 !important;
+  margin: 1px 0 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  font-size: 6.4px !important;
-  line-height: 1 !important;
+  font-size: 6.8px !important;
+  line-height: 8px !important;
+  font-weight: 540 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .favorite-button {
@@ -2427,12 +2457,12 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .home-card .control-button {
-  right: 3px !important;
+  right: 4px !important;
   bottom: 4px !important;
-  width: 15px !important;
-  min-width: 15px !important;
-  height: 15px !important;
-  min-height: 15px !important;
+  width: 16px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  min-height: 16px !important;
   padding: 0 !important;
   display: grid !important;
   place-items: center !important;
