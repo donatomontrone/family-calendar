@@ -639,7 +639,8 @@
     align-items: start !important;
     align-content: start !important;
     gap: 7px !important;
-    padding: 0 2px 2px 0 !important;
+    padding: 5px 2px 2px 0 !important;
+    scroll-padding-top: 5px !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
     overscroll-behavior: contain !important;
@@ -658,6 +659,7 @@
     min-height: 0 !important;
     max-height: none !important;
     padding: 8px !important;
+    border-top: 5px solid var(--room-shared-accent, #4f8cff) !important;
     border-radius: 16px !important;
     scroll-snap-align: start !important;
   }
@@ -970,7 +972,7 @@
   }
 
   main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-light-mode-v4:has(> button:nth-of-type(2).active)::before {
+    .room-light-mode-v4.temperature-active::before {
     transform: translate3d(32px, 0, 0) !important;
   }
 
@@ -1011,18 +1013,23 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .045) !important;
   }
 
-  /* Give the value row breathing room below the mode buttons. */
+  /* Keep the value label clearly separated from the mode selector and slider. */
   main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head {
-    min-height: 43px !important;
+    min-height: 46px !important;
     align-items: start !important;
+    column-gap: 14px !important;
   }
 
   main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head > div:first-child {
-    padding-top: 7px !important;
+    padding-top: 9px !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head strong {
+    gap: 10px !important;
   }
 
   main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 input[type="range"] {
-    margin-top: 8px !important;
+    margin-top: 11px !important;
   }
 
   @media (prefers-reduced-motion: reduce) {
