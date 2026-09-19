@@ -426,6 +426,7 @@ if (!uiWindow.__familyCalendarUiInteractions) {
   document.addEventListener("wheel", onWheel, { capture: true, passive: false });
   window.addEventListener("resize", scheduleUiSync, { passive: true });
   window.visualViewport?.addEventListener("resize", scheduleUiSync, { passive: true });
+  document.addEventListener("family-calendar-responsive-sync", scheduleUiSync);
   document.addEventListener("click", (event) => {
     if (!event.isTrusted || performance.now() > suppressRoomClickUntil) return;
     if (!roomStripFromTarget(event.target)) return;
