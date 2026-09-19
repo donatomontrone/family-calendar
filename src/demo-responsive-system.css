@@ -1999,27 +1999,50 @@ html[data-demo-viewport="phone-landscape"] body #root .day-number {
   line-height: 1 !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .calendar-day {
-  overflow: visible !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events {
-  position: relative !important;
-  z-index: 4 !important;
-  overflow: visible !important;
-}
-
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events > .calendar-event {
   box-sizing: border-box !important;
-  position: relative !important;
-  z-index: 5 !important;
   width: 100% !important;
   min-width: 0 !important;
   height: 10px !important;
   min-height: 10px !important;
   max-height: 10px !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+  margin: 0 !important;
+  padding: 0 3px !important;
+  overflow: hidden !important;
+  border-radius: 4px !important;
+  font-size: 7.2px !important;
+  line-height: 10px !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events > .calendar-event:nth-child(n + 3) {
+  display: none !important;
+}
+
+/* Multi-day events keep the measured overlay used by the approved portrait.
+ * Responsive runtime now triggers a second geometry sync after orientation/layout settles. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .calendar-event.is-bridged {
+  visibility: hidden !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .calendar-event-bridge-layer {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 10px !important;
+  min-height: 10px !important;
+  max-height: 10px !important;
+  margin: 0 !important;
   padding: 0 3px !important;
   overflow: hidden !important;
   border-radius: 4px !important;
@@ -2028,50 +2051,17 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-pa
   font-weight: 620 !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
+  pointer-events: none !important;
 }
 
-/* In landscape the original day segments are the source of truth.
- * This avoids orientation-timing issues from the measured overlay bridge. */
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .calendar-event.is-bridged {
-  visibility: visible !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .calendar-event-bridge-layer {
-  display: none !important;
-}
-
-/* Stitch adjacent day segments over the 3px cell padding + grid hairline. */
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events > .calendar-event.continues-after:not(.continues-before) {
-  width: calc(100% + 4px) !important;
-  margin-right: -4px !important;
-  padding-right: 4px !important;
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events > .calendar-event.continues-before:not(.continues-after) {
-  width: calc(100% + 4px) !important;
-  margin-left: -4px !important;
-  padding-left: 4px !important;
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .month-grid .calendar-event-bridge.bridge-continues-before {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
 }
 
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events > .calendar-event.continues-before.continues-after {
-  width: calc(100% + 8px) !important;
-  margin-left: -4px !important;
-  margin-right: -4px !important;
-  padding-left: 4px !important;
-  padding-right: 4px !important;
-  border-radius: 0 !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events > .calendar-event .continuation {
-  display: none !important;
-}
-
-html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .day-events > .calendar-event:nth-child(n + 3) {
-  display: none !important;
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .month-grid .calendar-event-bridge.bridge-continues-after {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root :is(.agenda-card,.tasks-card) .card-heading {
