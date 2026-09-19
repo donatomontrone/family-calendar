@@ -893,6 +893,80 @@
     min-height: 30px !important;
     font-size: 9px !important;
   }
+
+  /* Device copy: spacing only. Keep the existing tile geometry and visual language. */
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > div {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > div > strong,
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 > div > small {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* Luminosità / Temperatura: reuse the Calendar/Home moving selection surface.
+     Geometry, colors and sizing of the existing control remain untouched. */
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4::before {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 0 !important;
+    top: 4px !important;
+    bottom: 4px !important;
+    left: 4px !important;
+    width: calc((100% - 12px) / 2) !important;
+    border-radius: 13px !important;
+    background: rgba(255, 255, 255, .95) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .07), inset 0 1px 0 rgba(255, 255, 255, .76) !important;
+    transform: translate3d(0, 0, 0) !important;
+    transition: transform .34s cubic-bezier(.22, .9, .28, 1.04), background-color .2s ease, box-shadow .2s ease !important;
+    will-change: transform !important;
+    pointer-events: none !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4
+    .room-light-mode-v4:has(> button:nth-of-type(2).active)::before {
+    transform: translate3d(calc(100% + 4px), 0, 0) !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 > button {
+    position: relative !important;
+    z-index: 1 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transition: color .2s ease, opacity .16s ease, transform .12s cubic-bezier(.2, .8, .2, 1) !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 > button.active {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 > button:active {
+    transform: scale(.965) !important;
+    opacity: .82 !important;
+  }
+
+  main.app-shell.app-shell.home-page-active.night .reel-home.home-refactor-v4 .room-light-mode-v4::before {
+    background: rgba(84, 84, 89, .92) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .045) !important;
+  }
+
 }
 
 /* Very narrow landscape phones: save horizontal space in the shared rail. */
