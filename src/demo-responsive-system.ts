@@ -1,9 +1,10 @@
 import responsiveStyles from "./demo-responsive-system.css?inline";
+import phoneLandscapeStyles from "./phone-landscape-v40.css?inline";
 import statusConsistencyStyles from "./demo-status-consistency-v45.css?inline";
 
 const STYLE_ID = "family-calendar-demo-responsive-system";
 const LEGACY_RUNTIME_STYLE_ID = "family-calendar-v4-styles";
-const css = `${statusConsistencyStyles}\n${responsiveStyles}`;
+const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}`;
 
 type DemoViewport =
   | "xl"
