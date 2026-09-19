@@ -22331,7 +22331,7 @@ var Rn = (e) => {
 if (Dn.__familyCalendarHomeRoomClickHandler = Rn, document.addEventListener("click", Rn, !0), Dn.__familyCalendarUiInteractions) jn(), Fn(), In(), requestAnimationFrame(Pn);
 else {
 	Dn.__familyCalendarUiInteractions = !0;
-	let e = null, t = 0, n = null, r = null, i = 0, a = (e) => e instanceof Element ? e.closest(".room-chip-strip, .desktop-room-strip-v26") : null, o = () => {
+	let e = null, t = 0, n = null, r = null, i = 0, a = (e) => e instanceof Element ? e.closest(".room-chip-strip, .desktop-room-strip-v26, .calendar-page-active .home-card .entity-grid") : null, o = () => {
 		let e = document.querySelector(".tasks-card .task-segmented-control, .tasks-card .segmented-control");
 		if (!e) return;
 		e !== n && (r?.disconnect(), n = e, r = new ResizeObserver(() => o()), r.observe(e));
