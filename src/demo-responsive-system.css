@@ -1512,7 +1512,7 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell #family-sha
   grid-template-rows: 38px !important;
   grid-template-areas: "greeting clock actions" !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 6px !important;
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
@@ -1585,7 +1585,7 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-clock {
   margin: 0 !important;
   padding: 0 !important;
   color: var(--pl-text) !important;
-  font-size: 20px !important;
+  font-size: 19px !important;
   line-height: .95 !important;
   font-weight: 500 !important;
   letter-spacing: -.05em !important;
@@ -1601,8 +1601,8 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .reel-top-actio
   box-sizing: border-box !important;
   width: auto !important;
   min-width: 0 !important;
-  height: 27px !important;
-  min-height: 27px !important;
+  height: 29px !important;
+  min-height: 29px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
@@ -1678,8 +1678,8 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .avatar-stack {
   width: 42px !important;
   min-width: 42px !important;
   max-width: 42px !important;
-  height: 30px !important;
-  min-height: 30px !important;
+  height: 27px !important;
+  min-height: 27px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
@@ -1717,9 +1717,9 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .security-pill 
   width: auto !important;
   min-width: 68px !important;
   max-width: 88px !important;
-  height: 32px !important;
-  min-height: 32px !important;
-  max-height: 32px !important;
+  height: 29px !important;
+  min-height: 29px !important;
+  max-height: 29px !important;
   margin: 0 !important;
   padding: 0 8px !important;
   display: inline-flex !important;
