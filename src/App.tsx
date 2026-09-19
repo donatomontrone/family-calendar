@@ -328,6 +328,24 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   <span className="section-kicker">{t("smartHome", language)}</span>
                   <h2>{t("home", language)}</h2>
                 </div>
+
+                {demo && (
+                  <select
+                    className="calendar-landscape-room-select"
+                    aria-label={t("room", language)}
+                    value={room}
+                    onChange={(event) => {
+                      setRoom(event.target.value);
+                      setSelectedEntity(null);
+                    }}
+                  >
+                    <option value="__favorites">{t("favorites", language)}</option>
+                    {areas.map((area) => (
+                      <option value={area.area_id} key={area.area_id}>{area.name}</option>
+                    ))}
+                  </select>
+                )}
+
                 <button className="power-all" onClick={() => void turnOffScope()} aria-label={t("turnOffAll", language)} title={t("turnOffAll", language)}>
                   <PowerIcon />
                 </button>
