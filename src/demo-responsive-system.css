@@ -3874,15 +3874,15 @@ html[data-demo-viewport="phone-landscape"] body #root .page-dock-shell > .page-s
 /* PHONE LANDSCAPE V46 — exact room accents, light-mode motion and spacing */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-workspace-v26 {
   box-sizing: border-box !important;
-  padding-top: 3px !important;
-  grid-template-rows: 41px minmax(0, 1fr) !important;
+  padding-top: 0 !important;
+  grid-template-rows: 42px minmax(0, 1fr) !important;
 }
 
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-strip-v26 {
   box-sizing: border-box !important;
-  height: 41px !important;
-  min-height: 41px !important;
-  padding: 2px 2px 0 !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 2px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
 }
@@ -3898,9 +3898,9 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-strip-v26 > button {
   --desktop-room-tab-accent: var(--room-tab-accent, #4f8cff);
   box-sizing: border-box !important;
-  height: 39px !important;
-  min-height: 39px !important;
-  max-height: 39px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
   border: 1px solid var(--pl-line) !important;
   border-top: 3px solid var(--room-tab-accent, #4f8cff) !important;
   background: color-mix(in srgb, var(--room-tab-accent, #4f8cff) 7%, var(--pl-fill)) !important;
@@ -3932,7 +3932,7 @@ html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-a
 /* The selected-room top accent gets its own breathing room below the room strip. */
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-stage-v26 {
   box-sizing: border-box !important;
-  padding-top: 2px !important;
+  padding-top: 0 !important;
 }
 html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active .desktop-room-panel-v32 {
   border-top: 4px solid var(--desktop-room-accent, #4f8cff) !important;
