@@ -321,7 +321,7 @@ function DesktopRoomPanel({ hass, room, language, accent, onClimate }: { hass: H
             ))}
             {climateActive && climateId && (
               <div className="desktop-room-status-row-v32 climate-active">
-                <span className="desktop-room-status-icon-v32"><CalendarAccessoryClimateIcon /></span>
+                <span className="desktop-room-status-icon-v32"><ClimateIcon /></span>
                 <div><strong>{language === "it" ? "Clima acceso" : "Climate on"}</strong><small>{climateTargetLabel(hass, climateId, language)}</small></div>
               </div>
             )}
