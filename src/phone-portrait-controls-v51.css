@@ -1,306 +1,57 @@
 /*
  * PHONE PORTRAIT CONTROLS V51
- * Final shared contract for selected Home accessories and their quick controls.
- * Fixes Blink/Android range intrinsic sizing while preserving the approved
- * iPhone portrait composition. Landscape is intentionally excluded.
+ * Android/Blink compatibility only.
+ *
+ * The approved portrait UI remains owned by the existing CASA V11 contract in
+ * home-room-refinement-v6.css. In particular, this file must NOT redefine the
+ * Luminosità / Temperatura segmented control or the established range geometry.
+ *
+ * Safari/iPhone is intentionally left untouched. Chrome/Android gets only the
+ * two compatibility corrections it needs:
+ * - selected accessories are not compressed into half-width phone columns;
+ * - the native range appearance is disabled on the input itself so Blink uses
+ *   the already-defined V11 track/thumb styling consistently.
  */
 
-@media (orientation: portrait) and (max-width: 700px) {
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
-    box-sizing: border-box !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 56px !important;
-    min-height: 56px !important;
-    max-height: 56px !important;
-    padding: 7px 8px !important;
-    align-items: center !important;
-    border-radius: 15px !important;
-  }
+@supports not (-webkit-touch-callout: none) {
+  @media (orientation: portrait) and (max-width: 480px) {
+    /*
+     * Typical Android phones are 393–432 CSS px wide, while the existing
+     * <=390px contract already places all accessories on one column.
+     * Keep the two-column overview, but let the currently selected accessory
+     * occupy the full row so its icon/text/power anatomy matches the approved
+     * narrow-phone presentation instead of being compressed.
+     */
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected {
+      grid-column: 1 / -1 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      transform: none !important;
+    }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4:not(.domain-light) {
-    grid-template-columns: 34px minmax(0, 1fr) !important;
-    gap: 8px !important;
-  }
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected:hover,
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected:active {
+      transform: none !important;
+    }
 
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4.domain-light {
-    grid-template-columns: 38px minmax(0, 1fr) 30px !important;
-    gap: 8px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4 > span:not(.room-device-power-v37) {
-    box-sizing: border-box !important;
-    width: 34px !important;
-    min-width: 34px !important;
-    max-width: 34px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: grid !important;
-    place-items: center !important;
-    align-self: center !important;
-    justify-self: center !important;
-    border-radius: 11px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4 > span:not(.room-device-power-v37) > svg {
-    display: block !important;
-    width: 16px !important;
-    height: 16px !important;
-    margin: 0 !important;
-    transform: none !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4 > div {
-    min-width: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    gap: 3px !important;
-    overflow: hidden !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4 > div > :is(strong,small) {
-    display: block !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4.selected {
-    border-color: var(--room-shared-accent) !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 9%, #fff) !important;
-    box-shadow:
-      inset 3px 0 0 var(--room-shared-accent),
-      0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 16%, transparent) !important;
-    transform: none !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-device-button-v4.active.selected {
-    background: color-mix(in srgb, var(--room-shared-accent) 22%, #fff) !important;
-  }
-
-  main.app-shell.home-page-active.night .reel-home.home-refactor-v4
-    .room-device-button-v4.selected {
-    border-color: var(--room-shared-accent) !important;
-    background: color-mix(in srgb, var(--room-shared-accent) 13%, rgba(44,44,46,.96)) !important;
-    box-shadow:
-      inset 3px 0 0 var(--room-shared-accent),
-      0 0 0 2px color-mix(in srgb, var(--room-shared-accent) 20%, transparent) !important;
-  }
-
-  main.app-shell.home-page-active.night .reel-home.home-refactor-v4
-    .room-device-button-v4.active.selected {
-    background: color-mix(in srgb, var(--room-shared-accent) 21%, rgba(44,44,46,.96)) !important;
-  }
-
-  /* Undo the older fixed 76px grid that is re-injected at runtime. */
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-v4 {
-    box-sizing: border-box !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin: 10px 0 0 !important;
-    padding: 10px 0 0 !important;
-    display: block !important;
-    overflow: visible !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-quick-control-head {
-    box-sizing: border-box !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    height: auto !important;
-    min-height: 38px !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
-    align-items: end !important;
-    gap: 10px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-head > div:first-child {
-    min-width: 0 !important;
-    display: grid !important;
-    gap: 4px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-head strong {
-    min-width: 0 !important;
-    display: flex !important;
-    align-items: baseline !important;
-    gap: 6px !important;
-    overflow: hidden !important;
-    white-space: nowrap !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4 {
-    box-sizing: border-box !important;
-    width: 66px !important;
-    min-width: 66px !important;
-    max-width: 66px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-    padding: 2px !important;
-    display: grid !important;
-    grid-template-columns: repeat(2, 30px) !important;
-    grid-template-rows: 30px !important;
-    gap: 2px !important;
-    align-self: end !important;
-    overflow: hidden !important;
-    border-radius: 11px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-light-mode-v4 > button {
-    box-sizing: border-box !important;
-    width: 30px !important;
-    min-width: 30px !important;
-    max-width: 30px !important;
-    height: 30px !important;
-    min-height: 30px !important;
-    max-height: 30px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: grid !important;
-    place-items: center !important;
-    border-radius: 9px !important;
-  }
-
-  /*
-   * Blink/Android needs appearance reset on the range element itself, not only
-   * on ::-webkit-slider-thumb. Otherwise the native Android control contributes
-   * intrinsic height/track styling and breaks the selected-card composition.
-   */
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4 input[type="range"] {
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    height: 30px !important;
-    min-height: 30px !important;
-    max-height: 30px !important;
-    margin: 5px 0 0 !important;
-    padding: 0 !important;
-    display: block !important;
-    align-self: auto !important;
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    outline: 0 !important;
-    overflow: visible !important;
-    touch-action: pan-x !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4 input[type="range"]::-webkit-slider-runnable-track {
-    box-sizing: border-box !important;
-    height: 5px !important;
-    border: 0 !important;
-    border-radius: 999px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4.domain-light
-    input[type="range"]:not(.white-temperature-range)::-webkit-slider-runnable-track,
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4.domain-cover
-    input[type="range"]::-webkit-slider-runnable-track {
-    background: color-mix(in srgb, var(--room-shared-accent) 72%, rgba(118,118,128,.18)) !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4 input.white-temperature-range::-webkit-slider-runnable-track {
-    background: linear-gradient(
-      90deg,
-      #ffb258 0%,
-      #ffd7a0 30%,
-      #fff1d7 50%,
-      #dcecff 72%,
-      #9dcaff 100%
-    ) !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4 input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    box-sizing: border-box !important;
-    width: 20px !important;
-    height: 20px !important;
-    margin-top: -7.5px !important;
-    border: 2px solid rgba(255,255,255,.96) !important;
-    border-radius: 50% !important;
-    background: #fff !important;
-    box-shadow: 0 2px 7px rgba(0,0,0,.20) !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4 input[type="range"]::-moz-range-track {
-    box-sizing: border-box !important;
-    height: 5px !important;
-    border: 0 !important;
-    border-radius: 999px !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4.domain-light
-    input[type="range"]:not(.white-temperature-range)::-moz-range-track,
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4.domain-cover
-    input[type="range"]::-moz-range-track {
-    background: color-mix(in srgb, var(--room-shared-accent) 72%, rgba(118,118,128,.18)) !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4 input.white-temperature-range::-moz-range-track {
-    background: linear-gradient(
-      90deg,
-      #ffb258 0%,
-      #ffd7a0 30%,
-      #fff1d7 50%,
-      #dcecff 72%,
-      #9dcaff 100%
-    ) !important;
-  }
-
-  main.app-shell.home-page-active .reel-home.home-refactor-v4
-    .room-quick-control-v4 input[type="range"]::-moz-range-thumb {
-    box-sizing: border-box !important;
-    width: 20px !important;
-    height: 20px !important;
-    border: 2px solid rgba(255,255,255,.96) !important;
-    border-radius: 50% !important;
-    background: #fff !important;
-    box-shadow: 0 2px 7px rgba(0,0,0,.20) !important;
-  }
-
-  main.app-shell.home-page-active.night .reel-home.home-refactor-v4
-    .room-quick-control-v4 input[type="range"]::-webkit-slider-thumb,
-  main.app-shell.home-page-active.night .reel-home.home-refactor-v4
-    .room-quick-control-v4 input[type="range"]::-moz-range-thumb {
-    border-color: rgba(255,255,255,.88) !important;
-    background: #f5f5f7 !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.45) !important;
+    /*
+     * Blink keeps part of the Android native slider metrics unless appearance
+     * is reset on the range itself. V11 continues to own width, height, track,
+     * thumb, colour and temperature gradient.
+     */
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-quick-control-v4 input[type="range"] {
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      box-sizing: border-box !important;
+      background: transparent !important;
+      border: 0 !important;
+      outline: 0 !important;
+      overflow: visible !important;
+    }
   }
 }
