@@ -702,24 +702,28 @@
   main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4 {
     min-height: 48px !important;
     padding: 6px !important;
-    grid-template-columns: 29px minmax(0, 1fr) !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
     gap: 6px !important;
     border-radius: 12px !important;
   }
 
   main.app-shell.app-shell.home-page-active .reel-home.home-refactor-v4 .room-device-button-v4.domain-light {
-    grid-template-columns: 29px minmax(0, 1fr) 24px !important;
+    grid-template-columns: 34px minmax(0, 1fr) 24px !important;
   }
 
   main.app-shell.app-shell.home-page-active
     .reel-home.home-refactor-v4
     .room-device-button-v4
     > span:not(.room-device-power-v37) {
-    width: 29px !important;
-    height: 29px !important;
-    min-width: 29px !important;
-    min-height: 29px !important;
-    border-radius: 9px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    display: grid !important;
+    place-items: center !important;
+    align-self: center !important;
+    justify-self: center !important;
+    border-radius: 11px !important;
   }
 
   main.app-shell.app-shell.home-page-active
@@ -916,16 +920,15 @@
     white-space: nowrap !important;
   }
 
-  /* Match the Calendar page accessory icon footprint in landscape. */
+  /* Preserve the exact portrait-phone icon material in landscape. */
   main.app-shell.app-shell.home-page-active
     .reel-home.home-refactor-v4
     .room-device-button-v4
     > span:not(.room-device-power-v37) {
     display: grid !important;
     place-items: center !important;
-    background: transparent !important;
-    border: 0 !important;
-    box-shadow: none !important;
+    align-self: center !important;
+    justify-self: center !important;
   }
 
   main.app-shell.app-shell.home-page-active
@@ -1192,4 +1195,163 @@ html[data-demo-viewport="phone-landscape"] #family-shared-header .weather-pill >
   justify-self: start !important;
   margin: 0 !important;
   line-height: 8px !important;
+}
+
+
+/* Phone landscape V49 — portrait icon parity and compact popup contract. */
+
+/* Real Home Assistant phone-landscape contract. */
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 1024px) {
+  /* Device glyphs keep the portrait geometry and optical centering. */
+  main.app-shell.home-page-active .reel-home.home-refactor-v4
+    .room-device-button-v4 > span:not(.room-device-power-v37) {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    display: grid !important;
+    place-items: center !important;
+    align-self: center !important;
+    justify-self: center !important;
+    border-radius: 11px !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4
+    .room-device-button-v4 > span:not(.room-device-power-v37) > svg {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  /* All popup families use a landscape-sized centered surface instead of
+   * expanding almost edge-to-edge. Content remains scrollable when needed. */
+  body .fc-modal-backdrop,
+  body #family-shared-device-overlay,
+  body .home-calendar-device-overlay,
+  body main.app-shell.home-page-active .reel-backdrop {
+    padding:
+      max(14px, env(safe-area-inset-top, 0px))
+      max(28px, env(safe-area-inset-right, 0px))
+      max(14px, env(safe-area-inset-bottom, 0px))
+      max(28px, env(safe-area-inset-left, 0px)) !important;
+    box-sizing: border-box !important;
+  }
+
+  body .fc-modal-backdrop > .fc-modal,
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls,
+  body .home-calendar-device-overlay .device-controls,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal,
+  body main.app-shell.home-page-active .reel-backdrop > .reel-modal {
+    width: min(520px, calc(100vw - 64px)) !important;
+    min-width: 0 !important;
+    max-width: 520px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 28px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 auto !important;
+    padding: 10px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    border-radius: 18px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body .fc-modal-backdrop > .fc-modal::-webkit-scrollbar,
+  body #family-shared-device-overlay #family-shared-device-controls.device-controls::-webkit-scrollbar,
+  body .home-calendar-device-overlay .device-controls::-webkit-scrollbar,
+  body main.app-shell.home-page-active .reel-backdrop > .feature-modal::-webkit-scrollbar,
+  body main.app-shell.home-page-active .reel-backdrop > .reel-modal::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body .fc-modal .fc-modal-head,
+  body main.app-shell.home-page-active :is(.feature-modal,.reel-modal) .modal-head {
+    min-height: 34px !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+/* Standalone demo uses the desktop selected-room component in phone landscape.
+ * Neutralize the desktop-only fill rule so the glyphs are the same line icons
+ * used by portrait, and center both device and sensor/status glyphs explicitly. */
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-device-icon-v32 {
+  display: grid !important;
+  place-items: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-device-icon-v32 > svg,
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-device-icon-v32 > svg * {
+  color: inherit !important;
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-device-icon-v32 > svg {
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-status-icon-v32 {
+  box-sizing: border-box !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-status-icon-v32 > svg,
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-status-icon-v32 > svg * {
+  color: inherit !important;
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root main.app-shell.home-page-active
+  .desktop-room-status-icon-v32 > svg {
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* Demo popup sizing mirrors the real phone-landscape contract even when the
+ * runtime viewport classifier is used outside the physical media query. */
+html[data-demo-viewport="phone-landscape"] body :is(
+  .fc-modal,
+  #family-shared-device-controls.device-controls,
+  .home-calendar-device-overlay .device-controls,
+  main.app-shell.home-page-active .reel-backdrop > .feature-modal,
+  main.app-shell.home-page-active .reel-backdrop > .reel-modal
+) {
+  width: min(520px, calc(100vw - 64px)) !important;
+  min-width: 0 !important;
+  max-width: 520px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 28px) !important;
+  margin: 0 auto !important;
+  padding: 10px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border-radius: 18px !important;
 }
