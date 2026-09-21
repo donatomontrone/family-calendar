@@ -3,10 +3,11 @@ import phoneLandscapeStyles from "./phone-landscape-v40.css?inline";
 import statusConsistencyStyles from "./demo-status-consistency-v45.css?inline";
 import demoPhoneLandscapeFixesV50Styles from "./demo-phone-landscape-fixes-v50.css?inline";
 import phonePortraitControlsV51Styles from "./phone-portrait-controls-v51.css?inline";
+import alarmLandscapeV52Styles from "./alarm-landscape-v52.css?inline";
 
 const STYLE_ID = "family-calendar-demo-responsive-system";
 const LEGACY_RUNTIME_STYLE_ID = "family-calendar-v4-styles";
-const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}`;
+const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}`;
 
 type DemoViewport =
   | "xl"
