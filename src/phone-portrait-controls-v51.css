@@ -3,45 +3,94 @@
  * Android/Blink compatibility only.
  *
  * The approved portrait UI remains owned by the existing CASA V11 contract in
- * home-room-refinement-v6.css. In particular, this file must NOT redefine the
- * Luminosità / Temperatura segmented control or the established range geometry.
+ * home-room-refinement-v6.css. This layer must not alter the established
+ * Luminosità / Temperatura segmented control or range geometry.
  *
- * Safari/iPhone is intentionally left untouched. Chrome/Android gets only the
- * two compatibility corrections it needs:
- * - selected accessories are not compressed into half-width phone columns;
- * - the native range appearance is disabled on the input itself so Blink uses
- *   the already-defined V11 track/thumb styling consistently.
+ * Safari/iPhone is intentionally left untouched.
  */
 
 @supports not (-webkit-touch-callout: none) {
   @media (orientation: portrait) and (max-width: 480px) {
     /*
-     * Typical Android phones are 393–432 CSS px wide, while the existing
-     * <=390px contract already places all accessories on one column.
-     * Keep the two-column overview, but let the currently selected accessory
-     * occupy the full row so its icon/text/power anatomy matches the approved
-     * narrow-phone presentation instead of being compressed.
+     * Keep every accessory in the normal two-column grid. Selection must never
+     * change card width, height or grid placement.
      */
     main.app-shell.home-page-active .reel-home.home-refactor-v4
-      .room-device-grid-v4 > .room-device-button-v4.selected {
-      grid-column: 1 / -1 !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      transform: none !important;
-    }
-
+      .room-device-grid-v4 > .room-device-button-v4.selected,
     main.app-shell.home-page-active .reel-home.home-refactor-v4
       .room-device-grid-v4 > .room-device-button-v4.selected:hover,
     main.app-shell.home-page-active .reel-home.home-refactor-v4
       .room-device-grid-v4 > .room-device-button-v4.selected:active {
+      grid-column: auto !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      height: 56px !important;
+      min-height: 56px !important;
+      max-height: 56px !important;
+      margin: 0 !important;
       transform: none !important;
     }
 
     /*
+     * Android touch browsers can retain :hover after tapping. Re-state the
+     * approved selected visuals so the sticky hover layer cannot replace them.
+     * The highlight stays inside the existing card footprint.
+     */
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected,
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected:hover,
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected:active {
+      border-color: var(--room-shared-accent) !important;
+      background: color-mix(in srgb, var(--room-shared-accent) 9%, #fff) !important;
+      box-shadow:
+        inset 3px 0 0 var(--room-shared-accent),
+        inset 0 0 0 1px color-mix(in srgb, var(--room-shared-accent) 16%, transparent) !important;
+    }
+
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.active.selected,
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.active.selected:hover,
+    main.app-shell.home-page-active .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.active.selected:active {
+      border-color: var(--room-shared-accent) !important;
+      background: color-mix(in srgb, var(--room-shared-accent) 22%, #fff) !important;
+      box-shadow:
+        inset 3px 0 0 var(--room-shared-accent),
+        inset 0 0 0 1px color-mix(in srgb, var(--room-shared-accent) 18%, transparent) !important;
+      transform: none !important;
+    }
+
+    main.app-shell.home-page-active.night .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected,
+    main.app-shell.home-page-active.night .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected:hover,
+    main.app-shell.home-page-active.night .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.selected:active {
+      border-color: var(--room-shared-accent) !important;
+      background: color-mix(in srgb, var(--room-shared-accent) 13%, rgba(44,44,46,.96)) !important;
+      box-shadow:
+        inset 3px 0 0 var(--room-shared-accent),
+        inset 0 0 0 1px color-mix(in srgb, var(--room-shared-accent) 20%, transparent) !important;
+    }
+
+    main.app-shell.home-page-active.night .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.active.selected,
+    main.app-shell.home-page-active.night .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.active.selected:hover,
+    main.app-shell.home-page-active.night .reel-home.home-refactor-v4
+      .room-device-grid-v4 > .room-device-button-v4.active.selected:active {
+      background: color-mix(in srgb, var(--room-shared-accent) 21%, rgba(44,44,46,.96)) !important;
+    }
+
+    /*
      * Blink keeps part of the Android native slider metrics unless appearance
-     * is reset on the range itself. V11 continues to own width, height, track,
-     * thumb, colour and temperature gradient.
+     * is reset on the range itself. V11 still owns size, track, thumb and
+     * Luminosità / Temperatura segmented-control presentation.
      */
     main.app-shell.home-page-active .reel-home.home-refactor-v4
       .room-quick-control-v4 input[type="range"] {
