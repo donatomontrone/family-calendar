@@ -1,0 +1,223 @@
+/*
+ * ALARM LANDSCAPE V52
+ * Compact no-scroll alarm dialog for phone landscape.
+ * All other popup families keep the shared landscape contract.
+ */
+
+@media (orientation: landscape) and (max-height: 650px) and (max-width: 1200px) {
+  body .fc-modal-backdrop:has(> .fc-alarm-modal) {
+    padding:
+      max(6px, env(safe-area-inset-top, 0px))
+      max(12px, env(safe-area-inset-right, 0px))
+      max(6px, env(safe-area-inset-bottom, 0px))
+      max(12px, env(safe-area-inset-left, 0px)) !important;
+    place-items: center !important;
+    overflow: hidden !important;
+  }
+
+  body .fc-modal-backdrop > .fc-modal.fc-alarm-modal {
+    box-sizing: border-box !important;
+    width: min(430px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
+    max-width: 430px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(
+      100dvh - 12px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
+    ) !important;
+    margin: 0 auto !important;
+    padding: 8px !important;
+    overflow: hidden !important;
+    border-radius: 17px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-modal-head {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-height: 29px !important;
+    height: 29px !important;
+    margin: 0 0 5px !important;
+    padding: 0 1px 0 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    border-bottom: 0 !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-modal-head > div {
+    min-width: 0 !important;
+    display: block !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-modal-head > div > span {
+    font-size: 7px !important;
+    line-height: 1 !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-modal-head h2 {
+    margin-top: 2px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-modal-close {
+    flex: 0 0 25px !important;
+    width: 25px !important;
+    min-width: 25px !important;
+    max-width: 25px !important;
+    height: 25px !important;
+    min-height: 25px !important;
+    max-height: 25px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-modal-close svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-panel {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 3px 8px 6px !important;
+    display: grid !important;
+    justify-items: center !important;
+    align-content: start !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-symbol {
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    border-radius: 10px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-symbol svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-copy {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    justify-items: center !important;
+    gap: 1px !important;
+    text-align: center !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-copy strong {
+    font-size: 11px !important;
+    line-height: 1.05 !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-copy span {
+    max-width: 360px !important;
+    margin: 0 !important;
+    font-size: 8px !important;
+    line-height: 1.12 !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-pin-dots {
+    min-height: 9px !important;
+    height: 9px !important;
+    gap: 7px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-pin-dots i {
+    width: 7px !important;
+    height: 7px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-pin-grid {
+    box-sizing: border-box !important;
+    width: min(238px, 100%) !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 4px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-pin-grid button {
+    box-sizing: border-box !important;
+    height: 31px !important;
+    min-height: 31px !important;
+    max-height: 31px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-pin-grid button svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-primary-action {
+    box-sizing: border-box !important;
+    width: min(238px, 100%) !important;
+    min-height: 31px !important;
+    height: 31px !important;
+    max-height: 31px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border-radius: 10px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+}
+
+/* Extra-short landscape phones: retain every control without scrolling. */
+@media (orientation: landscape) and (max-height: 360px) and (max-width: 900px) {
+  body .fc-modal-backdrop > .fc-modal.fc-alarm-modal {
+    padding-block: 5px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-modal-head {
+    height: 25px !important;
+    min-height: 25px !important;
+    margin-bottom: 3px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-panel {
+    padding-top: 1px !important;
+    padding-bottom: 3px !important;
+    gap: 3px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-symbol {
+    width: 27px !important;
+    min-width: 27px !important;
+    height: 27px !important;
+    min-height: 27px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-symbol svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-alarm-copy span {
+    font-size: 7.5px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-pin-grid {
+    gap: 3px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-pin-grid button {
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+  }
+
+  body .fc-modal-backdrop > .fc-alarm-modal .fc-primary-action {
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+  }
+}
