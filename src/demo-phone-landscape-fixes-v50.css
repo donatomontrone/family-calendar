@@ -1,0 +1,159 @@
+/*
+ * DEMO PHONE LANDSCAPE V50
+ * Final, demo-only cascade layer. It is intentionally loaded after
+ * demo-responsive-system.css and phone-landscape-v40.css.
+ */
+
+@media (orientation: landscape) and (max-height: 650px) and (max-width: 1200px) {
+  /* CASA device icons: same optical language as portrait phone. */
+  html[data-demo-orientation="landscape"] body #root main.app-shell.home-page-active
+    .desktop-room-device-icon-v32 {
+    box-sizing: border-box !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    align-self: center !important;
+    justify-self: center !important;
+    border: 1px solid var(--desktop-room-accent, var(--room-shared-accent, #4f8cff)) !important;
+    border-radius: 11px !important;
+    background: color-mix(
+      in srgb,
+      var(--desktop-room-accent, var(--room-shared-accent, #4f8cff)) 14%,
+      var(--pl-panel, rgba(255,255,255,.92))
+    ) !important;
+    color: var(--desktop-room-accent, var(--room-shared-accent, #4f8cff)) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  html[data-demo-orientation="landscape"] body #root main.app-shell.home-page-active
+    .desktop-room-device-icon-v32 > svg {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    transform: none !important;
+  }
+
+  html[data-demo-orientation="landscape"] body #root main.app-shell.home-page-active
+    .desktop-room-device-icon-v32 > svg * {
+    color: inherit !important;
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+
+  html[data-demo-orientation="landscape"] body #root main.app-shell.home-page-active
+    .desktop-room-device-v32.active .desktop-room-device-icon-v32 {
+    border-color: var(--desktop-room-accent, var(--room-shared-accent, #4f8cff)) !important;
+    background: var(--desktop-room-accent, var(--room-shared-accent, #4f8cff)) !important;
+    color: #fff !important;
+  }
+
+  html[data-demo-orientation="landscape"] body #root main.app-shell.home-page-active
+    .desktop-room-status-icon-v32 {
+    box-sizing: border-box !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    align-self: center !important;
+    justify-self: center !important;
+  }
+
+  html[data-demo-orientation="landscape"] body #root main.app-shell.home-page-active
+    .desktop-room-status-icon-v32 > svg {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    margin: 0 !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    transform: none !important;
+  }
+
+  html[data-demo-orientation="landscape"] body #root main.app-shell.home-page-active
+    .desktop-room-status-icon-v32 > svg * {
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+
+  /* Every popup family: compact centered landscape surface. */
+  html[data-demo-orientation="landscape"] body :is(
+    .fc-modal-backdrop,
+    #family-shared-device-overlay,
+    .home-calendar-device-overlay,
+    main.app-shell.home-page-active .reel-backdrop
+  ) {
+    padding:
+      max(18px, env(safe-area-inset-top, 0px))
+      max(30px, env(safe-area-inset-right, 0px))
+      max(18px, env(safe-area-inset-bottom, 0px))
+      max(30px, env(safe-area-inset-left, 0px)) !important;
+    box-sizing: border-box !important;
+  }
+
+  html[data-demo-orientation="landscape"] body :is(
+    .fc-modal-backdrop > .fc-modal,
+    #family-shared-device-overlay #family-shared-device-controls.device-controls,
+    .home-calendar-device-overlay .device-controls,
+    main.app-shell.home-page-active .reel-backdrop > .feature-modal,
+    main.app-shell.home-page-active .reel-backdrop > .reel-modal
+  ) {
+    box-sizing: border-box !important;
+    width: min(460px, calc(100vw - 72px)) !important;
+    min-width: 0 !important;
+    max-width: 460px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(
+      100dvh - 36px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
+    ) !important;
+    margin: 0 auto !important;
+    padding: 9px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    border-radius: 16px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    transform: none !important;
+  }
+
+  html[data-demo-orientation="landscape"] body :is(
+    .fc-modal-backdrop > .fc-modal,
+    #family-shared-device-overlay #family-shared-device-controls.device-controls,
+    .home-calendar-device-overlay .device-controls,
+    main.app-shell.home-page-active .reel-backdrop > .feature-modal,
+    main.app-shell.home-page-active .reel-backdrop > .reel-modal
+  )::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  html[data-demo-orientation="landscape"] body :is(
+    .fc-modal .fc-modal-head,
+    #family-shared-device-controls .device-controls-heading,
+    main.app-shell.home-page-active .feature-modal .modal-head,
+    main.app-shell.home-page-active .reel-modal .modal-head
+  ) {
+    min-height: 32px !important;
+    margin-bottom: 7px !important;
+  }
+}
