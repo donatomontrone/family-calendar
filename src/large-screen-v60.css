@@ -1444,7 +1444,7 @@
 
   .v60-room-temperature > span {
     color: var(--v60-tertiary) !important;
-    font-size: 8px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
     text-transform: uppercase !important;
     letter-spacing: .055em !important;
@@ -2196,7 +2196,7 @@
 
   .v60-home-climate-stats small {
     color: var(--v60-tertiary) !important;
-    font-size: 8px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
     text-transform: uppercase !important;
     letter-spacing: .04em !important;
@@ -2249,7 +2249,7 @@
 
   .v60-home-alarm-summary small {
     color: var(--v60-tertiary) !important;
-    font-size: 8px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
     text-transform: uppercase !important;
     letter-spacing: .05em !important;
@@ -2307,7 +2307,7 @@
 
   .v60-home-waste-summary > div > b {
     color: var(--v60-tertiary) !important;
-    font-size: 8px !important;
+    font-size: 9px !important;
     font-weight: 650 !important;
   }
 
@@ -2802,7 +2802,7 @@
   }
 
   .v60-room-device-copy small {
-    font-size: 8px !important;
+    font-size: 9px !important;
   }
 
   .v60-room-device-favorite,
@@ -2908,7 +2908,7 @@
   }
 
   .v60-home-tool-dock > button > span {
-    font-size: 8px !important;
+    font-size: 9px !important;
   }
 }
 
@@ -3135,7 +3135,7 @@
   }
 
   .v60-home-climate-stats small {
-    font-size: 7px !important;
+    font-size: 9px !important;
   }
 
   .v60-home-climate-stats b {
