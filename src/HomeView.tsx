@@ -92,7 +92,26 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
 
   return (
     <section className="reel-home home-refactor-v4">
-      <div className="reel-dashboard">
+      <LargeHomeWorkspaceV60
+        hass={hass}
+        rooms={rooms}
+        selectedRoom={desktopRoom}
+        selectedRoomAccent={desktopRoomAccent}
+        favorites={favorites}
+        language={language}
+        copy={copy}
+        knownTemperatures={knownTemperatures}
+        outside={outside}
+        climateIds={climateIds}
+        onSelectRoom={setDesktopRoomId}
+        onToggleFavorite={toggleFavorite}
+        onClimate={(entityId) => setRoomClimateEntityId(entityId)}
+        onAlarm={() => openHeaderAction("alarm")}
+        onOverlay={setOverlay}
+        onTurnOffRoom={(room) => void deactivateEntities(hass, room.controllableIds)}
+      />
+
+      <div className="reel-dashboard phone-home-layout-v60">
         <div className="desktop-room-workspace-v26">
           <div
             className="desktop-room-strip-v26"
@@ -220,6 +239,386 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
         />
       )}
     </section>
+  );
+}
+
+
+function LargeHomeWorkspaceV60({
+  hass,
+  rooms,
+  selectedRoom,
+  selectedRoomAccent,
+  favorites,
+  language,
+  copy,
+  knownTemperatures,
+  outside,
+  climateIds,
+  onSelectRoom,
+  onToggleFavorite,
+  onClimate,
+  onAlarm,
+  onOverlay,
+  onTurnOffRoom,
+}: {
+  hass: Hass;
+  rooms: RoomModel[];
+  selectedRoom: RoomModel | null;
+  selectedRoomAccent: string;
+  favorites: string[];
+  language: Language;
+  copy: typeof itCopy;
+  knownTemperatures: number[];
+  outside: number;
+  climateIds: string[];
+  onSelectRoom: (roomId: string) => void;
+  onToggleFavorite: (entityId: string) => void | Promise<void>;
+  onClimate: (entityId: string) => void;
+  onAlarm: () => void;
+  onOverlay: (kind: Overlay) => void;
+  onTurnOffRoom: (room: RoomModel) => void;
+}) {
+  const inside = average(knownTemperatures.length ? knownTemperatures : [22]);
+  const climateActive = climateIds.some((id) => isActive(hass, id));
+
+  return (
+    <div className="v60-home-workspace">
+      <nav className="v60-home-room-strip" aria-label={language === "it" ? "Stanze" : "Rooms"}>
+        <div className="v60-home-room-strip-title">
+          <span>{language === "it" ? "Casa" : "Home"}</span>
+          <strong>{language === "it" ? "Stanze" : "Rooms"}</strong>
+        </div>
+        <div className="v60-home-room-scroll" role="tablist" aria-label={language === "it" ? "Seleziona stanza" : "Select room"}>
+          {rooms.map((room, index) => {
+            const activeCount = room.controllableIds.filter((id) => isActive(hass, id)).length;
+            const active = selectedRoom?.area.area_id === room.area.area_id;
+            const accent = ROOM_ACCENTS[index % ROOM_ACCENTS.length];
+            return (
+              <button
+                key={room.area.area_id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                className={active ? "active" : ""}
+                style={{ "--v60-room-accent": accent } as CSSProperties}
+                onClick={() => onSelectRoom(room.area.area_id)}
+              >
+                <span className="v60-home-room-icon">{roomIcon(room.area.name)}</span>
+                <span className="v60-home-room-copy">
+                  <strong>{room.area.name}</strong>
+                  <small>{activeCount > 0 ? `${activeCount} ${language === "it" ? "attivi" : "active"}` : (language === "it" ? "Tutto spento" : "All off")}</small>
+                </span>
+                <b>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</b>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
+      <div className="v60-home-main">
+        <div className="v60-home-room-console-wrap">
+          {selectedRoom ? (
+            <LargeRoomConsoleV60
+              key={selectedRoom.area.area_id}
+              hass={hass}
+              room={selectedRoom}
+              accent={selectedRoomAccent}
+              favorites={favorites}
+              language={language}
+              onToggleFavorite={onToggleFavorite}
+              onClimate={onClimate}
+              onTurnOff={() => onTurnOffRoom(selectedRoom)}
+            />
+          ) : (
+            <div className="v60-home-empty">{language === "it" ? "Nessuna stanza disponibile" : "No rooms available"}</div>
+          )}
+        </div>
+
+        <aside className="v60-home-sidecar" aria-label={language === "it" ? "Stato casa" : "Home status"}>
+          <section className="v60-home-summary">
+            <span>{copy.houseSays}</span>
+            <div><CheckIcon /><strong>{copy.allClear}</strong></div>
+            <small>{copy.allClearDetail}</small>
+          </section>
+
+          <button type="button" className="v60-home-climate-summary" onClick={() => onOverlay("climate")}>
+            <div className="v60-home-climate-head"><span><ThermometerIcon />{copy.climate}</span><b>{copy.manage}</b></div>
+            <strong>{inside.toFixed(1)}°</strong>
+            <div className="v60-home-climate-stats">
+              <span><small>{copy.outside}</small><b>{outside.toFixed(1)}°</b></span>
+              <span><small>{copy.zones}</small><b>{climateIds.length}</b></span>
+              <span><small>{copy.status}</small><b>{climateActive ? copy.active : copy.idle}</b></span>
+            </div>
+          </button>
+
+          <button type="button" className="v60-home-alarm-summary" onClick={onAlarm}>
+            <span><ShieldIcon /></span>
+            <div><small>{copy.alarm}</small><strong>{copy.disarmed}</strong><b>{copy.homeFree}</b></div>
+            <i>{copy.manage}</i>
+          </button>
+
+          <section className="v60-home-waste-summary">
+            <div><span><RecycleIcon />{copy.waste}</span><b>{copy.today}</b></div>
+            <strong>{copy.residual}</strong>
+            <small>{copy.collectionReady}</small>
+          </section>
+        </aside>
+      </div>
+
+      <div className="v60-home-tool-dock" aria-label={language === "it" ? "Strumenti casa" : "Home tools"}>
+        <ToolButton icon={<SparklesIcon />} label={copy.routines} onClick={() => onOverlay("routines")} />
+        <ToolButton icon={<BatteryIcon />} label={copy.batteries} onClick={() => onOverlay("batteries")} />
+        <ToolButton icon={<RadarIcon />} label={copy.sensors} onClick={() => onOverlay("sensors")} />
+        <ToolButton icon={<ClimateIcon />} label={copy.climate} onClick={() => onOverlay("climate")} />
+        <ToolButton icon={<CameraIcon />} label={copy.cameras} onClick={() => onOverlay("cameras")} />
+        <ToolButton icon={<MediaIcon />} label={copy.media} onClick={() => onOverlay("media")} />
+        <ToolButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => onOverlay("vacuum")} />
+        <ToolButton icon={<CarIcon />} label={copy.car} onClick={() => onOverlay("car")} />
+        <ToolButton icon={<CoverIcon />} label={copy.covers} onClick={() => onOverlay("cover")} />
+      </div>
+    </div>
+  );
+}
+
+function LargeRoomConsoleV60({
+  hass,
+  room,
+  accent,
+  favorites,
+  language,
+  onToggleFavorite,
+  onClimate,
+  onTurnOff,
+}: {
+  hass: Hass;
+  room: RoomModel;
+  accent: string;
+  favorites: string[];
+  language: Language;
+  onToggleFavorite: (entityId: string) => void | Promise<void>;
+  onClimate: (entityId: string) => void;
+  onTurnOff: () => void;
+}) {
+  const visibleControlIds = room.controllableIds.filter((id) => domainOf(id) !== "climate");
+  const editableIds = visibleControlIds.filter((id) => ["light", "cover"].includes(domainOf(id)));
+  const climateId = room.controllableIds.find((id) => domainOf(id) === "climate");
+  const climateActive = Boolean(climateId && isActive(hass, climateId));
+  const passiveIds = room.passiveIds.filter((id) => !isRoomTemperatureSensor(hass, id));
+  const [selectedControl, setSelectedControl] = useState<string | null>(() => editableIds[0] ?? null);
+  const [lightMode, setLightMode] = useState<LightControlMode>("brightness");
+  const activeCount = visibleControlIds.filter((id) => isActive(hass, id)).length;
+
+  useEffect(() => {
+    if (selectedControl && editableIds.includes(selectedControl)) return;
+    setSelectedControl(editableIds[0] ?? null);
+  }, [room.area.area_id, editableIds.join("|"), selectedControl]);
+
+  const handleDevice = (entityId: string) => {
+    const domain = domainOf(entityId);
+    if (domain === "light" || domain === "cover") {
+      setSelectedControl(entityId);
+      return;
+    }
+    void activateEntity(hass, entityId);
+  };
+
+  return (
+    <article className="v60-room-console" style={{ "--v60-room-accent": accent } as CSSProperties}>
+      <header className="v60-room-console-head">
+        <div className="v60-room-console-title">
+          <span>{roomIcon(room.area.name)}</span>
+          <div>
+            <small>{language === "it" ? "Stanza" : "Room"}</small>
+            <strong>{room.area.name}</strong>
+            <b>{activeCount > 0 ? `${activeCount} ${language === "it" ? "dispositivi attivi" : "active devices"}` : (language === "it" ? "Tutto spento" : "All off")}</b>
+          </div>
+        </div>
+
+        <div className="v60-room-console-actions">
+          <button
+            type="button"
+            className="v60-room-temperature"
+            disabled={!climateId}
+            onClick={() => { if (climateId) onClimate(climateId); }}
+            aria-label={climateId ? `${language === "it" ? "Apri clima" : "Open climate"} ${room.area.name}` : undefined}
+          >
+            <span>{language === "it" ? "Clima" : "Climate"}</span>
+            <strong>{typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}</strong>
+          </button>
+          <button type="button" className="v60-room-off" onClick={onTurnOff} aria-label={language === "it" ? `Spegni ${room.area.name}` : `Turn off ${room.area.name}`}><PowerIcon /><span>{language === "it" ? "Spegni stanza" : "Room off"}</span></button>
+        </div>
+      </header>
+
+      <div className="v60-room-console-body">
+        <section className="v60-room-accessories">
+          <header className="v60-room-section-head">
+            <div><span>{language === "it" ? "Accessori" : "Accessories"}</span><strong>{visibleControlIds.length}</strong></div>
+            <small>{language === "it" ? "Seleziona una luce o tapparella per i controlli rapidi" : "Select a light or cover for quick controls"}</small>
+          </header>
+          <div className="v60-room-device-grid">
+            {visibleControlIds.map((id) => (
+              <LargeRoomDeviceV60
+                key={id}
+                hass={hass}
+                entityId={id}
+                language={language}
+                selected={selectedControl === id}
+                favorite={favorites.includes(id)}
+                onToggleFavorite={() => void onToggleFavorite(id)}
+                onClick={() => handleDevice(id)}
+              />
+            ))}
+            {!visibleControlIds.length && <div className="v60-room-inline-empty">{language === "it" ? "Nessun dispositivo controllabile" : "No controllable devices"}</div>}
+          </div>
+        </section>
+
+        <aside className="v60-room-inspector">
+          <div className="v60-room-inspector-control">
+            {selectedControl && hass.states[selectedControl] ? (
+              <LargeRoomQuickControlV60
+                hass={hass}
+                entityId={selectedControl}
+                language={language}
+                lightMode={lightMode}
+                onLightMode={setLightMode}
+              />
+            ) : (
+              <div className="v60-room-inspector-empty">
+                <span>{roomIcon(room.area.name)}</span>
+                <div><strong>{language === "it" ? "Nessun controllo selezionato" : "No control selected"}</strong><small>{language === "it" ? "Seleziona una luce o una tapparella." : "Select a light or cover."}</small></div>
+              </div>
+            )}
+          </div>
+
+          <div className="v60-room-status">
+            <header className="v60-room-section-head">
+              <div><span>{language === "it" ? "Stato stanza" : "Room status"}</span><strong>{passiveIds.length + (climateActive ? 1 : 0)}</strong></div>
+            </header>
+            <div className="v60-room-status-list">
+              {passiveIds.map((id) => (
+                <div className="v60-room-status-row" key={id}>
+                  <span>{iconForEntity(hass, id)}</span>
+                  <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
+                </div>
+              ))}
+              {climateActive && climateId && (
+                <button type="button" className="v60-room-status-row climate" onClick={() => onClimate(climateId)}>
+                  <span><ClimateIcon /></span>
+                  <div><strong>{language === "it" ? "Clima attivo" : "Climate active"}</strong><small>{climateTargetLabel(hass, climateId, language)}</small></div>
+                </button>
+              )}
+              {!passiveIds.length && !climateActive && <div className="v60-room-inline-empty">{language === "it" ? "Nessun sensore" : "No sensors"}</div>}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </article>
+  );
+}
+
+function LargeRoomDeviceV60({
+  hass,
+  entityId,
+  language,
+  selected,
+  favorite,
+  onToggleFavorite,
+  onClick,
+}: {
+  hass: Hass;
+  entityId: string;
+  language: Language;
+  selected: boolean;
+  favorite: boolean;
+  onToggleFavorite: () => void;
+  onClick: () => void;
+}) {
+  const state = hass.states[entityId];
+  const domain = domainOf(entityId);
+  const active = isActive(hass, entityId);
+  const unavailable = ["unavailable", "unknown"].includes(state?.state ?? "unknown");
+  const selectable = domain === "light" || domain === "cover";
+  return (
+    <article className={`v60-room-device domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""} ${unavailable ? "unavailable" : ""}`}>
+      <button type="button" className="v60-room-device-main" onClick={onClick} disabled={unavailable} aria-pressed={selectable ? selected : active}>
+        <span className="v60-room-device-icon">{iconForEntity(hass, entityId)}</span>
+        <span className="v60-room-device-copy"><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small></span>
+      </button>
+
+      <button type="button" className={`v60-room-device-favorite ${favorite ? "selected" : ""}`} onClick={onToggleFavorite} aria-label={favorite ? (language === "it" ? "Rimuovi dai preferiti" : "Remove from favorites") : (language === "it" ? "Aggiungi ai preferiti" : "Add to favorites")}><StarIcon /></button>
+
+      {domain === "light" && (
+        <button
+          type="button"
+          className={`v60-room-device-power ${active ? "active" : ""}`}
+          disabled={unavailable}
+          aria-label={language === "it" ? (active ? `Spegni ${displayName(hass, entityId)}` : `Accendi ${displayName(hass, entityId)}`) : (active ? `Turn off ${displayName(hass, entityId)}` : `Turn on ${displayName(hass, entityId)}`)}
+          onClick={() => void hass.callService("light", active ? "turn_off" : "turn_on", { entity_id: entityId })}
+        >
+          <PowerIcon />
+        </button>
+      )}
+    </article>
+  );
+}
+
+function LargeRoomQuickControlV60({
+  hass,
+  entityId,
+  language,
+  lightMode,
+  onLightMode,
+}: {
+  hass: Hass;
+  entityId: string;
+  language: Language;
+  lightMode: LightControlMode;
+  onLightMode: (mode: LightControlMode) => void;
+}) {
+  const state = hass.states[entityId];
+  const domain = domainOf(entityId);
+  const temperature = domain === "light" ? getWhiteTemperature(state.attributes) : null;
+  const brightness = Math.round((Number(state.attributes.brightness ?? 180) / 255) * 100);
+  const coverPosition = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
+  const value = domain === "cover" ? coverPosition : lightMode === "brightness" ? brightness : temperature!.currentKelvin;
+  const min = domain === "cover" ? 0 : lightMode === "brightness" ? 1 : temperature!.minKelvin;
+  const max = domain === "cover" ? 100 : lightMode === "brightness" ? 100 : temperature!.maxKelvin;
+  const step = domain === "light" && lightMode === "temperature" ? 50 : 1;
+  const label = domain === "cover" ? (language === "it" ? "Posizione" : "Position") : lightMode === "brightness" ? (language === "it" ? "Luminosità" : "Brightness") : (language === "it" ? "Temperatura bianco" : "White temperature");
+  const formatted = domain === "light" && lightMode === "temperature" ? `${Math.round(value)} K` : `${Math.round(value)}%`;
+
+  return (
+    <div className={`v60-room-quick-control domain-${domain}`}>
+      <div className="v60-room-quick-title">
+        <span>{iconForEntity(hass, entityId)}</span>
+        <div><small>{language === "it" ? "Selezionato" : "Selected"}</small><strong>{displayName(hass, entityId)}</strong><b>{entityStatus(hass, entityId, language)}</b></div>
+      </div>
+
+      {domain === "light" && (
+        <div className="v60-room-light-modes" role="tablist" aria-label={language === "it" ? "Modalità luce" : "Light mode"}>
+          <button type="button" role="tab" aria-selected={lightMode === "brightness"} className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")}><SunIcon /><span>{language === "it" ? "Luminosità" : "Brightness"}</span></button>
+          <button type="button" role="tab" aria-selected={lightMode === "temperature"} className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")}><ThermometerIcon /><span>{language === "it" ? "Temperatura" : "Temperature"}</span></button>
+        </div>
+      )}
+
+      <label className="v60-room-range">
+        <span><small>{label}</small><b>{formatted}</b></span>
+        <input
+          className={domain === "light" && lightMode === "temperature" ? "white-temperature-range" : ""}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(event) => {
+            const next = Number(event.target.value);
+            if (domain === "cover") void setCoverPosition(hass, entityId, next);
+            else if (lightMode === "brightness") void setLightBrightness(hass, entityId, next);
+            else void setLightColorTemperature(hass, entityId, next);
+          }}
+        />
+      </label>
+    </div>
   );
 }
 
