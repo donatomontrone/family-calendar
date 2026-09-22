@@ -36,6 +36,7 @@ import desktopRoomWorkspaceV26Styles from "./desktop-room-workspace-v26.css?inli
 import phoneLandscapeV40Styles from "./phone-landscape-v40.css?inline";
 import phonePortraitControlsV51Styles from "./phone-portrait-controls-v51.css?inline";
 import alarmLandscapeV52Styles from "./alarm-landscape-v52.css?inline";
+import largeScreenV60Styles from "./large-screen-v60.css?inline";
 
 const STYLE_ID = "family-calendar-panel-styles";
 
@@ -43,7 +44,7 @@ function ensureStyles() {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement("style");
   style.id = STYLE_ID;
-  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}\n${calendarV3Styles}\n${homeRoomSharedAccentStyles}\n${homeMobileV8Styles}\n${mobilePhoneFixesV9Styles}\n${homePhoneRoomPolishV10Styles}\n${homeMobileUtilitiesV20Styles}\n${homeMobileFeaturesV21Styles}\n${sharedModalContractV22Styles}\n${homeDesktopRoomInfoV24Styles}\n${desktopRoomWorkspaceV26Styles}\n${phoneLandscapeV40Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}`;
+  style.textContent = `${baseStyles}\n${themeStyles}\n${homeStyles}\n${appleHomeStyles}\n${stabilityStyles}\n${reelHomeStyles}\n${climateStyles}\n${homeFeatureStyles}\n${readabilityStyles}\n${segmentedStyles}\n${designSystemStyles}\n${designTuningStyles}\n${calendarSmartHomePolishStyles}\n${smartHomeDeviceCardStyles}\n${controlLanguageStyles}\n${appleGuidelinesStyles}\n${calendarV3Styles}\n${homeRoomSharedAccentStyles}\n${homeMobileV8Styles}\n${mobilePhoneFixesV9Styles}\n${homePhoneRoomPolishV10Styles}\n${homeMobileUtilitiesV20Styles}\n${homeMobileFeaturesV21Styles}\n${sharedModalContractV22Styles}\n${homeDesktopRoomInfoV24Styles}\n${desktopRoomWorkspaceV26Styles}\n${phoneLandscapeV40Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}`;
   document.head.appendChild(style);
 }
 
