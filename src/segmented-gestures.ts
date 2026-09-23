@@ -44,16 +44,9 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
   const controlFromTarget = (target: EventTarget | null) => {
     if (!(target instanceof Element)) return null;
-
-    const roomLightMode = target.closest<HTMLElement>(".room-light-mode-v4");
-    if (
-      roomLightMode &&
-      window.matchMedia("(orientation: landscape) and (max-height: 560px) and (max-width: 1024px)").matches
-    ) {
-      return roomLightMode;
-    }
-
-    return target.closest<HTMLElement>(".segmented-control, .page-dock, .desktop-room-mode-v32");
+    return target.closest<HTMLElement>(
+      ".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4",
+    );
   };
 
   const buttonFromTarget = (target: EventTarget | null, control: HTMLElement) => {
@@ -120,11 +113,65 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     gesture.control.style.setProperty("--segment-drag-offset", `${nextOffset}px`);
   };
 
-  const invokeButton = (control: HTMLElement, button: HTMLButtonElement | undefined | null) => {
+  const settleTimers = new WeakMap<HTMLElement, number>();
+
+  const invokeButton = (
+    control: HTMLElement,
+    button: HTMLButtonElement | undefined | null,
+    fromOffset: number,
+  ) => {
     if (!button || button.disabled) return;
-    syncRestOffset(control, button);
-    suppressClick = { control, until: performance.now() + 320 };
+
+    const buttons = directButtons(control);
+    const targetIndex = buttons.indexOf(button);
+    if (targetIndex < 0) return;
+
+    const offsets = offsetsFor(buttons);
+    const maxOffset = offsets[offsets.length - 1] ?? 0;
+    const startOffset = Math.max(0, Math.min(maxOffset, fromOffset));
+    const targetOffset = offsets[targetIndex] ?? 0;
+    const previousTimer = settleTimers.get(control);
+    if (previousTimer !== undefined) window.clearTimeout(previousTimer);
+
+    const cleanup = () => {
+      settleTimers.delete(control);
+      syncRestOffset(control, button);
+      control.classList.remove("segment-dragging", "segment-settling");
+      control.style.removeProperty("--segment-drag-offset");
+      control.style.removeProperty("--segment-settle-offset");
+    };
+
+    suppressClick = { control, until: performance.now() + 360 };
+
+    if (
+      Math.abs(targetOffset - startOffset) < 0.5 ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      control.style.setProperty("--segment-rest-offset", `${targetOffset}px`);
+      button.click();
+      cleanup();
+      return;
+    }
+
+    // Freeze the thumb exactly where the gesture started/ended, let React
+    // commit the new active button, then animate to the target on the next
+    // paint. This makes both directions identical instead of depending on
+    // :has() and React's commit timing.
+    control.classList.add("segment-settling");
+    control.style.setProperty("--segment-settle-offset", `${startOffset}px`);
+    control.style.setProperty("--segment-rest-offset", `${targetOffset}px`);
     button.click();
+
+    requestAnimationFrame(() => {
+      control.classList.remove("segment-dragging");
+      control.style.removeProperty("--segment-drag-offset");
+
+      requestAnimationFrame(() => {
+        control.style.setProperty("--segment-settle-offset", `${targetOffset}px`);
+        const timer = window.setTimeout(cleanup, 340);
+        settleTimers.set(control, timer);
+      });
+    });
   };
 
   const finishGesture = (event: PointerEvent, cancelled = false) => {
@@ -139,7 +186,6 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
       // Ignore browsers that already released pointer capture.
     }
 
-    let targetOffset = current.startOffset;
     if (!cancelled) {
       if (current.moved) {
         event.preventDefault();
@@ -155,26 +201,22 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
           }
         });
 
-        targetOffset = offsets[targetIndex] ?? 0;
-        current.control.style.setProperty("--segment-drag-offset", `${targetOffset}px`);
-        invokeButton(current.control, current.buttons[targetIndex]);
-      } else if (current.pressedButton) {
+        invokeButton(current.control, current.buttons[targetIndex], current.currentOffset);
+        return;
+      }
+
+      if (current.pressedButton) {
         event.preventDefault();
-        const pressedIndex = current.buttons.indexOf(current.pressedButton);
-        const offsets = offsetsFor(current.buttons);
-        targetOffset = offsets[Math.max(0, pressedIndex)] ?? current.startOffset;
-        current.control.style.setProperty("--segment-drag-offset", `${targetOffset}px`);
-        invokeButton(current.control, current.pressedButton);
+        invokeButton(current.control, current.pressedButton, current.startOffset);
+        return;
       }
     }
 
-    // Keep the temporary offset for two frames so React has time to update the
-    // active class before CSS resumes control. This fixes right-to-left snaps.
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        current.control.classList.remove("segment-dragging");
-        current.control.style.removeProperty("--segment-drag-offset");
-      });
+      current.control.classList.remove("segment-dragging", "segment-settling");
+      current.control.style.removeProperty("--segment-drag-offset");
+      current.control.style.removeProperty("--segment-settle-offset");
+      syncRestOffset(current.control);
     });
   };
 

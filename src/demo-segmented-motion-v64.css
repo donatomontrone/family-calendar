@@ -2,21 +2,38 @@
  * DEMO SEGMENTED MOTION V64
  * Authoritative demo-only thumb motion.
  *
- * Specificity deliberately matches/exceeds the historical adaptive :has()
- * selectors, so Safari cannot fall back to the old one-way state transition.
+ * The thumb is driven by measured pixel offsets. During selection changes a
+ * short settling phase freezes the current visual position, lets React commit
+ * the new active state, then animates to the measured target. This keeps
+ * left-to-right and right-to-left motion perfectly symmetric.
  */
 
 html[data-demo-adaptive][data-demo-viewport] body #root
-  main.app-shell.calendar-page-active .tasks-card > .task-segmented-control:not(.segment-dragging)::before,
+  main.app-shell.calendar-page-active .tasks-card > .task-segmented-control:not(.segment-dragging):not(.segment-settling)::before,
 html[data-demo-adaptive][data-demo-viewport] body #root
-  main.app-shell.calendar-page-active .responsive-calendar-panel-switch.segmented-control:not(.segment-dragging)::before,
+  main.app-shell.calendar-page-active .responsive-calendar-panel-switch.segmented-control:not(.segment-dragging):not(.segment-settling)::before,
 html[data-demo-adaptive][data-demo-viewport] body #root
-  .page-dock-shell > .page-switch-control:not(.segment-dragging)::before,
+  .page-dock-shell > .page-switch-control:not(.segment-dragging):not(.segment-settling)::before,
 html[data-demo-adaptive][data-demo-viewport] body #root
-  main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32:not(.segment-dragging)::before,
+  main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32:not(.segment-dragging):not(.segment-settling)::before,
 html[data-demo-adaptive][data-demo-viewport] body #root
-  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4:not(.segment-dragging)::before {
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4:not(.segment-dragging):not(.segment-settling)::before {
   transform: translate3d(var(--segment-rest-offset, 0px),0,0) !important;
+  transition: transform .30s cubic-bezier(.22,.86,.28,1) !important;
+  will-change: transform !important;
+}
+
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.calendar-page-active .tasks-card > .task-segmented-control.segment-settling:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.calendar-page-active .responsive-calendar-panel-switch.segmented-control.segment-settling:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  .page-dock-shell > .page-switch-control.segment-settling:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32.segment-settling:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4.segment-settling:not(.segment-dragging)::before {
+  transform: translate3d(var(--segment-settle-offset, var(--segment-rest-offset, 0px)),0,0) !important;
   transition: transform .30s cubic-bezier(.22,.86,.28,1) !important;
   will-change: transform !important;
 }
@@ -33,4 +50,11 @@ html[data-demo-adaptive][data-demo-viewport] body #root
   main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4.segment-dragging::before {
   transform: translate3d(var(--segment-drag-offset, var(--segment-rest-offset,0px)),0,0) !important;
   transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-demo-adaptive][data-demo-viewport] body #root
+    :is(.task-segmented-control,.responsive-calendar-panel-switch,.page-switch-control,.desktop-room-mode-v32,.room-light-mode-v4)::before {
+    transition-duration: .01ms !important;
+  }
 }

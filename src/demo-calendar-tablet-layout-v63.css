@@ -146,17 +146,23 @@
 /* ========================================================================== */
 @media (min-width: 700px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active {
+    --calendar-tablet-header-gap: 5px;
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
     overflow: hidden !important;
   }
 
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    > #family-shared-header-host {
+    margin-bottom: var(--calendar-tablet-header-gap) !important;
+  }
+
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
     width: 100% !important;
-    height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
+    height: calc(100dvh - var(--ad-header-h) - var(--calendar-tablet-header-gap) - var(--ad-shell-pad) - 78px) !important;
     min-height: 0 !important;
-    max-height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
+    max-height: calc(100dvh - var(--ad-header-h) - var(--calendar-tablet-header-gap) - var(--ad-shell-pad) - 78px) !important;
     display: grid !important;
     grid-template-columns: minmax(240px,.88fr) minmax(300px,1.12fr) !important;
     grid-template-rows: minmax(0,1fr) clamp(300px,30dvh,350px) !important;
@@ -366,31 +372,19 @@
     scroll-padding-bottom: 14px !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
     overscroll-behavior-y: contain !important;
     touch-action: pan-y pinch-zoom !important;
     -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin !important;
-    scrollbar-color: rgba(118,118,128,.34) transparent !important;
-    scrollbar-gutter: stable !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .home-card .entity-grid::-webkit-scrollbar {
-    display: block !important;
-    width: 4px !important;
+    display: none !important;
+    width: 0 !important;
     height: 0 !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid::-webkit-scrollbar-track {
-    background: transparent !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid::-webkit-scrollbar-thumb {
-    border-radius: 999px !important;
-    background: rgba(118,118,128,.34) !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
