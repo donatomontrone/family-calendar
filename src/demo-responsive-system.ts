@@ -100,6 +100,20 @@ function classifyViewport(width: number, height: number): DemoViewport {
   return "tablet-portrait";
 }
 
+function syncSegmentedDirectionClasses() {
+  const controls = document.querySelectorAll<HTMLElement>(
+    ".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4",
+  );
+
+  controls.forEach((control) => {
+    const buttons = Array.from(control.children).filter(
+      (child): child is HTMLButtonElement => child instanceof HTMLButtonElement,
+    );
+    const secondActive = Boolean(buttons[1]?.classList.contains("active"));
+    control.classList.toggle("segment-second-active", secondActive);
+  });
+}
+
 let lastResponsiveSignature = "";
 
 function syncResponsiveMode() {
@@ -113,6 +127,7 @@ function syncResponsiveMode() {
   root.dataset.demoAdaptive = mode === "xl" || mode === "phone-portrait" ? "reference" : "adaptive";
   root.style.setProperty("--demo-viewport-width", `${width}px`);
   root.style.setProperty("--demo-viewport-height", `${height}px`);
+  syncSegmentedDirectionClasses();
 
   // Clear every historical marker. Only data-demo-viewport is authoritative.
   root.classList.remove(
@@ -141,6 +156,7 @@ window.visualViewport?.addEventListener("scroll", syncResponsiveMode, { passive:
 
 const calendarPageObserver = new MutationObserver((mutations) => {
   if (mutations.some((mutation) => mutation.type === "attributes" && mutation.attributeName === "class")) {
+    syncSegmentedDirectionClasses();
     syncResponsiveMode();
   }
 });
