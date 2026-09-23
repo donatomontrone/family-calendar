@@ -695,11 +695,15 @@
     overflow: hidden !important;
   }
 
-  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > #family-shared-header-host,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
     width: 100% !important;
     height: var(--ct62-header) !important;
     min-height: var(--ct62-header) !important;
     max-height: var(--ct62-header) !important;
+    margin: 0 !important;
   }
 
   :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
