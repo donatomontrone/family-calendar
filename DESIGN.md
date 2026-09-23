@@ -24,7 +24,7 @@ rounded:
 
 Family Calendar is a shared Home Assistant family dashboard. The approved phone UI is the visual reference: calm Apple/Home-inspired system typography, cool neutral surfaces, compact rounded controls, room-specific accents, and clear selected/active states.
 
-Tablet and desktop are not enlarged phone layouts and are not admin dashboards. They use dedicated large-screen compositions that reveal more information at once while preserving the phone's interaction language.
+The Calendar page keeps the approved 24ec8046 layout at every non-phone size. Only the Home page uses a dedicated tablet/desktop composition, preserving the phone's interaction language while revealing more information at once.
 
 Design variance: 6/10. Motion: 2/10. Information density: 8/10.
 
@@ -47,13 +47,11 @@ Anti-references:
 
 Phone portrait and phone landscape remain owned by the existing baseline and must not be changed by large-screen work.
 
-V60 activates only for tablet/desktop-class viewports. It owns dedicated React markup and the final CSS layer `large-screen-v60.css`.
-
 Calendar:
-- one dominant month surface;
-- one continuous Family Rail containing Agenda, Lists, and Smart Home;
-- desktop/landscape use a two-column composition;
-- tablet portrait places the Family Rail below the month and recomposes the rail internally.
+- the exact source/layout from commit `24ec8046` is canonical;
+- tablet/desktop work must not alter its DOM, header, dock, cards, spacing, or responsive cascade unless the user explicitly requests a Calendar change.
+
+Home V60 activates only for tablet/desktop-class viewports. It owns dedicated React markup in `HomeView.tsx` and the final CSS layer `large-screen-v60.css`.
 
 Home:
 - one horizontal room strip;
@@ -112,8 +110,9 @@ Motion is restrained and limited to color, shadow, opacity, and transform transi
 ## Do / Don't
 
 Do preserve the approved phone layout unchanged.
-Do use dedicated V60 classes/markup for tablet and desktop.
-Do make the calendar or selected room the visual primary surface.
+Do preserve Calendar exactly from the 24ec8046 baseline unless explicitly requested otherwise.
+Do use dedicated V60 classes/markup for Home tablet and desktop.
+Do make the selected room the visual primary surface.
 Do show more information simultaneously on larger screens.
 Do keep scroll ownership explicit.
 Do keep light/dark mode structurally identical.
