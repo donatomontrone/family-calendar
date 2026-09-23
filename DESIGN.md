@@ -48,8 +48,10 @@ Anti-references:
 Phone portrait and phone landscape remain owned by the existing baseline and must not be changed by large-screen work.
 
 Calendar:
-- the exact source/layout from commit `24ec8046` is canonical;
-- tablet/desktop work must not alter its DOM, header, dock, cards, spacing, or responsive cascade unless the user explicitly requests a Calendar change.
+- the exact React source, component anatomy and visual language from commit `24ec8046` remain canonical;
+- phone and desktop presentation remain on that baseline unless explicitly requested otherwise;
+- tablet geometry is intentionally owned by `calendar-tablet-v62.css`: it may change placement, bounded heights and overflow ownership, but not colors, materials, component anatomy, controls or interaction behavior;
+- compact portrait tablets may use a short document scroll to preserve readability; regular portrait and landscape tablets stay viewport-bound with internal scrolling only for Agenda, Lists and device collections.
 
 Home V60 activates only for tablet/desktop-class viewports. It owns dedicated React markup in `HomeView.tsx` and the final CSS layer `large-screen-v60.css`.
 
@@ -110,7 +112,7 @@ Motion is restrained and limited to color, shadow, opacity, and transform transi
 ## Do / Don't
 
 Do preserve the approved phone layout unchanged.
-Do preserve Calendar exactly from the 24ec8046 baseline unless explicitly requested otherwise.
+Do preserve Calendar component anatomy and visual styling from the 24ec8046 baseline; use V62 only for tablet geometry.
 Do use dedicated V60 classes/markup for Home tablet and desktop.
 Do make the selected room the visual primary surface.
 Do show more information simultaneously on larger screens.
