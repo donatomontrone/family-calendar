@@ -475,7 +475,7 @@
 
   /* + / ×: same 40x40 geometry as power-all; neutral +, red ×. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-add-button {
+    :is(.tasks-card .task-add-button,.home-card .power-all) {
     flex: 0 0 40px !important;
     width: 40px !important;
     height: 40px !important;
@@ -488,7 +488,7 @@
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-add-button svg {
+    :is(.tasks-card .task-add-button,.home-card .power-all) svg {
     width: 18px !important;
     height: 18px !important;
     min-width: 18px !important;
