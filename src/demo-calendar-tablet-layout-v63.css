@@ -196,6 +196,44 @@
     overflow: hidden !important;
   }
 
+  /* Secondary-card headings: Agenda, Liste and Casa must be identical. */
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root
+    main.app-shell.calendar-page-active
+    :is(.agenda-card,.tasks-card,.home-card) .card-heading {
+    box-sizing: border-box !important;
+    min-height: 0 !important;
+    padding: 13px 14px 9px !important;
+    align-items: center !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root
+    main.app-shell.calendar-page-active
+    :is(.agenda-card,.tasks-card,.home-card) .card-heading > div:first-child {
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root
+    main.app-shell.calendar-page-active
+    :is(.agenda-card,.tasks-card,.home-card) .section-kicker {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 9px !important;
+    line-height: 1.05 !important;
+    letter-spacing: .075em !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root
+    main.app-shell.calendar-page-active
+    :is(.agenda-card,.tasks-card,.home-card) .card-heading h2 {
+    margin: 3px 0 0 !important;
+    padding: 0 !important;
+    font-size: 18px !important;
+    line-height: 1.05 !important;
+    letter-spacing: -.025em !important;
+  }
+
   /* Header alignment + people currently home. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     > #family-shared-header-host > #family-shared-header.shared-home-header {
