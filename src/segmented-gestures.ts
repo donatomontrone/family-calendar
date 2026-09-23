@@ -34,6 +34,12 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     const activeButton = preferredButton ?? buttons.find((button) => button.classList.contains("active")) ?? buttons[0];
     const offset = Math.max(0, activeButton.offsetLeft - firstLeft);
     control.style.setProperty("--segment-rest-offset", `${offset}px`);
+    if (
+      !control.classList.contains("segment-dragging") &&
+      !control.classList.contains("segment-settling")
+    ) {
+      control.style.setProperty("--segment-visual-offset", `${offset}px`);
+    }
   };
 
   const syncAllRestOffsets = () => {
@@ -88,6 +94,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     };
 
     control.style.setProperty("--segment-drag-offset", `${startOffset}px`);
+    control.style.setProperty("--segment-visual-offset", `${startOffset}px`);
 
     try {
       control.setPointerCapture(event.pointerId);
@@ -111,6 +118,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     const nextOffset = Math.max(0, Math.min(gesture.maxOffset, gesture.startOffset + delta));
     gesture.currentOffset = nextOffset;
     gesture.control.style.setProperty("--segment-drag-offset", `${nextOffset}px`);
+    gesture.control.style.setProperty("--segment-visual-offset", `${nextOffset}px`);
   };
 
   const settleTimers = new WeakMap<HTMLElement, number>();
@@ -130,6 +138,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     const maxOffset = offsets[offsets.length - 1] ?? 0;
     const startOffset = Math.max(0, Math.min(maxOffset, fromOffset));
     const targetOffset = offsets[targetIndex] ?? 0;
+    const wasDragging = control.classList.contains("segment-dragging");
     const previousTimer = settleTimers.get(control);
     if (previousTimer !== undefined) window.clearTimeout(previousTimer);
 
@@ -148,6 +157,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       control.style.setProperty("--segment-rest-offset", `${targetOffset}px`);
+      control.style.setProperty("--segment-visual-offset", `${targetOffset}px`);
       button.click();
       cleanup();
       return;
@@ -160,6 +170,9 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     control.classList.add("segment-settling");
     control.style.setProperty("--segment-settle-offset", `${startOffset}px`);
     control.style.setProperty("--segment-rest-offset", `${targetOffset}px`);
+    if (!wasDragging) {
+      control.style.setProperty("--segment-visual-offset", `${targetOffset}px`);
+    }
     button.click();
 
     requestAnimationFrame(() => {
@@ -168,6 +181,9 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
       requestAnimationFrame(() => {
         control.style.setProperty("--segment-settle-offset", `${targetOffset}px`);
+        if (wasDragging) {
+          control.style.setProperty("--segment-visual-offset", `${targetOffset}px`);
+        }
         const timer = window.setTimeout(cleanup, 340);
         settleTimers.set(control, timer);
       });
