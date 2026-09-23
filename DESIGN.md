@@ -50,7 +50,7 @@ Phone portrait and phone landscape remain owned by the existing baseline and mus
 Calendar:
 - the exact React source, component anatomy and visual language from commit `24ec8046` remain canonical;
 - phone and desktop presentation remain on that baseline unless explicitly requested otherwise;
-- tablet geometry is intentionally owned by `calendar-tablet-v62.css`: it may change placement, bounded heights and overflow ownership, but not colors, materials, component anatomy, controls or interaction behavior;
+- tablet geometry in the public demo is intentionally owned by `demo-calendar-tablet-layout-v63.css`: it may change only macro placement, bounded heights and overflow ownership; it must not redefine typography, colors, radii, shadows, card styling, button styling, component anatomy, controls or interaction behavior;
 - compact portrait tablets may use a short document scroll to preserve readability; regular portrait and landscape tablets stay viewport-bound with internal scrolling only for Agenda, Lists and device collections.
 
 Home V60 activates only for tablet/desktop-class viewports. It owns dedicated React markup in `HomeView.tsx` and the final CSS layer `large-screen-v60.css`.
@@ -112,7 +112,7 @@ Motion is restrained and limited to color, shadow, opacity, and transform transi
 ## Do / Don't
 
 Do preserve the approved phone layout unchanged.
-Do preserve Calendar component anatomy and visual styling from the 24ec8046 baseline; use V62 only for tablet geometry.
+Do preserve Calendar component anatomy and visual styling from the 24ec8046 baseline; use V63 only for tablet geometry.
 Do use dedicated V60 classes/markup for Home tablet and desktop.
 Do make the selected room the visual primary surface.
 Do show more information simultaneously on larger screens.
