@@ -61,7 +61,7 @@ function classifyViewport(width: number, height: number): DemoViewport {
   if (calendarActive && !landscape && width >= 560 && height >= 700) {
     return "tablet-portrait";
   }
-  if (calendarActive && landscape && width >= 720 && height >= 480 && width < 1180) {
+  if (calendarActive && landscape && width >= 720 && height >= 480 && width <= 1400) {
     return "tablet-landscape";
   }
   const touchLike = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
