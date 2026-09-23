@@ -1,0 +1,16 @@
+/*
+ * DEMO SEGMENTED MOTION V64
+ * The thumb follows the real active-button offset supplied by segmented-gestures.ts.
+ * This avoids Safari :has() one-way transition glitches.
+ */
+
+:is(.segmented-control,.page-dock,.desktop-room-mode-v32,.room-light-mode-v4):not(.segment-dragging)::before {
+  transform: translate3d(var(--segment-rest-offset, 0px),0,0) !important;
+  transition: transform .30s cubic-bezier(.22,.86,.28,1) !important;
+  will-change: transform !important;
+}
+
+:is(.segmented-control,.page-dock,.desktop-room-mode-v32,.room-light-mode-v4).segment-dragging::before {
+  transform: translate3d(var(--segment-drag-offset, var(--segment-rest-offset,0px)),0,0) !important;
+  transition: none !important;
+}
