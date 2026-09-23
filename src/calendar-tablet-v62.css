@@ -17,7 +17,7 @@
 /* Small portrait tablet — readable first, short document scroll allowed.     */
 /* 560–699 CSS px is where the phone document becomes too sparse for tablets. */
 /* -------------------------------------------------------------------------- */
-@media (min-width: 560px) and (max-width: 699px) and (min-height: 720px) and (orientation: portrait) {
+@media (min-width: 560px) and (max-width: 699px) and (min-height: 700px) and (orientation: portrait) {
   :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) {
     width: 100% !important;
     height: auto !important;
