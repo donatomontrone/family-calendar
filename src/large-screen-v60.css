@@ -1,6 +1,6 @@
 /*
  * LARGE SCREEN V60
- * Tablet + desktop only. Phone portrait/landscape remain on the proven baseline.
+ * CASA tablet + desktop only. CALENDARIO and phone portrait/landscape remain on the 24ec8046 baseline.
  *
  * Visual direction:
  * - same Apple/Home visual language as phone;
@@ -16,7 +16,7 @@
 }
 
 @media (min-width: 768px) and (min-height: 660px) {
-  main.app-shell {
+  main.app-shell.home-page-active {
     --v60-canvas: #f1f2f4;
     --v60-surface: rgba(255,255,255,.88);
     --v60-surface-solid: #ffffff;
@@ -60,7 +60,7 @@
       var(--v60-canvas) !important;
   }
 
-  main.app-shell.night {
+  main.app-shell.home-page-active.night {
     --v60-canvas: #17171b;
     --v60-surface: rgba(38,38,42,.93);
     --v60-surface-solid: #2b2b2f;
@@ -91,7 +91,7 @@
   }
 
   /* Shared header: phone language, desktop rhythm. */
-  main.app-shell > #family-shared-header-host {
+  main.app-shell.home-page-active > #family-shared-header-host {
     grid-column: 1 !important;
     grid-row: 1 !important;
     box-sizing: border-box !important;
@@ -104,7 +104,7 @@
     overflow: visible !important;
   }
 
-  main.app-shell > #family-shared-header-host > #family-shared-header {
+  main.app-shell.home-page-active > #family-shared-header-host > #family-shared-header {
     box-sizing: border-box !important;
     width: 100% !important;
     height: 70px !important;
@@ -121,12 +121,12 @@
     background: transparent !important;
   }
 
-  main.app-shell #family-shared-header .reel-greeting {
+  main.app-shell.home-page-active #family-shared-header .reel-greeting {
     min-width: 0 !important;
     gap: 4px !important;
   }
 
-  main.app-shell #family-shared-header .reel-greeting strong {
+  main.app-shell.home-page-active #family-shared-header .reel-greeting strong {
     margin: 0 !important;
     color: var(--v60-label) !important;
     font-size: clamp(18px,1.35vw,21px) !important;
@@ -135,14 +135,14 @@
     letter-spacing: -.025em !important;
   }
 
-  main.app-shell #family-shared-header .reel-greeting span {
+  main.app-shell.home-page-active #family-shared-header .reel-greeting span {
     margin: 0 !important;
     color: var(--v60-secondary) !important;
     font-size: 11px !important;
     line-height: 1.15 !important;
   }
 
-  main.app-shell #family-shared-header .reel-clock {
+  main.app-shell.home-page-active #family-shared-header .reel-clock {
     margin: 0 !important;
     color: var(--v60-label) !important;
     font-size: clamp(40px,3.25vw,54px) !important;
@@ -152,7 +152,7 @@
     font-variant-numeric: tabular-nums !important;
   }
 
-  main.app-shell #family-shared-header .reel-top-actions {
+  main.app-shell.home-page-active #family-shared-header .reel-top-actions {
     width: auto !important;
     height: 38px !important;
     justify-self: end !important;
@@ -162,7 +162,7 @@
     gap: 7px !important;
   }
 
-  main.app-shell #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
+  main.app-shell.home-page-active #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
     box-sizing: border-box !important;
     height: 38px !important;
     min-height: 38px !important;
@@ -181,18 +181,18 @@
       color var(--v60-transition) !important;
   }
 
-  main.app-shell.night #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
+  main.app-shell.home-page-active.night #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
     box-shadow:
       inset 0 0 0 1px var(--v60-line),
       inset 0 1px 0 rgba(255,255,255,.035) !important;
   }
 
-  main.app-shell #family-shared-header :is(.weather-pill,.security-pill) {
+  main.app-shell.home-page-active #family-shared-header :is(.weather-pill,.security-pill) {
     padding-inline: 11px !important;
     font-size: 10px !important;
   }
 
-  main.app-shell #family-shared-header :is(.round-top,.header-theme-switch) {
+  main.app-shell.home-page-active #family-shared-header :is(.round-top,.header-theme-switch) {
     flex: 0 0 38px !important;
     width: 38px !important;
     min-width: 38px !important;
@@ -200,26 +200,26 @@
     padding: 0 !important;
   }
 
-  main.app-shell #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) svg {
+  main.app-shell.home-page-active #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) svg {
     width: 16px !important;
     height: 16px !important;
   }
 
-  main.app-shell #family-shared-header .avatar-stack i {
+  main.app-shell.home-page-active #family-shared-header .avatar-stack i {
     width: 30px !important;
     height: 30px !important;
     min-width: 30px !important;
     min-height: 30px !important;
   }
 
-  main.app-shell #family-shared-header button:hover {
+  main.app-shell.home-page-active #family-shared-header button:hover {
     background: var(--v60-surface-solid) !important;
     color: var(--v60-label) !important;
     transform: none !important;
   }
 
   /* Shared page switch remains a small floating island. */
-  main.app-shell .page-dock-shell {
+  main.app-shell.home-page-active .page-dock-shell {
     position: fixed !important;
     z-index: 120 !important;
     left: 50% !important;
@@ -231,7 +231,7 @@
     transform: translateX(-50%) !important;
   }
 
-  main.app-shell .page-dock-shell > .page-switch-control {
+  main.app-shell.home-page-active .page-dock-shell > .page-switch-control {
     box-sizing: border-box !important;
     width: 100% !important;
     height: 40px !important;
@@ -249,7 +249,7 @@
     -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
   }
 
-  main.app-shell .page-dock-shell > .page-switch-control > button {
+  main.app-shell.home-page-active .page-dock-shell > .page-switch-control > button {
     box-sizing: border-box !important;
     height: 34px !important;
     min-height: 34px !important;
@@ -263,7 +263,7 @@
     transform: none !important;
   }
 
-  main.app-shell .page-dock-shell > .page-switch-control > button.active {
+  main.app-shell.home-page-active .page-dock-shell > .page-switch-control > button.active {
     background: var(--v60-surface-solid) !important;
     color: var(--v60-label) !important;
     box-shadow: 0 1px 5px rgba(0,0,0,.085) !important;
@@ -2383,9 +2383,9 @@
   }
 
   /* Large-screen overlays: bounded, never full-viewport slabs. */
-  body .fc-modal-backdrop > .fc-modal,
-  body #family-shared-device-overlay #family-shared-device-controls.device-controls,
-  body .home-calendar-device-overlay .device-controls,
+  body:has(main.app-shell.home-page-active) .fc-modal-backdrop > .fc-modal,
+  body:has(main.app-shell.home-page-active) #family-shared-device-overlay #family-shared-device-controls.device-controls,
+  body:has(main.app-shell.home-page-active) .home-calendar-device-overlay .device-controls,
   body main.app-shell.home-page-active .reel-backdrop > :is(.feature-modal,.reel-modal) {
     width: min(620px,calc(100vw - 48px)) !important;
     max-width: 620px !important;
@@ -2531,31 +2531,31 @@
 
 /* Tablet landscape */
 @media (min-width: 768px) and (max-width: 979px) and (min-height: 660px) and (orientation: landscape) {
-  main.app-shell {
+  main.app-shell.home-page-active {
     grid-template-rows: 62px minmax(0,1fr) !important;
     padding-top: 7px !important;
     padding-inline: 8px !important;
     gap: 7px !important;
   }
 
-  main.app-shell > #family-shared-header-host,
-  main.app-shell > #family-shared-header-host > #family-shared-header {
+  main.app-shell.home-page-active > #family-shared-header-host,
+  main.app-shell.home-page-active > #family-shared-header-host > #family-shared-header {
     height: 62px !important;
     min-height: 62px !important;
     max-height: 62px !important;
   }
 
-  main.app-shell > #family-shared-header-host > #family-shared-header {
+  main.app-shell.home-page-active > #family-shared-header-host > #family-shared-header {
     grid-template-columns: minmax(140px,1fr) auto minmax(230px,1fr) !important;
     gap: 7px !important;
   }
 
-  main.app-shell #family-shared-header .avatar-stack {
+  main.app-shell.home-page-active #family-shared-header .avatar-stack {
     display: none !important;
   }
 
-  main.app-shell #family-shared-header .weather-pill small,
-  main.app-shell #family-shared-header .security-pill span {
+  main.app-shell.home-page-active #family-shared-header .weather-pill small,
+  main.app-shell.home-page-active #family-shared-header .security-pill span {
     display: none !important;
   }
 
@@ -2914,27 +2914,27 @@
 
 /* Tablet portrait gets its own composition. */
 @media (min-width: 768px) and (max-width: 1099px) and (min-height: 660px) and (orientation: portrait) {
-  main.app-shell {
+  main.app-shell.home-page-active {
     grid-template-rows: 64px minmax(0,1fr) !important;
     padding-top: 8px !important;
     padding-inline: 9px !important;
     gap: 8px !important;
   }
 
-  main.app-shell > #family-shared-header-host,
-  main.app-shell > #family-shared-header-host > #family-shared-header {
+  main.app-shell.home-page-active > #family-shared-header-host,
+  main.app-shell.home-page-active > #family-shared-header-host > #family-shared-header {
     height: 64px !important;
     min-height: 64px !important;
     max-height: 64px !important;
   }
 
-  main.app-shell > #family-shared-header-host > #family-shared-header {
+  main.app-shell.home-page-active > #family-shared-header-host > #family-shared-header {
     grid-template-columns: minmax(150px,1fr) auto minmax(215px,1fr) !important;
     gap: 8px !important;
   }
 
-  main.app-shell #family-shared-header .avatar-stack,
-  main.app-shell #family-shared-header .weather-pill small {
+  main.app-shell.home-page-active #family-shared-header .avatar-stack,
+  main.app-shell.home-page-active #family-shared-header .weather-pill small {
     display: none !important;
   }
 
