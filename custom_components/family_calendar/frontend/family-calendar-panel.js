@@ -24588,51 +24588,60 @@ function li() {
 var ui = window;
 if (!ui.__familyCalendarSegmentedGestures) {
 	ui.__familyCalendarSegmentedGestures = !0;
-	let e = null, t = null, n = (e) => Array.from(e.children).filter((e) => e instanceof HTMLButtonElement), r = (e) => {
+	let e = null, t = null, n = (e) => Array.from(e.children).filter((e) => e instanceof HTMLButtonElement), r = (e, t) => {
+		let r = n(e);
+		if (r.length < 2) return;
+		let i = r[0]?.offsetLeft ?? 0, a = t ?? r.find((e) => e.classList.contains("active")) ?? r[0], o = Math.max(0, a.offsetLeft - i);
+		e.style.setProperty("--segment-rest-offset", `${o}px`);
+	}, i = () => {
+		document.querySelectorAll(".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4").forEach((e) => r(e));
+	}, a = (e) => {
 		if (!(e instanceof Element)) return null;
 		let t = e.closest(".room-light-mode-v4");
 		return t && window.matchMedia("(orientation: landscape) and (max-height: 560px) and (max-width: 1024px)").matches ? t : e.closest(".segmented-control, .page-dock, .desktop-room-mode-v32");
-	}, i = (e, t) => {
+	}, o = (e, t) => {
 		if (!(e instanceof Element)) return null;
 		let n = e.closest("button");
 		return n && n.parentElement === t ? n : null;
-	}, a = (e) => {
+	}, s = (e) => {
 		let t = e[0]?.offsetLeft ?? 0;
 		return e.map((e) => e.offsetLeft - t);
-	}, o = (t) => {
+	}, c = (t) => {
 		if (!t.isPrimary || t.pointerType === "mouse" && t.button !== 0) return;
-		let o = r(t.target);
-		if (!o) return;
-		let s = n(o);
-		if (s.length < 2) return;
-		let c = Math.max(0, s.findIndex((e) => e.classList.contains("active"))), l = a(s), u = l[c] ?? 0, d = l[l.length - 1] ?? 0;
+		let i = a(t.target);
+		if (!i) return;
+		let c = n(i);
+		if (c.length < 2) return;
+		let l = Math.max(0, c.findIndex((e) => e.classList.contains("active"))), u = s(c);
+		r(i, c[l] ?? c[0]);
+		let d = u[l] ?? 0, f = u[u.length - 1] ?? 0;
 		e = {
-			control: o,
-			buttons: s,
-			pressedButton: i(t.target, o),
+			control: i,
+			buttons: c,
+			pressedButton: o(t.target, i),
 			pointerId: t.pointerId,
 			startX: t.clientX,
-			startOffset: u,
-			currentOffset: u,
-			maxOffset: d,
+			startOffset: d,
+			currentOffset: d,
+			maxOffset: f,
 			moved: !1
-		}, o.style.setProperty("--segment-drag-offset", `${u}px`);
+		}, i.style.setProperty("--segment-drag-offset", `${d}px`);
 		try {
-			o.setPointerCapture(t.pointerId);
+			i.setPointerCapture(t.pointerId);
 		} catch {}
-	}, s = (t) => {
+	}, l = (t) => {
 		if (!e || t.pointerId !== e.pointerId) return;
 		let n = t.clientX - e.startX;
 		if (!e.moved && Math.abs(n) > 5 && (e.moved = !0, e.control.classList.add("segment-dragging")), !e.moved) return;
 		t.preventDefault();
 		let r = Math.max(0, Math.min(e.maxOffset, e.startOffset + n));
 		e.currentOffset = r, e.control.style.setProperty("--segment-drag-offset", `${r}px`);
-	}, c = (e, n) => {
-		!n || n.disabled || (t = {
+	}, u = (e, n) => {
+		!n || n.disabled || (r(e, n), t = {
 			control: e,
 			until: performance.now() + 320
 		}, n.click());
-	}, l = (t, n = !1) => {
+	}, d = (t, n = !1) => {
 		if (!e || t.pointerId !== e.pointerId) return;
 		let r = e;
 		e = null;
@@ -24643,15 +24652,15 @@ if (!ui.__familyCalendarSegmentedGestures) {
 		if (!n) {
 			if (r.moved) {
 				t.preventDefault();
-				let e = a(r.buttons), n = 0, o = Infinity;
+				let e = s(r.buttons), n = 0, a = Infinity;
 				e.forEach((e, t) => {
 					let i = Math.abs(e - r.currentOffset);
-					i < o && (o = i, n = t);
-				}), i = e[n] ?? 0, r.control.style.setProperty("--segment-drag-offset", `${i}px`), c(r.control, r.buttons[n]);
+					i < a && (a = i, n = t);
+				}), i = e[n] ?? 0, r.control.style.setProperty("--segment-drag-offset", `${i}px`), u(r.control, r.buttons[n]);
 			} else if (r.pressedButton) {
 				t.preventDefault();
 				let e = r.buttons.indexOf(r.pressedButton);
-				i = a(r.buttons)[Math.max(0, e)] ?? r.startOffset, r.control.style.setProperty("--segment-drag-offset", `${i}px`), c(r.control, r.pressedButton);
+				i = s(r.buttons)[Math.max(0, e)] ?? r.startOffset, r.control.style.setProperty("--segment-drag-offset", `${i}px`), u(r.control, r.pressedButton);
 			}
 		}
 		requestAnimationFrame(() => {
@@ -24660,16 +24669,16 @@ if (!ui.__familyCalendarSegmentedGestures) {
 			});
 		});
 	};
-	document.addEventListener("pointerdown", o, {
+	document.addEventListener("pointerdown", c, {
 		capture: !0,
 		passive: !1
-	}), document.addEventListener("pointermove", s, {
+	}), document.addEventListener("pointermove", l, {
 		capture: !0,
 		passive: !1
-	}), document.addEventListener("pointerup", (e) => l(e), {
+	}), document.addEventListener("pointerup", (e) => d(e), {
 		capture: !0,
 		passive: !1
-	}), document.addEventListener("pointercancel", (e) => l(e, !0), {
+	}), document.addEventListener("pointercancel", (e) => d(e, !0), {
 		capture: !0,
 		passive: !1
 	}), document.addEventListener("click", (e) => {
@@ -24678,9 +24687,21 @@ if (!ui.__familyCalendarSegmentedGestures) {
 				t = null;
 				return;
 			}
-			r(e.target) === t.control && (e.preventDefault(), e.stopImmediatePropagation(), t = null);
+			a(e.target) === t.control && (e.preventDefault(), e.stopImmediatePropagation(), t = null);
 		}
-	}, !0);
+	}, !0), i(), document.addEventListener("family-calendar-responsive-sync", i), new MutationObserver((e) => {
+		let t = /* @__PURE__ */ new Set();
+		e.forEach((e) => {
+			if (!(e.target instanceof Element)) return;
+			let n = e.target.closest(".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4");
+			n && t.add(n);
+		}), t.forEach((e) => r(e));
+	}).observe(document.body, {
+		subtree: !0,
+		attributes: !0,
+		attributeFilter: ["class"],
+		childList: !0
+	}), window.addEventListener("resize", i, { passive: !0 });
 }
 //#endregion
 //#region src/room-card-accent.ts
