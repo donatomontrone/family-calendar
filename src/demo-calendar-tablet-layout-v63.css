@@ -1,0 +1,238 @@
+/*
+ * DEMO CALENDAR TABLET LAYOUT V63
+ * Demo-only. Layout/overflow ownership only.
+ * No typography, colors, radii, shadows, button geometry or card visual styling.
+ */
+
+/* Small tablet portrait: preserve readable cards and allow a short page scroll. */
+@media (min-width: 560px) and (max-width: 699px) and (min-height: 700px) and (orientation: portrait) {
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: var(--ad-calendar-h) 300px 300px !important;
+    grid-template-areas:
+      "calendar"
+      "left"
+      "right" !important;
+    gap: var(--ad-gap) !important;
+    overflow: visible !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Regular tablet portrait: calendar dominates, three secondary surfaces share one lower band. */
+@media (min-width: 700px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
+    width: 100% !important;
+    height: calc(100dvh - var(--ad-header-h) - 96px) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - var(--ad-header-h) - 96px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1.55fr) minmax(260px,.95fr) !important;
+    grid-template-rows: minmax(0,1fr) clamp(280px,29dvh,340px) !important;
+    grid-template-areas:
+      "calendar calendar"
+      "left right" !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Compact / regular tablet landscape: calendar left, information rail right. */
+@media (min-width: 720px) and (max-width: 1119px) and (min-height: 480px) and (orientation: landscape) {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
+    width: 100% !important;
+    height: calc(100dvh - var(--ad-header-h) - 86px) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - var(--ad-header-h) - 86px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) clamp(280px,34vw,350px) !important;
+    grid-template-rows: minmax(0,.57fr) minmax(0,.43fr) !important;
+    grid-template-areas:
+      "calendar left"
+      "calendar right" !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: minmax(0,.44fr) minmax(0,.56fr) !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Large tablet landscape: the original three-column hierarchy is viable. */
+@media (min-width: 1120px) and (max-width: 1400px) and (min-height: 650px) and (orientation: landscape) {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
+    width: 100% !important;
+    height: calc(100dvh - var(--ad-header-h) - 92px) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - var(--ad-header-h) - 92px) !important;
+    display: grid !important;
+    grid-template-columns: clamp(220px,19vw,260px) minmax(0,1fr) clamp(270px,22vw,315px) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    grid-template-areas: "left calendar right" !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: minmax(0,.42fr) minmax(0,.58fr) !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Shared bounded regions: keep scrolling inside the existing content owners. */
+@media (min-width: 560px) and (max-width: 1400px) and (min-height: 480px) {
+  html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"])
+    body #root main.app-shell.calendar-page-active > .dashboard-grid
+    :is(.agenda-card,.tasks-card,.home-card) {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"])
+    body #root main.app-shell.calendar-page-active
+    :is(.agenda-list,.task-list-scroll-shell,.entity-grid-scroll-shell) {
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+
+  html:is([data-demo-viewport="tablet-landscape"],[data-demo-viewport="tablet-portrait"])
+    body #root main.app-shell.calendar-page-active
+    :is(.agenda-list,.task-list,.home-card .entity-grid) {
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+}
