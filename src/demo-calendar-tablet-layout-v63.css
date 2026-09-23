@@ -41,13 +41,6 @@
   }
 
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
-    body #root main.app-shell.calendar-page-active .agenda-card {
-    display: grid !important;
-    grid-template-rows: auto minmax(0,1fr) !important;
-    overflow: hidden !important;
-  }
-
-  html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
     body #root main.app-shell.calendar-page-active .tasks-card:not(:has(.task-composer)) {
     display: grid !important;
     grid-template-rows: auto minmax(0,1fr) auto !important;
