@@ -38,8 +38,10 @@ This contract protects Family Calendar behavior while the tablet/desktop present
 
 ## Responsive ownership
 
+- Calendar is locked to the exact `24ec8046` baseline unless the user explicitly requests a Calendar change.
 - Phone portrait and phone landscape are the established baseline and must not be changed by V60.
-- V60 tablet/desktop markup is dedicated and must not structurally reuse legacy desktop/card classes.
+- V60 applies only to Home on tablet/desktop and must not affect Calendar shell, header, dock, cards, modals, or responsive rules.
+- V60 Home tablet/desktop markup is dedicated and must not structurally reuse legacy desktop/card classes.
 - Page-level scrolling is not a normal tablet/desktop layout behavior.
 - Internal scrolling is allowed only for collections that can exceed the allocated region.
 - Each scrollable collection has one scroll owner.
