@@ -38,9 +38,9 @@ This contract protects Family Calendar behavior while the tablet/desktop present
 
 ## Responsive ownership
 
-- Calendar React structure, functions and visual language are locked to the `24ec8046` baseline; the explicitly requested tablet-responsive exception is owned by `calendar-tablet-v62.css`.
+- Calendar React structure, functions and visual language are locked to the `24ec8046` baseline; the explicitly requested tablet-responsive exception is demo-only and owned by `demo-calendar-tablet-layout-v63.css`.
 - Phone portrait and phone landscape are the established baseline and must not be changed by V60.
-- V60 applies only to Home on tablet/desktop. Calendar tablet geometry is independently owned by V62 and must not affect Home.
+- V60 applies only to Home on tablet/desktop. Calendar tablet geometry is independently owned by V63 and must not affect Home.
 - V60 Home tablet/desktop markup is dedicated and must not structurally reuse legacy desktop/card classes.
 - Page-level scrolling is not a normal tablet/desktop layout behavior, except on compact Calendar portrait tablets where a short vertical document scroll is preferred over unreadably compressed cards.
 - Internal scrolling is allowed only for collections that can exceed the allocated region.
