@@ -204,11 +204,15 @@
     overflow: hidden !important;
   }
 
-  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > #family-shared-header-host,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
     width: 100% !important;
     height: var(--ct62-header) !important;
     min-height: var(--ct62-header) !important;
     max-height: var(--ct62-header) !important;
+    margin: 0 !important;
     align-self: stretch !important;
   }
 
@@ -376,11 +380,15 @@
     overflow: hidden !important;
   }
 
-  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > #family-shared-header-host,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
     width: 100% !important;
     height: var(--ct62-header) !important;
     min-height: var(--ct62-header) !important;
     max-height: var(--ct62-header) !important;
+    margin: 0 !important;
     align-self: stretch !important;
   }
 
@@ -819,10 +827,15 @@
     overflow-y: auto !important;
   }
 
-  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > #family-shared-header-host,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
+    width: 100% !important;
     height: 76px !important;
     min-height: 76px !important;
     max-height: 76px !important;
+    margin: 0 !important;
   }
 
   :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
@@ -910,6 +923,17 @@
 /* Restore the tablet content contract without changing Home classification.  */
 /* -------------------------------------------------------------------------- */
 @media (min-width: 720px) and (max-width: 1119px) and (min-height: 480px) and (orientation: landscape) {
+  html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active > #family-shared-header-host,
+  html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--ct62-header) !important;
+    min-height: var(--ct62-header) !important;
+    max-height: var(--ct62-header) !important;
+    margin: 0 !important;
+  }
+
   html[data-demo-viewport="phone-landscape"] body #root main.app-shell.calendar-page-active .responsive-calendar-panel-switch {
     display: none !important;
   }
