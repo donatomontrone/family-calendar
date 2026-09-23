@@ -796,8 +796,8 @@
 @media (min-width: 720px) and (max-width: 1400px) and (min-height: 480px) and (orientation: landscape) {
   html[data-demo-viewport="tablet-landscape"] {
     /* Give LISTE more breathing room while keeping Casa fully usable. */
-    --calendar-land-left: clamp(194px,21vw,226px);
-    --calendar-land-home: clamp(218px,24vw,252px);
+    --calendar-land-left: clamp(210px,22vw,250px);
+    --calendar-land-home: clamp(205px,21vw,238px);
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
@@ -877,9 +877,9 @@
     min-height: 0 !important;
     height: auto !important;
     margin: 0 !important;
-    padding: 0 6px 7px !important;
-    gap: 5px !important;
-    scroll-padding-inline: 6px !important;
+    padding: 0 5px 4px !important;
+    gap: 4px !important;
+    scroll-padding-inline: 5px !important;
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
@@ -887,28 +887,28 @@
     flex: 0 0 auto !important;
     width: auto !important;
     min-width: max-content !important;
-    height: clamp(27px,2.6vw,30px) !important;
-    min-height: clamp(27px,2.6vw,30px) !important;
-    max-height: 30px !important;
-    padding-inline: clamp(6px,.72vw,9px) !important;
-    gap: 5px !important;
-    border-radius: 10px !important;
-    font-size: clamp(9.5px,.82vw,10.5px) !important;
+    height: clamp(24px,2.25vw,27px) !important;
+    min-height: clamp(24px,2.25vw,27px) !important;
+    max-height: 27px !important;
+    padding-inline: clamp(5px,.58vw,7px) !important;
+    gap: 4px !important;
+    border-radius: 9px !important;
+    font-size: clamp(8.75px,.72vw,9.5px) !important;
     line-height: 1 !important;
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
     .home-card .room-switcher.room-chip-strip > button svg {
-    width: clamp(10px,1vw,11px) !important;
-    height: clamp(10px,1vw,11px) !important;
-    min-width: clamp(10px,1vw,11px) !important;
-    min-height: clamp(10px,1vw,11px) !important;
+    width: clamp(9px,.82vw,10px) !important;
+    height: clamp(9px,.82vw,10px) !important;
+    min-width: clamp(9px,.82vw,10px) !important;
+    min-height: clamp(9px,.82vw,10px) !important;
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
     .home-card .room-switcher.room-chip-strip > button:not(:first-child) .room-chip-dot {
-    width: 5px !important;
-    height: 5px !important;
-    flex: 0 0 5px !important;
+    width: 4px !important;
+    height: 4px !important;
+    flex: 0 0 4px !important;
   }
 }
