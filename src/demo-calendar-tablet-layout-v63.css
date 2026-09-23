@@ -827,11 +827,13 @@
     display: grid !important;
     grid-template-columns:
       var(--calendar-land-left)
+      8px
       minmax(0,1fr)
+      8px
       var(--calendar-land-home) !important;
     grid-template-rows: minmax(0,1fr) !important;
-    grid-template-areas: "left calendar right" !important;
-    column-gap: var(--calendar-land-gap) !important;
+    grid-template-areas: "left . calendar . right" !important;
+    column-gap: 0 !important;
     row-gap: 0 !important;
     align-items: stretch !important;
     overflow: hidden !important;
@@ -839,9 +841,28 @@
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
     > .dashboard-grid > :is(.left-column,.calendar-card,.right-column) {
+    box-sizing: border-box !important;
     width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
     margin: 0 !important;
+    padding-inline: 0 !important;
+    justify-self: stretch !important;
     align-self: stretch !important;
+    transform: none !important;
+    translate: none !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > .dashboard-grid > .right-column > .home-card {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    justify-self: stretch !important;
+    transform: none !important;
+    translate: none !important;
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
@@ -928,5 +949,115 @@
     width: 4px !important;
     height: 4px !important;
     flex: 0 0 4px !important;
+  }
+}
+
+
+/* ========================================================================== */
+/* LARGE IPAD LANDSCAPE — header identical to CASA desktop contract           */
+/* ========================================================================== */
+@media (min-width: 1180px) and (max-width: 1400px) and (min-height: 650px) and (orientation: landscape) {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
+    --calendar-land-header-h: 59px;
+    --calendar-land-header-gap: 10px;
+    grid-template-rows: var(--calendar-land-header-h) minmax(0,1fr) !important;
+    row-gap: var(--calendar-land-header-gap) !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > #family-shared-header-host {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--calendar-land-header-h) !important;
+    min-height: var(--calendar-land-header-h) !important;
+    max-height: var(--calendar-land-header-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--calendar-land-header-h) !important;
+    min-height: var(--calendar-land-header-h) !important;
+    max-height: var(--calendar-land-header-h) !important;
+    margin: 0 !important;
+    padding: 5px 4px !important;
+    display: grid !important;
+    grid-template-columns: minmax(145px,1fr) auto minmax(300px,1fr) !important;
+    grid-template-rows: 1fr !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .reel-clock {
+    font-size: 32px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .reel-top-actions {
+    height: 36px !important;
+    gap: 6px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .avatar-stack {
+    display: flex !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .weather-pill small,
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .security-pill span {
+    display: inline !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
+    box-sizing: border-box !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    border-radius: 18px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header :is(.round-top,.header-theme-switch) {
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    padding: 0 !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .security-pill {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding-inline: 10px !important;
+    gap: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .weather-pill {
+    min-width: 0 !important;
+    padding-inline: 10px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > .dashboard-grid {
+    height: calc(100dvh - var(--calendar-land-header-h) - var(--calendar-land-header-gap) - var(--ad-shell-pad) - 78px) !important;
+    max-height: calc(100dvh - var(--calendar-land-header-h) - var(--calendar-land-header-gap) - var(--ad-shell-pad) - 78px) !important;
   }
 }
