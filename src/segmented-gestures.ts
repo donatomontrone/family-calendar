@@ -25,6 +25,23 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
   const directButtons = (control: HTMLElement) =>
     Array.from(control.children).filter((child): child is HTMLButtonElement => child instanceof HTMLButtonElement);
 
+
+  const syncRestOffset = (control: HTMLElement, preferredButton?: HTMLButtonElement | null) => {
+    const buttons = directButtons(control);
+    if (buttons.length < 2) return;
+
+    const firstLeft = buttons[0]?.offsetLeft ?? 0;
+    const activeButton = preferredButton ?? buttons.find((button) => button.classList.contains("active")) ?? buttons[0];
+    const offset = Math.max(0, activeButton.offsetLeft - firstLeft);
+    control.style.setProperty("--segment-rest-offset", `${offset}px`);
+  };
+
+  const syncAllRestOffsets = () => {
+    document.querySelectorAll<HTMLElement>(
+      ".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4",
+    ).forEach((control) => syncRestOffset(control));
+  };
+
   const controlFromTarget = (target: EventTarget | null) => {
     if (!(target instanceof Element)) return null;
 
@@ -61,6 +78,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
     const activeIndex = Math.max(0, buttons.findIndex((button) => button.classList.contains("active")));
     const offsets = offsetsFor(buttons);
+    syncRestOffset(control, buttons[activeIndex] ?? buttons[0]);
     const startOffset = offsets[activeIndex] ?? 0;
     const maxOffset = offsets[offsets.length - 1] ?? 0;
 
@@ -104,6 +122,7 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
 
   const invokeButton = (control: HTMLElement, button: HTMLButtonElement | undefined | null) => {
     if (!button || button.disabled) return;
+    syncRestOffset(control, button);
     suppressClick = { control, until: performance.now() + 320 };
     button.click();
   };
@@ -178,4 +197,30 @@ if (!gestureWindow.__familyCalendarSegmentedGestures) {
     event.stopImmediatePropagation();
     suppressClick = null;
   }, true);
+
+  syncAllRestOffsets();
+  document.addEventListener("family-calendar-responsive-sync", syncAllRestOffsets);
+
+  const segmentedObserver = new MutationObserver((mutations) => {
+    const controls = new Set<HTMLElement>();
+
+    mutations.forEach((mutation) => {
+      if (!(mutation.target instanceof Element)) return;
+      const control = mutation.target.closest<HTMLElement>(
+        ".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4",
+      );
+      if (control) controls.add(control);
+    });
+
+    controls.forEach((control) => syncRestOffset(control));
+  });
+
+  segmentedObserver.observe(document.body, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class"],
+    childList: true,
+  });
+
+  window.addEventListener("resize", syncAllRestOffsets, { passive: true });
 }
