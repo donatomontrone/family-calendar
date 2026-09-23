@@ -313,7 +313,21 @@ if (!uiWindow.__familyCalendarUiInteractions) {
 
   const roomStripFromTarget = (target: EventTarget | null) => {
     if (!(target instanceof Element)) return null;
-    return target.closest<HTMLElement>(".room-chip-strip, .desktop-room-strip-v26, .calendar-page-active .home-card .entity-grid");
+
+    const strip = target.closest<HTMLElement>(".room-chip-strip, .desktop-room-strip-v26, .calendar-page-active .home-card .entity-grid");
+    if (!strip) return null;
+
+    // Demo iPad/tablet portrait Calendar uses a vertical device viewport.
+    // Do not let the legacy horizontal-drag bridge capture its pointer gesture.
+    if (
+      strip.classList.contains("entity-grid") &&
+      document.documentElement.dataset.demoViewport === "tablet-portrait" &&
+      Boolean(strip.closest(".calendar-page-active"))
+    ) {
+      return null;
+    }
+
+    return strip;
   };
 
   const syncSegmentWidth = () => {
