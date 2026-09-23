@@ -297,6 +297,30 @@
     gap: 5px 10px !important;
   }
 
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header .reel-clock {
+    grid-area: clock !important;
+    align-self: start !important;
+    font-size: clamp(32px, 6vw, 38px) !important;
+    line-height: .98 !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header .reel-top-actions {
+    grid-area: actions !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+  }
+
   :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
     grid-template-columns: minmax(0, 1.42fr) minmax(215px, .98fr) !important;
     grid-template-rows: minmax(0, 1.68fr) minmax(255px, .82fr) !important;
