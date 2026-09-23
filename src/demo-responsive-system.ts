@@ -6,10 +6,11 @@ import phonePortraitControlsV51Styles from "./phone-portrait-controls-v51.css?in
 import alarmLandscapeV52Styles from "./alarm-landscape-v52.css?inline";
 import largeScreenV60Styles from "./large-screen-v60.css?inline";
 import demoCalendarTabletLayoutV63Styles from "./demo-calendar-tablet-layout-v63.css?inline";
+import demoSegmentedMotionV64Styles from "./demo-segmented-motion-v64.css?inline";
 
 const STYLE_ID = "family-calendar-demo-responsive-system";
 const LEGACY_RUNTIME_STYLE_ID = "family-calendar-v4-styles";
-const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${demoCalendarTabletLayoutV63Styles}`;
+const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${demoCalendarTabletLayoutV63Styles}\n${demoSegmentedMotionV64Styles}`;
 
 type DemoViewport =
   | "xl"
@@ -100,20 +101,6 @@ function classifyViewport(width: number, height: number): DemoViewport {
   return "tablet-portrait";
 }
 
-function syncSegmentedDirectionClasses() {
-  const controls = document.querySelectorAll<HTMLElement>(
-    ".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4",
-  );
-
-  controls.forEach((control) => {
-    const buttons = Array.from(control.children).filter(
-      (child): child is HTMLButtonElement => child instanceof HTMLButtonElement,
-    );
-    const secondActive = Boolean(buttons[1]?.classList.contains("active"));
-    control.classList.toggle("segment-second-active", secondActive);
-  });
-}
-
 let lastResponsiveSignature = "";
 
 function syncResponsiveMode() {
@@ -127,7 +114,6 @@ function syncResponsiveMode() {
   root.dataset.demoAdaptive = mode === "xl" || mode === "phone-portrait" ? "reference" : "adaptive";
   root.style.setProperty("--demo-viewport-width", `${width}px`);
   root.style.setProperty("--demo-viewport-height", `${height}px`);
-  syncSegmentedDirectionClasses();
 
   // Clear every historical marker. Only data-demo-viewport is authoritative.
   root.classList.remove(
@@ -156,7 +142,6 @@ window.visualViewport?.addEventListener("scroll", syncResponsiveMode, { passive:
 
 const calendarPageObserver = new MutationObserver((mutations) => {
   if (mutations.some((mutation) => mutation.type === "attributes" && mutation.attributeName === "class")) {
-    syncSegmentedDirectionClasses();
     syncResponsiveMode();
   }
 });
