@@ -794,6 +794,12 @@
 /* TABLET LANDSCAPE — full-width three-column Calendar                        */
 /* ========================================================================== */
 @media (min-width: 720px) and (max-width: 1400px) and (min-height: 480px) and (orientation: landscape) {
+  html[data-demo-viewport="tablet-landscape"] {
+    /* Give LISTE more breathing room while keeping Casa fully usable. */
+    --calendar-land-left: clamp(194px,21vw,226px);
+    --calendar-land-home: clamp(218px,24vw,252px);
+  }
+
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
     height: 100dvh !important;
     min-height: 100dvh !important;
@@ -860,5 +866,49 @@
     max-height: 100% !important;
     grid-template-rows: auto auto minmax(0,1fr) !important;
     overflow: hidden !important;
+  }
+
+  /* Tablet/iPad landscape: room controls scale with the narrower Casa rail. */
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .home-card .room-switcher.room-chip-strip {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 6px 7px !important;
+    gap: 5px !important;
+    scroll-padding-inline: 6px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .home-card .room-switcher.room-chip-strip > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: max-content !important;
+    height: clamp(27px,2.6vw,30px) !important;
+    min-height: clamp(27px,2.6vw,30px) !important;
+    max-height: 30px !important;
+    padding-inline: clamp(6px,.72vw,9px) !important;
+    gap: 5px !important;
+    border-radius: 10px !important;
+    font-size: clamp(9.5px,.82vw,10.5px) !important;
+    line-height: 1 !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .home-card .room-switcher.room-chip-strip > button svg {
+    width: clamp(10px,1vw,11px) !important;
+    height: clamp(10px,1vw,11px) !important;
+    min-width: clamp(10px,1vw,11px) !important;
+    min-height: clamp(10px,1vw,11px) !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .home-card .room-switcher.room-chip-strip > button:not(:first-child) .room-chip-dot {
+    width: 5px !important;
+    height: 5px !important;
+    flex: 0 0 5px !important;
   }
 }
