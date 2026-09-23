@@ -795,8 +795,8 @@
 /* ========================================================================== */
 @media (min-width: 720px) and (max-width: 1400px) and (min-height: 480px) and (orientation: landscape) {
   html[data-demo-viewport="tablet-landscape"] {
-    /* One horizontal rhythm: viewport edge = card gap = viewport edge. */
-    --calendar-land-x-space: 8px;
+    /* One compact horizontal rhythm: viewport edge = card gap = viewport edge. */
+    --calendar-land-x-space: 6px;
     --calendar-land-left: clamp(210px,22vw,250px);
     --calendar-land-home: clamp(205px,21vw,238px);
     --calendar-land-gap: var(--calendar-land-x-space);
@@ -832,13 +832,11 @@
     display: grid !important;
     grid-template-columns:
       var(--calendar-land-left)
-      var(--calendar-land-x-space)
       minmax(0,1fr)
-      var(--calendar-land-x-space)
       var(--calendar-land-home) !important;
     grid-template-rows: minmax(0,1fr) !important;
-    grid-template-areas: "left . calendar . right" !important;
-    column-gap: 0 !important;
+    grid-template-areas: "left calendar right" !important;
+    column-gap: var(--calendar-land-x-space) !important;
     row-gap: 0 !important;
     align-items: stretch !important;
     overflow: hidden !important;
@@ -859,12 +857,19 @@
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > .dashboard-grid > .right-column,
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
     > .dashboard-grid > .right-column > .home-card {
     box-sizing: border-box !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
     margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
     justify-self: stretch !important;
     transform: none !important;
     translate: none !important;
