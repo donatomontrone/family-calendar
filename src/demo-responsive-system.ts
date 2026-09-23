@@ -5,11 +5,11 @@ import demoPhoneLandscapeFixesV50Styles from "./demo-phone-landscape-fixes-v50.c
 import phonePortraitControlsV51Styles from "./phone-portrait-controls-v51.css?inline";
 import alarmLandscapeV52Styles from "./alarm-landscape-v52.css?inline";
 import largeScreenV60Styles from "./large-screen-v60.css?inline";
-import calendarTabletV62Styles from "./calendar-tablet-v62.css?inline";
+import demoCalendarTabletLayoutV63Styles from "./demo-calendar-tablet-layout-v63.css?inline";
 
 const STYLE_ID = "family-calendar-demo-responsive-system";
 const LEGACY_RUNTIME_STYLE_ID = "family-calendar-v4-styles";
-const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${calendarTabletV62Styles}`;
+const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${demoCalendarTabletLayoutV63Styles}`;
 
 type DemoViewport =
   | "xl"
@@ -53,6 +53,16 @@ function viewportSize() {
 
 function classifyViewport(width: number, height: number): DemoViewport {
   const landscape = width > height;
+  const calendarActive = Boolean(document.querySelector("main.app-shell.calendar-page-active"));
+
+  // CALENDARIO demo-only: small tablets must use tablet composition rather than
+  // inheriting the phone contract. CASA keeps the original classifier.
+  if (calendarActive && !landscape && width >= 560 && height >= 700) {
+    return "tablet-portrait";
+  }
+  if (calendarActive && landscape && width >= 720 && height >= 480 && width < 1180) {
+    return "tablet-landscape";
+  }
   const touchLike = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
   const screenWidth = window.screen.width || width;
   const screenHeight = window.screen.height || height;
@@ -128,3 +138,14 @@ window.addEventListener("resize", syncResponsiveMode, { passive: true });
 window.addEventListener("orientationchange", syncResponsiveMode, { passive: true });
 window.visualViewport?.addEventListener("resize", syncResponsiveMode, { passive: true });
 window.visualViewport?.addEventListener("scroll", syncResponsiveMode, { passive: true });
+
+const calendarPageObserver = new MutationObserver((mutations) => {
+  if (mutations.some((mutation) => mutation.type === "attributes" && mutation.attributeName === "class")) {
+    syncResponsiveMode();
+  }
+});
+calendarPageObserver.observe(document.body, {
+  subtree: true,
+  attributes: true,
+  attributeFilter: ["class"],
+});
