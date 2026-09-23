@@ -805,7 +805,16 @@
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
+    display: grid !important;
+    grid-template-rows: var(--ad-header-h) minmax(0,1fr) !important;
+    row-gap: var(--ad-gap) !important;
     overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > #family-shared-header-host {
+    margin: 0 !important;
+    align-self: stretch !important;
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
@@ -919,30 +928,5 @@
     width: 4px !important;
     height: 4px !important;
     flex: 0 0 4px !important;
-  }
-}
-
-
-/* ========================================================================== */
-/* IPAD PRO LANDSCAPE — optical spacing pass                                  */
-/* ========================================================================== */
-@media (min-width: 1180px) and (max-width: 1400px) and (min-height: 700px) and (orientation: landscape) {
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .left-column > .tasks-card,
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .right-column > .home-card,
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .calendar-card {
-    width: 100% !important;
-    margin: 0 !important;
-    align-self: stretch !important;
-  }
-
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid {
-    gap: 8px !important;
-    padding: 2px 8px 8px !important;
-    scroll-padding-top: 2px !important;
-    scroll-padding-bottom: 8px !important;
   }
 }

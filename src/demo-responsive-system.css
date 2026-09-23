@@ -732,6 +732,43 @@ html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-pa
 }
 
 /* -------------------------------------------------------------------------- */
+/* Calendar header parity with CASA — landscape adaptive modes                */
+/* -------------------------------------------------------------------------- */
+
+html:is(
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root > main.app-shell.calendar-page-active {
+  grid-template-rows: var(--ad-header-h) minmax(0,1fr) !important;
+  row-gap: var(--ad-gap) !important;
+}
+
+html:is(
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root > main.app-shell.calendar-page-active > #family-shared-header-host {
+  height: var(--ad-header-h) !important;
+  min-height: var(--ad-header-h) !important;
+  max-height: var(--ad-header-h) !important;
+  margin: 0 !important;
+  align-self: stretch !important;
+}
+
+html:is(
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root > main.app-shell.calendar-page-active
+  > #family-shared-header-host > #family-shared-header.shared-home-header {
+  height: var(--ad-header-h) !important;
+  min-height: var(--ad-header-h) !important;
+  max-height: var(--ad-header-h) !important;
+  margin: 0 !important;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Calendar landscape continuum — XL through iPad mini                        */
 /* -------------------------------------------------------------------------- */
 
@@ -756,9 +793,10 @@ html[data-demo-viewport="wide"] {
 }
 
 html[data-demo-viewport="desktop"] {
-  --calendar-land-left: clamp(200px,18vw,230px);
-  --calendar-land-home: clamp(260px,24vw,300px);
-  --calendar-land-gap: var(--ad-gap);
+  /* 1180–1439px includes iPad Pro landscape: stay continuous with tablet. */
+  --calendar-land-left: clamp(240px,21vw,250px);
+  --calendar-land-home: clamp(230px,20vw,245px);
+  --calendar-land-gap: 8px;
   --calendar-land-device-h: 64px;
   --calendar-land-device-icon: 29px;
   --calendar-land-device-title: 11.5px;
