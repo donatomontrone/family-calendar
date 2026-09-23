@@ -22869,7 +22869,11 @@ var Jn = (e) => {
 if (Ln.__familyCalendarHomeRoomClickHandler = Jn, document.addEventListener("click", Jn, !0), Ln.__familyCalendarUiInteractions) Vn(), Gn(), Kn(), requestAnimationFrame(Wn);
 else {
 	Ln.__familyCalendarUiInteractions = !0;
-	let e = null, t = 0, n = null, r = null, i = 0, a = (e) => e instanceof Element ? e.closest(".room-chip-strip, .desktop-room-strip-v26, .calendar-page-active .home-card .entity-grid") : null, o = () => {
+	let e = null, t = 0, n = null, r = null, i = 0, a = (e) => {
+		if (!(e instanceof Element)) return null;
+		let t = e.closest(".room-chip-strip, .desktop-room-strip-v26, .calendar-page-active .home-card .entity-grid");
+		return !t || t.classList.contains("entity-grid") && document.documentElement.dataset.demoViewport === "tablet-portrait" && t.closest(".calendar-page-active") ? null : t;
+	}, o = () => {
 		let e = document.querySelector(".tasks-card .task-segmented-control, .tasks-card .segmented-control");
 		if (!e) return;
 		e !== n && (r?.disconnect(), n = e, r = new ResizeObserver(() => o()), r.observe(e));
