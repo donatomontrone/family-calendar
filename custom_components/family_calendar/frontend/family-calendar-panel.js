@@ -24591,11 +24591,7 @@ if (!ui.__familyCalendarSegmentedGestures) {
 		e.style.setProperty("--segment-rest-offset", `${o}px`);
 	}, i = () => {
 		document.querySelectorAll(".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4").forEach((e) => r(e));
-	}, a = (e) => {
-		if (!(e instanceof Element)) return null;
-		let t = e.closest(".room-light-mode-v4");
-		return t && window.matchMedia("(orientation: landscape) and (max-height: 560px) and (max-width: 1024px)").matches ? t : e.closest(".segmented-control, .page-dock, .desktop-room-mode-v32");
-	}, o = (e, t) => {
+	}, a = (e) => e instanceof Element ? e.closest(".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4") : null, o = (e, t) => {
 		if (!(e instanceof Element)) return null;
 		let n = e.closest("button");
 		return n && n.parentElement === t ? n : null;
@@ -24632,37 +24628,53 @@ if (!ui.__familyCalendarSegmentedGestures) {
 		t.preventDefault();
 		let r = Math.max(0, Math.min(e.maxOffset, e.startOffset + n));
 		e.currentOffset = r, e.control.style.setProperty("--segment-drag-offset", `${r}px`);
-	}, u = (e, n) => {
-		!n || n.disabled || (r(e, n), t = {
+	}, u = /* @__PURE__ */ new WeakMap(), d = (e, i, a) => {
+		if (!i || i.disabled) return;
+		let o = n(e), c = o.indexOf(i);
+		if (c < 0) return;
+		let l = s(o), d = l[l.length - 1] ?? 0, f = Math.max(0, Math.min(d, a)), p = l[c] ?? 0, m = u.get(e);
+		m !== void 0 && window.clearTimeout(m);
+		let h = () => {
+			u.delete(e), r(e, i), e.classList.remove("segment-dragging", "segment-settling"), e.style.removeProperty("--segment-drag-offset"), e.style.removeProperty("--segment-settle-offset");
+		};
+		if (t = {
 			control: e,
-			until: performance.now() + 320
-		}, n.click());
-	}, d = (t, n = !1) => {
+			until: performance.now() + 360
+		}, Math.abs(p - f) < .5 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			e.style.setProperty("--segment-rest-offset", `${p}px`), i.click(), h();
+			return;
+		}
+		e.classList.add("segment-settling"), e.style.setProperty("--segment-settle-offset", `${f}px`), e.style.setProperty("--segment-rest-offset", `${p}px`), i.click(), requestAnimationFrame(() => {
+			e.classList.remove("segment-dragging"), e.style.removeProperty("--segment-drag-offset"), requestAnimationFrame(() => {
+				e.style.setProperty("--segment-settle-offset", `${p}px`);
+				let t = window.setTimeout(h, 340);
+				u.set(e, t);
+			});
+		});
+	}, f = (t, n = !1) => {
 		if (!e || t.pointerId !== e.pointerId) return;
-		let r = e;
+		let i = e;
 		e = null;
 		try {
-			r.control.releasePointerCapture(t.pointerId);
+			i.control.releasePointerCapture(t.pointerId);
 		} catch {}
-		let i = r.startOffset;
 		if (!n) {
-			if (r.moved) {
+			if (i.moved) {
 				t.preventDefault();
-				let e = s(r.buttons), n = 0, a = Infinity;
+				let e = s(i.buttons), n = 0, r = Infinity;
 				e.forEach((e, t) => {
-					let i = Math.abs(e - r.currentOffset);
-					i < a && (a = i, n = t);
-				}), i = e[n] ?? 0, r.control.style.setProperty("--segment-drag-offset", `${i}px`), u(r.control, r.buttons[n]);
-			} else if (r.pressedButton) {
-				t.preventDefault();
-				let e = r.buttons.indexOf(r.pressedButton);
-				i = s(r.buttons)[Math.max(0, e)] ?? r.startOffset, r.control.style.setProperty("--segment-drag-offset", `${i}px`), u(r.control, r.pressedButton);
+					let a = Math.abs(e - i.currentOffset);
+					a < r && (r = a, n = t);
+				}), d(i.control, i.buttons[n], i.currentOffset);
+				return;
+			}
+			if (i.pressedButton) {
+				t.preventDefault(), d(i.control, i.pressedButton, i.startOffset);
+				return;
 			}
 		}
 		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				r.control.classList.remove("segment-dragging"), r.control.style.removeProperty("--segment-drag-offset");
-			});
+			i.control.classList.remove("segment-dragging", "segment-settling"), i.control.style.removeProperty("--segment-drag-offset"), i.control.style.removeProperty("--segment-settle-offset"), r(i.control);
 		});
 	};
 	document.addEventListener("pointerdown", c, {
@@ -24671,10 +24683,10 @@ if (!ui.__familyCalendarSegmentedGestures) {
 	}), document.addEventListener("pointermove", l, {
 		capture: !0,
 		passive: !1
-	}), document.addEventListener("pointerup", (e) => d(e), {
+	}), document.addEventListener("pointerup", (e) => f(e), {
 		capture: !0,
 		passive: !1
-	}), document.addEventListener("pointercancel", (e) => d(e, !0), {
+	}), document.addEventListener("pointercancel", (e) => f(e, !0), {
 		capture: !0,
 		passive: !1
 	}), document.addEventListener("click", (e) => {
