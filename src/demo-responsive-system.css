@@ -732,6 +732,372 @@ html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-pa
 }
 
 /* -------------------------------------------------------------------------- */
+/* Calendar landscape continuum — XL through iPad mini                        */
+/* -------------------------------------------------------------------------- */
+
+html[data-demo-viewport="xl"] {
+  --calendar-land-left: clamp(230px,14vw,280px);
+  --calendar-land-home: clamp(300px,19vw,360px);
+  --calendar-land-gap: clamp(12px,.8vw,16px);
+  --calendar-land-device-h: 62px;
+  --calendar-land-device-icon: 30px;
+  --calendar-land-device-title: 12px;
+  --calendar-land-device-status: 10px;
+}
+
+html[data-demo-viewport="wide"] {
+  --calendar-land-left: clamp(220px,16vw,250px);
+  --calendar-land-home: clamp(280px,21vw,330px);
+  --calendar-land-gap: var(--ad-gap);
+  --calendar-land-device-h: 60px;
+  --calendar-land-device-icon: 30px;
+  --calendar-land-device-title: 11.75px;
+  --calendar-land-device-status: 9.75px;
+}
+
+html[data-demo-viewport="desktop"] {
+  --calendar-land-left: clamp(200px,18vw,230px);
+  --calendar-land-home: clamp(260px,24vw,300px);
+  --calendar-land-gap: var(--ad-gap);
+  --calendar-land-device-h: 58px;
+  --calendar-land-device-icon: 29px;
+  --calendar-land-device-title: 11.5px;
+  --calendar-land-device-status: 9.5px;
+}
+
+html[data-demo-viewport="tablet-landscape"] {
+  --calendar-land-left: clamp(176px,19vw,210px);
+  --calendar-land-home: clamp(240px,27vw,280px);
+  --calendar-land-gap: var(--ad-gap);
+  --calendar-land-device-h: 56px;
+  --calendar-land-device-icon: 28px;
+  --calendar-land-device-title: 11px;
+  --calendar-land-device-status: 9px;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root > main.app-shell.calendar-page-active {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root > main.app-shell.calendar-page-active > .dashboard-grid {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  grid-template-columns:
+    var(--calendar-land-left)
+    minmax(0,1fr)
+    var(--calendar-land-home) !important;
+  grid-template-areas: "left calendar right" !important;
+  gap: var(--calendar-land-gap) !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
+}
+
+html:is([data-demo-viewport="wide"],[data-demo-viewport="desktop"])
+  body #root > main.app-shell.calendar-page-active > .dashboard-grid {
+  height: var(--ad-calendar-h) !important;
+  min-height: var(--ad-calendar-h) !important;
+  max-height: var(--ad-calendar-h) !important;
+  grid-template-rows: minmax(0,1fr) !important;
+}
+
+html[data-demo-viewport="xl"]
+  body #root > main.app-shell.calendar-page-active > .dashboard-grid {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  grid-template-rows: minmax(0,1fr) !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  > .dashboard-grid > :is(.left-column,.calendar-card,.right-column) {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  align-self: stretch !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  > .dashboard-grid > .left-column {
+  grid-area: left !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  > .dashboard-grid > .calendar-card {
+  grid-area: calendar !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  > .dashboard-grid > .right-column {
+  grid-area: right !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: minmax(0,1fr) !important;
+  overflow: hidden !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active .right-column > .home-card {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0,1fr) !important;
+  align-content: stretch !important;
+  overflow: hidden !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active .home-card .entity-grid-scroll-shell {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active .home-card .entity-grid {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 8px 10px !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-auto-rows: var(--calendar-land-device-h) !important;
+  align-content: start !important;
+  gap: 7px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active .home-card .entity-grid::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--calendar-land-device-h) !important;
+  min-height: var(--calendar-land-device-h) !important;
+  max-height: var(--calendar-land-device-h) !important;
+  overflow: hidden !important;
+  border-radius: 14px !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile > .entity-main {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: var(--calendar-land-device-h) !important;
+  min-height: var(--calendar-land-device-h) !important;
+  max-height: var(--calendar-land-device-h) !important;
+  padding: 7px 34px 7px 8px !important;
+  display: grid !important;
+  grid-template-columns: var(--calendar-land-device-icon) minmax(0,1fr) !important;
+  grid-template-rows: 1fr 1fr !important;
+  column-gap: 7px !important;
+  row-gap: 0 !important;
+  align-items: center !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile .entity-icon {
+  position: static !important;
+  grid-column: 1 !important;
+  grid-row: 1 / 3 !important;
+  width: var(--calendar-land-device-icon) !important;
+  height: var(--calendar-land-device-icon) !important;
+  min-width: var(--calendar-land-device-icon) !important;
+  min-height: var(--calendar-land-device-icon) !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile .entity-icon svg {
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  min-height: 14px !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile .entity-main strong {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-self: end !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: var(--calendar-land-device-title) !important;
+  line-height: 1.05 !important;
+  font-weight: 650 !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile .entity-main small {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  align-self: start !important;
+  min-width: 0 !important;
+  margin-top: 2px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: var(--calendar-land-device-status) !important;
+  line-height: 1 !important;
+  font-weight: 500 !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile > :is(.favorite-button,.control-button) {
+  right: 5px !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile > .favorite-button {
+  top: 4px !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile > .control-button {
+  top: auto !important;
+  bottom: 4px !important;
+}
+
+html:is(
+  [data-demo-viewport="xl"],
+  [data-demo-viewport="wide"],
+  [data-demo-viewport="desktop"],
+  [data-demo-viewport="tablet-landscape"]
+) body #root main.app-shell.calendar-page-active
+  .right-column .home-card .entity-grid > article.entity-tile > :is(.favorite-button,.control-button) svg {
+  width: 10px !important;
+  height: 10px !important;
+  min-width: 10px !important;
+  min-height: 10px !important;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Home — common adaptive geometry                                            */
 /* -------------------------------------------------------------------------- */
 

@@ -791,7 +791,7 @@
 }
 
 /* ========================================================================== */
-/* TABLET LANDSCAPE — unchanged rail composition                              */
+/* TABLET LANDSCAPE — full-width three-column Calendar                        */
 /* ========================================================================== */
 @media (min-width: 720px) and (max-width: 1400px) and (min-height: 480px) and (orientation: landscape) {
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
@@ -802,28 +802,34 @@
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
+    box-sizing: border-box !important;
     width: 100% !important;
+    max-width: none !important;
     height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
     min-height: 0 !important;
     max-height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
     display: grid !important;
-    grid-template-columns: minmax(0,1fr) clamp(320px,31vw,420px) !important;
-    grid-template-rows: minmax(0,.38fr) minmax(0,.62fr) !important;
-    grid-template-areas:
-      "calendar left"
-      "calendar right" !important;
-    gap: var(--ad-gap) !important;
+    grid-template-columns:
+      var(--calendar-land-left)
+      minmax(0,1fr)
+      var(--calendar-land-home) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    grid-template-areas: "left calendar right" !important;
+    gap: var(--calendar-land-gap) !important;
+    align-items: stretch !important;
     overflow: hidden !important;
   }
 
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > .dashboard-grid > .calendar-card {
     grid-area: calendar !important;
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
   }
 
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > .dashboard-grid > .left-column {
     grid-area: left !important;
     height: 100% !important;
     min-height: 0 !important;
@@ -835,11 +841,24 @@
     overflow: hidden !important;
   }
 
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    > .dashboard-grid > .right-column {
     grid-area: right !important;
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .right-column > .home-card {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    grid-template-rows: auto auto minmax(0,1fr) !important;
     overflow: hidden !important;
   }
 }
