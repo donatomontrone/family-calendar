@@ -1069,3 +1069,85 @@
     max-height: calc(100dvh - var(--calendar-land-header-h) - var(--calendar-land-header-gap) - var(--ad-shell-pad) - 78px) !important;
   }
 }
+
+
+/* ========================================================================== */
+/* WIDE LANDSCAPE — one horizontal rhythm, no Casa wrapper offset             */
+/* ========================================================================== */
+@media (min-width: 1440px) and (max-width: 1799px) and (orientation: landscape) {
+  html[data-demo-viewport="wide"] {
+    --calendar-wide-x-space: 8px;
+  }
+
+  html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: var(--calendar-wide-x-space) !important;
+    padding-right: var(--calendar-wide-x-space) !important;
+  }
+
+  html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active
+    > .dashboard-grid {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    grid-template-columns:
+      var(--calendar-land-left)
+      minmax(0,1fr)
+      var(--calendar-land-home) !important;
+    grid-template-areas: "left calendar right" !important;
+    column-gap: var(--calendar-wide-x-space) !important;
+    row-gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active
+    > .dashboard-grid > :is(.left-column,.calendar-card) {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-inline: 0 !important;
+    justify-self: stretch !important;
+    align-self: stretch !important;
+    transform: none !important;
+    translate: none !important;
+  }
+
+  /*
+   * .right-column contains only CASA. Remove the wrapper from layout so the
+   * visible card itself owns the third track and the preceding distance is
+   * exactly the dashboard column-gap.
+   */
+  html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active
+    > .dashboard-grid > .right-column {
+    display: contents !important;
+  }
+
+  html[data-demo-viewport="wide"] body #root > main.app-shell.calendar-page-active
+    > .dashboard-grid > .right-column > .home-card {
+    grid-area: right !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    justify-self: stretch !important;
+    align-self: stretch !important;
+    transform: none !important;
+    translate: none !important;
+  }
+}
