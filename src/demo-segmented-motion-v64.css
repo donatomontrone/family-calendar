@@ -1,16 +1,36 @@
 /*
  * DEMO SEGMENTED MOTION V64
- * The thumb follows the real active-button offset supplied by segmented-gestures.ts.
- * This avoids Safari :has() one-way transition glitches.
+ * Authoritative demo-only thumb motion.
+ *
+ * Specificity deliberately matches/exceeds the historical adaptive :has()
+ * selectors, so Safari cannot fall back to the old one-way state transition.
  */
 
-:is(.segmented-control,.page-dock,.desktop-room-mode-v32,.room-light-mode-v4):not(.segment-dragging)::before {
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.calendar-page-active .tasks-card > .task-segmented-control:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.calendar-page-active .responsive-calendar-panel-switch.segmented-control:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  .page-dock-shell > .page-switch-control:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32:not(.segment-dragging)::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4:not(.segment-dragging)::before {
   transform: translate3d(var(--segment-rest-offset, 0px),0,0) !important;
   transition: transform .30s cubic-bezier(.22,.86,.28,1) !important;
   will-change: transform !important;
 }
 
-:is(.segmented-control,.page-dock,.desktop-room-mode-v32,.room-light-mode-v4).segment-dragging::before {
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.calendar-page-active .tasks-card > .task-segmented-control.segment-dragging::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.calendar-page-active .responsive-calendar-panel-switch.segmented-control.segment-dragging::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  .page-dock-shell > .page-switch-control.segment-dragging::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.home-page-active .desktop-room-panel-v32 .desktop-room-mode-v32.segment-dragging::before,
+html[data-demo-adaptive][data-demo-viewport] body #root
+  main.app-shell.home-page-active .reel-home.home-refactor-v4 .room-light-mode-v4.segment-dragging::before {
   transform: translate3d(var(--segment-drag-offset, var(--segment-rest-offset,0px)),0,0) !important;
   transition: none !important;
 }
