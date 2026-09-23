@@ -301,12 +301,12 @@
   html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root main.app-shell.calendar-page-active
     .home-card .room-switcher.room-chip-strip {
     box-sizing: border-box !important;
-    width: 100% !important;
+    width: calc(100% - 28px) !important;
     min-width: 0 !important;
-    max-width: 100% !important;
+    max-width: calc(100% - 28px) !important;
     min-height: 32px !important;
-    margin: 0 !important;
-    padding: 0 8px 7px 0 !important;
+    margin: 0 14px !important;
+    padding: 0 0 7px !important;
     scroll-padding-left: 0 !important;
     gap: 5px !important;
   }
@@ -336,27 +336,32 @@
     flex-basis: 6px !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root main.app-shell.calendar-page-active
     .home-card .entity-grid-scroll-shell {
-    width: 100% !important;
+    box-sizing: border-box !important;
+    width: calc(100% - 28px) !important;
     height: 100% !important;
+    min-width: 0 !important;
     min-height: 0 !important;
+    max-width: calc(100% - 28px) !important;
     max-height: 100% !important;
+    margin: 0 14px !important;
     align-self: stretch !important;
     overflow: hidden !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root main.app-shell.calendar-page-active
     .home-card .entity-grid {
     width: 100% !important;
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
+    margin: 0 !important;
     grid-template-columns: repeat(2,minmax(0,1fr)) !important;
     grid-auto-rows: 50px !important;
     align-content: start !important;
     gap: 5px !important;
-    padding: 0 8px 14px !important;
+    padding: 0 0 14px !important;
     scroll-padding-bottom: 14px !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
