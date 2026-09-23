@@ -553,10 +553,10 @@
   .v60-event.blue { background:#e2efff !important; color:#255b93 !important; }
   .v60-event.amber { background:#fff0cf !important; color:#825f19 !important; }
   .v60-event.violet { background:#eee7ff !important; color:#6242a6 !important; }
-  main.app-shell.night .v60-event.mint { background:rgba(52,199,89,.16) !important; color:#7ee296 !important; }
-  main.app-shell.night .v60-event.blue { background:rgba(10,132,255,.18) !important; color:#75b9ff !important; }
-  main.app-shell.night .v60-event.amber { background:rgba(255,159,10,.18) !important; color:#ffc56a !important; }
-  main.app-shell.night .v60-event.violet { background:rgba(175,82,222,.18) !important; color:#d095eb !important; }
+  main.app-shell.home-page-active.night .v60-event.mint { background:rgba(52,199,89,.16) !important; color:#7ee296 !important; }
+  main.app-shell.home-page-active.night .v60-event.blue { background:rgba(10,132,255,.18) !important; color:#75b9ff !important; }
+  main.app-shell.home-page-active.night .v60-event.amber { background:rgba(255,159,10,.18) !important; color:#ffc56a !important; }
+  main.app-shell.home-page-active.night .v60-event.violet { background:rgba(175,82,222,.18) !important; color:#d095eb !important; }
 
   .v60-family-rail {
     display: grid !important;
