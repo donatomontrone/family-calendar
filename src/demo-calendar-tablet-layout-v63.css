@@ -403,7 +403,7 @@
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .right-column .home-card .entity-grid > article.entity-tile > .entity-main {
-    padding: 5px 27px 5px 6px !important;
+    padding: 5px 31px 5px 6px !important;
     grid-template-columns: 27px minmax(0,1fr) !important;
     column-gap: 5px !important;
   }
@@ -440,25 +440,25 @@
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .right-column .home-card .entity-grid > article.entity-tile > :is(.favorite-button,.control-button) {
-    right: 3px !important;
-    width: 21px !important;
-    height: 21px !important;
-    min-width: 21px !important;
-    min-height: 21px !important;
-    max-width: 21px !important;
-    max-height: 21px !important;
+    right: 5px !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    max-width: 20px !important;
+    max-height: 20px !important;
     border-radius: 7px !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .right-column .home-card .entity-grid > article.entity-tile > .favorite-button {
-    top: 3px !important;
+    top: 4px !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .right-column .home-card .entity-grid > article.entity-tile > .control-button {
     top: auto !important;
-    bottom: 3px !important;
+    bottom: 4px !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
