@@ -1,18 +1,15 @@
 /*
  * DEMO CALENDAR TABLET LAYOUT V63
- * Demo-only, calibrated from iPad mini portrait + landscape screenshots.
+ * Demo-only Calendar tablet contract.
  *
- * This layer owns ONLY macro geometry and scroll ownership.
- * It intentionally does NOT redefine typography, colors, radii, shadows,
- * button geometry, card decoration or device-card visual styling.
+ * Landscape keeps the previously approved rail composition.
+ * Portrait iPad mini receives one consolidated rule set: no stacked passes.
  */
 
-/* -------------------------------------------------------------------------- */
-/* Shared tablet corrections                                                  */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+/* SHARED TABLET GEOMETRY                                                     */
+/* ========================================================================== */
 @media (min-width: 560px) and (max-width: 1179px) and (min-height: 480px) {
-  /* shared-exact-v15 locks the real header host at 94px. On tablets the demo
-     already defines the correct --ad-header-h; make that value authoritative. */
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
     body #root main.app-shell.calendar-page-active > #family-shared-header-host,
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
@@ -23,43 +20,45 @@
     max-height: var(--ad-header-h) !important;
   }
 
-  /* Historical tablet rules force both cards to 318px. Their grid row must own
-     their real height or Agenda/Lists can overlap in landscape. */
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
     body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .left-column > :is(.agenda-card,.tasks-card) {
+    > .dashboard-grid > .left-column > :is(.agenda-card,.tasks-card),
+  html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
+    body #root main.app-shell.calendar-page-active
+    > .dashboard-grid > .right-column > .home-card {
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
+    align-self: stretch !important;
   }
 
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
     body #root main.app-shell.calendar-page-active .agenda-card {
     display: grid !important;
     grid-template-rows: auto minmax(0,1fr) !important;
+    overflow: hidden !important;
   }
 
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
-    body #root main.app-shell.calendar-page-active .tasks-card {
+    body #root main.app-shell.calendar-page-active .tasks-card:not(:has(.task-composer)) {
+    display: grid !important;
+    grid-template-rows: auto minmax(0,1fr) auto !important;
+    overflow: hidden !important;
+  }
+
+  html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
+    body #root main.app-shell.calendar-page-active .tasks-card:has(.task-composer) {
     display: grid !important;
     grid-template-rows: auto auto minmax(0,1fr) auto !important;
+    overflow: hidden !important;
   }
 
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
     body #root main.app-shell.calendar-page-active .home-card {
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
     display: grid !important;
     grid-template-rows: auto auto auto minmax(0,1fr) !important;
+    min-height: 0 !important;
     overflow: hidden !important;
-  }
-
-  /* Restore the device grid's original responsive contract. The approved card
-     itself still comes entirely from smart-home-device-cards.css. */
-  html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
-    body #root main.app-shell.calendar-page-active .home-card .entity-grid {
-    grid-template-columns: repeat(auto-fit,minmax(148px,1fr)) !important;
   }
 
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
@@ -79,17 +78,18 @@
   html:is([data-demo-viewport="tablet-portrait"],[data-demo-viewport="tablet-landscape"])
     body #root main.app-shell.calendar-page-active
     :is(.agenda-list,.task-list,.home-card .entity-grid) {
-    height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
-    overflow-y: auto !important;
     overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Small tablet portrait                                                      */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+/* SMALL TABLET PORTRAIT                                                      */
+/* ========================================================================== */
 @media (min-width: 560px) and (max-width: 699px) and (min-height: 700px) and (orientation: portrait) {
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active {
     height: auto !important;
@@ -140,9 +140,9 @@
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* iPad mini / regular tablet portrait                                        */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+/* IPAD MINI / REGULAR TABLET PORTRAIT                                        */
+/* ========================================================================== */
 @media (min-width: 700px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active {
     height: 100dvh !important;
@@ -190,91 +190,80 @@
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
-    overflow: hidden !important;
-  }
-}
-
-/* -------------------------------------------------------------------------- */
-/* iPad mini / tablet landscape                                               */
-/* Keep the rail layout until the demo truly becomes "desktop" at 1180px.    */
-/* -------------------------------------------------------------------------- */
-@media (min-width: 720px) and (max-width: 1179px) and (min-height: 480px) and (orientation: landscape) {
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
-    height: 100dvh !important;
-    min-height: 100dvh !important;
-    max-height: 100dvh !important;
-    overflow: hidden !important;
-  }
-
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
-    width: 100% !important;
-    height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
-    display: grid !important;
-    grid-template-columns: minmax(0,1fr) clamp(300px,34vw,360px) !important;
-    grid-template-rows: minmax(0,.52fr) minmax(0,.48fr) !important;
-    grid-template-areas:
-      "calendar left"
-      "calendar right" !important;
-    gap: var(--ad-gap) !important;
-    overflow: hidden !important;
-  }
-
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
-    grid-area: calendar !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-  }
-
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
-    grid-area: left !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
     display: grid !important;
     grid-template-columns: minmax(0,1fr) !important;
-    grid-template-rows: minmax(0,.46fr) minmax(0,.54fr) !important;
-    gap: var(--ad-gap) !important;
+    grid-template-rows: minmax(0,1fr) !important;
     overflow: hidden !important;
   }
 
-  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
-    grid-area: right !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    overflow: hidden !important;
-  }
-}
-
-
-/* -------------------------------------------------------------------------- */
-/* iPad mini portrait — compact lower cards without changing landscape.       */
-/* -------------------------------------------------------------------------- */
-@media (min-width: 700px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
-  /* Casa Intelligente must read as the same card family as Agenda / Liste. */
+  /* Header alignment + people currently home. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    :is(.agenda-card,.tasks-card,.home-card) {
-    box-sizing: border-box !important;
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    padding: 0 2px !important;
+    grid-template-columns: minmax(170px,1fr) auto minmax(285px,1fr) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    grid-template-areas: "greeting clock actions" !important;
+    align-items: center !important;
+    column-gap: 10px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root
+    main.app-shell.calendar-page-active #family-shared-header .reel-greeting {
+    grid-area: greeting !important;
+    align-self: center !important;
+    justify-self: start !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root
+    main.app-shell.calendar-page-active #family-shared-header .reel-clock {
+    grid-area: clock !important;
+    align-self: center !important;
+    justify-self: center !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root
+    main.app-shell.calendar-page-active #family-shared-header .reel-top-actions {
+    grid-area: actions !important;
+    align-self: center !important;
+    justify-self: end !important;
+    gap: 6px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root
+    main.app-shell.calendar-page-active #family-shared-header .avatar-stack {
+    display: flex !important;
+    align-items: center !important;
+    height: 36px !important;
+    flex: 0 0 auto !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root
+    main.app-shell.calendar-page-active #family-shared-header .avatar-stack i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root
+    main.app-shell.calendar-page-active #family-shared-header .avatar-stack i + i {
+    margin-left: -6px !important;
+  }
+
+  /* Casa shares the exact lower-row height and its last row is the scroll viewport. */
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active .home-card {
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
-    border-radius: 24px !important;
-    align-self: stretch !important;
+    grid-template-rows: auto auto auto minmax(0,1fr) !important;
+    padding-bottom: 10px !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active .home-card {
-    padding-bottom: 12px !important;
-    grid-template-rows: auto auto minmax(0,1fr) !important;
-  }
-
-  /* Smaller room chips, keeping their existing colors/selected language. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .home-card .room-switcher.room-chip-strip {
     min-height: 32px !important;
-    padding: 0 10px 8px !important;
+    padding: 0 8px 7px 2px !important;
+    scroll-padding-left: 2px !important;
     gap: 5px !important;
   }
 
@@ -303,286 +292,22 @@
     flex-basis: 6px !important;
   }
 
-  /* Compact 2-column device grid with a visible vertical scroll affordance. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .home-card .entity-grid-scroll-shell {
-    height: 100% !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid {
-    height: 100% !important;
-    min-height: 0 !important;
-    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
-    grid-auto-rows: 58px !important;
-    align-content: start !important;
-    gap: 6px !important;
-    padding: 0 9px 4px !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    scrollbar-width: thin !important;
-    scrollbar-color: rgba(118,118,128,.30) transparent !important;
-    scrollbar-gutter: stable !important;
-    overscroll-behavior-y: contain !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid::-webkit-scrollbar {
-    width: 4px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid::-webkit-scrollbar-track {
-    background: transparent !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid::-webkit-scrollbar-thumb {
-    border-radius: 999px !important;
-    background: rgba(118,118,128,.30) !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile {
-    height: 58px !important;
-    min-height: 58px !important;
-    max-height: 58px !important;
-    border-radius: 13px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile > .entity-main {
-    height: 58px !important;
-    min-height: 58px !important;
-    max-height: 58px !important;
-    padding: 6px 31px 6px 7px !important;
-    grid-template-columns: 30px minmax(0,1fr) !important;
-    column-gap: 6px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile .entity-icon {
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-    border-radius: 10px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile .entity-icon svg {
-    width: 14px !important;
-    height: 14px !important;
-    min-width: 14px !important;
-    min-height: 14px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile .entity-main strong {
-    font-size: 10.5px !important;
-    line-height: 1.05 !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile .entity-main small {
-    margin-top: 2px !important;
-    font-size: 9px !important;
-    line-height: 1 !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile > :is(.favorite-button,.control-button) {
-    right: 4px !important;
-    width: 24px !important;
-    height: 24px !important;
-    min-width: 24px !important;
-    min-height: 24px !important;
-    max-width: 24px !important;
-    max-height: 24px !important;
-    border-radius: 8px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile > .favorite-button {
-    top: 4px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile > .control-button {
-    top: auto !important;
-    bottom: 4px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile > :is(.favorite-button,.control-button) svg {
-    width: 12px !important;
-    height: 12px !important;
-    min-width: 12px !important;
-    min-height: 12px !important;
-  }
-
-  /* LISTE: + uses the same 40x40 / 14px geometry as Smart Home power-all. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-add-button {
-    flex: 0 0 40px !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    max-width: 40px !important;
-    max-height: 40px !important;
-    border-radius: 14px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-add-button svg {
-    width: 18px !important;
-    height: 18px !important;
-    min-width: 18px !important;
-    min-height: 18px !important;
-  }
-
-  /* Compact add-item composer. Keep the input at 16px to avoid iPadOS zoom. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-composer {
-    margin: 0 12px 7px !important;
-    grid-template-columns: minmax(0,1fr) 32px !important;
-    gap: 6px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-composer input {
-    height: 32px !important;
-    min-height: 32px !important;
-    padding-inline: 9px !important;
-    border-radius: 11px !important;
-    font-size: 16px !important;
-    line-height: 1.1 !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-save-button {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    max-width: 32px !important;
-    max-height: 32px !important;
-    border-radius: 11px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-save-button svg {
-    width: 14px !important;
-    height: 14px !important;
-    min-width: 14px !important;
-    min-height: 14px !important;
-  }
-}
-
-
-/* -------------------------------------------------------------------------- */
-/* iPad mini portrait — screenshot pass 2                                     */
-/* -------------------------------------------------------------------------- */
-@media (min-width: 700px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
-  /* Match CASA INTELLIGENTE heading rhythm to AGENDA / LISTE. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .home-heading {
-    min-height: 0 !important;
-    padding: 13px 14px 9px !important;
-    align-items: center !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .home-heading .section-kicker {
-    font-size: 9px !important;
-    line-height: 1.05 !important;
-    letter-spacing: .075em !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .home-heading h2 {
-    margin-top: 3px !important;
-    font-size: 18px !important;
-    line-height: 1.05 !important;
-    letter-spacing: -.028em !important;
-  }
-
-  /* + and × intentionally use the exact same visual treatment as power-all. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    :is(.tasks-card .task-add-button,.home-card .power-all) {
-    flex: 0 0 40px !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    max-width: 40px !important;
-    max-height: 40px !important;
-    padding: 0 !important;
-    border: 1px solid rgba(255,59,48,.16) !important;
-    border-radius: 14px !important;
-    background: rgba(255,59,48,.105) !important;
-    color: #cf463d !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.72),
-      0 1px 2px rgba(0,0,0,.025),
-      0 4px 12px rgba(255,59,48,.045) !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    :is(.tasks-card .task-add-button,.home-card .power-all) svg {
-    width: 18px !important;
-    height: 18px !important;
-    min-width: 18px !important;
-    min-height: 18px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    :is(.tasks-card .task-add-button,.home-card .power-all):active {
-    background: rgba(255,59,48,.17) !important;
-    color: #c9362d !important;
-    transform: scale(.96) !important;
-    box-shadow: inset 0 1px 2px rgba(160,28,20,.10) !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.night.calendar-page-active
-    :is(.tasks-card .task-add-button,.home-card .power-all) {
-    border-color: rgba(255,105,97,.18) !important;
-    background: rgba(255,69,58,.13) !important;
-    color: #ff6961 !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 5px 14px rgba(0,0,0,.14) !important;
-  }
-
-  /* Room strip starts closer to the card edge. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .room-switcher.room-chip-strip {
-    padding-left: 4px !important;
-    scroll-padding-left: 4px !important;
-  }
-
-  /* Give the device region a definite scroll viewport. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid-scroll-shell {
-    position: relative !important;
     width: 100% !important;
-    height: auto !important;
+    height: 100% !important;
     min-height: 0 !important;
-    max-height: none !important;
+    max-height: 100% !important;
     align-self: stretch !important;
     overflow: hidden !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .home-card .entity-grid {
-    position: absolute !important;
-    inset: 0 !important;
     width: 100% !important;
-    height: auto !important;
+    height: 100% !important;
     min-height: 0 !important;
-    max-height: none !important;
+    max-height: 100% !important;
     grid-template-columns: repeat(2,minmax(0,1fr)) !important;
     grid-auto-rows: 50px !important;
     align-content: start !important;
@@ -623,11 +348,6 @@
     height: 50px !important;
     min-height: 50px !important;
     max-height: 50px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .right-column .home-card .entity-grid > article.entity-tile {
-    border-radius: 12px !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
@@ -698,102 +418,7 @@
     min-height: 10px !important;
   }
 
-  /* Smaller placeholder; typed text remains 16px to prevent iPadOS focus zoom. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-composer input::placeholder {
-    font-size: 11px !important;
-    line-height: 1 !important;
-  }
-}
-
-
-/* -------------------------------------------------------------------------- */
-/* iPad mini portrait — structural correction pass 3                          */
-/* -------------------------------------------------------------------------- */
-@media (min-width: 700px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
-  /* 1. The three lower cards own exactly the same row height. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .left-column,
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .right-column {
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    align-self: stretch !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .left-column > :is(.agenda-card,.tasks-card),
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .right-column > .home-card {
-    box-sizing: border-box !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    align-self: stretch !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    > .dashboard-grid > .right-column {
-    display: grid !important;
-    grid-template-columns: minmax(0,1fr) !important;
-    grid-template-rows: minmax(0,1fr) !important;
-  }
-
-  /* CASA has four real children: heading, room chips, device heading, devices. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active .home-card {
-    grid-template-rows: auto auto auto minmax(0,1fr) !important;
-    overflow: hidden !important;
-  }
-
-  /* Real vertical device viewport. No absolute-position workaround. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid-scroll-shell {
-    position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    align-self: stretch !important;
-    overflow: hidden !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .home-card .entity-grid {
-    position: static !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
-    grid-auto-rows: 50px !important;
-    align-content: start !important;
-    gap: 5px !important;
-    padding: 0 8px 4px !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    overscroll-behavior-y: contain !important;
-    touch-action: pan-y pinch-zoom !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin !important;
-    scrollbar-color: rgba(118,118,128,.34) transparent !important;
-    scrollbar-gutter: stable !important;
-  }
-
-  /* 2. LISTE uses the original state-aware row contract.
-        No composer = heading / list / segmented.
-        Composer = heading / composer / list / segmented. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card:not(:has(.task-composer)) {
-    grid-template-rows: auto minmax(0,1fr) auto !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card:has(.task-composer) {
-    grid-template-rows: auto auto minmax(0,1fr) auto !important;
-  }
-
+  /* Lists: footer is a fixed grid row, reminder rows are dense and scroll above it. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .tasks-card .task-list-scroll-shell {
     width: 100% !important;
@@ -815,16 +440,16 @@
     padding: 0 !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
-    overscroll-behavior-y: contain !important;
   }
 
-  /* 3. Denser reminder rows; the footer never gets covered. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .tasks-card :is(.swipe-task-row,.task-row.swipe-task-row),
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .tasks-card .task-row-content,
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .task-row-content > label {
+    .tasks-card .task-row-content > label,
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .tasks-card .swipe-delete-action {
     height: 42px !important;
     min-height: 42px !important;
     max-height: 42px !important;
@@ -841,13 +466,6 @@
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    .tasks-card .swipe-delete-action {
-    height: 42px !important;
-    min-height: 42px !important;
-    max-height: 42px !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .tasks-card .task-check-indicator {
     width: 20px !important;
     height: 20px !important;
@@ -855,8 +473,7 @@
     min-height: 20px !important;
   }
 
-  /* 4. + keeps its original neutral palette. × keeps the original red palette.
-        Only geometry is shared with power-all. */
+  /* + / ×: same 40x40 geometry as power-all; neutral +, red ×. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .tasks-card .task-add-button {
     flex: 0 0 40px !important;
@@ -868,6 +485,14 @@
     max-height: 40px !important;
     padding: 0 !important;
     border-radius: 14px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .tasks-card .task-add-button svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
@@ -886,10 +511,6 @@
     border-color: rgba(255,59,48,.20) !important;
     background: rgba(255,59,48,.12) !important;
     color: #cf463d !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.72),
-      0 1px 2px rgba(0,0,0,.025),
-      0 4px 12px rgba(255,59,48,.045) !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.night.calendar-page-active
@@ -897,10 +518,25 @@
     border-color: rgba(255,255,255,.075) !important;
     background: #3a3a3c !important;
     color: #e5e5ea !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.055),0 6px 18px rgba(0,0,0,.18) !important;
   }
 
-  /* 5. Smaller placeholder, but typed text stays 16px to prevent iPadOS zoom. */
+  /* Composer compact; typed text stays 16px to avoid iPadOS focus zoom. */
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .tasks-card .task-composer {
+    margin: 0 12px 7px !important;
+    grid-template-columns: minmax(0,1fr) 32px !important;
+    gap: 6px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .tasks-card .task-composer input {
+    height: 32px !important;
+    min-height: 32px !important;
+    padding-inline: 9px !important;
+    border-radius: 11px !important;
+    font-size: 16px !important;
+  }
+
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
     .tasks-card .task-composer input::placeholder {
     font-size: 10px !important;
@@ -908,56 +544,68 @@
     opacity: .62 !important;
   }
 
-  /* 6. Header: explicit three-column alignment on iPad mini portrait. */
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
-    > #family-shared-header-host > #family-shared-header.shared-home-header {
-    padding: 0 2px !important;
-    grid-template-columns: minmax(180px,1fr) auto minmax(240px,1fr) !important;
-    grid-template-rows: minmax(0,1fr) !important;
-    grid-template-areas: "greeting clock actions" !important;
-    align-items: center !important;
-    column-gap: 10px !important;
+    .tasks-card .task-save-button {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    border-radius: 11px !important;
+  }
+}
+
+/* ========================================================================== */
+/* TABLET LANDSCAPE — unchanged rail composition                              */
+/* ========================================================================== */
+@media (min-width: 720px) and (max-width: 1179px) and (min-height: 480px) and (orientation: landscape) {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root
-    main.app-shell.calendar-page-active #family-shared-header .reel-greeting {
-    grid-area: greeting !important;
-    align-self: center !important;
-    justify-self: start !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid {
+    width: 100% !important;
+    height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - var(--ad-header-h) - var(--ad-gap) - var(--ad-shell-pad) - 78px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) clamp(300px,34vw,360px) !important;
+    grid-template-rows: minmax(0,.52fr) minmax(0,.48fr) !important;
+    grid-template-areas:
+      "calendar left"
+      "calendar right" !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root
-    main.app-shell.calendar-page-active #family-shared-header .reel-clock {
-    grid-area: clock !important;
-    align-self: center !important;
-    justify-self: center !important;
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root
-    main.app-shell.calendar-page-active #family-shared-header .reel-top-actions {
-    grid-area: actions !important;
-    align-self: center !important;
-    justify-self: end !important;
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: minmax(0,.46fr) minmax(0,.54fr) !important;
+    gap: var(--ad-gap) !important;
+    overflow: hidden !important;
   }
 
-  /* Safari/iPad: the thumb state is mirrored as a normal class by demo JS.
-     These selectors avoid the one-way :has() transition quirk. */
-  html[data-demo-viewport="tablet-portrait"] body #root
-    main.app-shell.calendar-page-active .tasks-card > .task-segmented-control:not(.segment-dragging):not(.segment-second-active)::before,
-  html[data-demo-viewport="tablet-portrait"] body #root
-    .page-dock-shell > .page-switch-control:not(.segment-dragging):not(.segment-second-active)::before {
-    transform: translate3d(0,0,0) !important;
-    transition: transform .30s cubic-bezier(.22,.86,.28,1) !important;
-  }
-
-  html[data-demo-viewport="tablet-portrait"] body #root
-    main.app-shell.calendar-page-active .tasks-card > .task-segmented-control:not(.segment-dragging).segment-second-active::before,
-  html[data-demo-viewport="tablet-portrait"] body #root
-    .page-dock-shell > .page-switch-control:not(.segment-dragging).segment-second-active::before {
-    transform: translate3d(calc(100% + 3px),0,0) !important;
-    transition: transform .30s cubic-bezier(.22,.86,.28,1) !important;
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
   }
 }
