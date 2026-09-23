@@ -795,16 +795,21 @@
 /* ========================================================================== */
 @media (min-width: 720px) and (max-width: 1400px) and (min-height: 480px) and (orientation: landscape) {
   html[data-demo-viewport="tablet-landscape"] {
-    /* Give LISTE more breathing room while keeping Casa fully usable. */
+    /* One horizontal rhythm: viewport edge = card gap = viewport edge. */
+    --calendar-land-x-space: 8px;
     --calendar-land-left: clamp(210px,22vw,250px);
     --calendar-land-home: clamp(205px,21vw,238px);
-    --calendar-land-gap: 8px;
+    --calendar-land-gap: var(--calendar-land-x-space);
   }
 
   html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active {
+    box-sizing: border-box !important;
+    width: 100% !important;
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
+    padding-left: var(--calendar-land-x-space) !important;
+    padding-right: var(--calendar-land-x-space) !important;
     display: grid !important;
     grid-template-rows: var(--ad-header-h) minmax(0,1fr) !important;
     row-gap: var(--ad-gap) !important;
@@ -827,9 +832,9 @@
     display: grid !important;
     grid-template-columns:
       var(--calendar-land-left)
-      8px
+      var(--calendar-land-x-space)
       minmax(0,1fr)
-      8px
+      var(--calendar-land-x-space)
       var(--calendar-land-home) !important;
     grid-template-rows: minmax(0,1fr) !important;
     grid-template-areas: "left . calendar . right" !important;
