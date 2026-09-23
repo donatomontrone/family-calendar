@@ -24588,7 +24588,7 @@ if (!ui.__familyCalendarSegmentedGestures) {
 		let r = n(e);
 		if (r.length < 2) return;
 		let i = r[0]?.offsetLeft ?? 0, a = t ?? r.find((e) => e.classList.contains("active")) ?? r[0], o = Math.max(0, a.offsetLeft - i);
-		e.style.setProperty("--segment-rest-offset", `${o}px`);
+		e.style.setProperty("--segment-rest-offset", `${o}px`), !e.classList.contains("segment-dragging") && !e.classList.contains("segment-settling") && e.style.setProperty("--segment-visual-offset", `${o}px`);
 	}, i = () => {
 		document.querySelectorAll(".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4").forEach((e) => r(e));
 	}, a = (e) => e instanceof Element ? e.closest(".segmented-control, .page-dock, .desktop-room-mode-v32, .room-light-mode-v4") : null, o = (e, t) => {
@@ -24617,7 +24617,7 @@ if (!ui.__familyCalendarSegmentedGestures) {
 			currentOffset: d,
 			maxOffset: f,
 			moved: !1
-		}, i.style.setProperty("--segment-drag-offset", `${d}px`);
+		}, i.style.setProperty("--segment-drag-offset", `${d}px`), i.style.setProperty("--segment-visual-offset", `${d}px`);
 		try {
 			i.setPointerCapture(t.pointerId);
 		} catch {}
@@ -24627,27 +24627,27 @@ if (!ui.__familyCalendarSegmentedGestures) {
 		if (!e.moved && Math.abs(n) > 5 && (e.moved = !0, e.control.classList.add("segment-dragging")), !e.moved) return;
 		t.preventDefault();
 		let r = Math.max(0, Math.min(e.maxOffset, e.startOffset + n));
-		e.currentOffset = r, e.control.style.setProperty("--segment-drag-offset", `${r}px`);
+		e.currentOffset = r, e.control.style.setProperty("--segment-drag-offset", `${r}px`), e.control.style.setProperty("--segment-visual-offset", `${r}px`);
 	}, u = /* @__PURE__ */ new WeakMap(), d = (e, i, a) => {
 		if (!i || i.disabled) return;
 		let o = n(e), c = o.indexOf(i);
 		if (c < 0) return;
-		let l = s(o), d = l[l.length - 1] ?? 0, f = Math.max(0, Math.min(d, a)), p = l[c] ?? 0, m = u.get(e);
-		m !== void 0 && window.clearTimeout(m);
-		let h = () => {
+		let l = s(o), d = l[l.length - 1] ?? 0, f = Math.max(0, Math.min(d, a)), p = l[c] ?? 0, m = e.classList.contains("segment-dragging"), h = u.get(e);
+		h !== void 0 && window.clearTimeout(h);
+		let g = () => {
 			u.delete(e), r(e, i), e.classList.remove("segment-dragging", "segment-settling"), e.style.removeProperty("--segment-drag-offset"), e.style.removeProperty("--segment-settle-offset");
 		};
 		if (t = {
 			control: e,
 			until: performance.now() + 360
 		}, Math.abs(p - f) < .5 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			e.style.setProperty("--segment-rest-offset", `${p}px`), i.click(), h();
+			e.style.setProperty("--segment-rest-offset", `${p}px`), e.style.setProperty("--segment-visual-offset", `${p}px`), i.click(), g();
 			return;
 		}
-		e.classList.add("segment-settling"), e.style.setProperty("--segment-settle-offset", `${f}px`), e.style.setProperty("--segment-rest-offset", `${p}px`), i.click(), requestAnimationFrame(() => {
+		e.classList.add("segment-settling"), e.style.setProperty("--segment-settle-offset", `${f}px`), e.style.setProperty("--segment-rest-offset", `${p}px`), m || e.style.setProperty("--segment-visual-offset", `${p}px`), i.click(), requestAnimationFrame(() => {
 			e.classList.remove("segment-dragging"), e.style.removeProperty("--segment-drag-offset"), requestAnimationFrame(() => {
-				e.style.setProperty("--segment-settle-offset", `${p}px`);
-				let t = window.setTimeout(h, 340);
+				e.style.setProperty("--segment-settle-offset", `${p}px`), m && e.style.setProperty("--segment-visual-offset", `${p}px`);
+				let t = window.setTimeout(g, 340);
 				u.set(e, t);
 			});
 		});
