@@ -255,15 +255,21 @@
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
-    grid-template-rows: auto auto auto minmax(0,1fr) !important;
+    /* device-heading is globally display:none: the real grid has 3 children */
+    grid-template-rows: auto auto minmax(0,1fr) !important;
     padding-bottom: 10px !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root main.app-shell.calendar-page-active
     .home-card .room-switcher.room-chip-strip {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
     min-height: 32px !important;
-    padding: 0 8px 7px 2px !important;
-    scroll-padding-left: 2px !important;
+    margin: 0 !important;
+    padding: 0 8px 7px 0 !important;
+    scroll-padding-left: 0 !important;
     gap: 5px !important;
   }
 
@@ -312,7 +318,9 @@
     grid-auto-rows: 50px !important;
     align-content: start !important;
     gap: 5px !important;
-    padding: 0 8px 4px !important;
+    padding: 0 8px 14px !important;
+    scroll-padding-bottom: 14px !important;
+    box-sizing: border-box !important;
     overflow-x: hidden !important;
     overflow-y: scroll !important;
     overscroll-behavior-y: contain !important;
@@ -474,8 +482,9 @@
   }
 
   /* + / ×: same 40x40 geometry as power-all; neutral +, red ×. */
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root main.app-shell.calendar-page-active
     :is(.tasks-card .task-add-button,.home-card .power-all) {
+    box-sizing: border-box !important;
     flex: 0 0 40px !important;
     width: 40px !important;
     height: 40px !important;
@@ -483,16 +492,23 @@
     min-height: 40px !important;
     max-width: 40px !important;
     max-height: 40px !important;
+    margin: 0 !important;
     padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    aspect-ratio: 1 / 1 !important;
     border-radius: 14px !important;
   }
 
-  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+  html[data-demo-viewport="tablet-portrait"][data-demo-adaptive="adaptive"] body #root main.app-shell.calendar-page-active
     :is(.tasks-card .task-add-button,.home-card .power-all) svg {
     width: 18px !important;
     height: 18px !important;
     min-width: 18px !important;
     min-height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    margin: 0 !important;
   }
 
   html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
