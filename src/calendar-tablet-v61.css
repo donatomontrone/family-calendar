@@ -1,0 +1,712 @@
+/*
+ * CALENDAR TABLET V61
+ * Responsive geometry only.
+ *
+ * Scope: CALENDARIO on tablet-class viewports, approximately 5–13" in common
+ * CSS viewport sizes. Visual styling remains owned by the approved 24ec8046
+ * Calendar layers: colors, materials, typography language, controls and cards
+ * are intentionally not redesigned here.
+ *
+ * Phone landscape is excluded by the minimum short side; desktop >= 1440px
+ * remains on the approved desktop contract.
+ */
+
+@media (min-width: 560px) and (max-width: 1400px) and (min-height: 560px) {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) {
+    --ct61-gap: clamp(8px, 1vw, 12px);
+    --ct61-header-h: 76px;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    padding:
+      max(8px, env(safe-area-inset-top, 0px))
+      clamp(8px, 1.05vw, 14px)
+      max(62px, calc(50px + env(safe-area-inset-bottom, 0px)))
+      clamp(8px, 1.05vw, 14px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: var(--ct61-header-h) minmax(0, 1fr) !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--ct61-header-h) !important;
+    min-height: var(--ct61-header-h) !important;
+    max-height: var(--ct61-header-h) !important;
+    margin: 0 !important;
+    align-self: stretch !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    gap: var(--ct61-gap) !important;
+    align-items: stretch !important;
+    align-content: stretch !important;
+    overflow: hidden !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) :is(.left-column, .right-column) {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: var(--ct61-gap) !important;
+    overflow: hidden !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active)
+    :is(.calendar-card, .agenda-card, .tasks-card, .home-card) {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    align-self: stretch !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-card {
+    display: grid !important;
+    grid-template-rows: 62px minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-toolbar {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 62px !important;
+    min-height: 62px !important;
+    max-height: 62px !important;
+    margin: 0 !important;
+    padding: 11px 14px 9px 18px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-toolbar h1 {
+    min-width: 0 !important;
+    margin-top: 2px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: clamp(23px, 2.7vw, 31px) !important;
+    line-height: 1 !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-actions {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    margin: 0 !important;
+    gap: 5px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-actions button {
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-actions .today-button {
+    width: auto !important;
+    min-width: 54px !important;
+    max-width: none !important;
+    padding-inline: 10px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .month-grid {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: 28px repeat(6, minmax(0, 1fr)) !important;
+    overflow: hidden !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .weekday {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 8px 3px 5px !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-day {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: clamp(4px, .65vw, 7px) clamp(4px, .6vw, 7px) !important;
+    overflow: hidden !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .day-number {
+    min-width: 0 !important;
+    min-height: 13px !important;
+    margin-bottom: 4px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .day-events {
+    min-width: 0 !important;
+    gap: 3px !important;
+    overflow: hidden !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-event {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: calc(100% + 6px) !important;
+    min-height: 18px !important;
+    height: 18px !important;
+    max-height: 18px !important;
+    padding: 3px 5px !important;
+    overflow: hidden !important;
+    border-radius: 6px !important;
+    font-size: 9px !important;
+    line-height: 12px !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-card {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .tasks-card {
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card {
+    display: grid !important;
+    grid-template-rows: auto auto auto minmax(0, 1fr) !important;
+    padding-bottom: 10px !important;
+    align-content: stretch !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active)
+    :is(.agenda-list, .task-list, .home-card .entity-grid) {
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active)
+    :is(.agenda-list, .task-list, .home-card .entity-grid)::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-list-scroll-shell,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .entity-grid-scroll-shell {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .room-switcher.room-chip-strip {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .room-switcher.room-chip-strip::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .entity-grid {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    align-content: start !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .page-dock-shell {
+    bottom: max(9px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Small tablet portrait — roughly 5–8".                                     */
+/* Keep the familiar Calendar appearance, but use a two-level dashboard:      */
+/* month above, Agenda+Lists and Smart Home sharing the lower band.           */
+/* -------------------------------------------------------------------------- */
+@media (min-width: 560px) and (max-width: 767px) and (min-height: 760px) and (orientation: portrait) {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) {
+    --ct61-header-h: 92px;
+    padding-inline: 9px !important;
+    padding-top: max(8px, env(safe-area-inset-top, 0px)) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header {
+    height: 92px !important;
+    min-height: 92px !important;
+    max-height: 92px !important;
+    padding: 3px 2px 7px !important;
+    display: grid !important;
+    grid-template-areas:
+      "greeting clock"
+      "actions actions" !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-rows: minmax(0, 1fr) 38px !important;
+    align-items: center !important;
+    gap: 5px 10px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
+    grid-template-columns: minmax(0, 1.42fr) minmax(215px, .98fr) !important;
+    grid-template-rows: minmax(0, 1.68fr) minmax(255px, .82fr) !important;
+    grid-template-areas:
+      "calendar calendar"
+      "left right" !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .card-heading {
+    padding: 12px 12px 8px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .section-kicker {
+    font-size: 8.5px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) h2 {
+    font-size: 15px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-list {
+    padding: 0 8px 8px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-day {
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    gap: 5px !important;
+    padding: 7px 2px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-date strong,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-event {
+    font-size: 9.5px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-date span,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-events > small {
+    font-size: 8.5px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-list {
+    margin-inline: 7px !important;
+    padding-inline: 0 !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-row {
+    min-height: 36px !important;
+    padding: 5px 2px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-row label,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-label {
+    font-size: 10px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .tasks-card > .task-segmented-control {
+    width: calc(100% - 14px) !important;
+    min-height: 32px !important;
+    height: 32px !important;
+    margin: 5px 7px 7px !important;
+    padding: 3px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .tasks-card > .task-segmented-control button {
+    min-height: 26px !important;
+    padding: 4px !important;
+    font-size: 9px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .room-switcher.room-chip-strip {
+    min-height: 34px !important;
+    padding: 0 8px 7px !important;
+    gap: 4px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .room-switcher.room-chip-strip > button {
+    height: 29px !important;
+    min-height: 29px !important;
+    padding-inline: 8px !important;
+    font-size: 9px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .device-heading {
+    padding: 2px 9px 6px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .entity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+    padding: 0 8px 3px !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Regular tablet portrait — roughly 8–13".                                  */
+/* Calendar dominates; the lower information band remains entirely visible.   */
+/* -------------------------------------------------------------------------- */
+@media (min-width: 768px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) {
+    --ct61-header-h: 76px;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
+    grid-template-columns: minmax(0, 1.48fr) minmax(270px, .92fr) !important;
+    grid-template-rows: minmax(0, 1.72fr) minmax(285px, .78fr) !important;
+    grid-template-areas:
+      "calendar calendar"
+      "left right" !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .card-heading {
+    padding: 13px 14px 9px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) h2 {
+    font-size: 16px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-day {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding: 8px 3px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-date strong,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-event {
+    font-size: 10.5px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-row {
+    min-height: 39px !important;
+    padding: 6px 3px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-row label,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-label {
+    font-size: 11px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .entity-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    padding: 0 9px 3px !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Compact/regular tablet landscape — roughly 5–11".                          */
+/* Calendar stays visible at all times; Agenda+Lists and Smart Home form a    */
+/* compact rail. No page scroll, only internal content scrolling.              */
+/* -------------------------------------------------------------------------- */
+@media (min-width: 760px) and (max-width: 1159px) and (min-height: 560px) and (orientation: landscape) {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) {
+    --ct61-header-h: 66px;
+    --ct61-gap: clamp(7px, .8vw, 10px);
+    padding-top: max(6px, env(safe-area-inset-top, 0px)) !important;
+    padding-inline: 8px !important;
+    padding-bottom: max(58px, calc(47px + env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .shared-home-header {
+    height: 66px !important;
+    min-height: 66px !important;
+    max-height: 66px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr) clamp(270px, 32vw, 340px) !important;
+    grid-template-rows: minmax(0, .59fr) minmax(0, .41fr) !important;
+    grid-template-areas:
+      "calendar left"
+      "calendar right" !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-card {
+    grid-template-rows: 54px minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-toolbar {
+    height: 54px !important;
+    min-height: 54px !important;
+    max-height: 54px !important;
+    padding: 8px 9px 7px 13px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-toolbar h1 {
+    font-size: clamp(19px, 2.3vw, 24px) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-actions button {
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-actions .today-button {
+    width: auto !important;
+    min-width: 50px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .month-grid {
+    grid-template-rows: 25px repeat(6, minmax(0, 1fr)) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .weekday {
+    padding: 7px 2px 4px !important;
+    font-size: 8.5px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-day {
+    padding: 3px 4px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .day-number {
+    margin-bottom: 3px !important;
+    font-size: 10px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .calendar-event {
+    min-height: 16px !important;
+    height: 16px !important;
+    max-height: 16px !important;
+    padding: 2px 4px !important;
+    font-size: 8.5px !important;
+    line-height: 12px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .card-heading {
+    padding: 9px 10px 6px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .section-kicker {
+    font-size: 8px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) h2 {
+    font-size: 13px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-list {
+    padding: 0 7px 6px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-day {
+    grid-template-columns: 47px minmax(0, 1fr) !important;
+    gap: 5px !important;
+    padding: 5px 1px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-date strong,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-event {
+    font-size: 9px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-date span,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .agenda-events > small {
+    font-size: 8px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-list {
+    margin-inline: 6px !important;
+    padding-inline: 0 !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-row {
+    min-height: 31px !important;
+    padding: 3px 2px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-row label,
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .task-label {
+    font-size: 9px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .tasks-card > .task-segmented-control {
+    width: calc(100% - 12px) !important;
+    min-height: 29px !important;
+    height: 29px !important;
+    margin: 3px 6px 5px !important;
+    padding: 2px !important;
+    border-radius: 9px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .tasks-card > .task-segmented-control button {
+    min-height: 25px !important;
+    padding: 3px !important;
+    font-size: 8.5px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .room-switcher.room-chip-strip {
+    min-height: 30px !important;
+    padding: 0 7px 5px !important;
+    gap: 4px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .room-switcher.room-chip-strip > button {
+    height: 26px !important;
+    min-height: 26px !important;
+    padding-inline: 6px !important;
+    font-size: 8px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .device-heading {
+    min-height: 22px !important;
+    padding: 1px 8px 4px !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .entity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    padding: 0 7px 2px !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Large tablet landscape — roughly 11–13".                                  */
+/* At this width the approved desktop three-column hierarchy becomes viable.  */
+/* -------------------------------------------------------------------------- */
+@media (min-width: 1160px) and (max-width: 1400px) and (min-height: 700px) and (orientation: landscape) {
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) {
+    --ct61-header-h: 72px;
+    --ct61-gap: clamp(9px, .85vw, 12px);
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid {
+    grid-template-columns:
+      clamp(220px, 19vw, 260px)
+      minmax(0, 1fr)
+      clamp(270px, 22vw, 315px) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    grid-template-areas: "left calendar right" !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .left-column {
+    grid-area: left !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, .42fr) minmax(0, .58fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .calendar-card {
+    grid-area: calendar !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) > .dashboard-grid > .right-column {
+    grid-area: right !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  :is(main.app-shell.calendar-page-active, html body #root main.app-shell.calendar-page-active) .home-card .entity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+  }
+}
