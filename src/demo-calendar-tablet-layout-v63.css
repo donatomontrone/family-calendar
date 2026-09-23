@@ -482,3 +482,226 @@
     min-height: 14px !important;
   }
 }
+
+
+/* -------------------------------------------------------------------------- */
+/* iPad mini portrait — screenshot pass 2                                     */
+/* -------------------------------------------------------------------------- */
+@media (min-width: 700px) and (max-width: 1099px) and (min-height: 760px) and (orientation: portrait) {
+  /* Match CASA INTELLIGENTE heading rhythm to AGENDA / LISTE. */
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .home-heading {
+    min-height: 0 !important;
+    padding: 13px 14px 9px !important;
+    align-items: center !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .home-heading .section-kicker {
+    font-size: 9px !important;
+    line-height: 1.05 !important;
+    letter-spacing: .075em !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .home-heading h2 {
+    margin-top: 3px !important;
+    font-size: 18px !important;
+    line-height: 1.05 !important;
+    letter-spacing: -.028em !important;
+  }
+
+  /* + and × intentionally use the exact same visual treatment as power-all. */
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all) {
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255,59,48,.16) !important;
+    border-radius: 14px !important;
+    background: rgba(255,59,48,.105) !important;
+    color: #cf463d !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.72),
+      0 1px 2px rgba(0,0,0,.025),
+      0 4px 12px rgba(255,59,48,.045) !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all) svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all):active {
+    background: rgba(255,59,48,.17) !important;
+    color: #c9362d !important;
+    transform: scale(.96) !important;
+    box-shadow: inset 0 1px 2px rgba(160,28,20,.10) !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.night.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all) {
+    border-color: rgba(255,105,97,.18) !important;
+    background: rgba(255,69,58,.13) !important;
+    color: #ff6961 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 5px 14px rgba(0,0,0,.14) !important;
+  }
+
+  /* Room strip starts closer to the card edge. */
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .room-switcher.room-chip-strip {
+    padding-left: 4px !important;
+    scroll-padding-left: 4px !important;
+  }
+
+  /* Give the device region a definite scroll viewport. */
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .entity-grid-scroll-shell {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    align-self: stretch !important;
+    overflow: hidden !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .entity-grid {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows: 50px !important;
+    align-content: start !important;
+    gap: 5px !important;
+    padding: 0 8px 4px !important;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    overscroll-behavior-y: contain !important;
+    touch-action: pan-y pinch-zoom !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(118,118,128,.34) transparent !important;
+    scrollbar-gutter: stable !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .entity-grid::-webkit-scrollbar {
+    display: block !important;
+    width: 4px !important;
+    height: 0 !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .entity-grid::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .home-card .entity-grid::-webkit-scrollbar-thumb {
+    border-radius: 999px !important;
+    background: rgba(118,118,128,.34) !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile,
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile > .entity-main {
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile {
+    border-radius: 12px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile > .entity-main {
+    padding: 5px 27px 5px 6px !important;
+    grid-template-columns: 27px minmax(0,1fr) !important;
+    column-gap: 5px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile .entity-icon {
+    width: 27px !important;
+    height: 27px !important;
+    min-width: 27px !important;
+    min-height: 27px !important;
+    border-radius: 9px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile .entity-icon svg {
+    width: 13px !important;
+    height: 13px !important;
+    min-width: 13px !important;
+    min-height: 13px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile .entity-main strong {
+    font-size: 10px !important;
+    line-height: 1.02 !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile .entity-main small {
+    margin-top: 1px !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile > :is(.favorite-button,.control-button) {
+    right: 3px !important;
+    width: 21px !important;
+    height: 21px !important;
+    min-width: 21px !important;
+    min-height: 21px !important;
+    max-width: 21px !important;
+    max-height: 21px !important;
+    border-radius: 7px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile > .favorite-button {
+    top: 3px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile > .control-button {
+    top: auto !important;
+    bottom: 3px !important;
+  }
+
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .right-column .home-card .entity-grid > article.entity-tile > :is(.favorite-button,.control-button) svg {
+    width: 10px !important;
+    height: 10px !important;
+    min-width: 10px !important;
+    min-height: 10px !important;
+  }
+
+  /* Smaller placeholder; typed text remains 16px to prevent iPadOS focus zoom. */
+  html[data-demo-viewport="tablet-portrait"] body #root main.app-shell.calendar-page-active
+    .tasks-card .task-composer input::placeholder {
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+}
