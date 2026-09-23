@@ -5,10 +5,11 @@ import demoPhoneLandscapeFixesV50Styles from "./demo-phone-landscape-fixes-v50.c
 import phonePortraitControlsV51Styles from "./phone-portrait-controls-v51.css?inline";
 import alarmLandscapeV52Styles from "./alarm-landscape-v52.css?inline";
 import largeScreenV60Styles from "./large-screen-v60.css?inline";
+import calendarTabletV61Styles from "./calendar-tablet-v61.css?inline";
 
 const STYLE_ID = "family-calendar-demo-responsive-system";
 const LEGACY_RUNTIME_STYLE_ID = "family-calendar-v4-styles";
-const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}`;
+const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${calendarTabletV61Styles}`;
 
 type DemoViewport =
   | "xl"
