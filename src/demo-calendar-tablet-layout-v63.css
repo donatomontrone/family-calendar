@@ -1151,3 +1151,190 @@
     translate: none !important;
   }
 }
+
+
+/* ========================================================================== */
+/* TABLET LANDSCAPE — compact card actions + iPad mini presence avatars       */
+/* ========================================================================== */
+
+/* iPad mini / compact iPad landscape: card actions scale with the UI density. */
+@media (min-width: 720px) and (max-width: 1179px) and (min-height: 480px) and (orientation: landscape) {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions {
+    gap: 3px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions > button {
+    box-sizing: border-box !important;
+    flex: 0 0 26px !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions > button svg {
+    width: 11px !important;
+    height: 11px !important;
+    min-width: 11px !important;
+    min-height: 11px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions > .today-button {
+    flex-basis: 42px !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    padding-inline: 5px !important;
+    font-size: 8.5px !important;
+    border-radius: 8px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all) {
+    box-sizing: border-box !important;
+    flex: 0 0 26px !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 8px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all) svg {
+    width: 11px !important;
+    height: 11px !important;
+    min-width: 11px !important;
+    min-height: 11px !important;
+    max-width: 11px !important;
+    max-height: 11px !important;
+    margin: 0 !important;
+  }
+
+  /* Presence was hidden globally for tablet-landscape; restore it only here. */
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .avatar-stack {
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 38px !important;
+    max-width: none !important;
+    height: 27px !important;
+    min-height: 27px !important;
+    max-height: 27px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    overflow: visible !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .avatar-stack > i {
+    box-sizing: border-box !important;
+    flex: 0 0 23px !important;
+    width: 23px !important;
+    min-width: 23px !important;
+    max-width: 23px !important;
+    height: 23px !important;
+    min-height: 23px !important;
+    max-height: 23px !important;
+    margin: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    #family-shared-header .avatar-stack > i + i {
+    margin-left: -8px !important;
+  }
+}
+
+/* iPad Pro landscape: still compact, but one step larger than iPad mini. */
+@media (min-width: 1180px) and (max-width: 1400px) and (min-height: 650px) and (orientation: landscape) {
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions {
+    gap: 4px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions > button {
+    box-sizing: border-box !important;
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    padding: 0 !important;
+    border-radius: 9px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions > button svg {
+    width: 12px !important;
+    height: 12px !important;
+    min-width: 12px !important;
+    min-height: 12px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    .calendar-actions > .today-button {
+    flex-basis: 46px !important;
+    width: 46px !important;
+    min-width: 46px !important;
+    max-width: 46px !important;
+    padding-inline: 6px !important;
+    font-size: 9px !important;
+    border-radius: 9px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all) {
+    box-sizing: border-box !important;
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 9px !important;
+  }
+
+  html[data-demo-viewport="tablet-landscape"] body #root main.app-shell.calendar-page-active
+    :is(.tasks-card .task-add-button,.home-card .power-all) svg {
+    width: 12px !important;
+    height: 12px !important;
+    min-width: 12px !important;
+    min-height: 12px !important;
+    max-width: 12px !important;
+    max-height: 12px !important;
+    margin: 0 !important;
+  }
+}
