@@ -26,6 +26,7 @@ import alarmLandscapeV52Styles from "./alarm-landscape-v52.css?inline";
 import largeScreenV60Styles from "./large-screen-v60.css?inline";
 import visualPolishV65Styles from "./visual-polish-v65.css?inline";
 import bottomRhythmV66Styles from "./bottom-rhythm-v66.css?inline";
+import homeRefactorV67Styles from "./home-refactor-v67.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
@@ -52,7 +53,7 @@ type UiWindow = Window & {
 
 const uiWindow = window as UiWindow;
 const FINAL_STYLE_ID = "family-calendar-v4-styles";
-const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}\n${homeRoomRefinementStyles}\n${homeSharedUiV12Styles}\n${sharedExactV13Styles}\n${sharedExactV14Styles}\n${sharedExactV15Styles}\n${homeDesktopRoomInfoV24Styles}\n${desktopRoomWorkspaceV26Styles}\n${desktopRoomMobileParityV30Styles}\n${homeMobilePowerV35Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${visualPolishV65Styles}\n${bottomRhythmV66Styles}`;
+const finalStyles = `${calendarV4Styles}\n${calendarV5Styles}\n${calendarV6Styles}\n${calendarV7Styles}\n${calendarV8Styles}\n${calendarV9Styles}\n${calendarV10Styles}\n${calendarV11Styles}\n${calendarV12Styles}\n${calendarV13Styles}\n${homeV1Styles}\n${homeV2Styles}\n${homeV3Styles}\n${homeLiquidGlassStyles}\n${homeRoomRefinementStyles}\n${homeSharedUiV12Styles}\n${sharedExactV13Styles}\n${sharedExactV14Styles}\n${sharedExactV15Styles}\n${homeDesktopRoomInfoV24Styles}\n${desktopRoomWorkspaceV26Styles}\n${desktopRoomMobileParityV30Styles}\n${homeMobilePowerV35Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${visualPolishV65Styles}\n${bottomRhythmV66Styles}\n${homeRefactorV67Styles}`;
 const CALENDAR_TONES = ["mint", "blue", "amber", "violet"];
 
 function ensureFinalStyles() {

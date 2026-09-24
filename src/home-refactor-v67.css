@@ -1,0 +1,2162 @@
+/*
+ * HOME REFACTOR V67
+ * Final non-phone CASA UI contract.
+ *
+ * Scope:
+ * - applies only at >=768px AND >=660px high;
+ * - phone portrait/landscape remain byte-for-byte visually owned by their
+ *   existing mobile layers;
+ * - CALENDARIO is never targeted.
+ *
+ * Goals:
+ * - copy CALENDARIO's shared-header geometry per viewport family;
+ * - one readable typography scale;
+ * - bounded grids with no cross-panel overflow;
+ * - internal scrolling only for unbounded collections, scrollbars hidden;
+ * - consistent Apple-like surfaces, radii and elevation.
+ */
+
+@media (min-width: 768px) and (min-height: 660px) {
+  body #root#root main.app-shell.home-page-active {
+    --h67-gap: 10px;
+    --h67-shell-x: 11px;
+    --h67-shell-top: 11px;
+    --h67-header-h: 64px;
+    --h67-clock-size: 38px;
+    --h67-room-strip-h: 66px;
+    --h67-tool-h: 76px;
+    --h67-console-head-h: 62px;
+    --h67-device-h: 58px;
+    --h67-device-icon: 34px;
+    --h67-sidecar-w: clamp(280px,21vw,330px);
+    --h67-inspector-w: clamp(250px,24vw,300px);
+    --h67-radius: 22px;
+    --h67-tile-radius: 14px;
+    --h67-control-radius: 11px;
+    --h67-surface: var(--v60-surface,rgba(255,255,255,.88));
+    --h67-solid: var(--v60-surface-solid,#fff);
+    --h67-soft: var(--v60-soft,rgba(118,118,128,.075));
+    --h67-soft-hover: var(--v60-soft-hover,rgba(118,118,128,.115));
+    --h67-line: var(--v60-line,rgba(60,60,67,.105));
+    --h67-label: var(--v60-label,#1d1d1f);
+    --h67-secondary: var(--v60-secondary,#6e6e73);
+    --h67-tertiary: var(--v60-tertiary,#8e8e93);
+
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    min-width: 0 !important;
+    min-height: 660px !important;
+    max-width: none !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    padding-top: var(--h67-shell-top) !important;
+    padding-right: var(--h67-shell-x) !important;
+    padding-left: var(--h67-shell-x) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: var(--h67-header-h) minmax(0,1fr) !important;
+    column-gap: 0 !important;
+    row-gap: var(--h67-gap) !important;
+    overflow: hidden !important;
+    font-family: var(--fc-ui-font,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",sans-serif) !important;
+    font-synthesis: none !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+
+  /* The V60 desktop DOM is retained for behaviour, but V67 owns its geometry. */
+  body #root#root main.app-shell.home-page-active .phone-home-layout-v60 {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-workspace {
+    display: grid !important;
+  }
+
+  body #root#root main.app-shell.home-page-active > .reel-home.home-refactor-v4 {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-workspace {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows:
+      var(--h67-room-strip-h)
+      minmax(0,1fr)
+      var(--h67-tool-h) !important;
+    gap: var(--h67-gap) !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-workspace *,
+  body #root#root main.app-shell.home-page-active .v60-home-workspace *::before,
+  body #root#root main.app-shell.home-page-active .v60-home-workspace *::after {
+    box-sizing: border-box;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-workspace :is(
+    button,input,select,textarea
+  ) {
+    font-family: inherit !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-workspace :is(
+    .v60-home-main,
+    .v60-home-room-console-wrap,
+    .v60-room-console,
+    .v60-room-console-body,
+    .v60-room-accessories,
+    .v60-room-inspector,
+    .v60-room-inspector-control,
+    .v60-room-status,
+    .v60-room-device-grid,
+    .v60-room-status-list,
+    .v60-home-sidecar,
+    .v60-home-tool-dock
+  ) {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+  }
+
+  /* ====================================================================== */
+  /* HEADER — copy CALENDARIO, never a CASA-specific language                */
+  /* ====================================================================== */
+
+  body #root#root main.app-shell.home-page-active > #family-shared-header-host {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--h67-header-h) !important;
+    min-width: 0 !important;
+    min-height: var(--h67-header-h) !important;
+    max-height: var(--h67-header-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-self: stretch !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--h67-header-h) !important;
+    min-width: 0 !important;
+    min-height: var(--h67-header-h) !important;
+    max-height: var(--h67-header-h) !important;
+    margin: 0 !important;
+    padding: 5px 4px !important;
+    display: grid !important;
+    grid-template-columns: minmax(145px,1fr) auto minmax(300px,1fr) !important;
+    grid-template-rows: 1fr !important;
+    grid-template-areas: "greeting clock actions" !important;
+    align-items: center !important;
+    gap: 12px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 2px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-greeting strong {
+    margin: 0 !important;
+    overflow: hidden !important;
+    color: inherit !important;
+    font-size: 16px !important;
+    line-height: 1.05 !important;
+    font-weight: 680 !important;
+    letter-spacing: -.02em !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-greeting span {
+    margin: 0 !important;
+    overflow: hidden !important;
+    color: var(--h67-secondary) !important;
+    font-size: 10.5px !important;
+    line-height: 1.15 !important;
+    font-weight: 500 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-clock {
+    grid-area: clock !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: center !important;
+    color: inherit !important;
+    font-size: var(--h67-clock-size) !important;
+    line-height: .96 !important;
+    font-weight: 500 !important;
+    letter-spacing: -.05em !important;
+    font-variant-numeric: tabular-nums !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-top-actions {
+    grid-area: actions !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: end !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .weather-pill,.security-pill,.round-top,.header-theme-switch
+  ) {
+    box-sizing: border-box !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    border-radius: 18px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .round-top,.header-theme-switch
+  ) {
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    padding: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .weather-pill,.security-pill
+  ) {
+    min-width: 0 !important;
+    padding-inline: 10px !important;
+    font-size: 10.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .weather-pill,.security-pill,.round-top,.header-theme-switch
+  ) svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack i {
+    box-sizing: border-box !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack i + i {
+    margin-left: -6px !important;
+  }
+
+  /* ====================================================================== */
+  /* ROOM RAIL                                                               */
+  /* ====================================================================== */
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-strip {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--h67-room-strip-h) !important;
+    min-width: 0 !important;
+    min-height: var(--h67-room-strip-h) !important;
+    max-height: var(--h67-room-strip-h) !important;
+    margin: 0 !important;
+    padding: 6px !important;
+    display: grid !important;
+    grid-template-columns: 88px minmax(0,1fr) !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--h67-line) !important;
+    border-radius: var(--h67-radius) !important;
+    background: var(--h67-surface) !important;
+    box-shadow: var(--v65-surface-shadow,var(--v60-shadow)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-strip-title {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 5px 8px 5px 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+    box-shadow: inset -1px 0 0 var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-strip-title > span {
+    color: var(--h67-tertiary) !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+    letter-spacing: .075em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-strip-title > strong {
+    margin: 0 !important;
+    color: var(--h67-label) !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 690 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 5px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button {
+    box-sizing: border-box !important;
+    flex: 0 0 clamp(128px,14vw,164px) !important;
+    width: auto !important;
+    min-width: 128px !important;
+    max-width: 164px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 5px 7px !important;
+    display: grid !important;
+    grid-template-columns: 32px minmax(0,1fr) auto !important;
+    align-items: center !important;
+    gap: 7px !important;
+    overflow: hidden !important;
+    border: 1px solid transparent !important;
+    border-radius: 13px !important;
+    background: transparent !important;
+    color: var(--h67-label) !important;
+    text-align: left !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button:hover {
+    background: var(--h67-soft) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button.active {
+    border-color: color-mix(in srgb,var(--v60-room-accent) 22%,var(--h67-line)) !important;
+    background: color-mix(in srgb,var(--v60-room-accent) 10%,var(--h67-solid)) !important;
+    box-shadow: inset 3px 0 0 var(--v60-room-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-icon {
+    box-sizing: border-box !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 10px !important;
+    background: var(--h67-soft) !important;
+    color: var(--h67-secondary) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button.active .v60-home-room-icon {
+    background: color-mix(in srgb,var(--v60-room-accent) 15%,var(--h67-solid)) !important;
+    color: var(--v60-room-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-icon svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-copy {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-copy :is(strong,small) {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-copy strong {
+    color: var(--h67-label) !important;
+    font-size: 11.5px !important;
+    line-height: 1.05 !important;
+    font-weight: 660 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-copy small {
+    color: var(--h67-tertiary) !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+    font-weight: 500 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button > b {
+    color: var(--h67-secondary) !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 620 !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  /* ====================================================================== */
+  /* MAIN COMPOSITION                                                         */
+  /* ====================================================================== */
+
+  body #root#root main.app-shell.home-page-active .v60-home-main {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) var(--h67-sidecar-w) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    gap: var(--h67-gap) !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-console-wrap {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-room-console,.v60-home-sidecar,.v60-home-tool-dock
+  ) {
+    border: 1px solid var(--h67-line) !important;
+    background: var(--h67-surface) !important;
+    box-shadow: var(--v65-surface-shadow,var(--v60-shadow)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-rows: var(--h67-console-head-h) minmax(0,1fr) !important;
+    overflow: hidden !important;
+    border-radius: var(--h67-radius) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-head {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--h67-console-head-h) !important;
+    min-width: 0 !important;
+    min-height: var(--h67-console-head-h) !important;
+    max-height: var(--h67-console-head-h) !important;
+    margin: 0 !important;
+    padding: 8px 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    overflow: hidden !important;
+    box-shadow: inset 0 -1px 0 var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title > span {
+    box-sizing: border-box !important;
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb,var(--v60-room-accent) 14%,var(--h67-solid)) !important;
+    color: var(--v60-room-accent) !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--v60-room-accent) 18%,var(--h67-line)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title > span svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title > div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title small {
+    display: block !important;
+    margin: 0 !important;
+    color: var(--h67-tertiary) !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+    letter-spacing: .07em !important;
+    text-transform: uppercase !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title strong {
+    display: block !important;
+    min-width: 0 !important;
+    margin: 3px 0 0 !important;
+    overflow: hidden !important;
+    color: var(--h67-label) !important;
+    font-size: clamp(18px,1.45vw,22px) !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: -.025em !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title b {
+    display: block !important;
+    min-width: 0 !important;
+    margin: 3px 0 0 !important;
+    overflow: hidden !important;
+    color: var(--h67-secondary) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 520 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-actions {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-room-temperature,.v60-room-off
+  ) {
+    box-sizing: border-box !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: var(--h67-soft) !important;
+    color: var(--h67-label) !important;
+    box-shadow: inset 0 0 0 1px var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-temperature {
+    min-width: 76px !important;
+    padding: 4px 9px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    gap: 2px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-temperature > span {
+    color: var(--h67-tertiary) !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    letter-spacing: .05em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-temperature > strong {
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 640 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-off {
+    padding: 0 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    color: var(--v60-red,#ff453a) !important;
+    background: color-mix(in srgb,var(--v60-red,#ff453a) 7%,transparent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-off svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-off span {
+    font-size: 10px !important;
+    font-weight: 630 !important;
+    white-space: nowrap !important;
+  }
+
+  /* ====================================================================== */
+  /* ROOM CONTENT                                                             */
+  /* ====================================================================== */
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-body {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) var(--h67-inspector-w) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-room-accessories,.v60-room-inspector
+  ) {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-accessories {
+    display: grid !important;
+    grid-template-rows: 38px minmax(0,1fr) !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-inspector {
+    display: grid !important;
+    grid-template-rows: minmax(150px,.94fr) minmax(0,1.06fr) !important;
+    gap: 0 !important;
+    box-shadow: inset 1px 0 0 var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-section-head {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-section-head > div {
+    min-width: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-section-head > div > span {
+    color: var(--h67-tertiary) !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+    letter-spacing: .07em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-section-head > div > strong {
+    margin-left: 5px !important;
+    color: var(--h67-secondary) !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 620 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-section-head > small {
+    max-width: 45% !important;
+    overflow: hidden !important;
+    color: var(--h67-tertiary) !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    font-weight: 480 !important;
+    text-align: right !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-grid {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 2px 2px 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit,minmax(132px,1fr)) !important;
+    grid-auto-rows: var(--h67-device-h) !important;
+    align-content: start !important;
+    gap: 6px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-grid::-webkit-scrollbar,
+  body #root#root main.app-shell.home-page-active .v60-room-status-list::-webkit-scrollbar,
+  body #root#root main.app-shell.home-page-active .v60-room-inspector-control::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device {
+    position: relative !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--h67-device-h) !important;
+    min-height: var(--h67-device-h) !important;
+    max-height: var(--h67-device-h) !important;
+    overflow: hidden !important;
+    border: 1px solid color-mix(in srgb,var(--h67-line) 82%,transparent) !important;
+    border-radius: var(--h67-tile-radius) !important;
+    background: var(--h67-soft) !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device:hover:not(.unavailable) {
+    background: var(--h67-soft-hover) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device.active {
+    border-color: color-mix(in srgb,var(--v60-room-accent) 28%,var(--h67-line)) !important;
+    background: color-mix(in srgb,var(--v60-room-accent) 10%,var(--h67-solid)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device.selected {
+    box-shadow: inset 3px 0 0 var(--v60-room-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-main {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--h67-device-h) !important;
+    min-width: 0 !important;
+    min-height: var(--h67-device-h) !important;
+    max-height: var(--h67-device-h) !important;
+    margin: 0 !important;
+    padding: 6px 32px 6px 7px !important;
+    display: grid !important;
+    grid-template-columns: var(--h67-device-icon) minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 7px !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    text-align: left !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-icon {
+    box-sizing: border-box !important;
+    width: var(--h67-device-icon) !important;
+    height: var(--h67-device-icon) !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 11px !important;
+    background: var(--h67-solid) !important;
+    color: var(--h67-secondary) !important;
+    box-shadow: inset 0 0 0 1px var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device.active .v60-room-device-icon {
+    background: var(--v60-room-accent) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-icon svg,
+  body #root#root main.app-shell.home-page-active .v60-room-device-icon svg * {
+    width: 16px !important;
+    height: 16px !important;
+    color: inherit !important;
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-copy {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-copy :is(strong,small) {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-copy strong {
+    color: var(--h67-label) !important;
+    font-size: 11.5px !important;
+    line-height: 1.05 !important;
+    font-weight: 660 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-copy small {
+    color: var(--h67-tertiary) !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+    font-weight: 500 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-room-device-favorite,.v60-room-device-power
+  ) {
+    position: absolute !important;
+    right: 4px !important;
+    box-sizing: border-box !important;
+    width: 23px !important;
+    height: 23px !important;
+    min-width: 23px !important;
+    min-height: 23px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-favorite {
+    top: 4px !important;
+    background: transparent !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-power {
+    bottom: 4px !important;
+    background: var(--h67-solid) !important;
+    box-shadow: inset 0 0 0 1px var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-room-device-favorite,.v60-room-device-power
+  ) svg {
+    width: 11px !important;
+    height: 11px !important;
+  }
+
+  /* Inspector owns its own scrolling; content never crosses into status. */
+  body #root#root main.app-shell.home-page-active .v60-room-inspector-control {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 0 0 9px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-room-quick-control,.v60-room-inspector-empty
+  ) {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+    border: 1px solid color-mix(in srgb,var(--v60-room-accent) 14%,var(--h67-line)) !important;
+    border-radius: 15px !important;
+    background: color-mix(in srgb,var(--v60-room-accent) 5%,var(--h67-soft)) !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-control {
+    display: grid !important;
+    grid-template-rows: auto auto minmax(52px,1fr) !important;
+    align-content: start !important;
+    gap: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-control.domain-cover {
+    grid-template-rows: auto minmax(58px,1fr) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: 34px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title > span {
+    width: 34px !important;
+    height: 34px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 11px !important;
+    background: var(--h67-solid) !important;
+    color: var(--v60-room-accent) !important;
+    box-shadow: inset 0 0 0 1px var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title > span svg,
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title > span svg * {
+    width: 16px !important;
+    height: 16px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title > div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title small {
+    display: block !important;
+    color: var(--h67-tertiary) !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title strong {
+    display: block !important;
+    min-width: 0 !important;
+    margin-top: 3px !important;
+    overflow: hidden !important;
+    color: var(--h67-label) !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 660 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-quick-title b {
+    display: block !important;
+    min-width: 0 !important;
+    margin-top: 3px !important;
+    overflow: hidden !important;
+    color: var(--h67-secondary) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 540 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-light-modes {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 34px !important;
+    padding: 3px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 3px !important;
+    border-radius: 11px !important;
+    background: color-mix(in srgb,var(--h67-solid) 56%,transparent) !important;
+    box-shadow: inset 0 0 0 1px var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-light-modes > button {
+    min-width: 0 !important;
+    height: 28px !important;
+    padding: 0 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: var(--h67-secondary) !important;
+    font-size: 10px !important;
+    font-weight: 610 !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-light-modes > button.active {
+    background: var(--h67-solid) !important;
+    color: var(--v60-room-accent) !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-light-modes > button svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-range {
+    min-width: 0 !important;
+    align-content: center !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-range > span > small {
+    color: var(--h67-secondary) !important;
+    font-size: 10px !important;
+    font-weight: 550 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-range > span > b {
+    color: var(--h67-label) !important;
+    font-size: 11px !important;
+    font-weight: 660 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-range input[type="range"] {
+    width: 100% !important;
+    height: 26px !important;
+    margin: 6px 0 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding-top: 9px !important;
+    display: grid !important;
+    grid-template-rows: 34px minmax(0,1fr) !important;
+    overflow: hidden !important;
+    box-shadow: inset 0 1px 0 var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status .v60-room-section-head {
+    min-height: 34px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-list {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-auto-rows: 46px !important;
+    align-content: start !important;
+    gap: 5px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-row {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    padding: 5px 6px !important;
+    display: grid !important;
+    grid-template-columns: 29px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 7px !important;
+    overflow: hidden !important;
+    border: 1px solid color-mix(in srgb,var(--h67-line) 75%,transparent) !important;
+    border-radius: 11px !important;
+    background: var(--h67-soft) !important;
+    color: inherit !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-row > span {
+    width: 29px !important;
+    height: 29px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 9px !important;
+    background: var(--h67-solid) !important;
+    color: var(--h67-secondary) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-row > span svg,
+  body #root#root main.app-shell.home-page-active .v60-room-status-row > span svg * {
+    width: 14px !important;
+    height: 14px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-row > div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-row :is(strong,small) {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-row strong {
+    color: var(--h67-label) !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 640 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-status-row small {
+    margin-top: 3px !important;
+    color: var(--h67-tertiary) !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+  }
+
+  /* ====================================================================== */
+  /* SIDECAR                                                                 */
+  /* ====================================================================== */
+
+  body #root#root main.app-shell.home-page-active .v60-home-sidecar {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: auto minmax(150px,1fr) auto auto !important;
+    overflow: hidden !important;
+    border-radius: var(--h67-radius) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-sidecar > * {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+    background: transparent !important;
+    color: var(--h67-label) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-sidecar > * + * {
+    box-shadow: inset 0 1px 0 var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary {
+    display: grid !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary > span {
+    color: var(--h67-tertiary) !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+    letter-spacing: .07em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary > div {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary > div > svg {
+    flex: 0 0 23px !important;
+    width: 23px !important;
+    height: 23px !important;
+    color: var(--v60-green,#34c759) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary > div > strong {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 660 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary > small {
+    overflow: hidden !important;
+    color: var(--h67-secondary) !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-summary {
+    border: 0 !important;
+    display: grid !important;
+    grid-template-rows: 24px auto minmax(0,1fr) !important;
+    align-content: stretch !important;
+    text-align: left !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-head {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-head > span {
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+    color: var(--h67-secondary) !important;
+    font-size: 10.5px !important;
+    font-weight: 620 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-head > span svg {
+    flex: 0 0 13px !important;
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-head > b {
+    color: var(--v60-blue,#0a84ff) !important;
+    font-size: 9.5px !important;
+    font-weight: 630 !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-summary > strong {
+    margin: 5px 0 8px !important;
+    color: var(--h67-label) !important;
+    font-size: clamp(28px,2.6vw,38px) !important;
+    line-height: .94 !important;
+    font-weight: 460 !important;
+    letter-spacing: -.05em !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+    gap: 4px !important;
+    align-self: end !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats > span {
+    min-width: 0 !important;
+    min-height: 38px !important;
+    padding: 5px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    overflow: hidden !important;
+    border-radius: 10px !important;
+    background: var(--h67-soft) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats small {
+    overflow: hidden !important;
+    color: var(--h67-tertiary) !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats b {
+    overflow: hidden !important;
+    color: var(--h67-label) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 650 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary {
+    border: 0 !important;
+    display: grid !important;
+    grid-template-columns: 31px minmax(0,1fr) auto !important;
+    align-items: center !important;
+    gap: 7px !important;
+    text-align: left !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > span {
+    width: 31px !important;
+    height: 31px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 10px !important;
+    background: rgba(52,199,89,.11) !important;
+    color: #2f9e44 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > span svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > div :is(small,strong,b) {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > div small {
+    color: var(--h67-tertiary) !important;
+    font-size: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > div strong {
+    margin-top: 2px !important;
+    color: var(--h67-label) !important;
+    font-size: 11px !important;
+    font-weight: 660 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > div b {
+    margin-top: 2px !important;
+    color: var(--h67-secondary) !important;
+    font-size: 9.5px !important;
+    font-weight: 520 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-alarm-summary > i {
+    color: var(--v60-blue,#0a84ff) !important;
+    font-size: 9.5px !important;
+    font-style: normal !important;
+    font-weight: 630 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary {
+    display: grid !important;
+    gap: 4px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary > div {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary > div > span {
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+    color: var(--h67-secondary) !important;
+    font-size: 9.5px !important;
+    font-weight: 610 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary > div > b {
+    color: var(--h67-tertiary) !important;
+    font-size: 9px !important;
+    font-weight: 630 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary > strong {
+    overflow: hidden !important;
+    color: var(--h67-label) !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 660 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary > small {
+    overflow: hidden !important;
+    color: var(--h67-secondary) !important;
+    font-size: 9.5px !important;
+    line-height: 1.15 !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* ====================================================================== */
+  /* TOOL DOCK                                                               */
+  /* ====================================================================== */
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--h67-tool-h) !important;
+    min-width: 0 !important;
+    min-height: var(--h67-tool-h) !important;
+    max-height: var(--h67-tool-h) !important;
+    margin: 0 !important;
+    padding: 6px !important;
+    display: grid !important;
+    grid-template-columns: repeat(9,minmax(0,1fr)) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+    border-radius: var(--h67-radius) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 5px 3px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+    border: 1px solid color-mix(in srgb,var(--h67-line) 75%,transparent) !important;
+    border-radius: 12px !important;
+    background: var(--h67-soft) !important;
+    color: var(--h67-secondary) !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button:hover {
+    background: var(--h67-soft-hover) !important;
+    color: var(--h67-label) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button > svg {
+    box-sizing: border-box !important;
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    height: 28px !important;
+    padding: 5px !important;
+    border-radius: 9px !important;
+    background: var(--h67-solid) !important;
+    color: var(--v60-blue,#0a84ff) !important;
+    box-shadow: inset 0 0 0 1px var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button > span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: inherit !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 580 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* ====================================================================== */
+  /* NIGHT                                                                   */
+  /* ====================================================================== */
+
+  body #root#root main.app-shell.home-page-active.night {
+    --h67-surface: rgba(36,36,40,.88);
+    --h67-solid: #2c2c2e;
+    --h67-soft: rgba(118,118,128,.16);
+    --h67-soft-hover: rgba(118,118,128,.23);
+    --h67-line: rgba(255,255,255,.075);
+    --h67-label: #f5f5f7;
+    --h67-secondary: #aeaeb2;
+    --h67-tertiary: #8e8e93;
+  }
+
+  body #root#root main.app-shell.home-page-active.night .v60-room-device.active {
+    background: color-mix(in srgb,var(--v60-room-accent) 20%,rgba(44,44,46,.94)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active.night
+    .v60-home-room-scroll > button.active {
+    background: color-mix(in srgb,var(--v60-room-accent) 18%,rgba(44,44,46,.94)) !important;
+  }
+
+  /* ====================================================================== */
+  /* MODALS                                                                  */
+  /* ====================================================================== */
+
+  body:has(main.app-shell.home-page-active) .fc-modal-backdrop > .fc-modal,
+  body:has(main.app-shell.home-page-active) #family-shared-device-overlay #family-shared-device-controls.device-controls,
+  body:has(main.app-shell.home-page-active) .home-calendar-device-overlay .device-controls,
+  body main.app-shell.home-page-active .reel-backdrop > :is(.feature-modal,.reel-modal) {
+    width: min(620px,calc(100vw - 40px)) !important;
+    max-width: 620px !important;
+    max-height: calc(100dvh - 40px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+  }
+}
+
+/* ========================================================================= */
+/* TABLET / IPAD LANDSCAPE                                                    */
+/* ========================================================================= */
+@media (min-width: 768px) and (max-width: 1179px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h67-gap: 8px;
+    --h67-shell-x: 7px;
+    --h67-shell-top: 7px;
+    --h67-header-h: 54px;
+    --h67-clock-size: 27px;
+    --h67-room-strip-h: 58px;
+    --h67-tool-h: 68px;
+    --h67-console-head-h: 56px;
+    --h67-device-h: 54px;
+    --h67-device-icon: 31px;
+    --h67-sidecar-w: clamp(225px,24vw,252px);
+    --h67-inspector-w: clamp(205px,22vw,225px);
+    --h67-radius: 19px;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    grid-template-columns: minmax(128px,1fr) auto minmax(190px,1fr) !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-top-actions {
+    height: 29px !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .weather-pill,.security-pill,.round-top,.header-theme-switch
+  ) {
+    height: 29px !important;
+    min-height: 29px !important;
+    max-height: 29px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .round-top,.header-theme-switch,.security-pill
+  ) {
+    flex-basis: 32px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    padding: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .weather-pill small,
+  body #root#root main.app-shell.home-page-active #family-shared-header .security-pill span {
+    display: none !important;
+  }
+
+  /* Calendar mini-landscape explicitly restores compact people presence. */
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack {
+    width: auto !important;
+    min-width: 38px !important;
+    height: 27px !important;
+    min-height: 27px !important;
+    max-height: 27px !important;
+    display: flex !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack > i {
+    flex: 0 0 23px !important;
+    width: 23px !important;
+    min-width: 23px !important;
+    height: 23px !important;
+    min-height: 23px !important;
+    max-height: 23px !important;
+    font-size: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack > i + i {
+    margin-left: -8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-strip {
+    grid-template-columns: 78px minmax(0,1fr) !important;
+    padding: 5px !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button {
+    flex-basis: 116px !important;
+    min-width: 116px !important;
+    max-width: 145px !important;
+    grid-template-columns: 29px minmax(0,1fr) !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button > b {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-icon {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    min-height: 29px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-copy strong {
+    font-size: 10.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-copy small {
+    font-size: 9.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title strong {
+    font-size: 16px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-title b {
+    font-size: 9.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-off span {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-off {
+    width: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-accessories,
+  body #root#root main.app-shell.home-page-active .v60-room-inspector {
+    padding: 7px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-accessories {
+    grid-template-rows: 34px minmax(0,1fr) !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-section-head {
+    min-height: 34px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-section-head > small {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-grid {
+    grid-template-columns: repeat(auto-fit,minmax(118px,1fr)) !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-copy strong {
+    font-size: 10.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-copy small {
+    font-size: 9.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-sidecar > * {
+    padding: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary > small,
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary > small {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-summary > strong {
+    font-size: 27px !important;
+    margin-block: 4px 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats > span {
+    min-height: 34px !important;
+    padding: 4px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock {
+    padding: 5px !important;
+    gap: 4px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button {
+    padding: 4px 2px !important;
+    gap: 3px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button > svg {
+    flex-basis: 25px !important;
+    width: 25px !important;
+    height: 25px !important;
+    padding: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button > span {
+    font-size: 9px !important;
+  }
+}
+
+/* ========================================================================= */
+/* IPAD PRO / 13 LANDSCAPE + COMPACT DESKTOP                                  */
+/* ========================================================================= */
+@media (min-width: 1180px) and (max-width: 1439px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h67-gap: 10px;
+    --h67-shell-x: 9px;
+    --h67-shell-top: 9px;
+    --h67-header-h: 59px;
+    --h67-clock-size: 32px;
+    --h67-room-strip-h: 62px;
+    --h67-tool-h: 72px;
+    --h67-console-head-h: 60px;
+    --h67-device-h: 58px;
+    --h67-device-icon: 33px;
+    --h67-sidecar-w: clamp(260px,21vw,295px);
+    --h67-inspector-w: clamp(235px,21vw,275px);
+    --h67-radius: 21px;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    grid-template-columns: minmax(145px,1fr) auto minmax(300px,1fr) !important;
+    gap: 12px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-top-actions {
+    height: 36px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .weather-pill,.security-pill,.round-top,.header-theme-switch
+  ) {
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .round-top,.header-theme-switch
+  ) {
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .security-pill {
+    width: auto !important;
+    max-width: none !important;
+    padding-inline: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .weather-pill small,
+  body #root#root main.app-shell.home-page-active #family-shared-header .security-pill span {
+    display: inline !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack {
+    display: flex !important;
+  }
+}
+
+/* ========================================================================= */
+/* PORTRAIT TABLET / IPAD — same header as CALENDARIO portrait                */
+/* ========================================================================= */
+@media (min-width: 768px) and (min-height: 660px) and (orientation: portrait) {
+  body #root#root main.app-shell.home-page-active {
+    --h67-gap: 10px;
+    --h67-shell-x: 9px;
+    --h67-shell-top: 9px;
+    --h67-header-h: 58px;
+    --h67-clock-size: 29px;
+    --h67-room-strip-h: 62px;
+    --h67-tool-h: 70px;
+    --h67-console-head-h: 58px;
+    --h67-device-h: 54px;
+    --h67-device-icon: 31px;
+    --h67-inspector-w: clamp(215px,30vw,265px);
+    --h67-radius: 20px;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    padding: 0 2px !important;
+    grid-template-columns: minmax(170px,1fr) auto minmax(285px,1fr) !important;
+    grid-template-areas: "greeting clock actions" !important;
+    column-gap: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-top-actions {
+    height: 32px !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .security-pill,.round-top,.header-theme-switch
+  ) {
+    box-sizing: border-box !important;
+    flex: 0 0 32px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    gap: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .security-pill > span {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack {
+    display: flex !important;
+    align-items: center !important;
+    height: 36px !important;
+    flex: 0 0 auto !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack i {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack i + i {
+    margin-left: -6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-strip {
+    grid-template-columns: 82px minmax(0,1fr) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button {
+    flex-basis: 128px !important;
+    min-width: 128px !important;
+    max-width: 150px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-main {
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: minmax(0,1fr) 150px !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-console-body {
+    grid-template-columns: minmax(0,1fr) var(--h67-inspector-w) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-sidecar {
+    height: 150px !important;
+    min-height: 150px !important;
+    max-height: 150px !important;
+    grid-template-columns:
+      minmax(0,.9fr)
+      minmax(0,1.4fr)
+      minmax(0,1fr)
+      minmax(0,.95fr) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-sidecar > * + * {
+    box-shadow: inset 1px 0 0 var(--h67-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-sidecar > * {
+    padding: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-summary > small,
+  body #root#root main.app-shell.home-page-active .v60-home-waste-summary > small {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-summary {
+    grid-template-rows: 22px auto minmax(0,1fr) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-summary > strong {
+    margin: 2px 0 5px !important;
+    font-size: 25px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats {
+    gap: 3px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats > span {
+    min-height: 32px !important;
+    padding: 3px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats small {
+    font-size: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-climate-stats b {
+    font-size: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock {
+    padding: 6px !important;
+    gap: 4px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button > span {
+    font-size: 9.5px !important;
+  }
+}
+
+/* ========================================================================= */
+/* WIDE LANDSCAPE                                                             */
+/* ========================================================================= */
+@media (min-width: 1440px) and (max-width: 1799px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h67-gap: 12px;
+    --h67-shell-x: 11px;
+    --h67-shell-top: 11px;
+    --h67-header-h: 64px;
+    --h67-clock-size: 38px;
+    --h67-room-strip-h: 66px;
+    --h67-tool-h: 78px;
+    --h67-console-head-h: 64px;
+    --h67-device-h: 60px;
+    --h67-device-icon: 35px;
+    --h67-sidecar-w: clamp(300px,20vw,350px);
+    --h67-inspector-w: clamp(275px,20vw,315px);
+    --h67-radius: 23px;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-grid {
+    grid-template-columns: repeat(auto-fit,minmax(145px,1fr)) !important;
+  }
+}
+
+/* ========================================================================= */
+/* XL REFERENCE — CALENDARIO keeps the original 94px shared-header contract   */
+/* ========================================================================= */
+@media (min-width: 1800px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h67-gap: clamp(12px,.8vw,16px);
+    --h67-shell-x: clamp(12px,1.25vw,24px);
+    --h67-shell-top: clamp(12px,1.25vw,24px);
+    --h67-header-h: 94px;
+    --h67-clock-size: clamp(46px,4vw,68px);
+    --h67-room-strip-h: 72px;
+    --h67-tool-h: 84px;
+    --h67-console-head-h: 68px;
+    --h67-device-h: 64px;
+    --h67-device-icon: 38px;
+    --h67-sidecar-w: clamp(320px,19vw,380px);
+    --h67-inspector-w: clamp(300px,19vw,350px);
+    --h67-radius: 24px;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    padding: 0 !important;
+    grid-template-columns: minmax(180px,1fr) auto minmax(360px,1fr) !important;
+    gap: clamp(14px,1.8vw,32px) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-greeting {
+    gap: 3px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-greeting strong {
+    font-size: 20px !important;
+    line-height: 1.08 !important;
+    font-weight: 660 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-greeting span {
+    font-size: 11.5px !important;
+    line-height: 1.25 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-top-actions {
+    height: 40px !important;
+    gap: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .weather-pill,.security-pill,.round-top,.header-theme-switch
+  ) {
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    border-radius: 20px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(
+    .round-top,.header-theme-switch
+  ) {
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack {
+    height: 40px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .avatar-stack i {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    font-size: 11px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-strip {
+    grid-template-columns: 102px minmax(0,1fr) !important;
+    padding: 7px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-scroll > button {
+    flex-basis: 152px !important;
+    min-width: 152px !important;
+    max-width: 205px !important;
+    grid-template-columns: 36px minmax(0,1fr) auto !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-room-icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-room-device-grid {
+    grid-template-columns: repeat(auto-fit,minmax(160px,1fr)) !important;
+    gap: 7px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-tool-dock > button > span {
+    font-size: 10.5px !important;
+  }
+}
+
+/* No visible scrollbars in the refactored non-phone CASA surface. */
+@media (min-width: 768px) and (min-height: 660px) {
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-home-room-scroll,
+    .v60-room-device-grid,
+    .v60-room-inspector-control,
+    .v60-room-status-list
+  ) {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(
+    .v60-home-room-scroll,
+    .v60-room-device-grid,
+    .v60-room-inspector-control,
+    .v60-room-status-list
+  )::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
