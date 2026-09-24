@@ -1,0 +1,189 @@
+/*
+ * VISUAL POLISH V65
+ * Final visual authority shared by Home Assistant and the standalone demo.
+ *
+ * Owns only:
+ * - application canvas/background;
+ * - surface elevation/shadows;
+ * - compact Calendar event geometry.
+ *
+ * It intentionally does not change responsive layout geometry, card sizing,
+ * grid tracks, padding contracts, or control breakpoints.
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Shared canvas + elevation tokens                                            */
+/* -------------------------------------------------------------------------- */
+
+main.app-shell {
+  --v65-surface-border: rgba(60,60,67,.085);
+  --v65-surface-shadow:
+    inset 0 1px 0 rgba(255,255,255,.80),
+    0 1px 2px rgba(24,28,36,.035),
+    0 9px 26px rgba(24,28,36,.055),
+    0 24px 58px rgba(24,28,36,.035);
+  --v65-subpanel-shadow:
+    inset 0 1px 0 rgba(255,255,255,.68),
+    0 1px 2px rgba(24,28,36,.025),
+    0 6px 18px rgba(24,28,36,.045);
+  --v65-control-shadow:
+    inset 0 1px 0 rgba(255,255,255,.70),
+    0 1px 2px rgba(24,28,36,.03),
+    0 4px 12px rgba(24,28,36,.04);
+
+  /* Feed every historical visual system from the same elevation source. */
+  --shadow: var(--v65-surface-shadow);
+  --home-shadow: var(--v65-surface-shadow);
+  --lg-shadow: var(--v65-surface-shadow);
+  --pl-shadow: var(--v65-surface-shadow);
+  --v60-shadow: var(--v65-surface-shadow);
+
+  background:
+    radial-gradient(circle at 10% -8%, rgba(255,255,255,.98), transparent 34%),
+    radial-gradient(circle at 92% 2%, rgba(216,225,238,.40), transparent 31%),
+    linear-gradient(180deg, #f7f8fa 0%, #eef0f4 100%) !important;
+}
+
+body:has(main.app-shell:not(.night)) {
+  background: #eef0f4 !important;
+}
+
+main.app-shell.night {
+  --v65-surface-border: rgba(255,255,255,.075);
+  --v65-surface-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 1px 2px rgba(0,0,0,.18),
+    0 10px 28px rgba(0,0,0,.24),
+    0 26px 62px rgba(0,0,0,.16);
+  --v65-subpanel-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 1px 2px rgba(0,0,0,.15),
+    0 7px 20px rgba(0,0,0,.19);
+  --v65-control-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 1px 2px rgba(0,0,0,.14),
+    0 4px 14px rgba(0,0,0,.16);
+
+  --shadow: var(--v65-surface-shadow);
+  --home-shadow: var(--v65-surface-shadow);
+  --lg-shadow: var(--v65-surface-shadow);
+  --pl-shadow: var(--v65-surface-shadow);
+  --v60-shadow: var(--v65-surface-shadow);
+
+  background:
+    radial-gradient(circle at 10% -10%, rgba(76,88,112,.20), transparent 34%),
+    radial-gradient(circle at 92% 0%, rgba(47,55,72,.16), transparent 30%),
+    linear-gradient(180deg, #16171b 0%, #1b1c21 52%, #17181c 100%) !important;
+}
+
+body:has(main.app-shell.night) {
+  background: #16171b !important;
+}
+
+/* Calendar: the four main surfaces always share one elevation language. */
+main.app-shell.calendar-page-active
+  :is(.calendar-card,.agenda-card,.tasks-card,.home-card) {
+  border-color: var(--v65-surface-border) !important;
+  box-shadow: var(--v65-surface-shadow) !important;
+}
+
+/* Home phone/tablet card language. */
+main.app-shell.home-page-active .reel-home.home-refactor-v4
+  :is(.reel-room.room-card-v4,.reel-side-card,.desktop-room-panel-v32) {
+  border-color: var(--v65-surface-border) !important;
+  box-shadow: var(--v65-surface-shadow) !important;
+}
+
+main.app-shell.home-page-active .reel-home.home-refactor-v4
+  :is(.desktop-room-controls-card-v32,.desktop-room-status-card-v32) {
+  border-color: var(--v65-surface-border) !important;
+  box-shadow: var(--v65-subpanel-shadow) !important;
+}
+
+main.app-shell.home-page-active .reel-home.home-refactor-v4
+  .reel-tools-grid > button {
+  box-shadow: var(--v65-control-shadow) !important;
+}
+
+/* V60 large-screen Home already consumes --v60-shadow. Keep the room strip,
+ * console, sidecar and tool dock on exactly that same token. */
+main.app-shell.home-page-active
+  :is(.v60-home-room-strip,.v60-room-console,.v60-home-sidecar,.v60-home-tool-dock) {
+  box-shadow: var(--v65-surface-shadow) !important;
+}
+
+/* Compact landscape should stay refined rather than looking over-elevated. */
+@media (orientation: landscape) and (max-height: 650px) {
+  main.app-shell {
+    --v65-surface-shadow:
+      inset 0 1px 0 rgba(255,255,255,.68),
+      0 1px 2px rgba(24,28,36,.03),
+      0 6px 18px rgba(24,28,36,.05),
+      0 16px 36px rgba(24,28,36,.025);
+  }
+
+  main.app-shell.night {
+    --v65-surface-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 1px 2px rgba(0,0,0,.16),
+      0 7px 20px rgba(0,0,0,.21),
+      0 18px 40px rgba(0,0,0,.12);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Calendar events — compact, stable geometry                                  */
+/* -------------------------------------------------------------------------- */
+
+/* Tablet, desktop and wide layouts: compact event chips. */
+main.app-shell.calendar-page-active .calendar-event,
+main.app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+  box-sizing: border-box !important;
+  min-height: 16px !important;
+  height: 16px !important;
+  max-height: 16px !important;
+  padding-block: 0 !important;
+  padding-inline: 4px !important;
+  border-radius: 5px !important;
+  font-size: 8.8px !important;
+  line-height: 16px !important;
+  font-weight: 620 !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Keep joined multi-day segments visually continuous at the compact height. */
+main.app-shell.calendar-page-active .calendar-event.continues-before {
+  padding-left: 5px !important;
+}
+main.app-shell.calendar-page-active .calendar-event.continues-after {
+  padding-right: 5px !important;
+}
+
+/* Phone portrait retains the previously approved 15px event density. */
+@media (orientation: portrait) and (max-width: 700px) {
+  main.app-shell.calendar-page-active .calendar-event,
+  main.app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+    min-height: 15px !important;
+    height: 15px !important;
+    max-height: 15px !important;
+    padding-inline: 3px !important;
+    border-radius: 5px !important;
+    font-size: 8.8px !important;
+    line-height: 15px !important;
+  }
+}
+
+/* Phone landscape has its own very dense calendar contract; preserve it. */
+@media (orientation: landscape) and (max-height: 650px) and (max-width: 1200px) {
+  main.app-shell.calendar-page-active .day-events > .calendar-event,
+  main.app-shell.calendar-page-active .month-grid .calendar-event-bridge {
+    min-height: 10px !important;
+    height: 10px !important;
+    max-height: 10px !important;
+    padding-inline: 3px !important;
+    border-radius: 4px !important;
+    font-size: 7.2px !important;
+    line-height: 10px !important;
+  }
+}
