@@ -1,12 +1,17 @@
 {
   "domain": "family_calendar",
   "name": "Family Calendar",
-  "codeowners": ["@donatomontrone"],
+  "codeowners": [
+    "@donatomontrone"
+  ],
   "config_flow": true,
-  "dependencies": ["frontend", "http"],
+  "dependencies": [
+    "frontend",
+    "http"
+  ],
   "documentation": "https://github.com/donatomontrone/family-calendar",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/donatomontrone/family-calendar/issues",
   "requirements": [],
-  "version": "1.0.5"
+  "version": "1.1.0"
 }

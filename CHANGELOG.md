@@ -4,6 +4,33 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [1.1.0] - 2026-09-24
+
+Calendar UI stabilization milestone.
+
+### Changed
+
+- completed the responsive visual definition of the CALENDARIO page across desktop, wide displays, iPad Pro, iPad mini, portrait, landscape and phone layouts;
+- normalized the CALENDARIO horizontal composition so card-to-card and viewport-edge spacing follow deliberate, repeatable layout contracts;
+- refined iPad mini and iPad 13-inch landscape action controls, including Calendar navigation, LISTE add/remove and CASA whole-home power controls;
+- restored compact presence avatars in the iPad mini landscape header;
+- introduced a final shared visual-polish layer for the application canvas, surface elevation and light/dark shadows;
+- introduced a universal bottom-rail contract so content, page dock and viewport edge close on one consistent visual baseline;
+- compacted Calendar event chips and synchronized multi-day bridge geometry so event height remains stable across responsive layouts.
+
+### Fixed
+
+- removed residual layout wrappers and breakpoint-specific offsets that made the CALENDARIO-to-CASA gap appear larger than the LISTE-to-CALENDARIO gap;
+- removed competing bottom reserves that previously produced uneven empty space below cards and around the page dock;
+- fixed inherited control sizing rules that could deform the LISTE `+` button or restore oversized Calendar actions on iPad layouts;
+- prevented older responsive rules from re-expanding Calendar events after subsequent UI refinements.
+
+### UI status
+
+**The CALENDARIO page visual presentation and UI are considered temporarily finalized and frozen as of this release.** Further CALENDARIO visual changes should be limited to regressions or functional defects unless the visual scope is explicitly reopened.
+
+The current responsive composition, spacing system, header treatment, card hierarchy, event presentation, page dock and bottom rhythm therefore define the reference CALENDARIO UI baseline for subsequent development.
+
 ## [1.0.5] - 2026-09-11
 
 HOME room-card active accent fix.
