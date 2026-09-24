@@ -1,0 +1,126 @@
+/*
+ * BOTTOM RHYTHM V66
+ * One footer geometry for every Calendar/Home layout.
+ *
+ * Normal layouts:
+ *   content/card edge -> 8px -> page dock -> 8px -> viewport/safe-area edge
+ *
+ * Compact phone landscape:
+ *   content/card edge -> 4px -> page dock -> 4px -> viewport/safe-area edge
+ *
+ * The dock may keep a layout-specific height, but the spacing relationship is
+ * invariant. This layer owns no horizontal grid geometry.
+ */
+
+main.app-shell {
+  --fc-bottom-gap: 8px;
+  --fc-page-dock-h: 42px;
+  --fc-bottom-reserve:
+    calc(
+      var(--fc-page-dock-h)
+      + var(--fc-bottom-gap)
+      + var(--fc-bottom-gap)
+      + env(safe-area-inset-bottom, 0px)
+    );
+}
+
+/* V60 Home uses a 40px dock. Keep that control size while preserving 8/8. */
+@media (min-width: 768px) and (min-height: 660px) {
+  main.app-shell.home-page-active {
+    --fc-page-dock-h: 40px;
+  }
+}
+
+/* The compact landscape dock is 31px in the final phone contract. */
+@media (orientation: landscape) and (max-height: 650px) and (max-width: 1200px) {
+  main.app-shell {
+    --fc-bottom-gap: 4px;
+    --fc-page-dock-h: 31px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* App reserve: a single bottom rail instead of 62/68/78/86/96px variants.   */
+/* -------------------------------------------------------------------------- */
+
+main.app-shell,
+body #root#root main.app-shell {
+  box-sizing: border-box !important;
+  padding-bottom: var(--fc-bottom-reserve) !important;
+}
+
+/* The dock is centered vertically inside the reserved rail. */
+main.app-shell > .page-dock-shell,
+body #root#root main.app-shell > .page-dock-shell {
+  box-sizing: border-box !important;
+  position: fixed !important;
+  z-index: 120 !important;
+  top: auto !important;
+  bottom: calc(var(--fc-bottom-gap) + env(safe-area-inset-bottom, 0px)) !important;
+  height: var(--fc-page-dock-h) !important;
+  min-height: var(--fc-page-dock-h) !important;
+  max-height: var(--fc-page-dock-h) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+main.app-shell > .page-dock-shell > .page-switch-control,
+body #root#root main.app-shell > .page-dock-shell > .page-switch-control {
+  box-sizing: border-box !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  margin-block: 0 !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Fixed Calendar canvases: fill the exact space above the bottom rail.       */
+/* -------------------------------------------------------------------------- */
+
+@media (min-width: 701px) {
+  main.app-shell.calendar-page-active > .dashboard-grid,
+  body #root#root main.app-shell.calendar-page-active > .dashboard-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+}
+
+/* iPad mini portrait begins below 701px on some emulations; it is still a
+ * fixed tablet canvas, unlike phone portrait. */
+@media (min-width: 560px) and (max-width: 700px) and (min-height: 700px) {
+  main.app-shell.calendar-page-active > .dashboard-grid,
+  body #root#root main.app-shell.calendar-page-active > .dashboard-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Scrollable phone documents: reserve the rail once, not twice.              */
+/* -------------------------------------------------------------------------- */
+
+@media (max-width: 700px), (max-height: 520px) and (max-width: 940px) {
+  main.app-shell.calendar-page-active,
+  main.app-shell.home-page-active,
+  body #root#root main.app-shell.calendar-page-active,
+  body #root#root main.app-shell.home-page-active {
+    scroll-padding-bottom: var(--fc-bottom-reserve) !important;
+  }
+
+  main.app-shell.home-page-active .reel-home.home-refactor-v4,
+  body #root#root main.app-shell.home-page-active .reel-home.home-refactor-v4 {
+    padding-bottom: 0 !important;
+  }
+}
+
+/* Phone portrait remains a natural document; do not force the dashboard to
+ * fill a viewport track just because the bottom rail is now normalized. */
+@media (orientation: portrait) and (max-width: 700px) {
+  main.app-shell.calendar-page-active > .dashboard-grid,
+  body #root#root main.app-shell.calendar-page-active > .dashboard-grid {
+    height: auto !important;
+    max-height: none !important;
+  }
+}
