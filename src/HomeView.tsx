@@ -294,6 +294,7 @@ function LargeHomeV70({
             room={room}
             language={language}
             accent={ROOM_ACCENTS[index % ROOM_ACCENTS.length]}
+            orphan={rooms.length % 2 === 1 && index === rooms.length - 1}
             onClimate={onClimate}
           />
         ))}
@@ -331,18 +332,27 @@ function LargeHomeV70({
         </section>
 
         <div className="h70-tools" aria-label={language === "it" ? "Strumenti casa" : "Home tools"}>
-          <ToolButton icon={<SparklesIcon />} label={copy.routines} onClick={() => onOverlay("routines")} />
-          <ToolButton icon={<BatteryIcon />} label={copy.batteries} onClick={() => onOverlay("batteries")} />
-          <ToolButton icon={<RadarIcon />} label={copy.sensors} onClick={() => onOverlay("sensors")} />
-          <ToolButton icon={<ClimateIcon />} label={copy.climate} onClick={() => onOverlay("climate")} />
-          <ToolButton icon={<CameraIcon />} label={copy.cameras} onClick={() => onOverlay("cameras")} />
-          <ToolButton icon={<MediaIcon />} label={copy.media} onClick={() => onOverlay("media")} />
-          <ToolButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => onOverlay("vacuum")} />
-          <ToolButton icon={<CarIcon />} label={copy.car} onClick={() => onOverlay("car")} />
-          <ToolButton icon={<CoverIcon />} label={copy.covers} onClick={() => onOverlay("cover")} />
+          <H70ToolButton icon={<SparklesIcon />} label={copy.routines} onClick={() => onOverlay("routines")} />
+          <H70ToolButton icon={<BatteryIcon />} label={copy.batteries} onClick={() => onOverlay("batteries")} />
+          <H70ToolButton icon={<RadarIcon />} label={copy.sensors} onClick={() => onOverlay("sensors")} />
+          <H70ToolButton icon={<ClimateIcon />} label={copy.climate} onClick={() => onOverlay("climate")} />
+          <H70ToolButton icon={<CameraIcon />} label={copy.cameras} onClick={() => onOverlay("cameras")} />
+          <H70ToolButton icon={<MediaIcon />} label={copy.media} onClick={() => onOverlay("media")} />
+          <H70ToolButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => onOverlay("vacuum")} />
+          <H70ToolButton icon={<CarIcon />} label={copy.car} onClick={() => onOverlay("car")} />
+          <H70ToolButton icon={<CoverIcon />} label={copy.covers} onClick={() => onOverlay("cover")} />
         </div>
       </aside>
     </div>
+  );
+}
+
+function H70ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) {
+  return (
+    <button type="button" className="h70-tool" aria-label={label} title={label} onClick={onClick}>
+      <span className="h70-tool-icon" aria-hidden="true">{icon}</span>
+      <span className="h70-tool-label">{label}</span>
+    </button>
   );
 }
 
@@ -351,12 +361,14 @@ function LargeRoomCardV70({
   room,
   language,
   accent,
+  orphan,
   onClimate,
 }: {
   hass: Hass;
   room: RoomModel;
   language: Language;
   accent: string;
+  orphan: boolean;
   onClimate: (entityId: string) => void;
 }) {
   const visibleControlIds = room.controllableIds.filter((id) => domainOf(id) !== "climate");
@@ -385,7 +397,7 @@ function LargeRoomCardV70({
   };
 
   return (
-    <article className="h70-room" style={{ "--h70-accent": accent } as CSSProperties}>
+    <article className={`h70-room ${orphan ? "h70-room-orphan" : ""}`} style={{ "--h70-accent": accent } as CSSProperties}>
       <header className="h70-room-head">
         <div className="h70-room-title">
           <span className="h70-room-icon">{roomIcon(room.area.name)}</span>

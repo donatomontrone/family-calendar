@@ -131,7 +131,7 @@
    * Breakpoints that switch to 1, 3 or 4 columns explicitly reset this below.
    */
   body #root#root main.app-shell.home-page-active
-    .h70-rooms > .h70-room:last-child:nth-child(odd) {
+    .h70-rooms > .h70-room.h70-room-orphan {
     grid-column: 1 / -1 !important;
   }
 
@@ -881,7 +881,7 @@
     gap: 8px !important;
   }
 
-  body #root#root main.app-shell.home-page-active .h70-tools > button {
+  body #root#root main.app-shell.home-page-active .h70-tool {
     width: 100% !important;
     min-width: 0 !important;
     height: 66px !important;
@@ -891,7 +891,7 @@
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
+    gap: 6px !important;
     overflow: hidden !important;
     border: 1px solid var(--h70-line) !important;
     border-radius: 14px !important;
@@ -900,16 +900,16 @@
     box-shadow: var(--v65-control-shadow,0 4px 12px rgba(0,0,0,.04)) !important;
   }
 
-  body #root#root main.app-shell.home-page-active .h70-tools > button > svg {
-    flex: 0 0 24px !important;
-    width: 24px !important;
-    min-width: 24px !important;
-    max-width: 24px !important;
-    height: 24px !important;
-    min-height: 24px !important;
-    max-height: 24px !important;
+  body #root#root main.app-shell.home-page-active .h70-tool-icon {
+    flex: 0 0 25px !important;
+    width: 25px !important;
+    min-width: 25px !important;
+    height: 25px !important;
+    min-height: 25px !important;
     margin: 0 !important;
     padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
     overflow: visible !important;
     border: 0 !important;
     border-radius: 0 !important;
@@ -918,15 +918,29 @@
     box-shadow: none !important;
   }
 
-  body #root#root main.app-shell.home-page-active .h70-tools > button > svg * {
-    fill: none !important;
-    stroke: currentColor !important;
+  body #root#root main.app-shell.home-page-active .h70-tool-icon > svg {
+    width: 25px !important;
+    min-width: 25px !important;
+    height: 25px !important;
+    min-height: 25px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    color: inherit !important;
   }
 
-  body #root#root main.app-shell.home-page-active .h70-tools > button > span {
+  body #root#root main.app-shell.home-page-active .h70-tool-icon > svg g {
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.8 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tool-label {
     width: 100% !important;
+    min-width: 0 !important;
     overflow: hidden !important;
-    font-size: 9px !important;
+    color: var(--h70-secondary) !important;
+    font-size: 9.5px !important;
     line-height: 1 !important;
     font-weight: 600 !important;
     text-align: center !important;
@@ -944,7 +958,7 @@
   }
 
   body #root#root main.app-shell.home-page-active
-    .h70-rooms > .h70-room:last-child:nth-child(odd) {
+    .h70-rooms > .h70-room.h70-room-orphan {
     grid-column: auto !important;
   }
 
@@ -1122,7 +1136,7 @@
   }
 
   body #root#root main.app-shell.home-page-active
-    .h70-rooms > .h70-room:last-child:nth-child(odd) {
+    .h70-rooms > .h70-room.h70-room-orphan {
     grid-column: auto !important;
   }
 }
@@ -1138,7 +1152,7 @@
   }
 
   body #root#root main.app-shell.home-page-active
-    .h70-rooms > .h70-room:last-child:nth-child(odd) {
+    .h70-rooms > .h70-room.h70-room-orphan {
     grid-column: auto !important;
   }
 }
