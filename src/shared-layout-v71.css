@@ -407,11 +407,32 @@
 /* CASA ROOM GRID — FEATURED OPEN SPACE + FIXED HEIGHT WHEN >2 COLUMNS        */
 /* ========================================================================= */
 
-/* Open space becomes the deliberate featured room from laptop upward. */
-@media (min-width: 1180px) and (min-height: 660px) and (orientation: landscape) {
+/* Open space is the featured room in every non-phone layout.
+ * With one/two columns it simply occupies the whole row and keeps natural
+ * height, so its devices may wrap vertically without any clipping. */
+@media (min-width: 560px) and (min-height: 660px) {
+  body #root#root main.app-shell.home-page-active
+    .h70-rooms > .h70-room.h70-room-featured {
+    grid-column: 1 / -1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-strip-nav {
+    display: none !important;
+  }
+}
+
+/* From three columns upward Open space spans exactly two columns and its
+ * devices become a real horizontal strip. */
+@media (min-width: 1440px) and (min-height: 660px) and (orientation: landscape) {
   body #root#root main.app-shell.home-page-active
     .h70-rooms > .h70-room.h70-room-featured {
     grid-column: span 2 !important;
+    height: 100% !important;
+    min-height: var(--h71-room-min-h,318px) !important;
+    max-height: none !important;
   }
 
   body #root#root main.app-shell.home-page-active
@@ -423,9 +444,11 @@
     gap: 8px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    scroll-snap-type: x proximity !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
     scrollbar-width: none !important;
     overscroll-behavior-x: contain !important;
+    touch-action: pan-x !important;
     padding-bottom: 2px !important;
   }
 
@@ -440,6 +463,45 @@
     .h70-room.h70-room-featured .h70-device {
     flex: 0 0 clamp(160px,22%,195px) !important;
     scroll-snap-align: start !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-section-meta {
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-strip-nav {
+    display: inline-grid !important;
+    grid-template-columns: repeat(2,28px) !important;
+    gap: 4px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-strip-nav > button {
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 9px !important;
+    background: var(--h70-soft) !important;
+    color: var(--h70-secondary) !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-strip-nav > button:hover {
+    background: color-mix(in srgb,var(--h70-accent) 10%,var(--h70-surface)) !important;
+    color: var(--h70-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-strip-nav svg {
+    width: 14px !important;
+    height: 14px !important;
   }
 }
 
@@ -656,5 +718,36 @@
 
   body #root#root main.app-shell.home-page-active .h70-room {
     min-height: var(--h71-room-min-h) !important;
+  }
+}
+
+
+/* V71 OPEN SPACE TWO-COLUMN SAFEGUARD */
+@media (min-width: 560px) and (max-width: 1439px) and (min-height: 660px) {
+  body #root#root main.app-shell.home-page-active
+    .h70-rooms > .h70-room.h70-room-featured {
+    grid-column: 1 / -1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-device-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows: 64px !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    touch-action: auto !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-device {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 64px !important;
   }
 }

@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import ClimateControl from "./ClimateControl";
 import DeviceControls from "./DeviceControls";
 import type { Area, EntityRegistryEntry, Hass } from "./types";
@@ -347,6 +347,14 @@ function LargeHomeV70({
   );
 }
 
+function H70SliderChevron({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d={direction === "left" ? "m14.5 6-6 6 6 6" : "m9.5 6 6 6-6 6"} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function H70ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) {
   return (
     <button type="button" className="h70-tool" aria-label={label} title={label} onClick={onClick}>
@@ -380,6 +388,7 @@ function LargeRoomCardV70({
   const isFeaturedOpenSpace = room.area.name.toLocaleLowerCase().replace(/\s+/g, "").includes("openspace");
   const [selectedControl, setSelectedControl] = useState<string | null>(() => editableIds[0] ?? null);
   const [lightMode, setLightMode] = useState<LightControlMode>("brightness");
+  const featuredDeviceStripRef = useRef<HTMLDivElement | null>(null);
   const selectedState = selectedControl ? hass.states[selectedControl] : undefined;
   const selectedDomain = selectedControl ? domainOf(selectedControl) : null;
 
@@ -395,6 +404,14 @@ function LargeRoomCardV70({
       return;
     }
     void activateEntity(hass, entityId);
+  };
+
+  const scrollFeaturedDevices = (direction: -1 | 1) => {
+    const strip = featuredDeviceStripRef.current;
+    if (!strip) return;
+    const firstDevice = strip.querySelector<HTMLElement>(".h70-device");
+    const step = (firstDevice?.offsetWidth ?? Math.max(180, strip.clientWidth * 0.32)) + 8;
+    strip.scrollBy({ left: step * direction, behavior: "smooth" });
   };
 
   return (
@@ -416,8 +433,34 @@ function LargeRoomCardV70({
       </header>
 
       <section className="h70-section">
-        <div className="h70-section-head"><span>{language === "it" ? "Controlli" : "Controls"}</span><b>{visibleControlIds.length}</b></div>
-        <div className="h70-device-grid">
+        <div className="h70-section-head">
+          <span>{language === "it" ? "Controlli" : "Controls"}</span>
+          <div className="h70-section-meta">
+            <b>{visibleControlIds.length}</b>
+            {isFeaturedOpenSpace && visibleControlIds.length > 1 && (
+              <div className="h70-strip-nav" aria-label={language === "it" ? "Scorri dispositivi" : "Scroll devices"}>
+                <button type="button" onClick={() => scrollFeaturedDevices(-1)} aria-label={language === "it" ? "Dispositivi precedenti" : "Previous devices"}>
+                  <H70SliderChevron direction="left" />
+                </button>
+                <button type="button" onClick={() => scrollFeaturedDevices(1)} aria-label={language === "it" ? "Dispositivi successivi" : "Next devices"}>
+                  <H70SliderChevron direction="right" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        <div
+          className="h70-device-grid"
+          ref={isFeaturedOpenSpace ? featuredDeviceStripRef : undefined}
+          onWheel={isFeaturedOpenSpace ? (event) => {
+            const strip = event.currentTarget;
+            if (strip.scrollWidth <= strip.clientWidth) return;
+            if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+              event.preventDefault();
+              strip.scrollLeft += event.deltaY;
+            }
+          } : undefined}
+        >
           {visibleControlIds.map((id) => (
             <LargeRoomDeviceV70
               key={id}
