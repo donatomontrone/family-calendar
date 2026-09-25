@@ -377,6 +377,7 @@ function LargeRoomCardV70({
   const climateActive = Boolean(climateId && isActive(hass, climateId));
   const passiveIds = room.passiveIds.filter((id) => !isRoomTemperatureSensor(hass, id));
   const activeCount = visibleControlIds.filter((id) => isActive(hass, id)).length;
+  const isFeaturedOpenSpace = room.area.name.toLocaleLowerCase().replace(/\s+/g, "").includes("openspace");
   const [selectedControl, setSelectedControl] = useState<string | null>(() => editableIds[0] ?? null);
   const [lightMode, setLightMode] = useState<LightControlMode>("brightness");
   const selectedState = selectedControl ? hass.states[selectedControl] : undefined;
@@ -397,7 +398,7 @@ function LargeRoomCardV70({
   };
 
   return (
-    <article className={`h70-room ${orphan ? "h70-room-orphan" : ""}`} style={{ "--h70-accent": accent } as CSSProperties}>
+    <article className={`h70-room ${orphan ? "h70-room-orphan" : ""} ${isFeaturedOpenSpace ? "h70-room-featured" : ""}`} style={{ "--h70-accent": accent } as CSSProperties}>
       <header className="h70-room-head">
         <div className="h70-room-title">
           <span className="h70-room-icon">{roomIcon(room.area.name)}</span>

@@ -1,0 +1,577 @@
+/*
+ * SHARED LAYOUT CONTRACT V71
+ *
+ * 1) CALENDARIO and CASA use one final SharedHeader geometry. The React
+ *    component was already shared; V71 removes the visual divergence caused
+ *    by page-specific CSS overrides.
+ * 2) CASA room cards become deterministic on 3/4-column layouts.
+ * 3) Open space is an explicit featured room spanning two columns from laptop
+ *    upward, with horizontal device flow so it gains width without height.
+ */
+
+/* ========================================================================= */
+/* ONE IDENTICAL HEADER — CALENDARIO + CASA, NON-PHONE                       */
+/* ========================================================================= */
+
+@media (min-width: 560px) and (min-height: 660px) {
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+    --h71-header-h: 58px;
+    --h71-header-clock: 29px;
+    --h71-header-action: 32px;
+    --h71-header-avatar: 30px;
+    --h71-header-avatar-overlap: -6px;
+  }
+
+  body #root#root main.app-shell.home-page-active {
+    --h70-header-h: var(--h71-header-h);
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    > #family-shared-header-host {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--h71-header-h) !important;
+    min-height: var(--h71-header-h) !important;
+    max-height: var(--h71-header-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-self: stretch !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--h71-header-h) !important;
+    min-height: var(--h71-header-h) !important;
+    max-height: var(--h71-header-h) !important;
+    margin: 0 !important;
+    padding: 0 2px !important;
+    display: grid !important;
+    grid-template-columns: minmax(160px,1fr) auto minmax(285px,1fr) !important;
+    grid-template-rows: 1fr !important;
+    grid-template-areas: "greeting clock actions" !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting {
+    grid-area: greeting !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 2px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting strong {
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 15px !important;
+    line-height: 1.05 !important;
+    font-weight: 680 !important;
+    letter-spacing: -.02em !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting span {
+    margin: 0 !important;
+    overflow: hidden !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    font-weight: 500 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-clock {
+    grid-area: clock !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: center !important;
+    font-size: var(--h71-header-clock) !important;
+    line-height: .96 !important;
+    font-weight: 500 !important;
+    letter-spacing: -.05em !important;
+    font-variant-numeric: tabular-nums !important;
+    white-space: nowrap !important;
+    transform: none !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-top-actions {
+    grid-area: actions !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: var(--h71-header-action) !important;
+    min-height: var(--h71-header-action) !important;
+    max-height: var(--h71-header-action) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: end !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) {
+    box-sizing: border-box !important;
+    height: var(--h71-header-action) !important;
+    min-height: var(--h71-header-action) !important;
+    max-height: var(--h71-header-action) !important;
+    margin: 0 !important;
+    border-radius: calc(var(--h71-header-action) / 2) !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header :is(.round-top,.header-theme-switch) {
+    flex: 0 0 var(--h71-header-action) !important;
+    width: var(--h71-header-action) !important;
+    min-width: var(--h71-header-action) !important;
+    max-width: var(--h71-header-action) !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill {
+    flex: 0 0 var(--h71-header-action) !important;
+    width: var(--h71-header-action) !important;
+    min-width: var(--h71-header-action) !important;
+    max-width: var(--h71-header-action) !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    gap: 0 !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill > span {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .weather-pill {
+    min-width: 0 !important;
+    padding-inline: 9px !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header :is(.weather-pill,.security-pill,.round-top,.header-theme-switch) svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .avatar-stack {
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: calc(var(--h71-header-avatar) * 1.65) !important;
+    height: var(--h71-header-action) !important;
+    min-height: var(--h71-header-action) !important;
+    max-height: var(--h71-header-action) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .avatar-stack > i {
+    box-sizing: border-box !important;
+    flex: 0 0 var(--h71-header-avatar) !important;
+    width: var(--h71-header-avatar) !important;
+    min-width: var(--h71-header-avatar) !important;
+    max-width: var(--h71-header-avatar) !important;
+    height: var(--h71-header-avatar) !important;
+    min-height: var(--h71-header-avatar) !important;
+    max-height: var(--h71-header-avatar) !important;
+    margin: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .avatar-stack > i + i {
+    margin-left: var(--h71-header-avatar-overlap) !important;
+  }
+}
+
+/* Tablet / iPad portrait: identical on both pages. */
+@media (min-width: 560px) and (min-height: 660px) and (orientation: portrait) {
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+    --h71-header-h: 58px;
+    --h71-header-clock: 29px;
+    --h71-header-action: 32px;
+    --h71-header-avatar: 30px;
+    --h71-header-avatar-overlap: -6px;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    grid-template-columns: minmax(155px,1fr) auto minmax(270px,1fr) !important;
+    gap: 9px !important;
+  }
+}
+
+/* iPad mini / compact tablet landscape. */
+@media (min-width: 700px) and (max-width: 1179px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+    --h71-header-h: 54px;
+    --h71-header-clock: 27px;
+    --h71-header-action: 29px;
+    --h71-header-avatar: 23px;
+    --h71-header-avatar-overlap: -8px;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    padding: 3px 4px !important;
+    grid-template-columns: minmax(128px,1fr) auto minmax(190px,1fr) !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting strong {
+    font-size: 14px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting span {
+    font-size: 9px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .weather-pill small {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .weather-pill {
+    padding-inline: 7px !important;
+  }
+}
+
+/* iPad Pro / laptop. */
+@media (min-width: 1180px) and (max-width: 1439px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+    --h71-header-h: 59px;
+    --h71-header-clock: 32px;
+    --h71-header-action: 36px;
+    --h71-header-avatar: 30px;
+    --h71-header-avatar-overlap: -6px;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    padding: 5px 4px !important;
+    grid-template-columns: minmax(145px,1fr) auto minmax(300px,1fr) !important;
+    gap: 12px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding-inline: 10px !important;
+    display: inline-flex !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill > span {
+    display: inline !important;
+  }
+}
+
+/* Desktop / wide. */
+@media (min-width: 1440px) and (max-width: 1799px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+    --h71-header-h: 64px;
+    --h71-header-clock: 38px;
+    --h71-header-action: 36px;
+    --h71-header-avatar: 30px;
+    --h71-header-avatar-overlap: -6px;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    padding: 5px 4px !important;
+    grid-template-columns: minmax(160px,1fr) auto minmax(315px,1fr) !important;
+    gap: 12px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting strong {
+    font-size: 16px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting span {
+    font-size: 10.5px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding-inline: 10px !important;
+    display: inline-flex !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill > span {
+    display: inline !important;
+  }
+}
+
+/* Ultra / reference large screen. */
+@media (min-width: 1800px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+    --h71-header-h: 94px;
+    --h71-header-clock: clamp(46px,4vw,68px);
+    --h71-header-action: 40px;
+    --h71-header-avatar: 34px;
+    --h71-header-avatar-overlap: -7px;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    padding: 0 !important;
+    grid-template-columns: minmax(180px,1fr) auto minmax(360px,1fr) !important;
+    gap: clamp(14px,1.8vw,32px) !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting strong {
+    font-size: 20px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .reel-greeting span {
+    font-size: 11.5px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding-inline: 11px !important;
+    display: inline-flex !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+    #family-shared-header .security-pill > span {
+    display: inline !important;
+  }
+}
+
+/* ========================================================================= */
+/* CASA ROOM GRID — FEATURED OPEN SPACE + FIXED HEIGHT WHEN >2 COLUMNS        */
+/* ========================================================================= */
+
+/* Open space becomes the deliberate featured room from laptop upward. */
+@media (min-width: 1180px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active
+    .h70-rooms > .h70-room.h70-room-featured {
+    grid-column: span 2 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-device-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: none !important;
+    grid-auto-rows: unset !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: none !important;
+    overscroll-behavior-x: contain !important;
+    padding-bottom: 2px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-device-grid::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-device {
+    flex: 0 0 clamp(160px,22%,195px) !important;
+    scroll-snap-align: start !important;
+  }
+}
+
+/* 3 columns: all room cards share one row height and device/status content
+ * flows horizontally instead of making individual cards taller. */
+@media (min-width: 1440px) and (max-width: 1799px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h71-room-fixed-h: 332px;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    grid-auto-rows: var(--h71-room-fixed-h) !important;
+    align-items: stretch !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room {
+    height: var(--h71-room-fixed-h) !important;
+    min-height: var(--h71-room-fixed-h) !important;
+    max-height: var(--h71-room-fixed-h) !important;
+    align-self: stretch !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device-grid,
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-status-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: none !important;
+    grid-auto-rows: unset !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: none !important;
+    overscroll-behavior-x: contain !important;
+    padding-bottom: 2px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room :is(.h70-device-grid,.h70-status-grid)::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room .h70-device {
+    flex: 0 0 168px !important;
+    scroll-snap-align: start !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device:only-child {
+    flex-basis: 100% !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device:first-child:nth-last-child(2),
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device:first-child:nth-last-child(2) ~ .h70-device {
+    flex-basis: calc((100% - 7px) / 2) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room .h70-status-item {
+    flex: 0 0 145px !important;
+    scroll-snap-align: start !important;
+  }
+}
+
+/* 4 columns: slightly tighter fixed height, still one horizontal content row. */
+@media (min-width: 1800px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h71-room-fixed-h: 318px;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    grid-auto-rows: var(--h71-room-fixed-h) !important;
+    align-items: stretch !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room {
+    height: var(--h71-room-fixed-h) !important;
+    min-height: var(--h71-room-fixed-h) !important;
+    max-height: var(--h71-room-fixed-h) !important;
+    align-self: stretch !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device-grid,
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-status-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: none !important;
+    grid-auto-rows: unset !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: none !important;
+    overscroll-behavior-x: contain !important;
+    padding-bottom: 2px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room :is(.h70-device-grid,.h70-status-grid)::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room .h70-device {
+    flex: 0 0 158px !important;
+    scroll-snap-align: start !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device:only-child {
+    flex-basis: 100% !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device:first-child:nth-last-child(2),
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-device:first-child:nth-last-child(2) ~ .h70-device {
+    flex-basis: calc((100% - 7px) / 2) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room .h70-status-item {
+    flex: 0 0 138px !important;
+    scroll-snap-align: start !important;
+  }
+}
