@@ -4,6 +4,37 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [1.2.0] - 2026-09-25
+
+CASA UI stabilization milestone.
+
+### Changed
+
+- rebuilt the non-phone CASA page on the isolated V70 component system, removing the visual dependency on the legacy V60/V67/V69 workspace cascade;
+- adopted the approved phone CASA interaction language as the reference design for tablet, iPad, laptop, desktop, wide and ultra-wide layouts while preserving the phone presentation unchanged;
+- introduced responsive room composition with compact tablet layouts, featured-room treatment for Open space, multi-column desktop grids and full-height large-screen utilization;
+- made Open space a deliberate featured room: full-row natural-height composition on two-column layouts and a two-column horizontal device strip on three/four-column layouts;
+- added real Open space device-strip navigation with touch/trackpad scrolling, mouse-wheel horizontal scrolling, visible previous/next controls, scroll snapping and end-of-strip reach;
+- changed large-screen Sensors & status from a horizontal carousel to a wrapping multiline grid that uses available vertical space;
+- redesigned the CASA status dashboard, climate summary and tool actions for denser portrait presentation without empty grid cells or oversized utility tiles;
+- unified CALENDARIO and CASA on the same final SharedHeader geometry for every non-phone breakpoint.
+
+### Fixed
+
+- removed overlapping and conflicting room-card geometries produced by legacy responsive layers;
+- eliminated fixed-height behavior for Open space on two-column layouts so its devices can expand naturally over multiple rows;
+- ensured odd final room cards can use the complete two-column row where appropriate;
+- normalized tool-button icon rendering and removed the nested icon borders/backgrounds that reduced legibility;
+- prevented large-screen room grids and the right-side status column from leaving unused viewport space;
+- ensured the final Open space device can scroll completely into view;
+- restored deterministic wrapping and sizing for room sensors, device strips and featured-room content.
+
+### UI status
+
+**The CASA page visual presentation and UI are considered temporarily finalized and frozen as of this release.** Further CASA visual changes should be limited to regressions or functional defects unless the visual scope is explicitly reopened.
+
+The current phone-first visual language, V70 room components, shared header, responsive room-grid behavior, Open space treatment, status dashboard, tool actions, scrolling rules and large-screen composition therefore define the reference CASA UI baseline for subsequent development.
+
 ## [1.1.0] - 2026-09-24
 
 Calendar UI stabilization milestone.
