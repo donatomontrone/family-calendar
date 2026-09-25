@@ -20,6 +20,20 @@ export async function setFavorites(hass: Hass, entityIds: string[]): Promise<voi
   });
 }
 
+export async function getIconOverrides(hass: Hass): Promise<Record<string, string>> {
+  const result = await hass.callWS<{ icon_overrides: Record<string, string> }>({
+    type: "family_calendar/icons/get",
+  });
+  return result.icon_overrides ?? {};
+}
+
+export async function setIconOverrides(hass: Hass, iconOverrides: Record<string, string>): Promise<void> {
+  await hass.callWS({
+    type: "family_calendar/icons/set",
+    icon_overrides: iconOverrides,
+  });
+}
+
 function isRoomCoverSelectionClick(): boolean {
   const active = document.activeElement;
   return active instanceof HTMLElement

@@ -14,10 +14,11 @@ import pageSwitchAlignmentV68Styles from "./page-switch-alignment-v68.css?inline
 import homeUnifiedV70Styles from "./home-unified-v70.css?inline";
 import sharedLayoutV71Styles from "./shared-layout-v71.css?inline";
 import calendarPhoneFirstV74Styles from "./calendar-phone-first-v74.css?inline";
+import iconCustomizationV75Styles from "./icon-customization-v75.css?inline";
 
 const STYLE_ID = "family-calendar-demo-responsive-system";
 const LEGACY_RUNTIME_STYLE_ID = "family-calendar-v4-styles";
-const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${demoCalendarTabletLayoutV63Styles}\n${demoSegmentedMotionV64Styles}\n${visualPolishV65Styles}\n${bottomRhythmV66Styles}\n${homeRefactorV67Styles}\n${pageSwitchAlignmentV68Styles}\n${homeUnifiedV70Styles}\n${sharedLayoutV71Styles}\n${calendarPhoneFirstV74Styles}`;
+const css = `${statusConsistencyStyles}\n${responsiveStyles}\n${phoneLandscapeStyles}\n${demoPhoneLandscapeFixesV50Styles}\n${phonePortraitControlsV51Styles}\n${alarmLandscapeV52Styles}\n${largeScreenV60Styles}\n${demoCalendarTabletLayoutV63Styles}\n${demoSegmentedMotionV64Styles}\n${visualPolishV65Styles}\n${bottomRhythmV66Styles}\n${homeRefactorV67Styles}\n${pageSwitchAlignmentV68Styles}\n${homeUnifiedV70Styles}\n${sharedLayoutV71Styles}\n${calendarPhoneFirstV74Styles}\n${iconCustomizationV75Styles}`;
 
 type DemoViewport =
   | "xl"

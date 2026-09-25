@@ -10,7 +10,7 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 
 from .const import DOMAIN, FRONTEND_URL, PANEL_URL
-from .storage import FavoriteStore
+from .storage import FavoriteStore, IconOverrideStore
 from .websocket import async_register_websocket_commands
 
 FRONTEND_DIR = Path(__file__).parent / "frontend"
@@ -19,7 +19,9 @@ CONFIG_SCHEMA = cv.config_entry_only_config_schema
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up shared Family Calendar resources once per Home Assistant load."""
-    hass.data.setdefault(DOMAIN, {})["favorites"] = FavoriteStore(hass)
+    domain_data = hass.data.setdefault(DOMAIN, {})
+    domain_data["favorites"] = FavoriteStore(hass)
+    domain_data["icons"] = IconOverrideStore(hass)
     async_register_websocket_commands(hass)
     await hass.http.async_register_static_paths(
         [StaticPathConfig(FRONTEND_URL, str(FRONTEND_DIR), cache_headers=False)]

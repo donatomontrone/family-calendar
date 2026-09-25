@@ -13,9 +13,12 @@ import {
   getAreas,
   getEntityRegistry,
   getFavorites,
+  getIconOverrides,
   setFavorites,
+  setIconOverrides,
 } from "./ha";
 import { getLanguage, t, type Language } from "./i18n";
+import { EntityIcon, EntityIconOverrideProvider, type IconOverrideMap } from "./entity-icon-customization";
 import { getWhiteTemperature, whiteTemperatureAccent } from "./light-temperature";
 
 type Mode = "todo" | "shopping";
@@ -99,6 +102,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const [areas, setAreas] = useState<Area[]>([]);
   const [entities, setEntities] = useState<EntityRegistryEntry[]>([]);
   const [favorites, setFavoriteIds] = useState<string[]>([]);
+  const [iconOverrides, setIconOverrideState] = useState<IconOverrideMap>({});
   const [room, setRoom] = useState("__favorites");
   const [mode, setMode] = useState<Mode>("todo");
   const [compactCalendarPanel, setCompactCalendarPanel] = useState<CompactCalendarPanel>("agenda");
@@ -127,6 +131,14 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
         setFavoriteIds(favoriteList);
       })
       .catch((error) => console.error("Family Calendar bootstrap failed", error));
+    return () => { active = false; };
+  }, [hass]);
+
+  useEffect(() => {
+    let active = true;
+    void getIconOverrides(hass)
+      .then((stored) => { if (active) setIconOverrideState(stored); })
+      .catch((error) => console.error("Family Calendar icon overrides failed", error));
     return () => { active = false; };
   }, [hass]);
 
@@ -170,6 +182,17 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
     await setFavorites(hass, next);
   }
 
+  async function saveIconOverrides(next: IconOverrideMap) {
+    const previous = iconOverrides;
+    setIconOverrideState(next);
+    try {
+      await setIconOverrides(hass, next);
+    } catch (error) {
+      setIconOverrideState(previous);
+      throw error;
+    }
+  }
+
   function updateTask(id: number) {
     const update = (items: Task[]) => items.map((item) => item.id === id ? { ...item, done: !item.done } : item);
     mode === "todo" ? setTodo(update) : setShopping(update);
@@ -211,6 +234,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const openNotifications = () => setHeaderAction("notifications");
 
   return (
+    <EntityIconOverrideProvider value={iconOverrides}>
     <main className={`app-shell ${isNight ? "night" : "day"} ${page === "home" ? "home-page-active" : "calendar-page-active"}`}>
       <SharedHeader
         hass={hass}
@@ -394,7 +418,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
                   const status = entityStatus(hass, entityId, language);
                   const content = (
                     <>
-                      <span className="entity-icon">{iconForEntity(hass, entityId)}</span>
+                      <span className="entity-icon"><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span>
                       <strong>{displayName(hass, entityId)}</strong>
                       <small>{status}</small>
                     </>
@@ -435,7 +459,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
           </aside>
         </section>
       ) : (
-        <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
+        <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} onSaveIconOverrides={saveIconOverrides} />
       )}
 
       {headerAction && (
@@ -444,6 +468,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
 
       <PageDock page={page} language={language} onChange={setPage} />
     </main>
+    </EntityIconOverrideProvider>
   );
 }
 

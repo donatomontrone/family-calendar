@@ -221,6 +221,14 @@ function DemoHarness() {
       return ["light.soggiorno", "cover.salotto", "switch.tv"];
     }
   });
+  const [iconOverrides, setIconOverrides] = useState<Record<string, string>>(() => {
+    try {
+      const stored = localStorage.getItem("family-calendar-demo-icon-overrides");
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  });
 
   const hass = useMemo<Hass>(() => ({
     states,
@@ -304,10 +312,20 @@ function DemoHarness() {
         localStorage.setItem("family-calendar-demo-favorites", JSON.stringify(next));
         return { entity_ids: next } as T;
       }
+      if (message.type === "family_calendar/icons/get") return { icon_overrides: iconOverrides } as T;
+      if (message.type === "family_calendar/icons/set") {
+        const raw = message.icon_overrides;
+        const next = raw && typeof raw === "object" && !Array.isArray(raw)
+          ? Object.fromEntries(Object.entries(raw as Record<string, unknown>).map(([entityId, iconKey]) => [entityId, String(iconKey)]))
+          : {};
+        setIconOverrides(next);
+        localStorage.setItem("family-calendar-demo-icon-overrides", JSON.stringify(next));
+        return { icon_overrides: next } as T;
+      }
       if (message.type === "persistent_notification/get") return demoNotifications as T;
       throw new Error(`Unsupported demo WebSocket command: ${String(message.type)}`);
     },
-  }), [states, favorites]);
+  }), [states, favorites, iconOverrides]);
 
   return <App hass={hass} demo />;
 }

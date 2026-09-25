@@ -15,6 +15,15 @@ import {
 } from "./ha";
 import { getWhiteTemperature, whiteTemperatureAccent } from "./light-temperature";
 import type { Language } from "./i18n";
+import {
+  EntityIcon,
+  ICON_CATEGORY_ORDER,
+  ICON_OPTIONS,
+  renderEntityOverrideIcon,
+  useEntityIconOverrides,
+  type IconCategory,
+  type IconOverrideMap,
+} from "./entity-icon-customization";
 
 const CONTROL_DOMAINS = new Set(["light", "switch", "cover", "climate", "fan", "media_player", "lock", "vacuum"]);
 const ACTIVE_STATES = new Set(["on", "open", "heat", "cool", "heat_cool", "auto", "fan_only", "dry", "playing", "unlocked", "cleaning"]);
@@ -29,6 +38,7 @@ type HomeViewProps = {
   now: Date;
   demo: boolean;
   language: Language;
+  onSaveIconOverrides: (next: IconOverrideMap) => Promise<void>;
 };
 
 type RoomModel = {
@@ -39,12 +49,14 @@ type RoomModel = {
   temperature?: number;
 };
 
-export default function HomeView({ hass, areas, entities, now, demo, language }: HomeViewProps) {
+export default function HomeView({ hass, areas, entities, now, demo, language, onSaveIconOverrides }: HomeViewProps) {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [desktopRoomId, setDesktopRoomId] = useState<string | null>(null);
   const [favorites, setFavoriteIds] = useState<string[]>([]);
   const [overlay, setOverlay] = useState<Overlay>(null);
   const [roomClimateEntityId, setRoomClimateEntityId] = useState<string | null>(null);
+  const [iconEditorOpen, setIconEditorOpen] = useState(false);
+  const iconOverrides = useEntityIconOverrides();
   const copy = language === "it" ? itCopy : enCopy;
 
   useEffect(() => {
@@ -103,6 +115,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
         onClimate={(entityId) => setRoomClimateEntityId(entityId)}
         onAlarm={() => openHeaderAction("alarm")}
         onOverlay={setOverlay}
+        onCustomizeIcons={() => setIconEditorOpen(true)}
       />
 
       <LargeHomeWorkspaceV60
@@ -182,6 +195,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
 
         <aside className="reel-side">
           <section className="reel-side-card home-message-card">
+            <button type="button" className="home-icon-customize-trigger phone-icon-customize-trigger" aria-label={language === "it" ? "Personalizza icone dispositivi" : "Customize device icons"} title={language === "it" ? "Personalizza icone" : "Customize icons"} onClick={() => setIconEditorOpen(true)}><IconPaletteIcon /></button>
             <span className="reel-kicker">{copy.houseSays}</span>
             <div className="house-message"><CheckIcon /><div><strong>{copy.allClear}</strong><span>{copy.allClearDetail}</span></div></div>
           </section>
@@ -251,11 +265,183 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
           onAllOff={() => void deactivateEntities(hass, allActionable)}
         />
       )}
+
+      {iconEditorOpen && createPortal(
+        <IconCustomizationPanel
+          hass={hass}
+          rooms={rooms}
+          language={language}
+          overrides={iconOverrides}
+          onSave={onSaveIconOverrides}
+          onClose={() => setIconEditorOpen(false)}
+        />,
+        document.body,
+      )}
     </section>
   );
 }
 
 
+
+
+const ICON_CATEGORY_LABELS: Record<IconCategory, { it: string; en: string }> = {
+  lighting: { it: "Illuminazione", en: "Lighting" },
+  home: { it: "Casa", en: "Home" },
+  climate: { it: "Clima", en: "Climate" },
+  security: { it: "Sensori e sicurezza", en: "Sensors & security" },
+  media: { it: "Audio e video", en: "Audio & video" },
+  appliances: { it: "Elettrodomestici", en: "Appliances" },
+  outdoor: { it: "Esterno", en: "Outdoor" },
+};
+
+function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onClose }: {
+  hass: Hass;
+  rooms: RoomModel[];
+  language: Language;
+  overrides: IconOverrideMap;
+  onSave: (next: IconOverrideMap) => Promise<void>;
+  onClose: () => void;
+}) {
+  const entityIds = useMemo(() => Array.from(new Set(rooms.flatMap((room) => room.allIds))).filter((id) => hass.states[id]), [rooms, hass.states]);
+  const [selectedEntity, setSelectedEntity] = useState<string>(() => entityIds[0] ?? "");
+  const [draft, setDraft] = useState<IconOverrideMap>(() => ({ ...overrides }));
+  const [query, setQuery] = useState("");
+  const [saving, setSaving] = useState(false);
+  const selectedRoom = rooms.find((room) => room.allIds.includes(selectedEntity));
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const filtered = ICON_OPTIONS.filter((option) => {
+    if (!normalizedQuery) return true;
+    const label = language === "it" ? option.it : option.en;
+    return [option.key, label, ...option.keywords].some((value) => value.toLocaleLowerCase().includes(normalizedQuery));
+  });
+  const recentKeys = Array.from(new Set(Object.values(draft))).reverse().slice(0, 8);
+  const changed = JSON.stringify(draft) !== JSON.stringify(overrides);
+
+  const chooseIcon = (key: string) => {
+    if (selectedEntity) setDraft((current) => ({ ...current, [selectedEntity]: key }));
+  };
+
+  const resetSelected = () => {
+    if (!selectedEntity) return;
+    setDraft((current) => {
+      const next = { ...current };
+      delete next[selectedEntity];
+      return next;
+    });
+  };
+
+  const confirm = async () => {
+    setSaving(true);
+    try {
+      await onSave(draft);
+      onClose();
+    } catch (error) {
+      console.error("Family Calendar icon customization save failed", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="icon-customizer-backdrop" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target && !saving) onClose(); }}>
+      <section className="icon-customizer-panel" role="dialog" aria-modal="true" aria-label={language === "it" ? "Personalizza icone dispositivi" : "Customize device icons"}>
+        <header className="icon-customizer-header">
+          <div>
+            <span>{language === "it" ? "CASA · PERSONALIZZA" : "HOME · CUSTOMIZE"}</span>
+            <h2>{language === "it" ? "Icone dispositivi" : "Device icons"}</h2>
+            <p>{language === "it" ? "Scegli un dispositivo e assegnagli un’icona. Le modifiche appariranno anche in CALENDARIO." : "Choose a device and assign an icon. Changes also appear in CALENDAR."}</p>
+          </div>
+          <button type="button" className="icon-customizer-close" onClick={onClose} disabled={saving} aria-label={language === "it" ? "Chiudi" : "Close"}><CloseIcon /></button>
+        </header>
+
+        <div className="icon-customizer-body">
+          <aside className="icon-device-browser">
+            <div className="icon-device-browser-title"><strong>{language === "it" ? "Dispositivi" : "Devices"}</strong><span>{entityIds.length}</span></div>
+            <div className="icon-device-list">
+              {rooms.map((room) => {
+                const ids = room.allIds.filter((id) => hass.states[id]);
+                if (!ids.length) return null;
+                return (
+                  <section className="icon-device-room" key={room.area.area_id}>
+                    <h3>{room.area.name}</h3>
+                    {ids.map((entityId) => (
+                      <button type="button" className={selectedEntity === entityId ? "active" : ""} onClick={() => setSelectedEntity(entityId)} key={entityId}>
+                        <span className="icon-device-current">{renderEntityOverrideIcon(draft[entityId]) ?? iconForEntity(hass, entityId)}</span>
+                        <span><strong>{displayName(hass, entityId)}</strong><small>{domainOf(entityId).replaceAll("_", " ")}</small></span>
+                        {draft[entityId] && <i />}
+                      </button>
+                    ))}
+                  </section>
+                );
+              })}
+            </div>
+          </aside>
+
+          <main className="icon-picker-main">
+            <div className="icon-picker-selected">
+              <span className="icon-picker-preview">{selectedEntity ? (renderEntityOverrideIcon(draft[selectedEntity]) ?? iconForEntity(hass, selectedEntity)) : <IconPaletteIcon />}</span>
+              <div><small>{selectedRoom?.area.name ?? (language === "it" ? "Dispositivo" : "Device")}</small><strong>{selectedEntity ? displayName(hass, selectedEntity) : "—"}</strong></div>
+              <button type="button" onClick={resetSelected} disabled={!selectedEntity || !draft[selectedEntity]}>{language === "it" ? "Ripristina" : "Reset"}</button>
+            </div>
+
+            <label className="icon-picker-search">
+              <SearchIcon />
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={language === "it" ? "Cerca icone" : "Search icons"} />
+              <span>{query ? <button type="button" onClick={() => setQuery("")} aria-label={language === "it" ? "Cancella ricerca" : "Clear search"}><CloseIcon /></button> : null}</span>
+            </label>
+
+            <div className="icon-picker-scroll">
+              {!normalizedQuery && recentKeys.length > 0 && (
+                <section className="icon-picker-category">
+                  <h3>{language === "it" ? "Recenti" : "Recent"}</h3>
+                  <div className="icon-picker-grid">
+                    {recentKeys.map((key) => {
+                      const option = ICON_OPTIONS.find((item) => item.key === key);
+                      return option ? <IconChoiceButton key={key} option={option} language={language} active={draft[selectedEntity] === key} onClick={() => chooseIcon(key)} /> : null;
+                    })}
+                  </div>
+                </section>
+              )}
+              {ICON_CATEGORY_ORDER.map((category) => {
+                const options = filtered.filter((option) => option.category === category);
+                if (!options.length) return null;
+                return (
+                  <section className="icon-picker-category" key={category}>
+                    <h3>{ICON_CATEGORY_LABELS[category][language === "it" ? "it" : "en"]}</h3>
+                    <div className="icon-picker-grid">
+                      {options.map((option) => <IconChoiceButton key={option.key} option={option} language={language} active={draft[selectedEntity] === option.key} onClick={() => chooseIcon(option.key)} />)}
+                    </div>
+                  </section>
+                );
+              })}
+              {filtered.length === 0 && <div className="icon-picker-empty">{language === "it" ? "Nessuna icona trovata." : "No icons found."}</div>}
+            </div>
+          </main>
+        </div>
+
+        <footer className="icon-customizer-footer">
+          <button type="button" className="icon-reset-all" disabled={saving || Object.keys(draft).length === 0} onClick={() => setDraft({})}>{language === "it" ? "Ripristina tutte" : "Reset all"}</button>
+          <div>
+            <button type="button" onClick={onClose} disabled={saving}>{language === "it" ? "Annulla" : "Cancel"}</button>
+            <button type="button" className="icon-confirm" onClick={() => void confirm()} disabled={saving || !changed}>{saving ? (language === "it" ? "Salvataggio…" : "Saving…") : (language === "it" ? "Conferma" : "Confirm")}</button>
+          </div>
+        </footer>
+      </section>
+    </div>
+  );
+}
+
+function IconChoiceButton({ option, language, active, onClick }: { option: (typeof ICON_OPTIONS)[number]; language: Language; active: boolean; onClick: () => void }) {
+  return <button type="button" className={active ? "active" : ""} onClick={onClick} title={language === "it" ? option.it : option.en}><span>{renderEntityOverrideIcon(option.key)}</span><small>{language === "it" ? option.it : option.en}</small></button>;
+}
+
+function IconPaletteIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16h1.3a1.7 1.7 0 0 0 1.2-2.9l-.4-.4a1.6 1.6 0 0 1 1.1-2.7H17a3 3 0 0 0 3-3c0-4-3.6-7-8-7Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><circle cx="8" cy="9" r=".8" fill="currentColor"/><circle cx="11" cy="7" r=".8" fill="currentColor"/><circle cx="15" cy="8.5" r=".8" fill="currentColor"/><circle cx="7.5" cy="13" r=".8" fill="currentColor"/></svg>;
+}
+
+function SearchIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="m15 15 4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>;
+}
 
 function LargeHomeV70({
   hass,
@@ -268,6 +454,7 @@ function LargeHomeV70({
   onClimate,
   onAlarm,
   onOverlay,
+  onCustomizeIcons,
 }: {
   hass: Hass;
   rooms: RoomModel[];
@@ -279,6 +466,7 @@ function LargeHomeV70({
   onClimate: (entityId: string) => void;
   onAlarm: () => void;
   onOverlay: (kind: Overlay) => void;
+  onCustomizeIcons: () => void;
 }) {
   const inside = average(knownTemperatures.length ? knownTemperatures : [22]);
   const climateActive = climateIds.some((id) => isActive(hass, id));
@@ -302,6 +490,7 @@ function LargeHomeV70({
 
       <aside className="h70-side" aria-label={language === "it" ? "Stato casa" : "Home status"}>
         <section className="h70-side-card h70-summary">
+          <button type="button" className="home-icon-customize-trigger h70-icon-customize-trigger" aria-label={language === "it" ? "Personalizza icone dispositivi" : "Customize device icons"} title={language === "it" ? "Personalizza icone" : "Customize icons"} onClick={onCustomizeIcons}><IconPaletteIcon /></button>
           <span className="h70-kicker">{copy.houseSays}</span>
           <div className="h70-summary-main"><span><CheckIcon /></span><div><strong>{copy.allClear}</strong><small>{copy.allClearDetail}</small></div></div>
         </section>
@@ -494,7 +683,7 @@ function LargeRoomCardV70({
         <div className="h70-status-grid">
           {passiveIds.map((id) => (
             <div className="h70-status-item" key={id}>
-              <span>{iconForEntity(hass, id)}</span>
+              <span><EntityIcon entityId={id} fallback={iconForEntity(hass, id)} /></span>
               <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
             </div>
           ))}
@@ -546,7 +735,7 @@ function LargeRoomDeviceV70({
         onClick();
       }}
     >
-      <span className="h70-device-icon">{iconForEntity(hass, entityId)}</span>
+      <span className="h70-device-icon"><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span>
       <span className="h70-device-copy"><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small></span>
       {domain === "light" && <span className={`h70-device-power ${lightIsOn ? "active" : ""}`} aria-hidden="true"><PowerIcon /></span>}
     </button>
@@ -865,7 +1054,7 @@ function LargeRoomConsoleV60({
             <div className="v60-room-status-list">
               {passiveIds.map((id) => (
                 <div className="v60-room-status-row" key={id}>
-                  <span>{iconForEntity(hass, id)}</span>
+                  <span><EntityIcon entityId={id} fallback={iconForEntity(hass, id)} /></span>
                   <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
                 </div>
               ))}
@@ -909,7 +1098,7 @@ function LargeRoomDeviceV60({
   return (
     <article className={`v60-room-device domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""} ${unavailable ? "unavailable" : ""}`}>
       <button type="button" className="v60-room-device-main" onClick={onClick} disabled={unavailable} aria-pressed={selectable ? selected : active}>
-        <span className="v60-room-device-icon">{iconForEntity(hass, entityId)}</span>
+        <span className="v60-room-device-icon"><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span>
         <span className="v60-room-device-copy"><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small></span>
       </button>
 
@@ -958,7 +1147,7 @@ function LargeRoomQuickControlV60({
   return (
     <div className={`v60-room-quick-control domain-${domain}`}>
       <div className="v60-room-quick-title">
-        <span>{iconForEntity(hass, entityId)}</span>
+        <span><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span>
         <div><small>{language === "it" ? "Selezionato" : "Selected"}</small><strong>{displayName(hass, entityId)}</strong><b>{entityStatus(hass, entityId, language)}</b></div>
       </div>
 
@@ -1082,7 +1271,7 @@ function DesktopRoomPanel({ hass, room, language, accent, onClimate }: { hass: H
           <div className="desktop-room-status-grid-v32">
             {visiblePassiveIds.map((id) => (
               <div className="desktop-room-status-row-v32" key={id}>
-                <span className="desktop-room-status-icon-v32">{iconForEntity(hass, id)}</span>
+                <span className="desktop-room-status-icon-v32"><EntityIcon entityId={id} fallback={iconForEntity(hass, id)} /></span>
                 <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
               </div>
             ))}
@@ -1119,7 +1308,7 @@ function DesktopRoomDeviceButton({ hass, entityId, language, selected, onClick }
         disabled={unavailable}
         aria-pressed={selectable ? selected : active}
       >
-        <span className="desktop-room-device-icon-v32">{iconForEntity(hass, entityId)}</span>
+        <span className="desktop-room-device-icon-v32"><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span>
         <span className="desktop-room-device-copy-v32"><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small></span>
       </button>
 
@@ -1259,7 +1448,7 @@ function RoomCard({ hass, room, language, onClimate }: { hass: Hass; room: RoomM
         <div className="room-passive-grid-v4">
           {visiblePassiveIds.map((id) => (
             <div className="room-passive-device-v4" key={id}>
-              <span>{iconForEntity(hass, id)}</span>
+              <span><EntityIcon entityId={id} fallback={iconForEntity(hass, id)} /></span>
               <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
             </div>
           ))}
@@ -1297,7 +1486,7 @@ function RoomDeviceButton({ hass, entityId, selected, onClick }: { hass: Hass; e
       }}
       disabled={unavailable}
     >
-      <span>{iconForEntity(hass, entityId)}</span>
+      <span><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span>
       <div><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? "Non disponibile" : entityStatus(hass, entityId, "it")}</small></div>
       {domain === "light" && (
         <span className={`room-device-power-v37 ${lightIsOn ? "active" : ""}`} aria-hidden="true"><PowerIcon /></span>
@@ -1375,9 +1564,9 @@ function AccessoryTile({ hass, entityId, language, favorite, onToggleFavorite }:
   return (
     <article className={`apple-accessory-tile domain-${domain} ${passive ? "passive" : ""} ${active ? "active" : ""} ${unavailable ? "unavailable" : ""}`} style={style}>
       {passive ? (
-        <div className="apple-accessory-main"><span className="apple-accessory-icon">{iconForEntity(hass, entityId)}</span><span className="apple-accessory-copy"><strong>{displayName(hass, entityId)}</strong><small>{entityStatus(hass, entityId, language)}</small></span></div>
+        <div className="apple-accessory-main"><span className="apple-accessory-icon"><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span><span className="apple-accessory-copy"><strong>{displayName(hass, entityId)}</strong><small>{entityStatus(hass, entityId, language)}</small></span></div>
       ) : (
-        <button className="apple-accessory-main" onClick={() => !unavailable && void activateEntity(hass, entityId)} disabled={unavailable}><span className="apple-accessory-icon">{iconForEntity(hass, entityId)}</span><span className="apple-accessory-copy"><strong>{displayName(hass, entityId)}</strong><small>{entityStatus(hass, entityId, language)}</small></span></button>
+        <button className="apple-accessory-main" onClick={() => !unavailable && void activateEntity(hass, entityId)} disabled={unavailable}><span className="apple-accessory-icon"><EntityIcon entityId={entityId} fallback={iconForEntity(hass, entityId)} /></span><span className="apple-accessory-copy"><strong>{displayName(hass, entityId)}</strong><small>{entityStatus(hass, entityId, language)}</small></span></button>
       )}
       <button className={`apple-favorite-toggle ${favorite ? "selected" : ""}`} onClick={onToggleFavorite} aria-label={favorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}><StarIcon /></button>
       {!passive && !unavailable && domain === "light" && <InlineLightControls hass={hass} entityId={entityId} language={language} />}
@@ -1456,7 +1645,7 @@ function GenericFeaturePanel({ hass, kind, language }: { hass: Hass; kind: Exclu
   const domains = domainMap[kind] ?? [];
   const items = Object.values(hass.states).filter((state) => domains.includes(domainOf(state.entity_id))).slice(0, 12);
   if (!items.length) return <div className="feature-empty">{language === "it" ? "Nessun elemento disponibile" : "No items available"}</div>;
-  return <div className="home-generic-grid-v4">{items.map((state) => <article key={state.entity_id}><span>{iconForEntity(hass, state.entity_id)}</span><div><strong>{displayName(hass, state.entity_id)}</strong><small>{entityStatus(hass, state.entity_id, language)}</small></div></article>)}</div>;
+  return <div className="home-generic-grid-v4">{items.map((state) => <article key={state.entity_id}><span><EntityIcon entityId={state.entity_id} fallback={iconForEntity(hass, state.entity_id)} /></span><div><strong>{displayName(hass, state.entity_id)}</strong><small>{entityStatus(hass, state.entity_id, language)}</small></div></article>)}</div>;
 }
 
 function ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) { return <button type="button" aria-label={label} title={label} onClick={onClick}>{icon}<span>{label}</span></button>; }
