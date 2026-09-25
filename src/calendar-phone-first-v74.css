@@ -1,0 +1,1126 @@
+/*
+ * CALENDAR PHONE-FIRST V74
+ *
+ * Final authority for CALENDARIO on every non-phone viewport.
+ * The stable v1.1.0 DOM is preserved. The approved phone UI is the canonical
+ * design language:
+ *   portrait  -> natural vertical document
+ *   landscape -> three-rail horizontal dashboard
+ *
+ * Tablet/iPad/laptop/desktop/ultra only change density and available space.
+ */
+
+@media (min-width: 560px) and (min-height: 660px) {
+  body #root#root main.app-shell.calendar-page-active {
+    --v74-gap: 10px;
+    --v74-radius: 22px;
+    --v74-inner-radius: 14px;
+    --v74-toolbar-h: 62px;
+    --v74-event-h: 15px;
+    --v74-event-font: 8.8px;
+    --v74-action: 34px;
+    --v74-today-min: 48px;
+    --v74-device-h: 64px;
+    --v74-surface: rgba(252,252,253,.965);
+    --v74-line: rgba(60,60,67,.09);
+    --v74-label: #1d1d1f;
+    --v74-secondary: #6e6e73;
+    --v74-tertiary: #8e8e93;
+  }
+
+  body #root#root main.app-shell.calendar-page-active.night {
+    --v74-surface: rgba(38,38,42,.97);
+    --v74-line: rgba(255,255,255,.075);
+    --v74-label: #f5f5f7;
+    --v74-secondary: #aeaeb2;
+    --v74-tertiary: #8e8e93;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: var(--v74-gap) !important;
+    font-family: var(--fc-ui-font,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",sans-serif) !important;
+    font-synthesis: none !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .responsive-calendar-panel-switch {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.left-column,.right-column,.calendar-card,.agenda-card,.tasks-card,.home-card) {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.calendar-card,.agenda-card,.tasks-card,.home-card) {
+    border: 1px solid var(--v74-line) !important;
+    border-radius: var(--v74-radius) !important;
+    background: var(--v74-surface) !important;
+    color: var(--v74-label) !important;
+    box-shadow: var(--v65-surface-shadow,0 8px 24px rgba(0,0,0,.055)) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: hidden !important;
+  }
+
+  /* Phone card typography is kept across all larger canvases. */
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .card-heading {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 58px !important;
+    margin: 0 !important;
+    padding: 13px 14px 10px !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .section-kicker {
+    color: var(--v74-tertiary) !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: 740 !important;
+    letter-spacing: .075em !important;
+    text-transform: uppercase !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .card-heading h2 {
+    margin: 4px 0 0 !important;
+    overflow: hidden !important;
+    color: var(--v74-label) !important;
+    font-size: 17px !important;
+    line-height: 1 !important;
+    font-weight: 690 !important;
+    letter-spacing: -.02em !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* Month toolbar mirrors the portrait-phone geometry. */
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--v74-toolbar-h) !important;
+    min-height: var(--v74-toolbar-h) !important;
+    max-height: var(--v74-toolbar-h) !important;
+    margin: 0 !important;
+    padding: 10px 14px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+    box-shadow: inset 0 -1px 0 var(--v74-line) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar > div:first-child {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar h1 {
+    margin: 3px 0 0 !important;
+    overflow: hidden !important;
+    color: var(--v74-label) !important;
+    font-size: clamp(22px,2vw,30px) !important;
+    line-height: 1.02 !important;
+    font-weight: 700 !important;
+    letter-spacing: -.035em !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-actions {
+    width: auto !important;
+    height: var(--v74-action) !important;
+    min-height: var(--v74-action) !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 4px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-actions > button {
+    box-sizing: border-box !important;
+    flex: 0 0 var(--v74-action) !important;
+    width: var(--v74-action) !important;
+    min-width: var(--v74-action) !important;
+    max-width: var(--v74-action) !important;
+    height: var(--v74-action) !important;
+    min-height: var(--v74-action) !important;
+    max-height: var(--v74-action) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 11px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-actions > .today-button {
+    flex-basis: auto !important;
+    width: auto !important;
+    min-width: var(--v74-today-min) !important;
+    max-width: none !important;
+    padding-inline: 9px !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-actions svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .month-grid {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(7,minmax(0,1fr)) !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .weekday {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    color: var(--v74-tertiary) !important;
+    font-weight: 700 !important;
+    letter-spacing: .055em !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-day {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .day-events {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-event,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .month-grid .calendar-event-bridge {
+    min-width: 0 !important;
+    min-height: var(--v74-event-h) !important;
+    height: var(--v74-event-h) !important;
+    max-height: var(--v74-event-h) !important;
+    border-radius: 5px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: var(--v74-event-font) !important;
+    font-weight: 630 !important;
+  }
+
+  /* Phone-style secondary cards. */
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .agenda-list {
+    scrollbar-width: none !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .agenda-list::-webkit-scrollbar,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .task-list::-webkit-scrollbar,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .entity-grid::-webkit-scrollbar,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .room-chip-strip::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .task-add-button,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .power-all {
+    box-sizing: border-box !important;
+    width: var(--v74-action) !important;
+    min-width: var(--v74-action) !important;
+    max-width: var(--v74-action) !important;
+    height: var(--v74-action) !important;
+    min-height: var(--v74-action) !important;
+    max-height: var(--v74-action) !important;
+    padding: 0 !important;
+    border-radius: 11px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.task-add-button,.power-all) svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-landscape-room-select {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .room-switcher.room-chip-strip {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    touch-action: pan-x !important;
+    scrollbar-width: none !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .room-switcher.room-chip-strip > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: max-content !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-grid-scroll-shell,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-list-scroll-shell {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-grid,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-list {
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  /* Page switch keeps the approved phone material, only slightly wider. */
+  body #root#root main.app-shell.calendar-page-active .page-dock-shell {
+    width: min(244px,calc(100vw - 28px)) !important;
+    max-width: calc(100vw - 28px) !important;
+    bottom: max(10px,env(safe-area-inset-bottom,0px)) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    .page-dock-shell > .segmented-control.page-switch-control {
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 3px !important;
+    border-radius: 15px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    .page-dock-shell > .segmented-control.page-switch-control > button {
+    height: 30px !important;
+    min-height: 30px !important;
+    font-size: 9px !important;
+  }
+}
+
+/* ========================================================================= */
+/* PORTRAIT — literal phone document, scaled for tablet/iPad width            */
+/* ========================================================================= */
+
+@media (min-width: 560px) and (min-height: 660px) and (orientation: portrait) {
+  body #root#root main.app-shell.calendar-page-active {
+    --v74-gap: clamp(10px,1.2vw,14px);
+    --v74-toolbar-h: 66px;
+    --v74-event-h: 15px;
+    --v74-event-font: 8.8px;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    grid-template-rows: var(--h71-header-h,58px) auto !important;
+    row-gap: var(--v74-gap) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding-bottom: max(86px,calc(68px + env(safe-area-inset-bottom,0px))) !important;
+    scroll-padding-bottom: 92px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-areas:
+      "calendar"
+      "left"
+      "right" !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: auto auto auto !important;
+    align-items: start !important;
+    align-content: start !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .calendar-card {
+    grid-area: calendar !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-rows: var(--v74-toolbar-h) auto !important;
+    align-self: start !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .month-grid {
+    height: auto !important;
+    max-height: none !important;
+    grid-template-rows: 27px repeat(6,clamp(64px,7.6vw,86px)) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .weekday {
+    padding: 7px 2px !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-day {
+    padding: 5px 5px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .day-number {
+    margin-bottom: 3px !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .day-events {
+    gap: 2px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-event,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-event-bridge {
+    padding: 2px 4px !important;
+    line-height: 11px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .left-column {
+    grid-area: left !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: auto clamp(360px,42vh,430px) !important;
+    gap: var(--v74-gap) !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .left-column > .agenda-card {
+    display: grid !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    grid-template-rows: auto auto !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .agenda-list {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 12px 12px !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .agenda-day {
+    grid-template-columns: 82px minmax(0,1fr) !important;
+    gap: 10px !important;
+    padding: 11px 4px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-date strong,.agenda-event) {
+    font-size: 12px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-date span,.agenda-events > small) {
+    font-size: 10.5px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 360px !important;
+    max-height: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .tasks-heading {
+    flex: 0 0 auto !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-list-scroll-shell {
+    flex: 1 1 auto !important;
+    height: auto !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-list {
+    height: 100% !important;
+    margin-inline: 12px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-row-content > label {
+    grid-template-columns: 25px minmax(0,1fr) !important;
+    gap: 11px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-label {
+    font-size: 14px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .right-column {
+    grid-area: right !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .right-column > .home-card {
+    width: 100% !important;
+    height: clamp(500px,56vh,620px) !important;
+    min-height: 500px !important;
+    max-height: 620px !important;
+    display: grid !important;
+    grid-template-rows: auto 48px auto minmax(0,1fr) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .room-switcher.room-chip-strip {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    margin: 0 !important;
+    padding: 4px 12px 8px !important;
+    gap: 6px !important;
+    scroll-padding-inline: 12px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .room-switcher.room-chip-strip > button {
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    padding-inline: 10px !important;
+    border-radius: 11px !important;
+    font-size: 9.5px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .device-heading {
+    min-height: 38px !important;
+    padding: 6px 12px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .device-heading h3 {
+    font-size: 11px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .device-heading span {
+    font-size: 9px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-grid {
+    height: 100% !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows: minmax(var(--v74-device-h),auto) !important;
+    gap: 9px !important;
+    padding: 0 12px 12px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card :is(.entity-tile,.entity-main) {
+    min-height: var(--v74-device-h) !important;
+    height: var(--v74-device-h) !important;
+    max-height: var(--v74-device-h) !important;
+  }
+
+  /* Larger portrait iPads keep the same phone layout but use width better. */
+  @media (min-width: 900px) {
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .month-grid {
+      grid-template-rows: 29px repeat(6,clamp(72px,7vw,92px)) !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-grid {
+      grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 > .right-column > .home-card {
+      height: clamp(520px,54vh,640px) !important;
+      max-height: 640px !important;
+    }
+  }
+}
+
+/* ========================================================================= */
+/* LANDSCAPE — literal phone three-rail dashboard                            */
+/* ========================================================================= */
+
+@media (min-width: 700px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.calendar-page-active {
+    --v74-left-min: 178px;
+    --v74-center-min: 390px;
+    --v74-right-min: 228px;
+    --v74-gap: 7px;
+    --v74-radius: 17px;
+    --v74-toolbar-h: 46px;
+    --v74-action: 28px;
+    --v74-today-min: 40px;
+    --v74-event-h: 11px;
+    --v74-event-font: 7px;
+    --v74-device-h: 50px;
+    width: 100% !important;
+    height: 100dvh !important;
+    min-height: 660px !important;
+    max-height: 100dvh !important;
+    grid-template-rows: var(--h71-header-h,54px) minmax(0,1fr) !important;
+    row-gap: var(--v74-gap) !important;
+    overflow: hidden !important;
+    padding-bottom: max(48px,calc(40px + env(safe-area-inset-bottom,0px))) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-areas: "left calendar right" !important;
+    grid-template-columns:
+      minmax(var(--v74-left-min),.74fr)
+      minmax(var(--v74-center-min),1.72fr)
+      minmax(var(--v74-right-min),.82fr) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .left-column {
+    grid-area: left !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: minmax(0,.92fr) minmax(0,1.08fr) !important;
+    gap: var(--v74-gap) !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .calendar-card {
+    grid-area: calendar !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-rows: var(--v74-toolbar-h) minmax(0,1fr) !important;
+    align-self: stretch !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .right-column {
+    grid-area: right !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: block !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 > .right-column > .home-card {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-rows: auto 38px auto minmax(0,1fr) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar {
+    padding: 6px 9px !important;
+    gap: 7px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar h1 {
+    margin-top: 1px !important;
+    font-size: 17px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar .section-kicker {
+    font-size: 7px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-actions {
+    height: var(--v74-action) !important;
+    min-height: var(--v74-action) !important;
+    gap: 3px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-actions > button {
+    border-radius: 9px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-actions > .today-button {
+    min-width: var(--v74-today-min) !important;
+    padding-inline: 7px !important;
+    font-size: 8px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .month-grid {
+    height: 100% !important;
+    max-height: 100% !important;
+    grid-template-rows: 20px repeat(6,minmax(0,1fr)) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .weekday {
+    padding: 5px 1px !important;
+    font-size: 7px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-day {
+    padding: 3px 4px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .day-number {
+    margin-bottom: 2px !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .day-number i {
+    width: 4px !important;
+    height: 4px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .day-events {
+    gap: 1px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-event,
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .calendar-event-bridge {
+    padding: 0 3px !important;
+    border-radius: 4px !important;
+    line-height: var(--v74-event-h) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) {
+    border-radius: var(--v74-radius) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .card-heading {
+    min-height: 0 !important;
+    padding: 8px 9px 6px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .card-heading h2 {
+    font-size: 12.5px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .section-kicker {
+    font-size: 6.5px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .agenda-card {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0,1fr) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .agenda-list {
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 0 6px 6px !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .agenda-day {
+    grid-template-columns: 50px minmax(0,1fr) !important;
+    gap: 5px !important;
+    padding: 5px 1px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-date strong,.agenda-events strong) {
+    font-size: 8px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-date span,.agenda-events span,.agenda-events small) {
+    font-size: 7px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .tasks-heading {
+    flex: 0 0 auto !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-add-button {
+    width: 27px !important;
+    min-width: 27px !important;
+    max-width: 27px !important;
+    height: 27px !important;
+    min-height: 27px !important;
+    max-height: 27px !important;
+    border-radius: 9px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-composer {
+    flex: 0 0 auto !important;
+    min-height: 31px !important;
+    margin: 0 6px 4px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-list-scroll-shell {
+    flex: 1 1 auto !important;
+    height: auto !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-list {
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 6px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-label {
+    font-size: 9px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card > .task-segmented-control {
+    flex: 0 0 34px !important;
+    width: calc(100% - 12px) !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    margin: 4px 6px 6px !important;
+    padding: 3px !important;
+    border-radius: 12px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .tasks-card > .task-segmented-control > button {
+    height: 28px !important;
+    min-height: 28px !important;
+    font-size: 8px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .room-switcher.room-chip-strip {
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    margin: 0 !important;
+    padding: 3px 7px 5px !important;
+    gap: 4px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .room-switcher.room-chip-strip > button {
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    padding-inline: 8px !important;
+    border-radius: 10px !important;
+    font-size: 8px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .device-heading {
+    min-height: 30px !important;
+    padding: 4px 8px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .device-heading h3 {
+    font-size: 9.5px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .device-heading span {
+    font-size: 7.5px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-grid {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-auto-rows: var(--v74-device-h) !important;
+    gap: 5px !important;
+    padding: 0 7px 7px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card :is(.entity-tile,.entity-main) {
+    min-height: var(--v74-device-h) !important;
+    height: var(--v74-device-h) !important;
+    max-height: var(--v74-device-h) !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-main {
+    padding: 6px 34px 6px 7px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-main strong {
+    font-size: 9px !important;
+  }
+
+  body #root#root main.app-shell.calendar-page-active
+    > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-main small {
+    font-size: 7.5px !important;
+  }
+
+  /* iPad 13 / laptop — same phone layout, slightly more breathing room. */
+  @media (min-width: 1180px) {
+    body #root#root main.app-shell.calendar-page-active {
+      --v74-left-min: 220px;
+      --v74-center-min: 520px;
+      --v74-right-min: 270px;
+      --v74-gap: 9px;
+      --v74-radius: 19px;
+      --v74-toolbar-h: 54px;
+      --v74-action: 30px;
+      --v74-today-min: 44px;
+      --v74-event-h: 13px;
+      --v74-event-font: 7.8px;
+      --v74-device-h: 56px;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar h1 {
+      font-size: 20px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .card-heading h2 {
+      font-size: 13.5px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-label {
+      font-size: 10.5px !important;
+    }
+  }
+
+  /* Desktop/wide — do not invent a desktop UI: only scale the phone rails. */
+  @media (min-width: 1440px) {
+    body #root#root main.app-shell.calendar-page-active {
+      --v74-left-min: 245px;
+      --v74-center-min: 650px;
+      --v74-right-min: 305px;
+      --v74-gap: 11px;
+      --v74-radius: 21px;
+      --v74-toolbar-h: 60px;
+      --v74-action: 34px;
+      --v74-today-min: 48px;
+      --v74-event-h: 14px;
+      --v74-event-font: 8.5px;
+      --v74-device-h: 62px;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar h1 {
+      font-size: 24px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .weekday {
+      font-size: 8.5px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .day-number {
+      font-size: 10px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .card-heading {
+      padding: 10px 11px 7px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 :is(.agenda-card,.tasks-card,.home-card) .card-heading h2 {
+      font-size: 15px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .tasks-card .task-label {
+      font-size: 11.5px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-main strong {
+      font-size: 10.5px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-main small {
+      font-size: 8.5px !important;
+    }
+  }
+
+  /* Ultra — same component scale ceiling, more canvas goes to the calendar. */
+  @media (min-width: 1800px) {
+    body #root#root main.app-shell.calendar-page-active {
+      --v74-left-min: 275px;
+      --v74-center-min: 820px;
+      --v74-right-min: 340px;
+      --v74-gap: 14px;
+      --v74-radius: 22px;
+      --v74-toolbar-h: 66px;
+      --v74-action: 36px;
+      --v74-today-min: 52px;
+      --v74-event-h: 15px;
+      --v74-event-font: 9px;
+      --v74-device-h: 66px;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .calendar-toolbar h1 {
+      font-size: 28px !important;
+    }
+
+    body #root#root main.app-shell.calendar-page-active
+      > .dashboard-grid.calendar-phone-first-v74 .home-card .entity-grid {
+      grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    }
+  }
+}
