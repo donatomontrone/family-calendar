@@ -1,0 +1,1164 @@
+/*
+ * HOME UNIFIED V70
+ *
+ * Hard reset for CASA on tablet, iPad, laptop, desktop and ultra-wide.
+ * The approved phone UI remains untouched. Non-phone CASA uses an isolated
+ * React tree (.home-large-v70 / .h70-*) so legacy V60/V67/V69 selectors cannot
+ * influence geometry, typography or overflow.
+ */
+
+.home-large-v70 {
+  display: none;
+}
+
+@media (min-width: 560px) and (min-height: 660px) {
+  body #root#root main.app-shell.home-page-active {
+    --h70-gap: 10px;
+    --h70-edge: 9px;
+    --h70-header-h: 58px;
+    --h70-side-w: clamp(250px,23vw,310px);
+    --h70-room-cols: 2;
+    --h70-card-radius: 22px;
+    --h70-surface: rgba(252,252,253,.96);
+    --h70-soft: rgba(118,118,128,.075);
+    --h70-line: rgba(60,60,67,.09);
+    --h70-label: #1d1d1f;
+    --h70-secondary: #6e6e73;
+    --h70-tertiary: #8e8e93;
+
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    min-width: 0 !important;
+    min-height: 660px !important;
+    max-width: none !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    padding-top: var(--h70-edge) !important;
+    padding-left: var(--h70-edge) !important;
+    padding-right: var(--h70-edge) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: var(--h70-header-h) minmax(0,1fr) !important;
+    row-gap: var(--h70-gap) !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active.night {
+    --h70-surface: rgba(38,38,42,.97);
+    --h70-soft: rgba(118,118,128,.14);
+    --h70-line: rgba(255,255,255,.075);
+    --h70-label: #f5f5f7;
+    --h70-secondary: #aeaeb2;
+    --h70-tertiary: #8e8e93;
+  }
+
+  body #root#root main.app-shell.home-page-active > .reel-home.home-refactor-v4 {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .v60-home-workspace,
+  body #root#root main.app-shell.home-page-active .phone-home-layout-v60 {
+    display: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .home-large-v70 {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) var(--h70-side-w) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    gap: var(--h70-gap) !important;
+    overflow: hidden !important;
+    font-family: var(--fc-ui-font,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",sans-serif) !important;
+    font-synthesis: none !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .home-large-v70 *,
+  body #root#root main.app-shell.home-page-active .home-large-v70 *::before,
+  body #root#root main.app-shell.home-page-active .home-large-v70 *::after {
+    box-sizing: border-box;
+  }
+
+  body #root#root main.app-shell.home-page-active .home-large-v70 button {
+    font: inherit !important;
+    color: inherit;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 1px 3px 4px 1px !important;
+    display: grid !important;
+    grid-template-columns: repeat(var(--h70-room-cols),minmax(0,1fr)) !important;
+    grid-auto-rows: max-content !important;
+    align-content: start !important;
+    align-items: start !important;
+    gap: var(--h70-gap) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    scrollbar-width: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms::-webkit-scrollbar,
+  body #root#root main.app-shell.home-page-active .h70-side::-webkit-scrollbar,
+  body #root#root main.app-shell.home-page-active .home-large-v70::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room {
+    --h70-accent: #4f8cff;
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    display: block !important;
+    align-self: start !important;
+    overflow: hidden !important;
+    border: 1px solid var(--h70-line) !important;
+    border-top: 4px solid var(--h70-accent) !important;
+    border-radius: var(--h70-card-radius) !important;
+    background: var(--h70-surface) !important;
+    color: var(--h70-label) !important;
+    box-shadow: var(--v65-surface-shadow,0 8px 24px rgba(0,0,0,.055)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-head {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: 42px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-icon {
+    width: 42px !important;
+    height: 42px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--h70-accent) !important;
+    border-radius: 14px !important;
+    background: color-mix(in srgb,var(--h70-accent) 12%,var(--h70-surface)) !important;
+    color: var(--h70-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-icon svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title > div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title :is(small,strong,b) {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title small {
+    color: var(--h70-tertiary) !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+    letter-spacing: .075em !important;
+    text-transform: uppercase !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title strong {
+    margin-top: 3px !important;
+    color: var(--h70-label) !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    font-weight: 690 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title b {
+    margin-top: 4px !important;
+    color: var(--h70-secondary) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 520 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-temperature {
+    flex: 0 0 auto !important;
+    min-width: 54px !important;
+    height: 42px !important;
+    margin: 0 !important;
+    padding: 0 3px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    color: var(--h70-label) !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+    font-weight: 440 !important;
+    letter-spacing: -.045em !important;
+    font-variant-numeric: tabular-nums !important;
+    box-shadow: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-temperature:disabled {
+    opacity: .55 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-section {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 14px 0 0 !important;
+    padding: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-section-head {
+    min-width: 0 !important;
+    margin: 0 0 7px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-section-head span {
+    color: var(--h70-tertiary) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 760 !important;
+    letter-spacing: .08em !important;
+    text-transform: uppercase !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-section-head b {
+    color: var(--h70-secondary) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 650 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-grid {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows: 64px !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 64px !important;
+    margin: 0 !important;
+    padding: 9px !important;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 9px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 16px !important;
+    background: var(--h70-soft) !important;
+    color: var(--h70-label) !important;
+    box-shadow: none !important;
+    text-align: left !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device.domain-light {
+    grid-template-columns: 38px minmax(0,1fr) 30px !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device:disabled {
+    opacity: .48 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device.active {
+    border-color: color-mix(in srgb,var(--h70-accent) 36%,var(--h70-line)) !important;
+    background: color-mix(in srgb,var(--h70-accent) 18%,var(--h70-surface)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device.selected {
+    border-color: var(--h70-accent) !important;
+    box-shadow:
+      inset 3px 0 0 var(--h70-accent),
+      0 0 0 2px color-mix(in srgb,var(--h70-accent) 14%,transparent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-icon {
+    width: 38px !important;
+    height: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--h70-accent) !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb,var(--h70-accent) 11%,var(--h70-surface)) !important;
+    color: var(--h70-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device.active .h70-device-icon {
+    background: var(--h70-accent) !important;
+    color: #fff !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-icon svg,
+  body #root#root main.app-shell.home-page-active .h70-device-icon svg * {
+    width: 17px !important;
+    height: 17px !important;
+    color: inherit !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-copy {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-copy :is(strong,small) {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-copy strong {
+    color: var(--h70-label) !important;
+    font-size: 12px !important;
+    line-height: 1.08 !important;
+    font-weight: 640 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-copy small {
+    margin-top: 4px !important;
+    color: var(--h70-tertiary) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-power {
+    width: 30px !important;
+    height: 30px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 10px !important;
+    background: var(--h70-surface) !important;
+    color: var(--h70-secondary) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-power.active {
+    border-color: color-mix(in srgb,var(--h70-accent) 52%,var(--h70-line)) !important;
+    background: color-mix(in srgb,var(--h70-accent) 14%,var(--h70-surface)) !important;
+    color: var(--h70-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-power svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 12px 0 0 !important;
+    padding: 12px 0 2px !important;
+    border-top: 1px solid var(--h70-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick-head {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick-head > div:first-child {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick-head small {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    color: var(--h70-tertiary) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick-head strong {
+    margin-top: 5px !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    color: var(--h70-label) !important;
+    font-size: 12.5px !important;
+    line-height: 1 !important;
+    font-weight: 680 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick-head strong b {
+    flex: 0 0 auto !important;
+    color: var(--h70-label) !important;
+    font-size: 12.5px !important;
+    font-weight: 750 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-mode-switch {
+    flex: 0 0 96px !important;
+    width: 96px !important;
+    height: 38px !important;
+    padding: 3px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 3px !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 12px !important;
+    background: var(--h70-soft) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-mode-switch > button {
+    width: 100% !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: var(--h70-secondary) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-mode-switch > button.active {
+    background: var(--h70-accent) !important;
+    color: #fff !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-mode-switch svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick input[type="range"] {
+    width: 100% !important;
+    height: 34px !important;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    touch-action: pan-x !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: var(--h70-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick input.white-temperature-range::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg,#ffad4d 0%,#ffd49a 30%,#fff2d8 50%,#dcecff 72%,#91c3ff 100%) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 22px !important;
+    height: 22px !important;
+    margin-top: -8px !important;
+    border: 2px solid #fff !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    box-shadow: 0 2px 7px rgba(0,0,0,.22) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick input[type="range"]::-moz-range-track {
+    height: 6px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: var(--h70-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick input.white-temperature-range::-moz-range-track {
+    background: linear-gradient(90deg,#ffad4d 0%,#ffd49a 30%,#fff2d8 50%,#dcecff 72%,#91c3ff 100%) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-quick input[type="range"]::-moz-range-thumb {
+    width: 22px !important;
+    height: 22px !important;
+    border: 2px solid #fff !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    box-shadow: 0 2px 7px rgba(0,0,0,.22) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-grid {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows: 46px !important;
+    gap: 7px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    padding: 7px !important;
+    display: grid !important;
+    grid-template-columns: 28px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 7px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 13px !important;
+    background: var(--h70-soft) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item > span {
+    width: 28px !important;
+    height: 28px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 9px !important;
+    background: var(--h70-surface) !important;
+    color: var(--h70-accent) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item > span svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item > div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item :is(strong,small) {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item strong {
+    color: var(--h70-label) !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    font-weight: 620 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item small {
+    margin-top: 3px !important;
+    color: var(--h70-tertiary) !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-empty {
+    grid-column: 1 / -1 !important;
+    display: block !important;
+    padding: 8px 2px !important;
+    color: var(--h70-tertiary) !important;
+    font-size: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 1px 3px 4px 1px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-auto-rows: max-content !important;
+    align-content: start !important;
+    gap: var(--h70-gap) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side-card {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 13px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 18px !important;
+    background: var(--h70-surface) !important;
+    color: var(--h70-label) !important;
+    box-shadow: var(--v65-subpanel-shadow,0 6px 18px rgba(0,0,0,.045)) !important;
+    text-align: left !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-kicker,
+  body #root#root main.app-shell.home-page-active .h70-side-heading {
+    color: var(--h70-tertiary) !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    font-weight: 720 !important;
+    letter-spacing: .07em !important;
+    text-transform: uppercase !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-summary-main,
+  body #root#root main.app-shell.home-page-active .h70-waste-main {
+    margin-top: 10px !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: 34px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-summary-main > span,
+  body #root#root main.app-shell.home-page-active .h70-side-icon {
+    width: 34px !important;
+    height: 34px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 11px !important;
+    background: rgba(52,199,89,.11) !important;
+    color: #2f9e44 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(.h70-summary-main,.h70-waste-main) svg,
+  body #root#root main.app-shell.home-page-active .h70-side-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(.h70-summary-main,.h70-waste-main) > div,
+  body #root#root main.app-shell.home-page-active .h70-side-copy {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(.h70-summary-main,.h70-waste-main) :is(strong,small),
+  body #root#root main.app-shell.home-page-active .h70-side-copy :is(strong,small,b) {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(.h70-summary-main,.h70-waste-main) strong,
+  body #root#root main.app-shell.home-page-active .h70-side-copy strong {
+    color: var(--h70-label) !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 660 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(.h70-summary-main,.h70-waste-main) small,
+  body #root#root main.app-shell.home-page-active .h70-side-copy :is(small,b) {
+    margin-top: 4px !important;
+    color: var(--h70-tertiary) !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    font-weight: 520 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-alarm {
+    display: grid !important;
+    grid-template-columns: 34px minmax(0,1fr) auto !important;
+    align-items: center !important;
+    gap: 9px !important;
+    border: 1px solid var(--h70-line) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-alarm > i {
+    color: #0a84ff !important;
+    font-size: 9.5px !important;
+    font-style: normal !important;
+    font-weight: 640 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side-heading {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side-heading > span {
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side-heading svg {
+    flex: 0 0 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side-heading b {
+    color: #0a84ff !important;
+    font-size: 9.5px !important;
+    font-weight: 640 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-body {
+    margin-top: 11px !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: 104px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-ring {
+    --h70-climate-progress: 50%;
+    width: 104px !important;
+    height: 104px !important;
+    padding: 9px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+    background: conic-gradient(#ff9f0a var(--h70-climate-progress),rgba(118,118,128,.14) 0) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-ring > div {
+    width: 100% !important;
+    height: 100% !important;
+    display: grid !important;
+    place-content: center !important;
+    border-radius: 50% !important;
+    background: var(--h70-surface) !important;
+    text-align: center !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-ring strong {
+    display: block !important;
+    color: var(--h70-label) !important;
+    font-size: 22px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+    letter-spacing: -.04em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-ring small {
+    display: block !important;
+    margin-top: 4px !important;
+    color: var(--h70-tertiary) !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats {
+    min-width: 0 !important;
+    display: grid !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats > span {
+    min-width: 0 !important;
+    padding: 7px 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    border-radius: 11px !important;
+    background: var(--h70-soft) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats small {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    color: var(--h70-tertiary) !important;
+    font-size: 9px !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats strong {
+    flex: 0 0 auto !important;
+    color: var(--h70-label) !important;
+    font-size: 10.5px !important;
+    font-weight: 650 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tools {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+    grid-auto-rows: 66px !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tools > button {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 66px !important;
+    margin: 0 !important;
+    padding: 7px 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 14px !important;
+    background: var(--h70-surface) !important;
+    color: var(--h70-secondary) !important;
+    box-shadow: var(--v65-control-shadow,0 4px 12px rgba(0,0,0,.04)) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tools > button > svg {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 6px !important;
+    border: 1px solid var(--h70-line) !important;
+    border-radius: 10px !important;
+    background: var(--h70-soft) !important;
+    color: #0a84ff !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tools > button > span {
+    width: 100% !important;
+    overflow: hidden !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Compact portrait tablet: one room column, utilities below. */
+@media (min-width: 560px) and (max-width: 699px) and (min-height: 660px) and (orientation: portrait) {
+  body #root#root main.app-shell.home-page-active {
+    --h70-room-cols: 1;
+    --h70-side-w: 100%;
+    --h70-gap: 8px;
+  }
+
+  body #root#root main.app-shell.home-page-active .home-large-v70 {
+    display: block !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 1px 2px 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side {
+    height: auto !important;
+    margin-top: var(--h70-gap) !important;
+    padding: 0 2px 4px !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(.h70-summary,.h70-climate,.h70-tools) {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* Regular tablet / iPad portrait. */
+@media (min-width: 700px) and (min-height: 660px) and (orientation: portrait) {
+  body #root#root main.app-shell.home-page-active {
+    --h70-room-cols: 2;
+    --h70-side-w: 100%;
+  }
+
+  body #root#root main.app-shell.home-page-active .home-large-v70 {
+    display: block !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 1px 2px 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side {
+    height: auto !important;
+    margin-top: var(--h70-gap) !important;
+    padding: 0 2px 4px !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    overflow: visible !important;
+  }
+
+  body #root#root main.app-shell.home-page-active :is(.h70-summary,.h70-climate,.h70-tools) {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* iPad mini landscape. */
+@media (min-width: 700px) and (max-width: 1179px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h70-header-h: 54px;
+    --h70-gap: 8px;
+    --h70-edge: 7px;
+    --h70-side-w: clamp(228px,24vw,255px);
+    --h70-room-cols: 2;
+    --h70-card-radius: 20px;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room {
+    padding: 11px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title {
+    grid-template-columns: 36px minmax(0,1fr) !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 12px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-title strong {
+    font-size: 15px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room-temperature {
+    min-width: 48px !important;
+    height: 36px !important;
+    font-size: 20px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-grid {
+    grid-auto-rows: 56px !important;
+    gap: 6px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device {
+    height: 56px !important;
+    padding: 7px !important;
+    grid-template-columns: 32px minmax(0,1fr) !important;
+    gap: 7px !important;
+    border-radius: 14px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device.domain-light {
+    grid-template-columns: 32px minmax(0,1fr) 26px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-icon {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-copy strong {
+    font-size: 10.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-copy small {
+    font-size: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-device-power {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-grid {
+    grid-auto-rows: 42px !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-status-item {
+    height: 42px !important;
+    padding: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-body {
+    grid-template-columns: 88px minmax(0,1fr) !important;
+    gap: 9px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-ring {
+    width: 88px !important;
+    height: 88px !important;
+  }
+}
+
+/* iPad Pro / laptop. */
+@media (min-width: 1180px) and (max-width: 1439px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h70-header-h: 59px;
+    --h70-gap: 10px;
+    --h70-side-w: clamp(265px,21vw,300px);
+    --h70-room-cols: 2;
+  }
+}
+
+/* Desktop / wide. */
+@media (min-width: 1440px) and (max-width: 1799px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h70-header-h: 64px;
+    --h70-gap: 12px;
+    --h70-edge: 11px;
+    --h70-side-w: clamp(295px,20vw,340px);
+    --h70-room-cols: 3;
+  }
+}
+
+/* Ultra-wide: add columns, never inflate controls. */
+@media (min-width: 1800px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h70-header-h: 94px;
+    --h70-gap: 14px;
+    --h70-edge: clamp(12px,1.25vw,24px);
+    --h70-side-w: clamp(320px,18vw,380px);
+    --h70-room-cols: 4;
+  }
+}
+
+/* Header bridge only for the small portrait-tablet range where V67 does not
+ * activate. >=768px keeps the already-approved CALENDARIO parity from V67. */
+@media (min-width: 560px) and (max-width: 767px) and (min-height: 660px) and (orientation: portrait) {
+  body #root#root main.app-shell.home-page-active > #family-shared-header-host {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: var(--h70-header-h) !important;
+    min-height: var(--h70-header-h) !important;
+    max-height: var(--h70-header-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    > #family-shared-header-host > #family-shared-header.shared-home-header {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: var(--h70-header-h) !important;
+    min-height: var(--h70-header-h) !important;
+    max-height: var(--h70-header-h) !important;
+    margin: 0 !important;
+    padding: 0 2px !important;
+    display: grid !important;
+    grid-template-columns: minmax(125px,1fr) auto minmax(205px,1fr) !important;
+    grid-template-areas: "greeting clock actions" !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-clock {
+    font-size: 29px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .reel-top-actions {
+    height: 32px !important;
+    gap: 5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header :is(.security-pill,.round-top,.header-theme-switch) {
+    flex: 0 0 32px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+  }
+
+  body #root#root main.app-shell.home-page-active #family-shared-header .security-pill span,
+  body #root#root main.app-shell.home-page-active #family-shared-header .weather-pill small {
+    display: none !important;
+  }
+}

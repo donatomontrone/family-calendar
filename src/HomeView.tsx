@@ -92,6 +92,19 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
 
   return (
     <section className="reel-home home-refactor-v4">
+      <LargeHomeV70
+        hass={hass}
+        rooms={rooms}
+        language={language}
+        copy={copy}
+        knownTemperatures={knownTemperatures}
+        outside={outside}
+        climateIds={climateIds}
+        onClimate={(entityId) => setRoomClimateEntityId(entityId)}
+        onAlarm={() => openHeaderAction("alarm")}
+        onOverlay={setOverlay}
+      />
+
       <LargeHomeWorkspaceV60
         hass={hass}
         rooms={rooms}
@@ -242,6 +255,301 @@ export default function HomeView({ hass, areas, entities, now, demo, language }:
   );
 }
 
+
+
+function LargeHomeV70({
+  hass,
+  rooms,
+  language,
+  copy,
+  knownTemperatures,
+  outside,
+  climateIds,
+  onClimate,
+  onAlarm,
+  onOverlay,
+}: {
+  hass: Hass;
+  rooms: RoomModel[];
+  language: Language;
+  copy: typeof itCopy;
+  knownTemperatures: number[];
+  outside: number;
+  climateIds: string[];
+  onClimate: (entityId: string) => void;
+  onAlarm: () => void;
+  onOverlay: (kind: Overlay) => void;
+}) {
+  const inside = average(knownTemperatures.length ? knownTemperatures : [22]);
+  const climateActive = climateIds.some((id) => isActive(hass, id));
+  const climateProgress = Math.min(100, Math.max(0, ((inside - 16) / 14) * 100));
+
+  return (
+    <div className="home-large-v70">
+      <main className="h70-rooms" aria-label={language === "it" ? "Stanze" : "Rooms"}>
+        {rooms.map((room, index) => (
+          <LargeRoomCardV70
+            key={`h70-${room.area.area_id}`}
+            hass={hass}
+            room={room}
+            language={language}
+            accent={ROOM_ACCENTS[index % ROOM_ACCENTS.length]}
+            onClimate={onClimate}
+          />
+        ))}
+      </main>
+
+      <aside className="h70-side" aria-label={language === "it" ? "Stato casa" : "Home status"}>
+        <section className="h70-side-card h70-summary">
+          <span className="h70-kicker">{copy.houseSays}</span>
+          <div className="h70-summary-main"><span><CheckIcon /></span><div><strong>{copy.allClear}</strong><small>{copy.allClearDetail}</small></div></div>
+        </section>
+
+        <button type="button" className="h70-side-card h70-alarm" onClick={onAlarm}>
+          <span className="h70-side-icon"><ShieldIcon /></span>
+          <span className="h70-side-copy"><small>{copy.alarm}</small><strong>{copy.disarmed}</strong><b>{copy.homeFree}</b></span>
+          <i>{copy.manage}</i>
+        </button>
+
+        <button type="button" className="h70-side-card h70-climate" onClick={() => onOverlay("climate")}>
+          <div className="h70-side-heading"><span><ThermometerIcon />{copy.climate}</span><b>{copy.manage}</b></div>
+          <div className="h70-climate-body">
+            <div className="h70-climate-ring" style={{ "--h70-climate-progress": `${climateProgress}%` } as CSSProperties}>
+              <div><strong>{inside.toFixed(1)}°</strong><small>{copy.inside}</small></div>
+            </div>
+            <div className="h70-climate-stats">
+              <span><small>{copy.outside}</small><strong>{outside.toFixed(1)}°</strong></span>
+              <span><small>{copy.zones}</small><strong>{climateIds.length}</strong></span>
+              <span><small>{copy.status}</small><strong>{climateActive ? copy.active : copy.idle}</strong></span>
+            </div>
+          </div>
+        </button>
+
+        <section className="h70-side-card h70-waste">
+          <div className="h70-side-heading"><span><RecycleIcon />{copy.waste}</span><b>{copy.today}</b></div>
+          <div className="h70-waste-main"><span className="h70-side-icon"><TrashBinIcon /></span><div><strong>{copy.residual}</strong><small>{copy.collectionReady}</small></div></div>
+        </section>
+
+        <div className="h70-tools" aria-label={language === "it" ? "Strumenti casa" : "Home tools"}>
+          <ToolButton icon={<SparklesIcon />} label={copy.routines} onClick={() => onOverlay("routines")} />
+          <ToolButton icon={<BatteryIcon />} label={copy.batteries} onClick={() => onOverlay("batteries")} />
+          <ToolButton icon={<RadarIcon />} label={copy.sensors} onClick={() => onOverlay("sensors")} />
+          <ToolButton icon={<ClimateIcon />} label={copy.climate} onClick={() => onOverlay("climate")} />
+          <ToolButton icon={<CameraIcon />} label={copy.cameras} onClick={() => onOverlay("cameras")} />
+          <ToolButton icon={<MediaIcon />} label={copy.media} onClick={() => onOverlay("media")} />
+          <ToolButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => onOverlay("vacuum")} />
+          <ToolButton icon={<CarIcon />} label={copy.car} onClick={() => onOverlay("car")} />
+          <ToolButton icon={<CoverIcon />} label={copy.covers} onClick={() => onOverlay("cover")} />
+        </div>
+      </aside>
+    </div>
+  );
+}
+
+function LargeRoomCardV70({
+  hass,
+  room,
+  language,
+  accent,
+  onClimate,
+}: {
+  hass: Hass;
+  room: RoomModel;
+  language: Language;
+  accent: string;
+  onClimate: (entityId: string) => void;
+}) {
+  const visibleControlIds = room.controllableIds.filter((id) => domainOf(id) !== "climate");
+  const editableIds = visibleControlIds.filter((id) => ["light", "cover"].includes(domainOf(id)));
+  const climateId = room.controllableIds.find((id) => domainOf(id) === "climate");
+  const climateActive = Boolean(climateId && isActive(hass, climateId));
+  const passiveIds = room.passiveIds.filter((id) => !isRoomTemperatureSensor(hass, id));
+  const activeCount = visibleControlIds.filter((id) => isActive(hass, id)).length;
+  const [selectedControl, setSelectedControl] = useState<string | null>(() => editableIds[0] ?? null);
+  const [lightMode, setLightMode] = useState<LightControlMode>("brightness");
+  const selectedState = selectedControl ? hass.states[selectedControl] : undefined;
+  const selectedDomain = selectedControl ? domainOf(selectedControl) : null;
+
+  useEffect(() => {
+    if (selectedControl && editableIds.includes(selectedControl)) return;
+    setSelectedControl(editableIds[0] ?? null);
+  }, [room.area.area_id, editableIds.join("|"), selectedControl]);
+
+  const runEntity = (entityId: string) => {
+    const domain = domainOf(entityId);
+    if (domain === "light" || domain === "cover") {
+      setSelectedControl(entityId);
+      return;
+    }
+    void activateEntity(hass, entityId);
+  };
+
+  return (
+    <article className="h70-room" style={{ "--h70-accent": accent } as CSSProperties}>
+      <header className="h70-room-head">
+        <div className="h70-room-title">
+          <span className="h70-room-icon">{roomIcon(room.area.name)}</span>
+          <div><small>{language === "it" ? "Stanza" : "Room"}</small><strong>{room.area.name}</strong><b>{activeCount > 0 ? `${activeCount} ${language === "it" ? "attivi" : "active"}` : (language === "it" ? "Tutto spento" : "All off")}</b></div>
+        </div>
+        <button
+          type="button"
+          className="h70-room-temperature"
+          disabled={!climateId}
+          onClick={() => { if (climateId) onClimate(climateId); }}
+          aria-label={climateId ? `${language === "it" ? "Apri clima" : "Open climate"} ${room.area.name}` : undefined}
+        >
+          {typeof room.temperature === "number" ? `${room.temperature.toFixed(1)}°` : "—"}
+        </button>
+      </header>
+
+      <section className="h70-section">
+        <div className="h70-section-head"><span>{language === "it" ? "Controlli" : "Controls"}</span><b>{visibleControlIds.length}</b></div>
+        <div className="h70-device-grid">
+          {visibleControlIds.map((id) => (
+            <LargeRoomDeviceV70
+              key={id}
+              hass={hass}
+              entityId={id}
+              language={language}
+              selected={selectedControl === id}
+              onClick={() => runEntity(id)}
+            />
+          ))}
+          {!visibleControlIds.length && <small className="h70-empty">{language === "it" ? "Nessun dispositivo controllabile" : "No controllable devices"}</small>}
+        </div>
+      </section>
+
+      {selectedState && (selectedDomain === "light" || selectedDomain === "cover") && (
+        <LargeQuickControlV70
+          hass={hass}
+          entityId={selectedControl!}
+          language={language}
+          lightMode={lightMode}
+          onLightMode={setLightMode}
+        />
+      )}
+
+      <section className="h70-section h70-status-section">
+        <div className="h70-section-head"><span>{language === "it" ? "Sensori e stato" : "Sensors & status"}</span><b>{passiveIds.length + (climateActive ? 1 : 0)}</b></div>
+        <div className="h70-status-grid">
+          {passiveIds.map((id) => (
+            <div className="h70-status-item" key={id}>
+              <span>{iconForEntity(hass, id)}</span>
+              <div><strong>{shortName(displayName(hass, id), room.area.name)}</strong><small>{entityStatus(hass, id, language)}</small></div>
+            </div>
+          ))}
+          {climateActive && climateId && (
+            <div className="h70-status-item h70-climate-status">
+              <span><ClimateIcon /></span>
+              <div><strong>{language === "it" ? "Clima acceso" : "Climate on"}</strong><small>{climateTargetLabel(hass, climateId, language)}</small></div>
+            </div>
+          )}
+          {!passiveIds.length && !climateActive && <small className="h70-empty">{language === "it" ? "Nessun sensore" : "No sensors"}</small>}
+        </div>
+      </section>
+    </article>
+  );
+}
+
+function LargeRoomDeviceV70({
+  hass,
+  entityId,
+  language,
+  selected,
+  onClick,
+}: {
+  hass: Hass;
+  entityId: string;
+  language: Language;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  const state = hass.states[entityId];
+  const domain = domainOf(entityId);
+  const active = isActive(hass, entityId);
+  const unavailable = ["unavailable", "unknown"].includes(state?.state ?? "unknown");
+  const lightIsOn = domain === "light" && state?.state === "on";
+
+  return (
+    <button
+      type="button"
+      className={`h70-device domain-${domain} ${active ? "active" : ""} ${selected ? "selected" : ""}`}
+      disabled={unavailable}
+      onClick={(event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        if (domain === "light" && target?.closest(".h70-device-power")) {
+          event.preventDefault();
+          event.stopPropagation();
+          void hass.callService("light", lightIsOn ? "turn_off" : "turn_on", { entity_id: entityId });
+          return;
+        }
+        onClick();
+      }}
+    >
+      <span className="h70-device-icon">{iconForEntity(hass, entityId)}</span>
+      <span className="h70-device-copy"><strong>{displayName(hass, entityId)}</strong><small>{unavailable ? (language === "it" ? "Non disponibile" : "Unavailable") : entityStatus(hass, entityId, language)}</small></span>
+      {domain === "light" && <span className={`h70-device-power ${lightIsOn ? "active" : ""}`} aria-hidden="true"><PowerIcon /></span>}
+    </button>
+  );
+}
+
+function LargeQuickControlV70({
+  hass,
+  entityId,
+  language,
+  lightMode,
+  onLightMode,
+}: {
+  hass: Hass;
+  entityId: string;
+  language: Language;
+  lightMode: LightControlMode;
+  onLightMode: (mode: LightControlMode) => void;
+}) {
+  const state = hass.states[entityId];
+  const domain = domainOf(entityId);
+  const temperature = domain === "light" ? getWhiteTemperature(state.attributes) : null;
+  const brightness = Math.round((Number(state.attributes.brightness ?? 180) / 255) * 100);
+  const coverPosition = Number(state.attributes.current_position ?? (state.state === "open" ? 100 : 0));
+  const value = domain === "cover" ? coverPosition : lightMode === "brightness" ? brightness : temperature!.currentKelvin;
+  const min = domain === "cover" ? 0 : lightMode === "brightness" ? 1 : temperature!.minKelvin;
+  const max = domain === "cover" ? 100 : lightMode === "brightness" ? 100 : temperature!.maxKelvin;
+  const step = domain === "light" && lightMode === "temperature" ? 50 : 1;
+  const label = domain === "cover"
+    ? (language === "it" ? "Posizione" : "Position")
+    : lightMode === "brightness"
+      ? (language === "it" ? "Luminosità" : "Brightness")
+      : (language === "it" ? "Temperatura bianco" : "White temperature");
+  const formatted = domain === "light" && lightMode === "temperature" ? `${Math.round(value)} K` : `${Math.round(value)}%`;
+
+  return (
+    <section className={`h70-quick domain-${domain}`}>
+      <div className="h70-quick-head">
+        <div><small>{displayName(hass, entityId)}</small><strong>{label}<b>{formatted}</b></strong></div>
+        {domain === "light" && (
+          <div className="h70-mode-switch">
+            <button type="button" className={lightMode === "brightness" ? "active" : ""} onClick={() => onLightMode("brightness")} aria-label={language === "it" ? "Luminosità" : "Brightness"}><SunIcon /></button>
+            <button type="button" className={lightMode === "temperature" ? "active" : ""} onClick={() => onLightMode("temperature")} aria-label={language === "it" ? "Temperatura bianco" : "White temperature"}><ThermometerIcon /></button>
+          </div>
+        )}
+      </div>
+      <input
+        className={domain === "light" && lightMode === "temperature" ? "white-temperature-range" : ""}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(event) => {
+          const next = Number(event.target.value);
+          if (domain === "cover") void setCoverPosition(hass, entityId, next);
+          else if (lightMode === "brightness") void setLightBrightness(hass, entityId, next);
+          else void setLightColorTemperature(hass, entityId, next);
+        }}
+      />
+    </section>
+  );
+}
 
 function LargeHomeWorkspaceV60({
   hass,
