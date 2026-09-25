@@ -195,7 +195,6 @@ export default function HomeView({ hass, areas, entities, now, demo, language, o
 
         <aside className="reel-side">
           <section className="reel-side-card home-message-card">
-            <button type="button" className="home-icon-customize-trigger phone-icon-customize-trigger" aria-label={language === "it" ? "Personalizza icone dispositivi" : "Customize device icons"} title={language === "it" ? "Personalizza icone" : "Customize icons"} onClick={() => setIconEditorOpen(true)}><IconPaletteIcon /></button>
             <span className="reel-kicker">{copy.houseSays}</span>
             <div className="house-message"><CheckIcon /><div><strong>{copy.allClear}</strong><span>{copy.allClearDetail}</span></div></div>
           </section>
@@ -233,6 +232,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language, o
             <ToolButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => setOverlay("vacuum")} />
             <ToolButton icon={<CarIcon />} label={copy.car} onClick={() => setOverlay("car")} />
             <ToolButton icon={<CoverIcon />} label={copy.covers} onClick={() => setOverlay("cover")} />
+            <ToolButton icon={<IconPaletteIcon />} label={language === "it" ? "Personalizza icone" : "Customize icons"} onClick={() => setIconEditorOpen(true)} wide />
           </div>
         </aside>
       </div>
@@ -291,6 +291,7 @@ const ICON_CATEGORY_LABELS: Record<IconCategory, { it: string; en: string }> = {
   security: { it: "Sensori e sicurezza", en: "Sensors & security" },
   media: { it: "Audio e video", en: "Audio & video" },
   appliances: { it: "Elettrodomestici", en: "Appliances" },
+  energy: { it: "Energia", en: "Energy" },
   outdoor: { it: "Esterno", en: "Outdoor" },
 };
 
@@ -306,10 +307,12 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
   const [selectedEntity, setSelectedEntity] = useState<string>(() => entityIds[0] ?? "");
   const [draft, setDraft] = useState<IconOverrideMap>(() => ({ ...overrides }));
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<IconCategory | "all">("all");
   const [saving, setSaving] = useState(false);
   const selectedRoom = rooms.find((room) => room.allIds.includes(selectedEntity));
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const filtered = ICON_OPTIONS.filter((option) => {
+    if (category !== "all" && option.category !== category) return false;
     if (!normalizedQuery) return true;
     const label = language === "it" ? option.it : option.en;
     return [option.key, label, ...option.keywords].some((value) => value.toLocaleLowerCase().includes(normalizedQuery));
@@ -349,7 +352,7 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
           <div>
             <span>{language === "it" ? "CASA · PERSONALIZZA" : "HOME · CUSTOMIZE"}</span>
             <h2>{language === "it" ? "Icone dispositivi" : "Device icons"}</h2>
-            <p>{language === "it" ? "Scegli un dispositivo e assegnagli un’icona. Le modifiche appariranno anche in CALENDARIO." : "Choose a device and assign an icon. Changes also appear in CALENDAR."}</p>
+            <p>{language === "it" ? `Scegli fra ${ICON_OPTIONS.length} icone e assegna quella giusta a ogni dispositivo. La modifica apparirà anche in CALENDARIO.` : `Choose from ${ICON_OPTIONS.length} icons and assign the right one to every device. The change also appears in CALENDAR.`}</p>
           </div>
           <button type="button" className="icon-customizer-close" onClick={onClose} disabled={saving} aria-label={language === "it" ? "Chiudi" : "Close"}><CloseIcon /></button>
         </header>
@@ -390,6 +393,15 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
               <span>{query ? <button type="button" onClick={() => setQuery("")} aria-label={language === "it" ? "Cancella ricerca" : "Clear search"}><CloseIcon /></button> : null}</span>
             </label>
 
+            <div className="icon-category-strip" role="tablist" aria-label={language === "it" ? "Categorie icone" : "Icon categories"}>
+              <button type="button" role="tab" aria-selected={category === "all"} className={category === "all" ? "active" : ""} onClick={() => setCategory("all")}>{language === "it" ? "Tutte" : "All"}</button>
+              {ICON_CATEGORY_ORDER.map((item) => (
+                <button type="button" role="tab" aria-selected={category === item} className={category === item ? "active" : ""} onClick={() => setCategory(item)} key={item}>
+                  {ICON_CATEGORY_LABELS[item][language === "it" ? "it" : "en"]}
+                </button>
+              ))}
+            </div>
+
             <div className="icon-picker-scroll">
               {!normalizedQuery && recentKeys.length > 0 && (
                 <section className="icon-picker-category">
@@ -402,12 +414,13 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
                   </div>
                 </section>
               )}
-              {ICON_CATEGORY_ORDER.map((category) => {
-                const options = filtered.filter((option) => option.category === category);
+              {ICON_CATEGORY_ORDER.map((group) => {
+                if (category !== "all" && category !== group) return null;
+                const options = filtered.filter((option) => option.category === group);
                 if (!options.length) return null;
                 return (
-                  <section className="icon-picker-category" key={category}>
-                    <h3>{ICON_CATEGORY_LABELS[category][language === "it" ? "it" : "en"]}</h3>
+                  <section className="icon-picker-category" key={group}>
+                    <h3>{ICON_CATEGORY_LABELS[group][language === "it" ? "it" : "en"]}</h3>
                     <div className="icon-picker-grid">
                       {options.map((option) => <IconChoiceButton key={option.key} option={option} language={language} active={draft[selectedEntity] === option.key} onClick={() => chooseIcon(option.key)} />)}
                     </div>
@@ -490,7 +503,6 @@ function LargeHomeV70({
 
       <aside className="h70-side" aria-label={language === "it" ? "Stato casa" : "Home status"}>
         <section className="h70-side-card h70-summary">
-          <button type="button" className="home-icon-customize-trigger h70-icon-customize-trigger" aria-label={language === "it" ? "Personalizza icone dispositivi" : "Customize device icons"} title={language === "it" ? "Personalizza icone" : "Customize icons"} onClick={onCustomizeIcons}><IconPaletteIcon /></button>
           <span className="h70-kicker">{copy.houseSays}</span>
           <div className="h70-summary-main"><span><CheckIcon /></span><div><strong>{copy.allClear}</strong><small>{copy.allClearDetail}</small></div></div>
         </section>
@@ -530,6 +542,7 @@ function LargeHomeV70({
           <H70ToolButton icon={<VacuumIcon />} label={copy.vacuum} onClick={() => onOverlay("vacuum")} />
           <H70ToolButton icon={<CarIcon />} label={copy.car} onClick={() => onOverlay("car")} />
           <H70ToolButton icon={<CoverIcon />} label={copy.covers} onClick={() => onOverlay("cover")} />
+          <H70ToolButton icon={<IconPaletteIcon />} label={language === "it" ? "Personalizza icone" : "Customize icons"} onClick={onCustomizeIcons} wide />
         </div>
       </aside>
     </div>
@@ -544,9 +557,9 @@ function H70SliderChevron({ direction }: { direction: "left" | "right" }) {
   );
 }
 
-function H70ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) {
+function H70ToolButton({ icon, label, onClick, wide = false }: { icon: ReactNode; label: string; onClick: () => void; wide?: boolean }) {
   return (
-    <button type="button" className="h70-tool" aria-label={label} title={label} onClick={onClick}>
+    <button type="button" className={`h70-tool ${wide ? "h70-tool-wide" : ""}`} aria-label={label} title={label} onClick={onClick}>
       <span className="h70-tool-icon" aria-hidden="true">{icon}</span>
       <span className="h70-tool-label">{label}</span>
     </button>
@@ -1648,7 +1661,7 @@ function GenericFeaturePanel({ hass, kind, language }: { hass: Hass; kind: Exclu
   return <div className="home-generic-grid-v4">{items.map((state) => <article key={state.entity_id}><span><EntityIcon entityId={state.entity_id} fallback={iconForEntity(hass, state.entity_id)} /></span><div><strong>{displayName(hass, state.entity_id)}</strong><small>{entityStatus(hass, state.entity_id, language)}</small></div></article>)}</div>;
 }
 
-function ToolButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) { return <button type="button" aria-label={label} title={label} onClick={onClick}>{icon}<span>{label}</span></button>; }
+function ToolButton({ icon, label, onClick, wide = false }: { icon: ReactNode; label: string; onClick: () => void; wide?: boolean }) { return <button type="button" className={wide ? "home-tool-wide" : undefined} aria-label={label} title={label} onClick={onClick}>{icon}<span>{label}</span></button>; }
 function RoutineRow({ icon, title, onClick }: { icon: ReactNode; title: string; onClick: () => void }) { return <button className="routine-row" onClick={onClick}><span>{icon}</span><div><strong>{title}</strong></div><ChevronIcon /></button>; }
 
 function isPassive(hass: Hass, entityId: string) {

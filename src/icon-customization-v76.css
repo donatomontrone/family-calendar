@@ -1,0 +1,831 @@
+/*
+ * ICON CUSTOMIZATION V76
+ * Native project-style placement and picker experience across phone -> ultra.
+ */
+
+.h70-tools > .h70-tool-wide {
+  grid-column: 1 / -1 !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  display: grid !important;
+  grid-template-columns: 24px minmax(0,1fr) 18px !important;
+  align-items: center !important;
+  justify-items: start !important;
+  gap: 10px !important;
+  padding: 0 13px !important;
+  border-radius: 14px !important;
+  background: rgba(118,118,128,.075) !important;
+}
+
+.h70-tools > .h70-tool-wide::after {
+  content: "›";
+  justify-self: end;
+  color: #8e8e93;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.h70-tools > .h70-tool-wide .h70-tool-icon {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.h70-tools > .h70-tool-wide .h70-tool-icon > svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.h70-tools > .h70-tool-wide .h70-tool-label {
+  width: auto !important;
+  text-align: left !important;
+  font-size: 10px !important;
+  font-weight: 620 !important;
+}
+
+.reel-tools-grid > .home-tool-wide {
+  grid-column: 1 / -1 !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  display: grid !important;
+  grid-template-columns: 24px minmax(0,1fr) 18px !important;
+  align-items: center !important;
+  justify-items: start !important;
+  gap: 9px !important;
+  padding: 0 12px !important;
+  border-radius: 14px !important;
+}
+
+.reel-tools-grid > .home-tool-wide::after {
+  content: "›";
+  justify-self: end;
+  color: #8e8e93;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.reel-tools-grid > .home-tool-wide > svg {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+.reel-tools-grid > .home-tool-wide > span {
+  width: auto !important;
+  text-align: left !important;
+}
+
+.icon-customizer-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2200 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: max(18px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) max(18px,env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px)) !important;
+  background: rgba(20,20,24,.26) !important;
+  backdrop-filter: blur(18px) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.14) !important;
+}
+
+.icon-customizer-panel {
+  --ic-surface: rgba(251,251,253,.992);
+  --ic-secondary: rgba(118,118,128,.075);
+  --ic-secondary-strong: rgba(118,118,128,.12);
+  --ic-line: rgba(60,60,67,.095);
+  --ic-label: #1d1d1f;
+  --ic-sub: #6e6e73;
+  --ic-blue: #3478f6;
+  box-sizing: border-box !important;
+  width: min(1180px,calc(100vw - 36px)) !important;
+  height: min(780px,calc(100dvh - 36px)) !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0,1fr) auto !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ic-line) !important;
+  border-radius: 26px !important;
+  background: var(--ic-surface) !important;
+  color: var(--ic-label) !important;
+  box-shadow: 0 30px 90px rgba(0,0,0,.2),0 7px 22px rgba(0,0,0,.07) !important;
+  font-family: var(--fc-ui-font,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",sans-serif) !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+body:has(.app-shell.night) .icon-customizer-panel {
+  --ic-surface: rgba(32,32,36,.992);
+  --ic-secondary: rgba(118,118,128,.14);
+  --ic-secondary-strong: rgba(118,118,128,.22);
+  --ic-line: rgba(255,255,255,.085);
+  --ic-label: #f5f5f7;
+  --ic-sub: #aeaeb2;
+}
+
+.icon-customizer-header {
+  min-width: 0 !important;
+  padding: 18px 20px 15px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  border-bottom: 1px solid var(--ic-line) !important;
+}
+
+.icon-customizer-header > div {
+  min-width: 0 !important;
+}
+
+.icon-customizer-header span {
+  color: var(--ic-sub) !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 760 !important;
+  letter-spacing: .075em !important;
+}
+
+.icon-customizer-header h2 {
+  margin: 5px 0 0 !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+  font-weight: 710 !important;
+  letter-spacing: -.035em !important;
+}
+
+.icon-customizer-header p {
+  margin: 6px 0 0 !important;
+  max-width: 680px !important;
+  color: var(--ic-sub) !important;
+  font-size: 10.5px !important;
+  line-height: 1.35 !important;
+}
+
+.icon-customizer-close {
+  flex: 0 0 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: var(--ic-secondary-strong) !important;
+  color: var(--ic-sub) !important;
+}
+
+.icon-customizer-close svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+.icon-customizer-body {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(240px,292px) minmax(0,1fr) !important;
+  overflow: hidden !important;
+}
+
+.icon-device-browser {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0,1fr) !important;
+  border-right: 1px solid var(--ic-line) !important;
+  overflow: hidden !important;
+}
+
+.icon-device-browser-title {
+  min-height: 44px !important;
+  padding: 12px 14px 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+.icon-device-browser-title strong {
+  font-size: 11.5px !important;
+  font-weight: 680 !important;
+}
+
+.icon-device-browser-title span {
+  color: var(--ic-sub) !important;
+  font-size: 9.5px !important;
+}
+
+.icon-device-list {
+  min-height: 0 !important;
+  padding: 0 8px 12px !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+}
+
+.icon-device-list::-webkit-scrollbar,
+.icon-picker-scroll::-webkit-scrollbar,
+.icon-category-strip::-webkit-scrollbar {
+  display: none !important;
+}
+
+.icon-device-room h3 {
+  margin: 12px 8px 6px !important;
+  color: var(--ic-sub) !important;
+  font-size: 8.5px !important;
+  line-height: 1 !important;
+  font-weight: 730 !important;
+  letter-spacing: .045em !important;
+  text-transform: uppercase !important;
+}
+
+.icon-device-room > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 52px !important;
+  margin: 2px 0 !important;
+  padding: 7px 8px !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0,1fr) 6px !important;
+  align-items: center !important;
+  gap: 9px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  color: var(--ic-label) !important;
+  text-align: left !important;
+}
+
+.icon-device-room > button:hover {
+  background: var(--ic-secondary) !important;
+}
+
+.icon-device-room > button.active {
+  background: color-mix(in srgb,var(--ic-blue) 11%,transparent) !important;
+}
+
+.icon-device-room > button > span:nth-child(2) {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+}
+
+.icon-device-room > button strong,
+.icon-device-room > button small {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.icon-device-room > button strong {
+  font-size: 10px !important;
+  font-weight: 620 !important;
+}
+
+.icon-device-room > button small {
+  color: var(--ic-sub) !important;
+  font-size: 8px !important;
+}
+
+.icon-device-room > button i {
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: var(--ic-blue) !important;
+}
+
+.icon-device-current {
+  width: 34px !important;
+  height: 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 11px !important;
+  background: var(--ic-secondary) !important;
+}
+
+.icon-device-current svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.icon-picker-main {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 13px 15px 0 !important;
+  display: grid !important;
+  grid-template-rows: auto auto auto minmax(0,1fr) !important;
+  gap: 10px !important;
+  overflow: hidden !important;
+}
+
+.icon-picker-selected {
+  min-width: 0 !important;
+  min-height: 62px !important;
+  padding: 7px 9px !important;
+  display: grid !important;
+  grid-template-columns: 46px minmax(0,1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 16px !important;
+  background: var(--ic-secondary) !important;
+}
+
+.icon-picker-preview {
+  width: 46px !important;
+  height: 46px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 14px !important;
+  background: var(--ic-surface) !important;
+}
+
+.icon-picker-preview svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.icon-picker-selected > div {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+}
+
+.icon-picker-selected small {
+  color: var(--ic-sub) !important;
+  font-size: 8.5px !important;
+}
+
+.icon-picker-selected strong {
+  overflow: hidden !important;
+  font-size: 12.5px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.icon-picker-selected > button {
+  height: 29px !important;
+  padding-inline: 10px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: var(--ic-surface) !important;
+  color: var(--ic-blue) !important;
+  font-size: 8.5px !important;
+  font-weight: 650 !important;
+}
+
+.icon-picker-search {
+  min-width: 0 !important;
+  height: 36px !important;
+  padding: 0 9px !important;
+  display: grid !important;
+  grid-template-columns: 18px minmax(0,1fr) 24px !important;
+  align-items: center !important;
+  gap: 5px !important;
+  border-radius: 11px !important;
+  background: var(--ic-secondary) !important;
+  color: var(--ic-sub) !important;
+}
+
+.icon-picker-search > svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.icon-picker-search input {
+  min-width: 0 !important;
+  height: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: var(--ic-label) !important;
+  font: inherit !important;
+  font-size: 10.5px !important;
+}
+
+.icon-picker-search > span {
+  display: grid !important;
+  place-items: center !important;
+}
+
+.icon-picker-search button {
+  width: 22px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: var(--ic-secondary-strong) !important;
+  color: var(--ic-sub) !important;
+}
+
+.icon-picker-search button svg {
+  width: 9px !important;
+  height: 9px !important;
+}
+
+.icon-category-strip {
+  min-width: 0 !important;
+  height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  scroll-padding-inline: 2px !important;
+}
+
+.icon-category-strip > button {
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  height: 30px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: var(--ic-secondary) !important;
+  color: var(--ic-sub) !important;
+  font-size: 8.5px !important;
+  font-weight: 630 !important;
+}
+
+.icon-category-strip > button.active {
+  background: var(--ic-label) !important;
+  color: var(--ic-surface) !important;
+}
+
+.icon-picker-scroll {
+  min-height: 0 !important;
+  padding: 2px 2px 18px !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+}
+
+.icon-picker-category {
+  margin-bottom: 16px !important;
+}
+
+.icon-picker-category h3 {
+  margin: 0 0 7px 2px !important;
+  color: var(--ic-sub) !important;
+  font-size: 9.5px !important;
+  font-weight: 680 !important;
+}
+
+.icon-picker-grid {
+  display: grid !important;
+  grid-template-columns: repeat(8,minmax(62px,1fr)) !important;
+  gap: 6px !important;
+}
+
+.icon-picker-grid > button {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  height: 72px !important;
+  padding: 7px 4px 6px !important;
+  display: grid !important;
+  grid-template-rows: 36px auto !important;
+  place-items: center !important;
+  gap: 4px !important;
+  border: 1px solid transparent !important;
+  border-radius: 14px !important;
+  background: var(--ic-secondary) !important;
+  color: var(--ic-label) !important;
+}
+
+.icon-picker-grid > button:hover {
+  background: color-mix(in srgb,var(--ic-blue) 7%,var(--ic-secondary)) !important;
+}
+
+.icon-picker-grid > button.active {
+  border-color: color-mix(in srgb,var(--ic-blue) 38%,transparent) !important;
+  background: color-mix(in srgb,var(--ic-blue) 13%,transparent) !important;
+  color: var(--ic-blue) !important;
+}
+
+.icon-picker-grid > button span {
+  width: 36px !important;
+  height: 36px !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.icon-picker-grid > button svg {
+  width: 23px !important;
+  height: 23px !important;
+}
+
+.icon-picker-grid > button small {
+  width: 100% !important;
+  overflow: hidden !important;
+  font-size: 7.6px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.icon-picker-empty {
+  padding: 38px 12px !important;
+  color: var(--ic-sub) !important;
+  font-size: 10.5px !important;
+  text-align: center !important;
+}
+
+.icon-customizer-footer {
+  min-height: 58px !important;
+  padding: 10px 15px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  border-top: 1px solid var(--ic-line) !important;
+}
+
+.icon-customizer-footer > div {
+  display: flex !important;
+  gap: 7px !important;
+}
+
+.icon-customizer-footer button {
+  height: 34px !important;
+  padding-inline: 13px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: var(--ic-secondary) !important;
+  color: var(--ic-label) !important;
+  font-size: 9.5px !important;
+  font-weight: 630 !important;
+}
+
+.icon-customizer-footer button:disabled {
+  opacity: .42 !important;
+}
+
+.icon-customizer-footer .icon-reset-all {
+  color: #ff453a !important;
+}
+
+.icon-customizer-footer .icon-confirm {
+  min-width: 88px !important;
+  background: var(--ic-blue) !important;
+  color: #fff !important;
+}
+
+/* iPad / medium portrait: keep split view, reduce icon columns. */
+@media (max-width: 980px) and (min-width: 641px) {
+  .icon-customizer-panel {
+    width: calc(100vw - 28px) !important;
+    height: calc(100dvh - 28px) !important;
+  }
+
+  .icon-customizer-body {
+    grid-template-columns: 230px minmax(0,1fr) !important;
+  }
+
+  .icon-picker-grid {
+    grid-template-columns: repeat(5,minmax(58px,1fr)) !important;
+  }
+}
+
+/* Phone portrait: native bottom sheet, device rail + icon picker. */
+@media (max-width: 640px) and (min-height: 561px) {
+  .icon-customizer-backdrop {
+    place-items: end center !important;
+    padding: 0 !important;
+  }
+
+  .icon-customizer-panel {
+    width: 100vw !important;
+    height: min(90dvh,780px) !important;
+    max-height: 90dvh !important;
+    border-width: 1px 0 0 !important;
+    border-radius: 24px 24px 0 0 !important;
+    grid-template-rows: auto minmax(0,1fr) auto !important;
+  }
+
+  .icon-customizer-header {
+    padding: 14px 15px 11px !important;
+  }
+
+  .icon-customizer-header::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 34px;
+    height: 4px;
+    margin-left: -17px;
+    border-radius: 999px;
+    background: var(--ic-secondary-strong);
+  }
+
+  .icon-customizer-header {
+    position: relative !important;
+    padding-top: 17px !important;
+  }
+
+  .icon-customizer-header h2 {
+    font-size: 20px !important;
+  }
+
+  .icon-customizer-header p {
+    display: none !important;
+  }
+
+  .icon-customizer-body {
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: 138px minmax(0,1fr) !important;
+  }
+
+  .icon-device-browser {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--ic-line) !important;
+  }
+
+  .icon-device-browser-title {
+    min-height: 34px !important;
+    padding: 8px 11px 4px !important;
+  }
+
+  .icon-device-list {
+    padding: 0 8px 8px !important;
+    display: flex !important;
+    gap: 5px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+
+  .icon-device-room {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: end !important;
+    gap: 5px !important;
+  }
+
+  .icon-device-room h3 {
+    display: none !important;
+  }
+
+  .icon-device-room > button {
+    width: 150px !important;
+    min-height: 50px !important;
+    margin: 0 !important;
+  }
+
+  .icon-picker-main {
+    padding: 9px 9px 0 !important;
+    gap: 8px !important;
+  }
+
+  .icon-picker-selected {
+    min-height: 54px !important;
+    grid-template-columns: 40px minmax(0,1fr) auto !important;
+  }
+
+  .icon-picker-preview {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .icon-picker-search {
+    height: 34px !important;
+  }
+
+  .icon-category-strip {
+    height: 31px !important;
+  }
+
+  .icon-category-strip > button {
+    height: 27px !important;
+    padding-inline: 9px !important;
+    font-size: 8px !important;
+  }
+
+  .icon-picker-grid {
+    grid-template-columns: repeat(4,minmax(52px,1fr)) !important;
+    gap: 5px !important;
+  }
+
+  .icon-picker-grid > button {
+    height: 66px !important;
+  }
+
+  .icon-customizer-footer {
+    min-height: 56px !important;
+    padding: 9px 10px max(9px,env(safe-area-inset-bottom,0px)) !important;
+  }
+
+  .icon-customizer-footer .icon-reset-all {
+    padding-inline: 8px !important;
+  }
+}
+
+/* Phone landscape / short canvases: compact split sheet. */
+@media (max-height: 560px) {
+  .icon-customizer-backdrop {
+    padding: 7px !important;
+  }
+
+  .icon-customizer-panel {
+    width: calc(100vw - 14px) !important;
+    height: calc(100dvh - 14px) !important;
+    border-radius: 20px !important;
+  }
+
+  .icon-customizer-header {
+    padding: 10px 12px 8px !important;
+  }
+
+  .icon-customizer-header h2 {
+    font-size: 17px !important;
+  }
+
+  .icon-customizer-header p {
+    display: none !important;
+  }
+
+  .icon-customizer-body {
+    grid-template-columns: 205px minmax(0,1fr) !important;
+  }
+
+  .icon-device-browser-title {
+    min-height: 32px !important;
+    padding: 7px 9px 4px !important;
+  }
+
+  .icon-device-room > button {
+    min-height: 44px !important;
+    padding-block: 5px !important;
+  }
+
+  .icon-device-current {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .icon-picker-main {
+    padding: 8px 9px 0 !important;
+    gap: 6px !important;
+  }
+
+  .icon-picker-selected {
+    min-height: 46px !important;
+    grid-template-columns: 34px minmax(0,1fr) auto !important;
+  }
+
+  .icon-picker-preview {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .icon-picker-search {
+    height: 30px !important;
+  }
+
+  .icon-category-strip {
+    height: 28px !important;
+  }
+
+  .icon-category-strip > button {
+    height: 25px !important;
+  }
+
+  .icon-picker-grid {
+    grid-template-columns: repeat(7,minmax(48px,1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .icon-picker-grid > button {
+    height: 58px !important;
+  }
+
+  .icon-picker-grid > button span {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .icon-picker-grid > button svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .icon-customizer-footer {
+    min-height: 46px !important;
+    padding: 6px 9px !important;
+  }
+
+  .icon-customizer-footer button {
+    height: 30px !important;
+  }
+}
+
+/* Ultra-wide: cap density; do not inflate controls. */
+@media (min-width: 1800px) and (min-height: 700px) {
+  .icon-customizer-panel {
+    width: min(1260px,calc(100vw - 64px)) !important;
+    height: min(820px,calc(100dvh - 64px)) !important;
+  }
+
+  .icon-picker-grid {
+    grid-template-columns: repeat(9,minmax(66px,1fr)) !important;
+  }
+}
