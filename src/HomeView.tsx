@@ -290,6 +290,7 @@ const ICON_CATEGORY_LABELS: Record<IconCategory, { it: string; en: string }> = {
   home: { it: "Casa", en: "Home" },
   climate: { it: "Clima", en: "Climate" },
   security: { it: "Sensori e sicurezza", en: "Sensors & security" },
+  apple: { it: "Apple", en: "Apple" },
   media: { it: "Audio e video", en: "Audio & video" },
   appliances: { it: "Elettrodomestici", en: "Appliances" },
   energy: { it: "Energia", en: "Energy" },

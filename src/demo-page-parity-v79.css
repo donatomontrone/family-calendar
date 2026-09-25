@@ -1,0 +1,227 @@
+/*
+ * DEMO PAGE PARITY V79
+ * Final standalone-demo authority for CASA / CALENDARIO chrome.
+ * The canvas is viewport-relative, so gradients cannot drift when page content
+ * has a different height. The switch uses one exact equation in both pages.
+ */
+
+html[data-demo-viewport] { background: #eef0f4 !important; }
+html[data-demo-viewport]:has(body #root main.app-shell.night) { background: #16171b !important; }
+
+html[data-demo-viewport] body:has(#root main.app-shell:is(.calendar-page-active,.home-page-active):not(.night)) {
+  background:
+    radial-gradient(circle at 10% -8%, rgba(255,255,255,.98), transparent 34%),
+    radial-gradient(circle at 92% 2%, rgba(216,225,238,.40), transparent 31%),
+    linear-gradient(180deg, #f7f8fa 0%, #eef0f4 100%) !important;
+  background-color: #eef0f4 !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  background-size: 100vw 100dvh !important;
+}
+
+html[data-demo-viewport] body:has(#root main.app-shell:is(.calendar-page-active,.home-page-active).night) {
+  background:
+    radial-gradient(circle at 10% -10%, rgba(76,88,112,.20), transparent 34%),
+    radial-gradient(circle at 92% 0%, rgba(47,55,72,.16), transparent 30%),
+    linear-gradient(180deg, #16171b 0%, #1b1c21 52%, #17181c 100%) !important;
+  background-color: #16171b !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  background-size: 100vw 100dvh !important;
+}
+
+html[data-demo-viewport] body #root#root,
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active),
+html[data-demo-viewport] body #root#root main.app-shell.home-page-active > .reel-home.home-refactor-v4,
+html[data-demo-viewport] body #root#root main.app-shell.calendar-page-active > .dashboard-grid {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+  --fc-bottom-gap: 8px !important;
+  --fc-page-dock-h: 38px !important;
+  --fc-page-switch-inset: 3px !important;
+  --fc-page-switch-gap: 4px !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) > .page-dock-shell {
+  box-sizing: border-box !important;
+  position: fixed !important;
+  z-index: 180 !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(var(--fc-bottom-gap) + env(safe-area-inset-bottom,0px)) !important;
+  width: min(244px,calc(100vw - 28px)) !important;
+  min-width: 0 !important;
+  max-width: calc(100vw - 28px) !important;
+  height: var(--fc-page-dock-h) !important;
+  min-height: var(--fc-page-dock-h) !important;
+  max-height: var(--fc-page-dock-h) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translate3d(-50%,0,0) !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control {
+  box-sizing: border-box !important;
+  position: relative !important;
+  isolation: isolate !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: var(--fc-page-switch-inset) !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-template-rows: minmax(0,1fr) !important;
+  align-items: stretch !important;
+  align-content: stretch !important;
+  gap: var(--fc-page-switch-gap) !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.52) !important;
+  border-radius: 15px !important;
+  background: rgba(255,255,255,.58) !important;
+  box-shadow: 0 12px 34px rgba(28,28,30,.10), inset 0 1px 0 rgba(255,255,255,.86) !important;
+  backdrop-filter: blur(24px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell.night:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control {
+  border-color: rgba(255,255,255,.10) !important;
+  background: rgba(52,52,56,.66) !important;
+  box-shadow: 0 14px 36px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  top: var(--fc-page-switch-inset) !important;
+  bottom: var(--fc-page-switch-inset) !important;
+  left: var(--fc-page-switch-inset) !important;
+  width: calc((100% - var(--fc-page-switch-inset) - var(--fc-page-switch-inset) - var(--fc-page-switch-gap)) / 2) !important;
+  height: auto !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: rgba(255,255,255,.95) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07), inset 0 1px 0 rgba(255,255,255,.76) !important;
+  transform: translate3d(0,0,0) !important;
+  transition: transform .30s cubic-bezier(.22,.88,.26,1) !important;
+  pointer-events: none !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control:has(> button:nth-of-type(2).active)::before {
+  transform: translate3d(calc(100% + var(--fc-page-switch-gap)),0,0) !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control.segment-dragging.segment-dragging::before {
+  transform: translate3d(var(--segment-drag-offset,0px),0,0) !important;
+  transition: none !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell.night:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control::before {
+  background: rgba(84,84,89,.92) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button {
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #77777d !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 680 !important;
+  letter-spacing: -.012em !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button:hover,
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button:active,
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button:focus-visible {
+  transform: none !important;
+  translate: none !important;
+}
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button.active { color: #1d1d1f !important; }
+
+html[data-demo-viewport] body #root#root main.app-shell.night:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button { color: #98989f !important; }
+
+html[data-demo-viewport] body #root#root main.app-shell.night:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button.active { color: #fff !important; }
+
+html[data-demo-viewport] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button > span {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active) {
+  --fc-bottom-gap: 4px !important;
+  --fc-page-dock-h: 31px !important;
+  --fc-page-switch-inset: 2px !important;
+  --fc-page-switch-gap: 3px !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell {
+  width: min(188px,calc(100vw - 18px)) !important;
+  max-width: calc(100vw - 18px) !important;
+}
+
+html[data-demo-viewport="phone-landscape"] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control { border-radius: 12px !important; }
+
+html[data-demo-viewport="phone-landscape"] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control::before,
+html[data-demo-viewport="phone-landscape"] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button { border-radius: 9px !important; }
+
+html[data-demo-viewport="phone-landscape"] body #root#root main.app-shell:is(.calendar-page-active,.home-page-active)
+  > .page-dock-shell > .segmented-control.page-switch-control > button {
+  padding-inline: 5px !important;
+  font-size: 8px !important;
+}
