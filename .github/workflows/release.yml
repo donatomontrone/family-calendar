@@ -5,7 +5,12 @@ on:
     branches: [master]
     paths:
       - custom_components/family_calendar/manifest.json
+      - package.json
+      - package-lock.json
       - CHANGELOG.md
+      - README.md
+      - ROADMAP.md
+      - docs/DEVELOPMENT.md
       - .github/workflows/release.yml
   workflow_dispatch:
 
@@ -55,10 +60,28 @@ jobs:
         shell: bash
         run: |
           VERSION="$(jq -r '.version' custom_components/family_calendar/manifest.json)"
+          PACKAGE_VERSION="$(jq -r '.version' package.json)"
+          LOCK_VERSION="$(jq -r '.version' package-lock.json)"
+          LOCK_ROOT_VERSION="$(jq -r '.packages[""].version' package-lock.json)"
+
           if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Manifest version '$VERSION' is not a stable semantic version."
             exit 1
           fi
+
+          for VALUE in "$PACKAGE_VERSION" "$LOCK_VERSION" "$LOCK_ROOT_VERSION"; do
+            if [ "$VALUE" != "$VERSION" ]; then
+              echo "Release version mismatch: manifest=$VERSION package=$PACKAGE_VERSION lock=$LOCK_VERSION lock-root=$LOCK_ROOT_VERSION"
+              exit 1
+            fi
+          done
+
+          grep -F "Current release: **v$VERSION**" README.md >/dev/null
+          grep -F "Versione corrente: **v$VERSION**" ROADMAP.md >/dev/null
+          grep -F "Current version: **v$VERSION**" ROADMAP.md >/dev/null
+          grep -F "Versione corrente: **$VERSION**" docs/DEVELOPMENT.md >/dev/null
+          grep -F "Current version: **$VERSION**" docs/DEVELOPMENT.md >/dev/null
+
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Prepare release notes

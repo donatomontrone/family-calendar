@@ -1,35 +1,42 @@
 # Family Calendar
 
-Family Calendar is a dedicated Home Assistant panel designed for family wall displays, tablets and always-on screens. It combines calendar, agenda, Todo/shopping lists and quick smart-home controls in a single full-screen interface that is separate from standard Lovelace dashboards.
+Family Calendar is a dedicated Home Assistant panel for family wall displays, iPad/tablet installations and always-on screens. It combines CALENDARIO, Agenda, Todo/Shopping lists and quick smart-home controls in a full-screen interface separate from normal Lovelace dashboards.
 
-Current release: **v1.0.3** — stable Calendar UI baseline with dedicated iPhone layout and continuous multi-day rendering.
+Current release: **v2.0.0** — main UI consolidation release.
 
-> v1.0.3 keeps the established desktop/tablet design unchanged and refines the phone-specific Calendar composition, including a reorganized iPhone header and measured continuous multi-day event bars. Real `calendar.*` and `todo.*` data adapters are still part of the next integration milestones; the standalone demo continues to use simulated data for those sections.
+> v2.0.0 defines the current visual baseline for both CALENDARIO and CASA. The two pages now share the same responsive chrome, background system, header and page switch from phone through ultra-wide layouts. The release also introduces persistent room/device icon customization with a 553-icon catalog, including a dedicated Apple-style hardware family.
 
 ## Italiano
 
-### Cosa include la 1.0
+### Cosa include la 2.0
 
 - calendario mensile full-screen con eventi multi-day;
-- layout dedicato per iPhone con calendario a 7 colonne senza scroll orizzontale;
-- rispetto delle safe area iOS per notch, Dynamic Island e Home indicator;
+- layout responsive dedicati da telefono a tablet/iPad, desktop, wide e ultra-wide;
 - agenda dei prossimi giorni;
-- card LISTE con Todo e Spesa, aggiunta elementi, completamento e swipe-to-delete;
-- scrolling interno con scrollbar nascosta e scorciatoia per raggiungere il fondo;
+- card LISTE con Todo e Spesa, aggiunta, completamento e swipe-to-delete;
 - card CASA INTELLIGENTE con stanze, preferiti e controlli rapidi;
-- dispositivi passivi mostrati come informazioni, senza falso stato acceso/spento;
-- luci White Ambiance con luminosità e temperatura del bianco;
-- tapparelle con posizione;
-- clima con temperatura, modalità HVAC, ventola e preset;
-- popup dedicati per i controlli dispositivo;
-- azione “Spegni tutto” per casa o stanza;
+- pagina CASA completa con stanze, stato casa, clima, sensori, utility e controlli dispositivo;
+- luci con on/off, luminosità e temperatura del bianco;
+- cover/tapparelle con posizione;
+- clima con target, modalità HVAC, ventola e preset;
+- entità passive rese come informazioni e non come falsi interruttori;
+- azioni Spegni tutto per casa e stanza;
 - tema chiaro/scuro automatico tramite `sun.sun`, con override manuale;
-- header condiviso con meteo, allarme, notifiche e switch tema;
-- stile e tipografia ispirati ai pattern Apple, con font di sistema e controlli coerenti;
-- interazioni touch/mouse per segmented controls, stanze e liste;
+- header condiviso e identico tra CALENDARIO e CASA;
+- switch CALENDARIO/CASA con geometria identica su tutti i breakpoint;
+- sfondo e sfumature condivisi tra le due pagine;
+- personalizzazione persistente delle icone di **dispositivi e stanze**;
+- **553 icone uniche**, incluse numerose varianti smart-home e una categoria Apple dedicata;
+- ricerca globale delle icone senza filtro di categoria obbligatorio;
 - localizzazione Italiano/Inglese;
-- demo standalone utilizzabile senza Home Assistant;
-- CI con build frontend, verifica bundle Home Assistant, Hassfest e HACS.
+- demo standalone con dati Home Assistant simulati;
+- CI con type-check/build, bundle Home Assistant, Hassfest, HACS e release automatica.
+
+### Personalizzazione icone
+
+L'editor icone consente di cambiare sia l'icona delle stanze sia quella delle entità. In Home Assistant gli override sono persistiti tramite Home Assistant Store e WebSocket; nella demo standalone vengono gestiti dal relativo adapter demo.
+
+Il catalogo include illuminazione, BTicino/switch/relay, cover, clima, sicurezza, audio/video, elettrodomestici, energia, esterno e dispositivi Apple-style.
 
 ### Demo standalone
 
@@ -37,21 +44,14 @@ Demo pubblica:
 
 https://donatomontrone.github.io/family-calendar/
 
-Requisiti per lo sviluppo locale:
-
-- Node.js 24
-- npm
-
-Dalla root del repository:
+Sviluppo locale:
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Apri l'indirizzo mostrato da Vite, normalmente `http://localhost:5173`.
-
-La demo usa dati Home Assistant simulati e forza `it-IT` per rendere riproducibile il layout italiano durante lo sviluppo.
+La demo usa lo stesso `App.tsx` del pannello Home Assistant con un adapter `Hass` simulato e forza `it-IT` per rendere riproducibile il layout italiano.
 
 ### Home Assistant
 
@@ -61,92 +61,94 @@ La custom integration vive in:
 custom_components/family_calendar/
 ```
 
-La build frontend genera e copia automaticamente il bundle in:
-
-```text
-custom_components/family_calendar/frontend/family-calendar-panel.js
-```
-
 Build completa:
 
 ```bash
 npm run build
 ```
 
-L'integrazione espone un pannello custom full-screen, persistenza preferiti tramite Home Assistant Store e WebSocket API dedicata.
+Il bundle distribuito da HACS è:
+
+```text
+custom_components/family_calendar/frontend/family-calendar-panel.js
+```
+
+La versione canonica dell'integrazione è in `custom_components/family_calendar/manifest.json`; `package.json` e `package-lock.json` devono riportare la stessa versione.
 
 ### Stato dei dati reali
 
-La release 1.0 definisce la baseline stabile dell'interfaccia. I seguenti collegamenti backend restano volutamente separati dalla chiusura visuale della pagina Calendario:
+v2.0.0 consolida la UI e il relativo contratto responsive. Restano milestone separate:
 
 - eventi reali da `calendar.*`;
 - Todo/Shopping reali da `todo.*`;
 - selezione sorgenti Google Calendar tramite Home Assistant;
 - adapter Microsoft 365 / Outlook;
-- ulteriori rifiniture e funzionalità della pagina CASA.
-
-Le prossime modifiche UI saranno concentrate sulla pagina **CASA**, salvo indicazioni diverse.
+- ulteriori funzionalità avanzate per media, scene/script e configurazione.
 
 ### Architettura
 
 ```text
 src/
-  App.tsx                  shell principale e pagina Calendario
-  HomeView.tsx             pagina Casa
-  SharedHeader.tsx         header condiviso
-  SwipeTaskRow.tsx         gesture swipe delle liste
-  ScrollRegion.tsx         regioni scrollabili + jump-to-bottom
-  ClimateControl.tsx       controlli clima
-  demo.tsx                 adapter standalone / mock Home Assistant
-  panel.tsx                custom element Home Assistant
-  ha.ts                     adapter API Home Assistant
-  i18n.ts                  localizzazione
-  light-temperature.ts     gestione White Ambiance
-  *.css                    design system e layer visuali
+  App.tsx                         shell e pagina CALENDARIO
+  HomeView.tsx                    pagina CASA + editor icone
+  SharedHeader.tsx                header condiviso
+  entity-icon-customization.tsx   catalogo e rendering override icone
+  demo-responsive-system.ts       classificazione responsive demo
+  demo-page-parity-v79.css        parità finale CALENDARIO/CASA nella demo
+  calendar-phone-first-v74.css    autorità CALENDARIO non-phone
+  home-unified-v70.css            autorità CASA non-phone
+  ha.ts                           adapter Home Assistant
+  demo.tsx                        adapter standalone
+  panel.tsx                       custom element Home Assistant
 
 custom_components/family_calendar/
-  __init__.py              setup integrazione e pannello
-  config_flow.py           configurazione Home Assistant
-  storage.py               persistenza preferiti
-  websocket.py             API WebSocket custom
-  frontend/                bundle compilato
+  __init__.py                     setup integrazione/pannello
+  storage.py                      preferiti + override icone
+  websocket.py                    API WebSocket custom
+  manifest.json                   versione canonica
+  frontend/                       bundle compilato
 ```
-
-La UI riceve un oggetto `hass` e non contiene autenticazione provider. Google/Microsoft e le altre sorgenti esterne devono essere esposte tramite Home Assistant o adapter backend dell'integrazione.
 
 ### Documentazione
 
-- [`ROADMAP.md`](ROADMAP.md) — roadmap e stato dei milestone
+- [`ROADMAP.md`](ROADMAP.md) — stato e prossimi milestone
 - [`CHANGELOG.md`](CHANGELOG.md) — cronologia release
-- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — sviluppo, build e CI
+- [`DESIGN.md`](DESIGN.md) — contratto visuale V70/V74/V79
+- [`UX-CONTRACT.md`](UX-CONTRACT.md) — invarianti funzionali e responsive
+- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — sviluppo, build, CI e release
 - [`docs/I18N.md`](docs/I18N.md) — localizzazione
 
 ---
 
 ## English
 
-### What v1.0 includes
+### What v2.0 includes
 
 - full-screen monthly calendar with multi-day events;
-- dedicated iPhone layout with a seven-column month view and no horizontal calendar scrolling;
-- iOS safe-area support for the notch, Dynamic Island and Home indicator;
+- responsive layouts from phone through tablet/iPad, desktop, wide and ultra-wide displays;
 - upcoming agenda;
-- Todo/Shopping LISTS card with add, complete and swipe-to-delete interactions;
-- internal scrolling with hidden scrollbars and jump-to-bottom affordances;
+- Todo/Shopping LISTS with add, complete and swipe-to-delete interactions;
 - SMART HOME card with rooms, favorites and quick controls;
-- passive/informational entities without misleading on/off states;
-- White Ambiance lights with brightness and white-temperature controls;
+- full HOME page with rooms, house status, climate, sensors, utilities and device controls;
+- lights with power, brightness and white-temperature controls;
 - covers with position control;
-- climate temperature, HVAC mode, fan mode and presets;
-- dedicated device-control dialogs;
-- whole-home or room-scoped “Turn off all” action;
-- automatic light/dark appearance driven by `sun.sun`, plus manual override;
-- shared header with weather, alarm, notifications and theme switch;
-- Apple-inspired system typography and control language;
-- touch/mouse interactions for segmented controls, room rails and lists;
+- climate target, HVAC, fan and preset controls;
+- passive entities rendered as information rather than misleading switches;
+- whole-home and room-scoped Turn off all actions;
+- automatic light/dark appearance through `sun.sun`, plus manual override;
+- one shared header and page chrome across CALENDAR and HOME;
+- identical CALENDAR/HOME page-switch geometry at every breakpoint;
+- shared page backgrounds and gradients;
+- persistent icon customization for **devices and rooms**;
+- **553 unique icon keys**, including broad smart-home coverage and a dedicated Apple hardware category;
+- global icon search without a mandatory category filter;
 - Italian/English localization;
-- standalone demo without Home Assistant;
-- CI for frontend build, Home Assistant bundle verification, Hassfest and HACS.
+- standalone demo with simulated Home Assistant data;
+- CI for type-check/build, Home Assistant bundle, Hassfest, HACS and automatic releases.
+
+### Icon customization
+
+The icon editor can override both room icons and entity icons. Home Assistant persists overrides through Store and custom WebSocket commands; the standalone demo uses its demo adapter.
 
 ### Standalone demo
 
@@ -154,86 +156,44 @@ Public demo:
 
 https://donatomontrone.github.io/family-calendar/
 
-Local development requirements:
-
-- Node.js 24
-- npm
-
-From the repository root:
+Local development:
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Then open the address printed by Vite, normally `http://localhost:5173`.
-
-The demo uses simulated Home Assistant data and intentionally forces `it-IT` so the Italian layout remains deterministic during development.
-
 ### Home Assistant
 
-The custom integration lives in:
+The canonical integration version lives in `custom_components/family_calendar/manifest.json`. `package.json` and the root lockfile package version must match it.
 
-```text
-custom_components/family_calendar/
-```
-
-The frontend build automatically creates and copies the bundle to:
-
-```text
-custom_components/family_calendar/frontend/family-calendar-panel.js
-```
-
-Full build:
+Build:
 
 ```bash
 npm run build
 ```
 
-The integration provides a full-screen custom panel, Home Assistant Store persistence for favorites, and a dedicated WebSocket API.
+Distributed bundle:
+
+```text
+custom_components/family_calendar/frontend/family-calendar-panel.js
+```
 
 ### Real-data status
 
-v1.0 is the stable visual baseline. The following backend integrations remain separate milestones:
+v2.0.0 is the consolidated UI/responsive baseline. These remain separate milestones:
 
-- real events from `calendar.*`;
-- real Todo/Shopping data from `todo.*`;
+- real `calendar.*` events;
+- real `todo.*` Todo/Shopping data;
 - Google Calendar source selection through Home Assistant;
 - Microsoft 365 / Outlook adapter;
-- further refinement and features for the HOME page.
-
-Unless explicitly requested otherwise, the next UI changes will focus on the **HOME** page.
-
-### Architecture
-
-```text
-src/
-  App.tsx                  main shell and Calendar page
-  HomeView.tsx             Home page
-  SharedHeader.tsx         shared header
-  SwipeTaskRow.tsx         list swipe gesture
-  ScrollRegion.tsx         scrollable regions + jump-to-bottom
-  ClimateControl.tsx       climate controls
-  demo.tsx                 standalone / mock Home Assistant adapter
-  panel.tsx                Home Assistant custom element
-  ha.ts                     Home Assistant API adapter
-  i18n.ts                  localization
-  light-temperature.ts     White Ambiance handling
-  *.css                    design system and visual layers
-
-custom_components/family_calendar/
-  __init__.py              integration and panel setup
-  config_flow.py           Home Assistant configuration
-  storage.py               favorites persistence
-  websocket.py             custom WebSocket API
-  frontend/                compiled bundle
-```
-
-The UI receives a `hass` object and contains no provider authentication. Google/Microsoft and other external sources should be exposed through Home Assistant or backend adapters in the integration.
+- advanced media, scene/script and configuration capabilities.
 
 ### Documentation
 
 - [`ROADMAP.md`](ROADMAP.md) — milestones and status
 - [`CHANGELOG.md`](CHANGELOG.md) — release history
-- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — development, build and CI
+- [`DESIGN.md`](DESIGN.md) — V70/V74/V79 visual contract
+- [`UX-CONTRACT.md`](UX-CONTRACT.md) — behavioral and responsive invariants
+- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — development, build, CI and release
 - [`docs/I18N.md`](docs/I18N.md) — localization

@@ -2,7 +2,7 @@
 
 ## Italiano
 
-Versione corrente: **1.0.0**.
+Versione corrente: **2.0.0**.
 
 ### Requisiti
 
@@ -10,18 +10,14 @@ Versione corrente: **1.0.0**.
 - npm
 - Home Assistant per i test della custom integration reale
 
-### Demo frontend senza Home Assistant
-
-Dalla root:
+### Demo frontend
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Vite carica `src/demo.tsx`, che crea un adapter `Hass` simulato con stanze, entità, WebSocket e service call fittizie. La demo utilizza lo stesso `App.tsx` del pannello Home Assistant.
-
-La demo forza `it-IT` per mantenere deterministico il layout italiano durante lo sviluppo. I preferiti demo vengono persistiti in `localStorage`.
+La demo carica `src/demo.tsx`, usa lo stesso `App.tsx` del pannello Home Assistant e applica il contratto responsive finale tramite `demo-responsive-system.ts`. La locale demo è intenzionalmente `it-IT`.
 
 ### Build
 
@@ -29,117 +25,102 @@ La demo forza `it-IT` per mantenere deterministico il layout italiano durante lo
 npm run build
 ```
 
-La build esegue:
+Pipeline:
 
 ```text
 TypeScript type-check
 → Vite library build da src/panel.tsx
-→ copia del bundle in custom_components/family_calendar/frontend/
+→ copia bundle in custom_components/family_calendar/frontend/
 ```
 
-Output atteso:
+Output:
 
 ```text
 custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-### Architettura runtime
+### Autorità UI v2.0
 
-```text
-App.tsx
-  shell + pagina Calendario
-  │
-  ├── SharedHeader.tsx
-  ├── SwipeTaskRow.tsx
-  ├── ScrollRegion.tsx
-  ├── ClimateControl.tsx
-  ├── HomeView.tsx
-  │
-  ├── demo.tsx
-  │     adapter simulato
-  │
-  └── panel.tsx
-        custom element Home Assistant
-             │
-             ▼
-            ha.ts
-      adapter API Home Assistant
-```
+La UI conserva layer storici per compatibilità, ma le autorità correnti sono:
 
-`App.tsx` non deve contenere autenticazione Google/Microsoft o credenziali provider. Le sorgenti esterne devono essere esposte tramite Home Assistant o adapter backend della custom integration.
+- CASA non-phone: `home-unified-v70.css`;
+- header condiviso: `shared-layout-v71.css`;
+- CALENDARIO non-phone: `calendar-phone-first-v74.css`;
+- personalizzazione icone: `entity-icon-customization.tsx`, `icon-customization-v76.css`, `icon-customization-v78.css`;
+- chrome condiviso: `shared-page-chrome-v77.css`;
+- parità finale della demo CALENDARIO/CASA: `demo-page-parity-v79.css`;
+- classificazione breakpoint demo: `demo-responsive-system.ts`.
 
-### Design system e CSS
+I layer finali devono prevalere sulle regole storiche senza cambiare la struttura dei componenti congelati.
 
-La UI è stata evoluta per iterazioni visuali. I layer `calendar-v*.css` vengono concatenati da `ui-interactions.ts` come contratto finale della pagina Calendario; i layer più recenti hanno precedenza deliberata sulle regole storiche.
+### Icone personalizzate
 
-Per la 1.0 la pagina Calendario è considerata baseline visuale stabile. Le modifiche successive devono evitare regressioni su:
+Gli override usano chiavi semantiche del catalogo, non asset remoti.
 
-- dimensioni fisse della dashboard;
-- segmented controls;
-- LISTE e swipe;
-- CASA INTELLIGENTE;
-- tema chiaro/scuro;
-- header condiviso;
-- popup controlli dispositivo.
+Home Assistant:
+- `IconOverrideStore` persiste gli override;
+- WebSocket `family_calendar/icons/get` e `family_calendar/icons/set` leggono/salvano le mappe;
+- le stanze usano target `area:<area_id>`;
+- le entità usano direttamente `entity_id`.
 
-Salvo richiesta esplicita, le prossime iterazioni UI devono riguardare `HomeView.tsx` / pagina CASA.
+La demo standalone usa il proprio adapter di persistenza.
 
-### Gesture
-
-Le gesture principali sono:
-
-- drag bidirezionale dei segmented controls;
-- drag/scroll orizzontale della rail stanze;
-- swipe verso sinistra sulle righe LISTE;
-- swipe corto: rivela l'azione cestino;
-- swipe lungo: elimina direttamente;
-- scroll verticale interno di LISTE e griglia dispositivi;
-- pulsante jump-to-bottom mostrato solo quando esiste contenuto nascosto.
-
-Quando si modifica una gesture, verificare sempre mouse, touch e scrolling verticale per evitare conflitti di pointer capture.
+Ogni nuova icona deve avere chiave univoca, categoria, label IT/EN e keyword di ricerca. Le silhouette Apple-style del progetto devono restare originali e non copiare vettori di terze parti.
 
 ### Versioning
 
-La versione canonica della custom integration è in:
+La versione canonica è:
 
 ```text
 custom_components/family_calendar/manifest.json
 ```
 
-`package.json` usa lo stesso numero di versione per rendere leggibile lo stato del frontend, anche se il package npm è `private`.
-
-Le release seguono Semantic Versioning:
+Devono avere lo stesso numero:
 
 ```text
-MAJOR.MINOR.PATCH
+custom_components/family_calendar/manifest.json
+package.json
+package-lock.json -> version
+package-lock.json -> packages[""].version
 ```
 
-La release 1.0.0 rappresenta la prima baseline UI stabile, non la conclusione di tutti gli adapter dati previsti dalla roadmap.
+Le release seguono Semantic Versioning `MAJOR.MINOR.PATCH`.
+
+v2.0.0 è la main UI release che consolida CALENDARIO, CASA, icon customization e shared page chrome. Non implica il completamento degli adapter `calendar.*` / `todo.*`.
 
 ### CI
 
-Ogni push su `master` esegue:
+Ogni push su `master` esegue almeno:
 
-- frontend type-check e build;
-- verifica del bundle compilato Home Assistant;
+- frontend type-check/build;
+- verifica del bundle compilato;
 - HACS validation;
-- Hassfest.
-
-Prima di una release tutti questi job devono essere verdi.
+- Hassfest;
+- deploy GitHub Pages quando previsto.
 
 ### Release
 
-La release `v1.0.0` viene creata automaticamente dal workflow dedicato quando il manifest passa a `1.0.0`. Il workflow crea il tag sul commit di release e pubblica le note da `CHANGELOG.md`, evitando duplicati se la release esiste già.
+Il workflow `.github/workflows/release.yml` è l'unica procedura di release.
 
-### HACS
+Per rilasciare `X.Y.Z`:
 
-Il repository è strutturato come custom integration HACS. La validazione automatica è parte della CI; resta comunque necessario ampliare i test end-to-end su una vera installazione Home Assistant prima di considerare conclusa la parte backend/integration della roadmap.
+1. aggiornare manifest, package e lockfile alla stessa versione;
+2. aggiungere `## [X.Y.Z] - YYYY-MM-DD` in cima al changelog;
+3. aggiornare README/ROADMAP/DEVELOPMENT;
+4. verificare che il bundle Home Assistant sia aggiornato;
+5. eseguire il push su `master`.
+
+Il workflow verifica la coerenza delle versioni, estrae le note dal changelog e crea automaticamente tag `vX.Y.Z` e GitHub Release. Se la release esiste già, non la duplica.
+
+### Regola per il bundle
+
+Se una modifica frontend cambia il bundle, il workflow Frontend lo ricompila e lo committa su `master`. Una release non deve essere pubblicata con bundle stale.
 
 ---
 
 ## English
 
-Current version: **1.0.0**.
+Current version: **2.0.0**.
 
 ### Requirements
 
@@ -147,31 +128,19 @@ Current version: **1.0.0**.
 - npm
 - Home Assistant for real custom-integration testing
 
-### Standalone frontend demo
-
-From the repository root:
+### Standalone demo
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Vite loads `src/demo.tsx`, which creates a simulated `Hass` adapter with rooms, entities, WebSocket calls and service calls. The demo renders the same `App.tsx` used by the Home Assistant panel.
-
-The demo intentionally forces `it-IT` so the Italian layout is deterministic during development. Demo favorites are persisted in `localStorage`.
+The demo loads `src/demo.tsx`, renders the same `App.tsx` as Home Assistant, and applies the final responsive contract through `demo-responsive-system.ts`.
 
 ### Build
 
 ```bash
 npm run build
-```
-
-The build performs:
-
-```text
-TypeScript type-check
-→ Vite library build from src/panel.tsx
-→ copy bundle to custom_components/family_calendar/frontend/
 ```
 
 Expected output:
@@ -180,94 +149,30 @@ Expected output:
 custom_components/family_calendar/frontend/family-calendar-panel.js
 ```
 
-### Runtime architecture
+### v2.0 UI authorities
 
-```text
-App.tsx
-  shell + Calendar page
-  │
-  ├── SharedHeader.tsx
-  ├── SwipeTaskRow.tsx
-  ├── ScrollRegion.tsx
-  ├── ClimateControl.tsx
-  ├── HomeView.tsx
-  │
-  ├── demo.tsx
-  │     simulated adapter
-  │
-  └── panel.tsx
-        Home Assistant custom element
-             │
-             ▼
-            ha.ts
-      Home Assistant API adapter
-```
+- non-phone HOME: `home-unified-v70.css`;
+- shared header: `shared-layout-v71.css`;
+- non-phone CALENDAR: `calendar-phone-first-v74.css`;
+- icon customization: `entity-icon-customization.tsx`, `icon-customization-v76.css`, `icon-customization-v78.css`;
+- shared page chrome: `shared-page-chrome-v77.css`;
+- final standalone CALENDAR/HOME parity: `demo-page-parity-v79.css`;
+- demo breakpoint classification: `demo-responsive-system.ts`.
 
-`App.tsx` must not contain Google/Microsoft authentication or provider credentials. External sources should be exposed through Home Assistant or backend adapters in the custom integration.
+### Custom icons
 
-### Design system and CSS
+Home Assistant persists icon overrides through `IconOverrideStore` and the `family_calendar/icons/get` / `family_calendar/icons/set` WebSocket commands. Room targets use `area:<area_id>`; entities use their `entity_id`.
 
-The UI has evolved through visual iterations. `calendar-v*.css` layers are concatenated by `ui-interactions.ts` as the final Calendar-page contract; newer layers deliberately override historical rules.
-
-For v1.0 the Calendar page is considered a stable visual baseline. Future changes should avoid regressions in:
-
-- fixed dashboard geometry;
-- segmented controls;
-- LISTS and swipe interactions;
-- SMART HOME card;
-- light/dark appearance;
-- shared header;
-- device-control dialogs.
-
-Unless explicitly requested otherwise, upcoming UI work should target `HomeView.tsx` / the HOME page.
-
-### Gestures
-
-Main gestures:
-
-- bidirectional segmented-control drag;
-- horizontal room-rail drag/scroll;
-- left swipe on LISTS rows;
-- short swipe reveals trash action;
-- long swipe deletes directly;
-- internal vertical scrolling for LISTS and device grids;
-- jump-to-bottom button shown only when content is hidden below.
-
-When changing gestures, always verify mouse, touch and vertical scrolling to avoid pointer-capture conflicts.
+Every catalog entry must have a unique key, category, IT/EN labels and search keywords. Project Apple-style silhouettes must remain original rather than copied third-party vectors.
 
 ### Versioning
 
-The canonical custom-integration version is stored in:
+The canonical version is stored in `custom_components/family_calendar/manifest.json`. The same version must be mirrored in `package.json` and both root package versions in `package-lock.json`.
 
-```text
-custom_components/family_calendar/manifest.json
-```
-
-`package.json` mirrors the same version for frontend visibility even though the npm package is private.
-
-Releases follow Semantic Versioning:
-
-```text
-MAJOR.MINOR.PATCH
-```
-
-v1.0.0 is the first stable UI baseline; it does not mean every data adapter in the roadmap is complete.
-
-### CI
-
-Every push to `master` runs:
-
-- frontend type-check and build;
-- Home Assistant compiled-bundle verification;
-- HACS validation;
-- Hassfest.
-
-All jobs must be green before a release.
+Releases use Semantic Versioning.
 
 ### Release
 
-The `v1.0.0` release is created automatically by the dedicated workflow when the manifest moves to `1.0.0`. The workflow tags the release commit and publishes notes from `CHANGELOG.md`, while safely skipping creation if the release already exists.
+`.github/workflows/release.yml` is the canonical release path. Update all version surfaces, add the matching changelog section, update primary documentation, ensure the committed frontend bundle is current, then push to `master`.
 
-### HACS
-
-The repository is structured as a HACS custom integration. Automated validation is part of CI, but deeper end-to-end testing on a real Home Assistant installation remains a backend/integration roadmap item.
+The workflow validates version consistency, extracts release notes from `CHANGELOG.md`, creates tag `vX.Y.Z`, and publishes the GitHub Release.

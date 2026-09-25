@@ -4,6 +4,44 @@ All notable changes to Family Calendar are documented in this file.
 
 The project follows Semantic Versioning.
 
+## [2.0.0] - 2026-09-25
+
+Major UI consolidation release.
+
+### Added
+
+- persistent icon customization for Home Assistant entities and rooms, stored through the Family Calendar Home Assistant Store and dedicated WebSocket commands;
+- room-level icon overrides alongside device-level overrides, shared consistently across CASA and CALENDARIO;
+- a catalog of 553 unique icon keys covering lighting, home controls, climate, security, media, appliances, energy, outdoor devices and a dedicated Apple hardware category;
+- original Apple-style line silhouettes for Apple TV, HomePod, iPhone, iPad, Mac, displays, Apple Watch, AirPods, AirTag, MagSafe, Apple Pencil, Magic accessories, AirDrop and CarPlay;
+- a global icon search experience with all icons visible in one continuous catalog and recent selections retained in the picker.
+
+### Changed
+
+- rebuilt non-phone CALENDARIO from the approved phone interaction language and consolidated its responsive behavior in the V74 phone-first contract;
+- kept CASA on the isolated V70 large-screen component system while preserving the established phone layouts;
+- unified the shared header, page canvas, bottom page switch, light/dark material and responsive chrome between CALENDARIO and CASA;
+- made standalone-demo backgrounds viewport-relative so gradients are identical between pages regardless of document/content height;
+- made the CALENDARIO/CASA segmented switch use the same geometry equation, inset, width, motion and active-thumb positioning at every supported breakpoint;
+- removed the icon-category filter UI in favor of one searchable catalog, while keeping category grouping as visual organization;
+- aligned project, integration and npm metadata on the same semantic version.
+
+### Fixed
+
+- removed residual page-to-page background and gradient drift between CALENDARIO and CASA;
+- removed the remaining one-pixel segmented-control thumb mismatch on responsive layouts;
+- prevented hover/active transforms from changing the fixed page-switch geometry;
+- fixed duplicate icon keys and an invalid semantic icon alias found during catalog validation;
+- added release-time version consistency checks so manifest, npm package metadata, lockfile and primary documentation cannot silently diverge again.
+
+### Release status
+
+**v2.0.0 is the new main visual/UI baseline for Family Calendar.**
+
+CALENDARIO and CASA now share one coherent responsive chrome from phone through tablet, desktop, wide and ultra-wide layouts. Future visual changes should preserve the V70/V74/V79 contracts unless a redesign is explicitly requested.
+
+This major-version designation represents a consolidated UI contract and release process. It does not claim completion of the planned real `calendar.*`, `todo.*`, Google Calendar or Microsoft 365 data adapters.
+
 ## [1.2.0] - 2026-09-25
 
 CASA UI stabilization milestone.

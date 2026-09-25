@@ -1,60 +1,79 @@
 # UX Contract
 
+Release baseline: **v2.0.0**.
+
 ## Scope
 
-This contract protects Family Calendar behavior while the tablet/desktop presentation evolves. Visual ownership lives in `DESIGN.md`.
+This contract protects Family Calendar behavior while implementation details evolve. Visual ownership is defined in `DESIGN.md`.
 
 ## Navigation
 
-- Calendar and Home remain the two primary views.
-- The fixed page switch stays reachable without covering page content.
-- Changing responsive composition must not remove an action or state.
+- CALENDARIO and CASA remain the two primary views.
+- The fixed page switch must stay reachable without covering interactive content.
+- At a given viewport, its geometry must be identical on both pages.
+- Responsive composition must never remove an action or state merely to make the layout fit.
 
-## Calendar
+## Shared chrome
 
-- Previous month, next month, and Today remain available.
-- Multi-day events remain visible across their date range.
-- Agenda remains visible on large screens.
+- SharedHeader remains structurally shared.
+- CALENDARIO and CASA use the same canvas/background contract.
+- Light and dark themes keep identical geometry.
+- Bottom safe-area and page-switch spacing are shared.
+- Hover/press feedback must not move the page switch.
+
+## CALENDARIO
+
+- Previous month, next month and Today remain available.
+- Multi-day events remain continuous across their date range.
 - Todo and Shopping remain switchable.
-- Tasks support add, complete/uncomplete, and delete.
-- Smart Home remains available from Calendar.
+- Tasks support add, complete/uncomplete and delete.
+- Smart Home remains reachable.
 - Room and Favorites selection remain available.
-- Smart Home devices preserve activation, favorites, configurable-device controls, and turn-off-scope behavior.
-- Light, cover, and climate controls continue to use the existing shared DeviceControls overlay where applicable.
+- Configurable device controls preserve their shared overlays/actions.
+- Page-level scroll is allowed only where the selected responsive composition explicitly uses a vertical document; otherwise scrolling belongs to bounded collections.
 
-## Home
+## CASA
 
-- Every room remains selectable.
+- Every room remains reachable.
 - All controllable room entities remain reachable.
-- Lights preserve a separate power action.
-- Selecting a light exposes brightness and white-temperature modes.
-- Selecting a cover exposes position.
-- Climate remains reachable from the room temperature action and global Climate utility.
-- Passive sensors/status remain visible.
-- Favorite toggling remains available in the large-screen room console.
-- Room-off remains available.
-- All utilities remain available: routines, batteries, sensors, climate, cameras, media, vacuum, car, covers.
-- Alarm, whole-home status, climate summary, and waste remain visible.
+- Passive sensors/status remain visible as information.
+- Lights retain power plus brightness/white-temperature modes.
+- Covers retain position control.
+- Climate remains reachable from room and global affordances.
+- Room-off and whole-home actions remain available.
+- Utilities remain available: routines, batteries, sensors, climate, cameras, media, vacuum, car and covers.
+- Open space remains usable even when its device collection exceeds the visible width/height.
+
+## Icon customization
+
+- Both room icons and entity icons are editable.
+- A room override target is `area:<area_id>`; an entity override target is its `entity_id`.
+- Overrides persist in Home Assistant and survive frontend reloads.
+- The demo preserves equivalent behavior through its demo storage adapter.
+- The picker exposes global search and does not require a category filter.
+- Saving/resetting icons must not alter unrelated Home Assistant state.
 
 ## Responsive ownership
 
-- Calendar React structure, functions and visual language are locked to the `24ec8046` baseline; the explicitly requested tablet-responsive exception is demo-only and owned by `demo-calendar-tablet-layout-v63.css`.
-- Phone portrait and phone landscape are the established baseline and must not be changed by V60.
-- V60 applies only to Home on tablet/desktop. Calendar tablet geometry is independently owned by V63 and must not affect Home.
-- V60 Home tablet/desktop markup is dedicated and must not structurally reuse legacy desktop/card classes.
-- Page-level scrolling is not a normal tablet/desktop layout behavior, except on compact Calendar portrait tablets where a short vertical document scroll is preferred over unreadably compressed cards.
-- Internal scrolling is allowed only for collections that can exceed the allocated region.
+- HOME non-phone geometry is owned by V70.
+- Shared header geometry is owned by V71.
+- CALENDAR non-phone geometry is owned by V74.
+- Shared page chrome is owned by V77.
+- Standalone-demo CALENDAR/HOME parity is finally owned by V79.
+- Historical V60/V63/etc. layers are not allowed to reassert final geometry.
 - Each scrollable collection has one scroll owner.
 
 ## Geometry stability
 
-- Hover, active, selected, disabled, loading, or pending state must not change a tile's allocated dimensions.
-- Persistent header and page switch reserve their own layout space.
-- Primary layout does not rely on negative margins, absolute positioning, or overlapping surfaces.
+- Hover, active, selected, disabled, loading and pending states must not change allocated dimensions.
+- Persistent header and page switch reserve their own space.
+- Primary layout must not rely on overlapping positioned surfaces as a normal composition technique.
+- Same viewport + same theme must produce the same page canvas in CALENDARIO and CASA.
 
-## Overlays
+## Overlays and accessibility
 
-- Existing modal and overlay behavior remains unchanged unless explicitly requested.
-- Large-screen overlays stay inside the visual viewport.
-- Explicit close actions and background-dismiss behavior remain available where already supported.
-- Focus visibility and accessible names are preserved.
+- Modal/overlay close actions and background-dismiss behavior remain available where implemented.
+- Overlays must remain inside the visual viewport.
+- Focus visibility is preserved.
+- Icon-only controls require accessible labels.
+- Pointer gestures must not break vertical scrolling or keyboard access.
