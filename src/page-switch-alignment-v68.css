@@ -1,0 +1,97 @@
+/*
+ * PAGE SWITCH ALIGNMENT V68
+ *
+ * Final geometry for the CALENDARIO / CASA page switch only.
+ *
+ * Bottom Rhythm V66 deliberately owns the dock's outer height. Historical
+ * layers still assigned independent fixed heights to the two buttons, so the
+ * sum of button height + vertical padding could exceed the dock itself. That
+ * made the buttons/thumb look vertically displaced at every viewport size.
+ *
+ * V68 keeps every approved outer dock size and derives the inner geometry from
+ * the available track instead: symmetric inset, stretched grid row, centered
+ * label, and a thumb using the exact same vertical inset.
+ */
+
+main.app-shell,
+body #root#root main.app-shell {
+  --fc-page-switch-inset: 3px;
+  --fc-page-switch-gap: 4px;
+  --fc-page-switch-horizontal-reserve: 10px;
+}
+
+main.app-shell > .page-dock-shell > .segmented-control.page-switch-control,
+body #root#root main.app-shell > .page-dock-shell > .segmented-control.page-switch-control {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: var(--fc-page-switch-inset) !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-template-rows: minmax(0,1fr) !important;
+  align-items: stretch !important;
+  align-content: stretch !important;
+  gap: var(--fc-page-switch-gap) !important;
+  overflow: hidden !important;
+}
+
+main.app-shell > .page-dock-shell > .segmented-control.page-switch-control::before,
+body #root#root main.app-shell > .page-dock-shell > .segmented-control.page-switch-control::before {
+  top: var(--fc-page-switch-inset) !important;
+  bottom: var(--fc-page-switch-inset) !important;
+  left: var(--fc-page-switch-inset) !important;
+  height: auto !important;
+  width: calc((100% - var(--fc-page-switch-horizontal-reserve)) / 2) !important;
+  margin: 0 !important;
+}
+
+main.app-shell > .page-dock-shell > .segmented-control.page-switch-control > button,
+body #root#root main.app-shell > .page-dock-shell > .segmented-control.page-switch-control > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  display: grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+main.app-shell > .page-dock-shell > .segmented-control.page-switch-control > button > span,
+body #root#root main.app-shell > .page-dock-shell > .segmented-control.page-switch-control > button > span {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+/* The 31px compact landscape dock needs a proportionally smaller symmetric
+ * inset. Its outer height and bottom rhythm remain owned by V66. */
+@media (orientation: landscape) and (max-height: 650px) and (max-width: 1200px) {
+  main.app-shell,
+  body #root#root main.app-shell {
+    --fc-page-switch-inset: 2px;
+    --fc-page-switch-gap: 3px;
+    --fc-page-switch-horizontal-reserve: 7px;
+  }
+}
