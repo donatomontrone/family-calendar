@@ -111,7 +111,6 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   const [taskDraft, setTaskDraft] = useState("");
   const [headerAction, setHeaderAction] = useState<HeaderAction | null>(null);
   const [themeOverride, setThemeOverride] = useState<ThemeOverride>("auto");
-  const calendarWorkspaceV73 = useCalendarWorkspaceV73();
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
@@ -226,37 +225,6 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
       />
 
       {page === "calendar" ? (
-        calendarWorkspaceV73 ? (
-          <CalendarWorkspaceV73
-            hass={hass}
-            language={language}
-            now={now}
-            month={visibleMonth}
-            events={events}
-            areas={areas}
-            room={room}
-            roomEntities={roomEntities}
-            favorites={favorites}
-            selectedEntity={selectedEntity}
-            mode={mode}
-            tasks={currentTasks}
-            addingTask={addingTask}
-            taskDraft={taskDraft}
-            onPrevious={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}
-            onNext={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}
-            onToday={() => setVisibleMonth(new Date(now.getFullYear(), now.getMonth(), 1))}
-            onRoomChange={(nextRoom) => { setRoom(nextRoom); setSelectedEntity(null); }}
-            onTurnOffScope={() => void turnOffScope()}
-            onToggleFavorite={(entityId) => void toggleFavorite(entityId)}
-            onSelectedEntityChange={setSelectedEntity}
-            onModeChange={setMode}
-            onTaskToggle={updateTask}
-            onTaskDelete={deleteTask}
-            onAddingTaskChange={(open) => { setAddingTask(open); if (!open) setTaskDraft(""); }}
-            onTaskDraftChange={setTaskDraft}
-            onAddTask={addTask}
-          />
-        ) : (
         <section className="dashboard-grid">
           <aside className={`left-column ${demo ? `compact-calendar-panel-${compactCalendarPanel}` : ""}`}>
             {demo && (
@@ -466,7 +434,6 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
             </section>
           </aside>
         </section>
-        )
       ) : (
         <HomeView hass={hass} areas={areas} entities={entities} now={now} demo={demo} language={language} />
       )}
@@ -480,126 +447,6 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
   );
 }
 
-
-function useCalendarWorkspaceV73() {
-  const query = "(min-width: 560px) and (min-height: 660px)";
-  const read = () => typeof window !== "undefined" && window.matchMedia(query).matches;
-  const [enabled, setEnabled] = useState(read);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const media = window.matchMedia(query);
-    const sync = () => setEnabled(media.matches);
-    sync();
-    media.addEventListener("change", sync);
-    window.visualViewport?.addEventListener("resize", sync);
-    return () => {
-      media.removeEventListener("change", sync);
-      window.visualViewport?.removeEventListener("resize", sync);
-    };
-  }, []);
-
-  return enabled;
-}
-
-function CalendarWorkspaceV73({
-  hass, language, now, month, events, areas, room, roomEntities, favorites, selectedEntity,
-  mode, tasks, addingTask, taskDraft, onPrevious, onNext, onToday, onRoomChange,
-  onTurnOffScope, onToggleFavorite, onSelectedEntityChange, onModeChange,
-  onTaskToggle, onTaskDelete, onAddingTaskChange, onTaskDraftChange, onAddTask,
-}: {
-  hass: Hass; language: Language; now: Date; month: Date; events: DemoEvent[]; areas: Area[];
-  room: string; roomEntities: string[]; favorites: string[]; selectedEntity: string | null;
-  mode: Mode; tasks: Task[]; addingTask: boolean; taskDraft: string;
-  onPrevious: () => void; onNext: () => void; onToday: () => void;
-  onRoomChange: (room: string) => void; onTurnOffScope: () => void;
-  onToggleFavorite: (entityId: string) => void; onSelectedEntityChange: (entityId: string | null) => void;
-  onModeChange: (mode: Mode) => void; onTaskToggle: (id: number) => void; onTaskDelete: (id: number) => void;
-  onAddingTaskChange: (open: boolean) => void; onTaskDraftChange: (value: string) => void;
-  onAddTask: (event: FormEvent<HTMLFormElement>) => void;
-}) {
-  return (
-    <section className="c73-workspace">
-      <div className="c73-primary">
-        <CalendarPanel month={month} today={now} events={events} language={language} onPrevious={onPrevious} onNext={onNext} onToday={onToday} />
-      </div>
-
-      <aside className="c73-support">
-        <AgendaPanel now={now} events={events} language={language} />
-        <section className="c73-card c73-tasks">
-          <div className="c73-heading c73-split">
-            <div><span>{t("lists", language)}</span><h2>{mode === "todo" ? t("todo", language) : t("shopping", language)}</h2></div>
-            <button className={`c73-icon-button ${addingTask ? "active" : ""}`} type="button" aria-label={addingTask ? t("close", language) : t("add", language)} onClick={() => onAddingTaskChange(!addingTask)}>
-              {addingTask ? <CloseIcon /> : <PlusIcon />}
-            </button>
-          </div>
-
-          {addingTask && (
-            <form className="c73-task-composer" onSubmit={onAddTask}>
-              <input autoFocus value={taskDraft} onChange={(event) => onTaskDraftChange(event.target.value)} onKeyDown={(event) => { if (event.key === "Escape") onAddingTaskChange(false); }} placeholder={language === "it" ? "Nuovo elemento" : "New item"} aria-label={t("add", language)} />
-              <button type="submit" disabled={!taskDraft.trim()} aria-label={t("add", language)}><CheckIcon /></button>
-            </form>
-          )}
-
-          <ScrollRegion className="c73-task-list task-list" shellClassName="c73-task-scroll" buttonLabel={language === "it" ? "Vai in fondo alla lista" : "Go to bottom of list"} resetKey={mode}>
-            {tasks.map((item) => (
-              <SwipeTaskRow key={`c73-${mode}-${item.id}`} item={item} deleteLabel={t("delete", language)} onToggle={() => onTaskToggle(item.id)} onDelete={() => onTaskDelete(item.id)} />
-            ))}
-          </ScrollRegion>
-
-          <div className="segmented-control c73-task-switch" role="tablist" aria-label={t("lists", language)}>
-            <button type="button" role="tab" aria-selected={mode === "todo"} className={mode === "todo" ? "active" : ""} onClick={() => onModeChange("todo")}>{t("todo", language)}</button>
-            <button type="button" role="tab" aria-selected={mode === "shopping"} className={mode === "shopping" ? "active" : ""} onClick={() => onModeChange("shopping")}>{t("shopping", language)}</button>
-          </div>
-        </section>
-      </aside>
-
-      <aside className="c73-home-rail">
-        <section className="c73-card c73-home">
-          <div className="c73-heading c73-split">
-            <div><span>{t("smartHome", language)}</span><h2>{t("home", language)}</h2></div>
-            <button className="c73-icon-button c73-power" type="button" onClick={onTurnOffScope} aria-label={t("turnOffAll", language)} title={t("turnOffAll", language)}><PowerIcon /></button>
-          </div>
-
-          <div className="c73-room-strip room-chip-strip" role="tablist" aria-label={t("room", language)}>
-            <button type="button" role="tab" aria-selected={room === "__favorites"} className={room === "__favorites" ? "active" : ""} onClick={() => onRoomChange("__favorites")}><StarIcon /> {t("favorites", language)}</button>
-            {areas.map((area) => (
-              <button type="button" role="tab" aria-selected={room === area.area_id} className={room === area.area_id ? "active" : ""} key={area.area_id} onClick={() => onRoomChange(area.area_id)}><span className="room-chip-dot" />{area.name}</button>
-            ))}
-          </div>
-
-          <div className="c73-device-heading">
-            <h3>{room === "__favorites" ? t("favorites", language) : areas.find((area) => area.area_id === room)?.name}</h3>
-            <span>{room === "__favorites" ? t("wholeHome", language) : `${roomEntities.length} ${t("devices", language).toLowerCase()}`}</span>
-          </div>
-
-          <ScrollRegion className="c73-entity-grid" shellClassName="c73-entity-scroll" buttonLabel={language === "it" ? "Vai in fondo ai dispositivi" : "Go to bottom of devices"} resetKey={room}>
-            {roomEntities.length === 0 && <div className="empty-state">{t("noDevices", language)}</div>}
-            {roomEntities.map((entityId) => {
-              const state = hass.states[entityId];
-              const domain = entityId.split(".")[0];
-              const passive = isPassiveDashboardEntity(hass, entityId);
-              const active = !passive && ACTIVE_ENTITY_STATES.has(state.state);
-              const configurable = !passive && ["light", "cover", "climate"].includes(domain);
-              const status = entityStatus(hass, entityId, language);
-              const content = <><span className="entity-icon">{iconForEntity(hass, entityId)}</span><strong>{displayName(hass, entityId)}</strong><small>{status}</small></>;
-
-              return (
-                <article className={`c73-entity entity-tile domain-${domain} ${passive ? "passive" : ""} ${active ? "active" : ""} ${selectedEntity === entityId ? "selected" : ""}`} style={accessoryStyle(hass, entityId)} key={entityId}>
-                  {passive ? <div className="c73-entity-main entity-main entity-main-passive" aria-label={`${displayName(hass, entityId)}: ${status}`}>{content}</div> : <button className="c73-entity-main entity-main" type="button" onClick={() => void activateEntity(hass, entityId)}>{content}</button>}
-                  <button className={`c73-favorite favorite-button ${favorites.includes(entityId) ? "selected" : ""}`} type="button" aria-label={t("favorites", language)} onClick={() => onToggleFavorite(entityId)}><StarIcon /></button>
-                  {configurable && <button className="c73-control control-button" type="button" aria-label={t("controls", language)} onClick={() => onSelectedEntityChange(selectedEntity === entityId ? null : entityId)}><SlidersIcon /></button>}
-                </article>
-              );
-            })}
-          </ScrollRegion>
-
-          {selectedEntity && hass.states[selectedEntity] && <DeviceControls hass={hass} entityId={selectedEntity} language={language} onClose={() => onSelectedEntityChange(null)} />}
-        </section>
-      </aside>
-    </section>
-  );
-}
 
 function PageDock({ page, language, onChange }: { page: Page; language: Language; onChange: (page: Page) => void }) {
   return (
