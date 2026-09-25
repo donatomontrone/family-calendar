@@ -409,9 +409,13 @@ function LargeRoomCardV70({
   const scrollFeaturedDevices = (direction: -1 | 1) => {
     const strip = featuredDeviceStripRef.current;
     if (!strip) return;
-    const firstDevice = strip.querySelector<HTMLElement>(".h70-device");
-    const step = (firstDevice?.offsetWidth ?? Math.max(180, strip.clientWidth * 0.32)) + 8;
-    strip.scrollBy({ left: step * direction, behavior: "smooth" });
+    const maxScroll = Math.max(0, strip.scrollWidth - strip.clientWidth);
+    if (maxScroll <= 1) return;
+    const page = Math.max(180, strip.clientWidth * 0.82);
+    const next = direction > 0
+      ? Math.min(maxScroll, strip.scrollLeft + page)
+      : Math.max(0, strip.scrollLeft - page);
+    strip.scrollTo({ left: next, behavior: "smooth" });
   };
 
   return (

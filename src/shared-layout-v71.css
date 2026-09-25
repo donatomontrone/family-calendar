@@ -751,3 +751,68 @@
     height: 64px !important;
   }
 }
+
+
+/* ========================================================================= */
+/* V71 LARGE SENSOR WRAP + FEATURED STRIP END REACH                          */
+/* ========================================================================= */
+/*
+ * On large CASA layouts, status/sensor content uses the spare vertical room
+ * instead of behaving like a second horizontal carousel. Device controls keep
+ * the horizontal strip. Open space receives explicit end padding so the final
+ * device can scroll fully into view.
+ */
+@media (min-width: 1440px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-status-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows: 46px !important;
+    align-content: start !important;
+    gap: 7px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scroll-snap-type: none !important;
+    scrollbar-width: none !important;
+    overscroll-behavior-y: contain !important;
+    padding: 0 2px 2px 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-status-grid::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room .h70-status-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    flex: none !important;
+    scroll-snap-align: none !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-status-grid {
+    grid-template-columns: repeat(auto-fit,minmax(165px,1fr)) !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-device-grid {
+    padding-right: 18px !important;
+    scroll-padding-left: 1px !important;
+    scroll-padding-right: 18px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    .h70-room.h70-room-featured .h70-device {
+    flex: 0 0 clamp(158px,18%,188px) !important;
+  }
+}
