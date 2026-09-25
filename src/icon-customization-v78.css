@@ -1,0 +1,149 @@
+/*
+ * ICON CUSTOMIZATION V78
+ * Room editing + expanded catalog. No category filter; search remains.
+ */
+
+.icon-picker-main.icon-picker-main-no-filter {
+  grid-template-rows: auto auto minmax(0,1fr) !important;
+}
+
+.icon-room-target-section > h3 {
+  margin: 12px 8px 7px !important;
+  color: var(--ic-sub) !important;
+  font-size: 8.5px !important;
+  line-height: 1 !important;
+  font-weight: 730 !important;
+  letter-spacing: .045em !important;
+  text-transform: uppercase !important;
+}
+
+.icon-room-target-grid {
+  display: grid !important;
+  gap: 2px !important;
+}
+
+.icon-room-target-grid > button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 52px !important;
+  margin: 0 !important;
+  padding: 7px 8px !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0,1fr) 6px !important;
+  align-items: center !important;
+  gap: 9px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  color: var(--ic-label) !important;
+  text-align: left !important;
+}
+
+.icon-room-target-grid > button:hover {
+  background: var(--ic-secondary) !important;
+}
+
+.icon-room-target-grid > button.active {
+  background: color-mix(in srgb,var(--ic-blue) 11%,transparent) !important;
+}
+
+.icon-room-target-grid > button > span:nth-child(2) {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+}
+
+.icon-room-target-grid > button strong,
+.icon-room-target-grid > button small {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.icon-room-target-grid > button strong {
+  font-size: 10px !important;
+  font-weight: 620 !important;
+}
+
+.icon-room-target-grid > button small {
+  color: var(--ic-sub) !important;
+  font-size: 8px !important;
+}
+
+.icon-room-target-grid > button i {
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: var(--ic-blue) !important;
+}
+
+.icon-device-browser-divider {
+  height: 1px !important;
+  margin: 9px 7px 4px !important;
+  background: var(--ic-line) !important;
+}
+
+.icon-picker-grid {
+  grid-template-columns: repeat(9,minmax(58px,1fr)) !important;
+}
+
+@media (max-width: 1120px) and (min-width: 981px) {
+  .icon-picker-grid {
+    grid-template-columns: repeat(7,minmax(58px,1fr)) !important;
+  }
+}
+
+@media (max-width: 980px) and (min-width: 641px) {
+  .icon-picker-grid {
+    grid-template-columns: repeat(5,minmax(56px,1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) and (min-height: 561px) {
+  .icon-room-target-section {
+    flex: 0 0 auto !important;
+  }
+
+  .icon-room-target-section > h3,
+  .icon-device-browser-divider {
+    display: none !important;
+  }
+
+  .icon-room-target-grid {
+    display: flex !important;
+    gap: 5px !important;
+  }
+
+  .icon-room-target-grid > button {
+    width: 146px !important;
+    min-width: 146px !important;
+    min-height: 50px !important;
+  }
+
+  .icon-picker-grid {
+    grid-template-columns: repeat(4,minmax(50px,1fr)) !important;
+  }
+}
+
+@media (max-height: 560px) {
+  .icon-room-target-section > h3,
+  .icon-device-browser-divider {
+    display: none !important;
+  }
+
+  .icon-room-target-grid > button {
+    min-height: 44px !important;
+  }
+
+  .icon-picker-grid {
+    grid-template-columns: repeat(8,minmax(46px,1fr)) !important;
+  }
+}
+
+@media (min-width: 1800px) and (min-height: 700px) {
+  .icon-picker-grid {
+    grid-template-columns: repeat(10,minmax(62px,1fr)) !important;
+  }
+}

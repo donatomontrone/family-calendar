@@ -20,6 +20,7 @@ import {
   ICON_CATEGORY_ORDER,
   ICON_OPTIONS,
   renderEntityOverrideIcon,
+  RoomOverrideIcon,
   useEntityIconOverrides,
   type IconCategory,
   type IconOverrideMap,
@@ -156,7 +157,7 @@ export default function HomeView({ hass, areas, entities, now, demo, language, o
                   className={isSelected ? "active" : ""}
                   onClick={() => setDesktopRoomId(room.area.area_id)}
                 >
-                  <span className="desktop-room-tab-icon-v26">{roomIcon(room.area.name)}</span>
+                  <span className="desktop-room-tab-icon-v26"><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></span>
                   <span className="desktop-room-tab-copy-v26">
                     <strong>{room.area.name}</strong>
                     <small>{activeCount > 0 ? `${activeCount} ${language === "it" ? "attivi" : "active"}` : (language === "it" ? "Tutto spento" : "All off")}</small>
@@ -303,32 +304,53 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
   onSave: (next: IconOverrideMap) => Promise<void>;
   onClose: () => void;
 }) {
-  const entityIds = useMemo(() => Array.from(new Set(rooms.flatMap((room) => room.allIds))).filter((id) => hass.states[id]), [rooms, hass.states]);
-  const [selectedEntity, setSelectedEntity] = useState<string>(() => entityIds[0] ?? "");
+  const entityIds = useMemo(
+    () => Array.from(new Set(rooms.flatMap((room) => room.allIds))).filter((id) => hass.states[id]),
+    [rooms, hass.states],
+  );
+  const roomTargetIds = useMemo(() => rooms.map((room) => `area:${room.area.area_id}`), [rooms]);
+  const [selectedTarget, setSelectedTarget] = useState<string>(() => roomTargetIds[0] ?? entityIds[0] ?? "");
   const [draft, setDraft] = useState<IconOverrideMap>(() => ({ ...overrides }));
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<IconCategory | "all">("all");
   const [saving, setSaving] = useState(false);
-  const selectedRoom = rooms.find((room) => room.allIds.includes(selectedEntity));
+
+  const selectedAreaId = selectedTarget.startsWith("area:") ? selectedTarget.slice(5) : null;
+  const selectedRoom = selectedAreaId
+    ? rooms.find((room) => room.area.area_id === selectedAreaId)
+    : rooms.find((room) => room.allIds.includes(selectedTarget));
+  const selectedIsRoom = Boolean(selectedAreaId);
+  const selectedFallback = selectedIsRoom && selectedRoom
+    ? roomIcon(selectedRoom.area.name)
+    : selectedTarget && hass.states[selectedTarget]
+      ? iconForEntity(hass, selectedTarget)
+      : <IconPaletteIcon />;
+  const selectedName = selectedIsRoom
+    ? selectedRoom?.area.name ?? (language === "it" ? "Stanza" : "Room")
+    : selectedTarget
+      ? displayName(hass, selectedTarget)
+      : "—";
+  const selectedKind = selectedIsRoom
+    ? (language === "it" ? "Icona stanza" : "Room icon")
+    : selectedRoom?.area.name ?? (language === "it" ? "Dispositivo" : "Device");
+
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const filtered = ICON_OPTIONS.filter((option) => {
-    if (category !== "all" && option.category !== category) return false;
     if (!normalizedQuery) return true;
     const label = language === "it" ? option.it : option.en;
     return [option.key, label, ...option.keywords].some((value) => value.toLocaleLowerCase().includes(normalizedQuery));
   });
-  const recentKeys = Array.from(new Set(Object.values(draft))).reverse().slice(0, 8);
+  const recentKeys = Array.from(new Set(Object.values(draft))).reverse().slice(0, 10);
   const changed = JSON.stringify(draft) !== JSON.stringify(overrides);
 
   const chooseIcon = (key: string) => {
-    if (selectedEntity) setDraft((current) => ({ ...current, [selectedEntity]: key }));
+    if (selectedTarget) setDraft((current) => ({ ...current, [selectedTarget]: key }));
   };
 
   const resetSelected = () => {
-    if (!selectedEntity) return;
+    if (!selectedTarget) return;
     setDraft((current) => {
       const next = { ...current };
-      delete next[selectedEntity];
+      delete next[selectedTarget];
       return next;
     });
   };
@@ -347,20 +369,43 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
 
   return (
     <div className="icon-customizer-backdrop" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target && !saving) onClose(); }}>
-      <section className="icon-customizer-panel" role="dialog" aria-modal="true" aria-label={language === "it" ? "Personalizza icone dispositivi" : "Customize device icons"}>
+      <section className="icon-customizer-panel" role="dialog" aria-modal="true" aria-label={language === "it" ? "Personalizza icone" : "Customize icons"}>
         <header className="icon-customizer-header">
           <div>
             <span>{language === "it" ? "CASA · PERSONALIZZA" : "HOME · CUSTOMIZE"}</span>
-            <h2>{language === "it" ? "Icone dispositivi" : "Device icons"}</h2>
-            <p>{language === "it" ? `Scegli fra ${ICON_OPTIONS.length} icone e assegna quella giusta a ogni dispositivo. La modifica apparirà anche in CALENDARIO.` : `Choose from ${ICON_OPTIONS.length} icons and assign the right one to every device. The change also appears in CALENDAR.`}</p>
+            <h2>{language === "it" ? "Icone casa" : "Home icons"}</h2>
+            <p>{language === "it"
+              ? `Personalizza stanze e dispositivi scegliendo fra ${ICON_OPTIONS.length} icone. Le icone dei dispositivi vengono sincronizzate anche con CALENDARIO.`
+              : `Customize rooms and devices from ${ICON_OPTIONS.length} icons. Device icons are also synchronized with CALENDAR.`}</p>
           </div>
           <button type="button" className="icon-customizer-close" onClick={onClose} disabled={saving} aria-label={language === "it" ? "Chiudi" : "Close"}><CloseIcon /></button>
         </header>
 
         <div className="icon-customizer-body">
           <aside className="icon-device-browser">
-            <div className="icon-device-browser-title"><strong>{language === "it" ? "Dispositivi" : "Devices"}</strong><span>{entityIds.length}</span></div>
+            <div className="icon-device-browser-title">
+              <strong>{language === "it" ? "Casa" : "Home"}</strong>
+              <span>{rooms.length + entityIds.length}</span>
+            </div>
             <div className="icon-device-list">
+              <section className="icon-room-target-section">
+                <h3>{language === "it" ? "Stanze" : "Rooms"}</h3>
+                <div className="icon-room-target-grid">
+                  {rooms.map((room) => {
+                    const targetId = `area:${room.area.area_id}`;
+                    return (
+                      <button type="button" className={selectedTarget === targetId ? "active" : ""} onClick={() => setSelectedTarget(targetId)} key={targetId}>
+                        <span className="icon-device-current">{renderEntityOverrideIcon(draft[targetId]) ?? roomIcon(room.area.name)}</span>
+                        <span><strong>{room.area.name}</strong><small>{language === "it" ? "Stanza" : "Room"}</small></span>
+                        {draft[targetId] && <i />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <div className="icon-device-browser-divider" />
+
               {rooms.map((room) => {
                 const ids = room.allIds.filter((id) => hass.states[id]);
                 if (!ids.length) return null;
@@ -368,7 +413,7 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
                   <section className="icon-device-room" key={room.area.area_id}>
                     <h3>{room.area.name}</h3>
                     {ids.map((entityId) => (
-                      <button type="button" className={selectedEntity === entityId ? "active" : ""} onClick={() => setSelectedEntity(entityId)} key={entityId}>
+                      <button type="button" className={selectedTarget === entityId ? "active" : ""} onClick={() => setSelectedTarget(entityId)} key={entityId}>
                         <span className="icon-device-current">{renderEntityOverrideIcon(draft[entityId]) ?? iconForEntity(hass, entityId)}</span>
                         <span><strong>{displayName(hass, entityId)}</strong><small>{domainOf(entityId).replaceAll("_", " ")}</small></span>
                         {draft[entityId] && <i />}
@@ -380,27 +425,18 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
             </div>
           </aside>
 
-          <main className="icon-picker-main">
+          <main className="icon-picker-main icon-picker-main-no-filter">
             <div className="icon-picker-selected">
-              <span className="icon-picker-preview">{selectedEntity ? (renderEntityOverrideIcon(draft[selectedEntity]) ?? iconForEntity(hass, selectedEntity)) : <IconPaletteIcon />}</span>
-              <div><small>{selectedRoom?.area.name ?? (language === "it" ? "Dispositivo" : "Device")}</small><strong>{selectedEntity ? displayName(hass, selectedEntity) : "—"}</strong></div>
-              <button type="button" onClick={resetSelected} disabled={!selectedEntity || !draft[selectedEntity]}>{language === "it" ? "Ripristina" : "Reset"}</button>
+              <span className="icon-picker-preview">{renderEntityOverrideIcon(draft[selectedTarget]) ?? selectedFallback}</span>
+              <div><small>{selectedKind}</small><strong>{selectedName}</strong></div>
+              <button type="button" onClick={resetSelected} disabled={!selectedTarget || !draft[selectedTarget]}>{language === "it" ? "Ripristina" : "Reset"}</button>
             </div>
 
             <label className="icon-picker-search">
               <SearchIcon />
-              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={language === "it" ? "Cerca icone" : "Search icons"} />
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={language === "it" ? "Cerca fra tutte le icone" : "Search all icons"} />
               <span>{query ? <button type="button" onClick={() => setQuery("")} aria-label={language === "it" ? "Cancella ricerca" : "Clear search"}><CloseIcon /></button> : null}</span>
             </label>
-
-            <div className="icon-category-strip" role="tablist" aria-label={language === "it" ? "Categorie icone" : "Icon categories"}>
-              <button type="button" role="tab" aria-selected={category === "all"} className={category === "all" ? "active" : ""} onClick={() => setCategory("all")}>{language === "it" ? "Tutte" : "All"}</button>
-              {ICON_CATEGORY_ORDER.map((item) => (
-                <button type="button" role="tab" aria-selected={category === item} className={category === item ? "active" : ""} onClick={() => setCategory(item)} key={item}>
-                  {ICON_CATEGORY_LABELS[item][language === "it" ? "it" : "en"]}
-                </button>
-              ))}
-            </div>
 
             <div className="icon-picker-scroll">
               {!normalizedQuery && recentKeys.length > 0 && (
@@ -409,24 +445,25 @@ function IconCustomizationPanel({ hass, rooms, language, overrides, onSave, onCl
                   <div className="icon-picker-grid">
                     {recentKeys.map((key) => {
                       const option = ICON_OPTIONS.find((item) => item.key === key);
-                      return option ? <IconChoiceButton key={key} option={option} language={language} active={draft[selectedEntity] === key} onClick={() => chooseIcon(key)} /> : null;
+                      return option ? <IconChoiceButton key={key} option={option} language={language} active={draft[selectedTarget] === key} onClick={() => chooseIcon(key)} /> : null;
                     })}
                   </div>
                 </section>
               )}
+
               {ICON_CATEGORY_ORDER.map((group) => {
-                if (category !== "all" && category !== group) return null;
                 const options = filtered.filter((option) => option.category === group);
                 if (!options.length) return null;
                 return (
                   <section className="icon-picker-category" key={group}>
                     <h3>{ICON_CATEGORY_LABELS[group][language === "it" ? "it" : "en"]}</h3>
                     <div className="icon-picker-grid">
-                      {options.map((option) => <IconChoiceButton key={option.key} option={option} language={language} active={draft[selectedEntity] === option.key} onClick={() => chooseIcon(option.key)} />)}
+                      {options.map((option) => <IconChoiceButton key={option.key} option={option} language={language} active={draft[selectedTarget] === option.key} onClick={() => chooseIcon(option.key)} />)}
                     </div>
                   </section>
                 );
               })}
+
               {filtered.length === 0 && <div className="icon-picker-empty">{language === "it" ? "Nessuna icona trovata." : "No icons found."}</div>}
             </div>
           </main>
@@ -624,7 +661,7 @@ function LargeRoomCardV70({
     <article className={`h70-room ${orphan ? "h70-room-orphan" : ""} ${isFeaturedOpenSpace ? "h70-room-featured" : ""}`} style={{ "--h70-accent": accent } as CSSProperties}>
       <header className="h70-room-head">
         <div className="h70-room-title">
-          <span className="h70-room-icon">{roomIcon(room.area.name)}</span>
+          <span className="h70-room-icon"><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></span>
           <div><small>{language === "it" ? "Stanza" : "Room"}</small><strong>{room.area.name}</strong><b>{activeCount > 0 ? `${activeCount} ${language === "it" ? "attivi" : "active"}` : (language === "it" ? "Tutto spento" : "All off")}</b></div>
         </div>
         <button
@@ -873,7 +910,7 @@ function LargeHomeWorkspaceV60({
                 style={{ "--v60-room-accent": accent } as CSSProperties}
                 onClick={() => onSelectRoom(room.area.area_id)}
               >
-                <span className="v60-home-room-icon">{roomIcon(room.area.name)}</span>
+                <span className="v60-home-room-icon"><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></span>
                 <span className="v60-home-room-copy">
                   <strong>{room.area.name}</strong>
                   <small>{activeCount > 0 ? `${activeCount} ${language === "it" ? "attivi" : "active"}` : (language === "it" ? "Tutto spento" : "All off")}</small>
@@ -996,7 +1033,7 @@ function LargeRoomConsoleV60({
     <article className="v60-room-console" style={{ "--v60-room-accent": accent } as CSSProperties}>
       <header className="v60-room-console-head">
         <div className="v60-room-console-title">
-          <span>{roomIcon(room.area.name)}</span>
+          <span><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></span>
           <div>
             <small>{language === "it" ? "Stanza" : "Room"}</small>
             <strong>{room.area.name}</strong>
@@ -1054,7 +1091,7 @@ function LargeRoomConsoleV60({
               />
             ) : (
               <div className="v60-room-inspector-empty">
-                <span>{roomIcon(room.area.name)}</span>
+                <span><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></span>
                 <div><strong>{language === "it" ? "Nessun controllo selezionato" : "No control selected"}</strong><small>{language === "it" ? "Seleziona una luce o una tapparella." : "Select a light or cover."}</small></div>
               </div>
             )}
@@ -1222,7 +1259,7 @@ function DesktopRoomPanel({ hass, room, language, accent, onClimate }: { hass: H
     <article className="desktop-room-panel-v32" style={{ "--desktop-room-accent": accent } as CSSProperties}>
       <header className="desktop-room-header-v32">
         <div className="desktop-room-title-v32">
-          <span>{roomIcon(room.area.name)}</span>
+          <span><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></span>
           <div>
             <strong>{room.area.name}</strong>
             <small>{activeCount > 0 ? `${activeCount} ${language === "it" ? "attivi" : "active"}` : (language === "it" ? "Tutto spento" : "All off")}</small>
@@ -1270,7 +1307,7 @@ function DesktopRoomPanel({ hass, room, language, accent, onClimate }: { hass: H
               />
             ) : (
               <div className="desktop-room-detail-empty-v32">
-                <span>{roomIcon(room.area.name)}</span>
+                <span><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></span>
                 <div><strong>{language === "it" ? "Seleziona un dispositivo" : "Select a device"}</strong><small>{language === "it" ? "Luci e tapparelle mostrano qui i controlli rapidi." : "Lights and covers show quick controls here."}</small></div>
               </div>
             )}
@@ -1418,7 +1455,7 @@ function RoomCard({ hass, room, language, onClimate }: { hass: Hass; room: RoomM
   return (
     <article className={`reel-room room-card-v4 ${climateActive ? "climate-active" : ""}`}>
       <div className="reel-room-head room-head-v4">
-        <span className="room-title-v4"><i>{roomIcon(room.area.name)}</i><strong>{room.area.name}</strong></span>
+        <span className="room-title-v4"><i><RoomOverrideIcon areaId={room.area.area_id} fallback={roomIcon(room.area.name)} /></i><strong>{room.area.name}</strong></span>
         <button
           type="button"
           className="room-temperature-button"
