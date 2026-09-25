@@ -9,7 +9,8 @@ import demoCalendarTabletLayoutV63Styles from "./demo-calendar-tablet-layout-v63
 import demoSegmentedMotionV64Styles from "./demo-segmented-motion-v64.css?inline";
 import visualPolishV65Styles from "./visual-polish-v65.css?inline";
 import bottomRhythmV66Styles from "./bottom-rhythm-v66.css?inline";
-import homeRefactorV67Styles from "./home-refactor-v67.css?inline";\nimport pageSwitchAlignmentV68Styles from "./page-switch-alignment-v68.css?inline";
+import homeRefactorV67Styles from "./home-refactor-v67.css?inline";
+import pageSwitchAlignmentV68Styles from "./page-switch-alignment-v68.css?inline";
 
 const STYLE_ID = "family-calendar-demo-responsive-system";
 const LEGACY_RUNTIME_STYLE_ID = "family-calendar-v4-styles";

@@ -26,7 +26,8 @@ import alarmLandscapeV52Styles from "./alarm-landscape-v52.css?inline";
 import largeScreenV60Styles from "./large-screen-v60.css?inline";
 import visualPolishV65Styles from "./visual-polish-v65.css?inline";
 import bottomRhythmV66Styles from "./bottom-rhythm-v66.css?inline";
-import homeRefactorV67Styles from "./home-refactor-v67.css?inline";\nimport pageSwitchAlignmentV68Styles from "./page-switch-alignment-v68.css?inline";
+import homeRefactorV67Styles from "./home-refactor-v67.css?inline";
+import pageSwitchAlignmentV68Styles from "./page-switch-alignment-v68.css?inline";
 
 type RoomDragState = {
   strip: HTMLElement;
