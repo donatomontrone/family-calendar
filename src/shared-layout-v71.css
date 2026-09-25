@@ -575,3 +575,86 @@
     scroll-snap-align: start !important;
   }
 }
+
+
+/* ========================================================================= */
+/* V71 LARGE VIEWPORT FULL-SPACE FILL                                        */
+/* ========================================================================= */
+/*
+ * Large CASA layouts must consume the whole usable canvas. Room rows keep a
+ * breakpoint-specific minimum height, but 1fr lets every existing row grow
+ * equally when the viewport is taller. If the minimums no longer fit, the
+ * existing room scroller takes over naturally.
+ */
+@media (min-width: 1440px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    height: 100% !important;
+    min-height: 0 !important;
+    align-content: stretch !important;
+    align-items: stretch !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room {
+    height: 100% !important;
+    max-height: none !important;
+    align-self: stretch !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-side {
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows:
+      max-content
+      max-content
+      minmax(150px,1fr)
+      max-content
+      max-content !important;
+    grid-auto-rows: unset !important;
+    align-content: stretch !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    align-items: center !important;
+  }
+}
+
+/* Desktop / wide: same card minimum, but rows expand to the viewport bottom. */
+@media (min-width: 1440px) and (max-width: 1799px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h71-room-min-h: 332px;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    grid-auto-rows: minmax(var(--h71-room-min-h),1fr) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room {
+    min-height: var(--h71-room-min-h) !important;
+  }
+}
+
+/* Ultra: two rows of rooms expand evenly when there is spare vertical room. */
+@media (min-width: 1800px) and (min-height: 660px) and (orientation: landscape) {
+  body #root#root main.app-shell.home-page-active {
+    --h71-room-min-h: 318px;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-rooms {
+    grid-auto-rows: minmax(var(--h71-room-min-h),1fr) !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-room {
+    min-height: var(--h71-room-min-h) !important;
+  }
+}
