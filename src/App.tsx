@@ -225,7 +225,7 @@ export default function App({ hass, demo = false }: { hass: Hass; demo?: boolean
       />
 
       {page === "calendar" ? (
-        <section className="dashboard-grid">
+        <section className="dashboard-grid calendar-unified-v72">
           <aside className={`left-column ${demo ? `compact-calendar-panel-${compactCalendarPanel}` : ""}`}>
             {demo && (
               <div className="responsive-calendar-panel-switch segmented-control" role="tablist" aria-label={language === "it" ? "Pannello secondario calendario" : "Calendar secondary panel"}>
