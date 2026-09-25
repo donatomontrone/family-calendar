@@ -1215,3 +1215,231 @@
     display: none !important;
   }
 }
+
+
+/* ========================================================================= */
+/* V70 PORTRAIT STATUS DASHBOARD POLISH                                      */
+/* ========================================================================= */
+/*
+ * The portrait summary previously relied on sparse auto-placement:
+ * summary -> alarm -> climate(2 cols) -> waste -> tools.
+ * Because climate arrived before waste, CSS Grid left a dead cell beside
+ * Alarm. Explicit areas make the hierarchy deterministic and visually dense.
+ */
+@media (min-width: 560px) and (min-height: 660px) and (orientation: portrait) {
+  body #root#root main.app-shell.home-page-active .h70-side {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    grid-template-areas:
+      "summary summary"
+      "alarm waste"
+      "climate climate"
+      "tools tools" !important;
+    grid-auto-flow: row !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-summary {
+    grid-area: summary !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-alarm {
+    grid-area: alarm !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-waste {
+    grid-area: waste !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate {
+    grid-area: climate !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tools {
+    grid-area: tools !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    :is(.h70-summary,.h70-alarm,.h70-waste) {
+    min-height: 92px !important;
+    height: 92px !important;
+    max-height: 92px !important;
+    padding: 12px 14px !important;
+    border-radius: 17px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-summary {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-summary-main,
+  body #root#root main.app-shell.home-page-active .h70-waste-main {
+    margin-top: 8px !important;
+    grid-template-columns: 36px minmax(0,1fr) !important;
+    gap: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-summary-main > span,
+  body #root#root main.app-shell.home-page-active .h70-side-icon {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    border-radius: 11px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-alarm {
+    grid-template-columns: 36px minmax(0,1fr) auto !important;
+    gap: 10px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-waste {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-kicker,
+  body #root#root main.app-shell.home-page-active .h70-side-heading {
+    font-size: 9px !important;
+    letter-spacing: .065em !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    :is(.h70-summary-main,.h70-waste-main) strong,
+  body #root#root main.app-shell.home-page-active .h70-side-copy strong {
+    font-size: 12.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    :is(.h70-summary-main,.h70-waste-main) small,
+  body #root#root main.app-shell.home-page-active .h70-side-copy :is(small,b) {
+    font-size: 9.5px !important;
+  }
+
+  /* Climate remains the focal utility, but no longer dominates the page. */
+  body #root#root main.app-shell.home-page-active .h70-climate {
+    min-height: 146px !important;
+    height: 146px !important;
+    max-height: 146px !important;
+    padding: 12px 14px !important;
+    border-radius: 18px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-body {
+    margin-top: 8px !important;
+    grid-template-columns: 88px minmax(0,1fr) !important;
+    gap: 14px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-ring {
+    width: 88px !important;
+    min-width: 88px !important;
+    height: 88px !important;
+    min-height: 88px !important;
+    padding: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-ring strong {
+    font-size: 20px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats {
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+    grid-template-rows: minmax(0,1fr) !important;
+    align-items: stretch !important;
+    gap: 7px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats > span {
+    min-width: 0 !important;
+    min-height: 60px !important;
+    padding: 8px 7px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 12px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats small {
+    width: 100% !important;
+    font-size: 8.5px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-climate-stats strong {
+    width: 100% !important;
+    overflow: hidden !important;
+    font-size: 11px !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* Tools read as compact actions instead of oversized empty tiles. */
+  body #root#root main.app-shell.home-page-active .h70-tools {
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+    grid-auto-rows: 52px !important;
+    gap: 8px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tool {
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    padding: 0 11px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 9px !important;
+    border-radius: 14px !important;
+    text-align: left !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tool-icon {
+    flex: 0 0 21px !important;
+    width: 21px !important;
+    min-width: 21px !important;
+    height: 21px !important;
+    min-height: 21px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tool-icon > svg {
+    width: 21px !important;
+    min-width: 21px !important;
+    height: 21px !important;
+    min-height: 21px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tool-label {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    font-size: 10px !important;
+    text-align: left !important;
+  }
+}
+
+/* Large portrait tablets have enough width for a single clean summary row. */
+@media (min-width: 900px) and (min-height: 900px) and (orientation: portrait) {
+  body #root#root main.app-shell.home-page-active .h70-side {
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+    grid-template-areas:
+      "summary alarm waste"
+      "climate climate climate"
+      "tools tools tools" !important;
+  }
+
+  body #root#root main.app-shell.home-page-active
+    :is(.h70-summary,.h70-alarm,.h70-waste) {
+    min-height: 96px !important;
+    height: 96px !important;
+    max-height: 96px !important;
+  }
+
+  body #root#root main.app-shell.home-page-active .h70-tools {
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+  }
+}
